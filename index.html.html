@@ -778,8 +778,13 @@ h1 em {
       <div class="sidebar-label">Iscriviti — è gratuito</div>
       <div class="sidebar-title">La prossima edizione<br>esce martedì mattina.</div>
       <p class="sidebar-desc">Unisciti a chi legge il calcio come un'operazione di M&A. Nessuno lo fa così in italiano.</p>
-      <input type="email" class="sidebar-input" placeholder="la tua email">
-      <button class="sidebar-btn">Iscriviti gratis →</button>
+<iframe src="https://embeds.beehiiv.com/0e1fd7e2-cd02-4c5f-b508-b680a8009396?slim=true" 
+  data-test-id="beehiiv-embed" 
+  height="52" 
+  frameborder="0" 
+  scrolling="no" 
+  style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%;">
+</iframe>
       <div class="sidebar-note">
         Gratis · cancellabile in 1 click · nessun affiliato<br>
         Accetti la Privacy Policy all'iscrizione.
@@ -956,7 +961,13 @@ h1 em {
     <div class="final-divider"></div>
     <div class="final-right">
       <div class="sidebar-label">Iscrizione gratuita</div>
-      <button class="sidebar-btn" onclick="window.open('https://valore-atteso.beehiiv.com','_blank')" style="margin-top:8px">Iscriviti gratis →</button>
+      <iframe src="https://embeds.beehiiv.com/0e1fd7e2-cd02-4c5f-b508-b680a8009396?slim=true" 
+  data-test-id="beehiiv-embed" 
+  height="52" 
+  frameborder="0" 
+  scrolling="no" 
+  style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%;">
+</iframe>
       <div class="sidebar-note" style="margin-top: 12px;">
         Gratis · 8 minuti · dati verificabili · nessun affiliato<br>
         Accetti la Privacy Policy all'iscrizione. Cancellazione in 1 click.
@@ -979,20 +990,7 @@ h1 em {
 </footer>
 
 <script>
-document.querySelectorAll('.sidebar-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const input = this.previousElementSibling;
-    if (!input.value || !input.value.includes('@')) {
-      input.style.borderColor = '#B5221A';
-      input.focus();
-      return;
-    }
-    input.style.borderColor = '';
-    this.textContent = 'Iscrizione confermata ✓';
-    this.style.background = '#2D6A4F';
-    input.value = '';
-  });
-});
+// form gestito da Beehiiv embed
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
