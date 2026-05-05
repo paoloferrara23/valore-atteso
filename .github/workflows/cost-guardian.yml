@@ -1,0 +1,20 @@
+name: Cost Guardian
+
+on:
+  schedule:
+    - cron: '0 8 * * 5'  # Ogni venerdì alle 9:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  controlla-costi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla costi e invia report
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          SOGLIA_ANTHROPIC: '10'
+          SOGLIA_RESEND: '10'
+        run: node scripts/cost-guardian.js
