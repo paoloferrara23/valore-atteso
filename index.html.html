@@ -648,7 +648,6 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 <script>
 const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-const BPUB='pub_a08a1caf-cd02-4c5f-b508-b680a8009396';
 
 function go(p){
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
@@ -656,60 +655,6 @@ function go(p){
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='archivio')loadArch();
   if(p==='home')loadPreview();
-
-  }, 500);
-}
-
-
-
-function openModalWithEmail(email){
-  openModal();
-  if(email && email.includes('@')){
-    document.getElementById('modal-email').value = email;
-  }
-}
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-async function doModalSignup(){
-  const email = document.getElementById('modal-email').value.trim();
-  const btn = document.getElementById('modal-btn');
-  const ok = document.getElementById('modal-ok');
-
-  if(!email || !email.includes('@')){
-    document.getElementById('modal-email').style.borderColor='rgba(181,34,26,.7)';
-    document.getElementById('modal-email').focus();
-    return;
-  }
-  document.getElementById('modal-email').style.borderColor='';
-  btn.disabled=true; btn.textContent='Iscrizione in corso…';
-
-  try{
-    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Prefer':'return=minimal'
-      },
-      body:JSON.stringify({email, created_at: new Date().toISOString()})
-    });
-    ok.style.display='block';
-    document.getElementById('modal-email').style.display='none';
-    btn.style.display='none';
-    setTimeout(closeModal, 3000);
-  }catch(e){
-    btn.disabled=false;
-    btn.textContent='Sì, mi iscrivo gratis →';
-  }
-}
-
 }
 
 function scrollForm(){
@@ -720,7 +665,7 @@ function scrollForm(){
   },120);
 }
 
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 async function sfetch(url){
   const r=await fetch(SURL+url,{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
@@ -731,15 +676,17 @@ async function loadPreview(){
   try{
     const eds=await sfetch('/rest/v1/editions?select=*&order=num.desc&published=eq.true&limit=1');
     if(!eds||!eds.length){
-      document.getElementById('home-preview').innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Prima edizione in arrivo martedì.</div>';return;
+      document.getElementById('home-preview').innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Prima edizione in arrivo martedì.</div>';
+      return;
     }
-    const e=eds[0];const secs=e.sections||[];
+    const e=eds[0];
+    const secs=e.sections||[];
     document.getElementById('home-preview').innerHTML=secs.map((s,i)=>`
       <div class="pcol" onclick="openArt('${e.num}')">
         <div class="pcol-tag">0${i+1} — ${esc(s.label)}</div>
         <h3>${esc(s.title)}</h3>
         <p>${esc((s.body||'').split('\n')[0].substring(0,130))}…</p>
-        ${s.kpis&&s.kpis.length?`<div class="pcol-kpi">${s.kpis.slice(0,3).map(k=>`<div class="kpi-r"><span>${esc(k.key)}</span><span>${esc(k.value)}</span></div>`).join('')}</div>`:''}
+        ${s.kpis&&s.kpis.length?'<div class="pcol-kpi">'+s.kpis.slice(0,3).map(k=>'<div class="kpi-r"><span>'+esc(k.key)+'</span><span>'+esc(k.value)+'</span></div>').join('')+'</div>':''}
         <div class="pcol-v">${esc(s.verdict)}</div>
       </div>`).join('');
   }catch{
@@ -752,17 +699,22 @@ async function loadArch(){
   el.innerHTML='<div class="arch-loading">Caricamento...</div>';
   try{
     const eds=await sfetch('/rest/v1/editions?select=*&order=num.desc&published=eq.true');
-    if(!eds||!eds.length){el.innerHTML='<div class="arch-empty">Prima edizione in arrivo martedì.<br>Iscriviti per non perderla.</div>';return;}
+    if(!eds||!eds.length){
+      el.innerHTML='<div class="arch-empty">Prima edizione in arrivo martedì.<br>Iscriviti per non perderla.</div>';
+      return;
+    }
     el.innerHTML=eds.map(e=>`
       <div class="ed-row" onclick="openArt('${e.num}')">
         <div class="ed-num">#${esc(e.num)}</div>
         <div>
           <div class="ed-title">${esc(e.title)}</div>
-          <div class="ed-tags">${(e.tags||[]).map(t=>`<span class="ed-tag">${esc(t)}</span>`).join('')}</div>
+          <div class="ed-tags">${(e.tags||[]).map(t=>'<span class="ed-tag">'+esc(t)+'</span>').join('')}</div>
         </div>
         <div class="ed-date">${esc(e.date)}</div>
       </div>`).join('');
-  }catch{el.innerHTML='<div class="arch-empty">Errore nel caricamento. Riprova.</div>';}
+  }catch{
+    el.innerHTML='<div class="arch-empty">Errore nel caricamento. Riprova.</div>';
+  }
 }
 
 async function openArt(num){
@@ -770,32 +722,35 @@ async function openArt(num){
   const el=document.getElementById('art-content');
   el.innerHTML='<div style="padding:40px 0;font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Caricamento edizione...</div>';
   try{
-    const eds=await sfetch(`/rest/v1/editions?num=eq.${num}&published=eq.true&select=*`);
-    const e=eds&&eds[0];if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
+    const eds=await sfetch('/rest/v1/editions?num=eq.'+num+'&published=eq.true&select=*');
+    const e=eds&&eds[0];
+    if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
     const secs=e.sections||[];
     el.innerHTML=`
       <div class="art-num">Edizione #${esc(e.num)}</div>
       <h1 class="art-title">${esc(e.title)}</h1>
-      ${e.subtitle?`<div class="art-subtitle">${esc(e.subtitle)}</div>`:''}
+      ${e.subtitle?'<div class="art-subtitle">'+esc(e.subtitle)+'</div>':''}
       <div class="art-meta">
         <span>${esc(e.date)}</span><span>·</span><span>~8 min lettura</span>
-        ${(e.tags||[]).map(t=>`<span>· ${esc(t)}</span>`).join('')}
+        ${(e.tags||[]).map(t=>'<span>· '+esc(t)+'</span>').join('')}
       </div>
-      ${e.opener?`<div class="art-opener">${esc(e.opener)}</div>`:''}
+      ${e.opener?'<div class="art-opener">'+esc(e.opener)+'</div>':''}
       ${secs.map(s=>`
         <div class="art-sec">
           <div class="art-sec-tag">${esc(s.label)}</div>
           <h2 class="art-sec-title">${esc(s.title)}</h2>
           <div class="art-body">${esc(s.body)}</div>
-          ${s.kpis&&s.kpis.length?`<table class="kpi-table">${s.kpis.map(k=>`<tr><td>${esc(k.key)}</td><td>${esc(k.value)}</td></tr>`).join('')}</table>`:''}
+          ${s.kpis&&s.kpis.length?'<table class="kpi-table">'+s.kpis.map(k=>'<tr><td>'+esc(k.key)+'</td><td>'+esc(k.value)+'</td></tr>').join('')+'</table>':''}
           <div class="art-verdict">${esc(s.verdict)}</div>
-          ${s.sources&&s.sources.length?`<div class="art-sources">Fonti: ${s.sources.map(esc).join(' · ')}</div>`:''}
+          ${s.sources&&s.sources.length?'<div class="art-sources">Fonti: '+s.sources.map(esc).join(' · ')+'</div>':''}
         </div>`).join('')}
       <div class="art-cta">
         <p>Ricevi ogni edizione il martedì mattina</p>
         <button class="nav-cta" onclick="scrollForm();go('home')">Iscriviti gratis →</button>
       </div>`;
-  }catch{el.innerHTML='<p style="font-family:var(--sf);color:var(--ink3)">Errore. Riprova.</p>';}
+  }catch{
+    el.innerHTML='<p style="font-family:var(--sf);color:var(--ink3)">Errore. Riprova.</p>';
+  }
 }
 
 async function doSignup(emailId,btnId,okId){
@@ -804,10 +759,12 @@ async function doSignup(emailId,btnId,okId){
   const ok=document.getElementById(okId);
   if(!email||!email.includes('@')){
     document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
-    document.getElementById(emailId).focus();return;
+    document.getElementById(emailId).focus();
+    return;
   }
   document.getElementById(emailId).style.borderColor='';
-  btn.disabled=true;btn.textContent='Iscrizione in corso…';
+  btn.disabled=true;
+  btn.textContent='Iscrizione in corso…';
   try{
     const r=await fetch('/api/subscribe',{
       method:'POST',
@@ -819,151 +776,17 @@ async function doSignup(emailId,btnId,okId){
       ok.style.display='block';
       document.getElementById(emailId).style.display='none';
       btn.style.display='none';
-    }else throw new Error(d.error||'Errore');
+    } else {
+      throw new Error(d.error||'Errore');
+    }
   }catch(e){
-    btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
+    btn.disabled=false;
+    btn.textContent='Sì, mi iscrivo →';
     document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
-  }
-}
-  document.getElementById(emailId).style.borderColor='';
-  btn.disabled=true;btn.textContent='Iscrizione in corso…';
-
-  try{
-    // 1. Salva su Supabase
-    const tok = crypto.randomUUID();
-    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Prefer':'resolution=merge-duplicates,return=minimal'
-      },
-      body:JSON.stringify({email,token:tok,confirmed:false})
-    });
-
-    // 2. Invia email di conferma via Resend
-    await fetch('https://api.resend.com/emails',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer re_8NSq3NEw_2SjYt5J4SiUw29AvEXcMzZHw'
-      },
-      body:JSON.stringify({
-        from:'Valore Atteso <onboarding@resend.dev>',
-        to:email,
-        subject:'Conferma la tua iscrizione a Valore Atteso',
-        html:`<table width="600" style="max-width:600px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif"><tr><td style="padding:24px 32px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-size:32px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.18em;text-transform:uppercase;margin:6px 0 0">Il calcio dei numeri, non dei gol</p></td></tr><tr><td style="padding:32px"><p style="font-size:16px;font-weight:300;color:#3D3C39;line-height:1.7;margin:0 0 20px">Ciao,</p><p style="font-size:16px;font-weight:300;color:#3D3C39;line-height:1.7;margin:0 0 24px">Per completare l'iscrizione clicca il link qui sotto:</p><table width="100%"><tr><td style="text-align:center;padding:8px 0 24px"><a href="https://valore-atteso.vercel.app/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" style="background:#111010;color:#F7F4EE;padding:14px 28px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Conferma iscrizione →</a></td></tr></table><p style="font-size:13px;font-weight:300;color:#888480;line-height:1.6;margin:0">Il link scade fra 7 giorni. Se non sei stato tu, ignora questa email.</p></td></tr><tr><td style="padding:16px 32px;border-top:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.04em;margin:0">© 2025 Valore Atteso</p></td></tr></table>`
-      })
-    });
-
-    ok.style.display='block';
-    document.getElementById(emailId).style.display='none';
-    btn.style.display='none';
-
-  }catch(e){
-    btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
-    document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
-  }
-}
-  document.getElementById(emailId).style.borderColor='';
-  btn.disabled=true;btn.textContent='Iscrizione in corso…';
-  try{
-    const r=await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/subscribe',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email})
-    });
-    const d=await r.json();
-    if(r.ok&&d.ok){
-      ok.style.display='block';
-      document.getElementById(emailId).style.display='none';
-      btn.style.display='none';
-    }else throw new Error(d.error||'Errore');
-  }catch(e){
-    btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
-    document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
-  }
-}
-  document.getElementById(emailId).style.borderColor='';
-  btn.disabled=true;btn.textContent='Iscrizione in corso…';
-  try{
-    // Usa embed Beehiiv tramite fetch con no-cors + salva email su Supabase
-    // Salva su Supabase come backup
-    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Prefer':'return=minimal'
-      },
-      body:JSON.stringify({email, created_at: new Date().toISOString()})
-    }).catch(()=>{});
-    // Mostra successo
-    ok.style.display='block';
-    document.getElementById(emailId).style.display='none';
-    btn.style.display='none';
-  }catch(e){
-    btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
   }
 }
 
 loadPreview();
-
-  }, 500);
-}
-
-
-
-function openModalWithEmail(email){
-  openModal();
-  if(email && email.includes('@')){
-    document.getElementById('modal-email').value = email;
-  }
-}
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow='';
-}
-
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-async function doModalSignup(){
-  const email = document.getElementById('modal-email').value.trim();
-  const btn = document.getElementById('modal-btn');
-  const ok = document.getElementById('modal-ok');
-
-  if(!email || !email.includes('@')){
-    document.getElementById('modal-email').style.borderColor='rgba(181,34,26,.7)';
-    document.getElementById('modal-email').focus();
-    return;
-  }
-  document.getElementById('modal-email').style.borderColor='';
-  btn.disabled=true; btn.textContent='Iscrizione in corso…';
-
-  try{
-    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
-        'Prefer':'return=minimal'
-      },
-      body:JSON.stringify({email, created_at: new Date().toISOString()})
-    });
-    ok.style.display='block';
-    document.getElementById('modal-email').style.display='none';
-    btn.style.display='none';
-    setTimeout(closeModal, 3000);
-  }catch(e){
-    btn.disabled=false;
-    btn.textContent='Sì, mi iscrivo gratis →';
-  }
-}
-
 </script>
 
     <div class="modal-sub">Newsletter gratuita · Ogni martedì</div>
