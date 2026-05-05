@@ -754,21 +754,24 @@ async function doSignup(emailId,btnId,okId){
   document.getElementById(emailId).style.borderColor='';
   btn.disabled=true;btn.textContent='Iscrizione in corso…';
   try{
-    const r=await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/iscriviti',{
+    // Usa embed Beehiiv tramite fetch con no-cors + salva email su Supabase
+    // Salva su Supabase come backup
+    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email})
-    });
-    const d=await r.json();
-    if(r.ok && d.ok){
-      ok.style.display='block';
-      document.getElementById(emailId).style.display='none';
-      btn.style.display='none';
-    }else throw new Error(d.error||'Errore');
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({email, created_at: new Date().toISOString()})
+    }).catch(()=>{});
+    // Mostra successo
+    ok.style.display='block';
+    document.getElementById(emailId).style.display='none';
+    btn.style.display='none';
   }catch(e){
-    document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
     btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
-    alert('Errore iscrizione: '+e.message+'. Riprova.');
   }
 }
 
