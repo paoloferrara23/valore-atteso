@@ -273,6 +273,29 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   .cta-form{flex-direction:column}
   .nav-links .nav-a:not(.nav-cta){display:none}
 }
+
+/* ── MODALE ISCRIZIONE ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(17,16,16,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--cream);max-width:480px;width:100%;position:relative;padding:40px 36px 32px}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-family:var(--mn);font-size:18px;color:var(--ink3);cursor:pointer;line-height:1;transition:color .15s}
+.modal-close:hover{color:var(--ink)}
+.modal-logo{font-family:var(--dp);font-size:1.4rem;font-weight:900;letter-spacing:-.5px;margin-bottom:4px;text-align:center}
+.modal-sub{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);text-align:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--rule)}
+.modal-title{font-family:var(--dp);font-size:1.2rem;font-weight:700;line-height:1.25;margin-bottom:8px;letter-spacing:-.3px}
+.modal-desc{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.65;margin-bottom:20px}
+.modal-email{width:100%;height:48px;border:1.5px solid var(--rule);background:#fff;padding:0 14px;font-family:var(--sf);font-size:15px;color:var(--ink);outline:none;margin-bottom:8px;border-radius:3px;transition:border-color .15s}
+.modal-email:focus{border-color:var(--ink)}
+.modal-email::placeholder{color:var(--ink3)}
+.modal-btn{width:100%;height:48px;background:var(--ink);color:var(--cream);border:none;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background .15s;margin-bottom:10px}
+.modal-btn:hover{background:var(--ink2)}
+.modal-btn:disabled{opacity:.5;cursor:not-allowed}
+.modal-note{font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.04em;text-align:center;line-height:1.6}
+.modal-note a{color:var(--ink3);text-decoration:underline}
+.modal-ok{background:var(--gpal);border-left:3px solid var(--green);padding:12px 14px;font-family:var(--mn);font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.6;display:none;margin-bottom:10px;border-radius:0 3px 3px 0}
+.modal-chips{display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+.modal-chip{font-family:var(--mn);font-size:10px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.modal-chip .ok{color:var(--green);font-weight:700}
 </style>
 </head>
 <body>
@@ -298,14 +321,10 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
     <p class="hero-sub a3">Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.</p>
 
     <div class="form-wrap a4" id="form-anchor">
-      <iframe src="https://embeds.beehiiv.com/0e1fd7e2-cd02-4c5f-b508-b680a8009396" 
-        data-test-id="beehiiv-embed" 
-        width="100%" 
-        height="52" 
-        frameborder="0" 
-        scrolling="no" 
-        style="border-radius:0;background:transparent;width:100%">
-      </iframe>
+      <div class="form-row">
+        <input type="email" class="form-email" id="form-email" placeholder="la tua email" autocomplete="email" onfocus="openModalWithEmail(this.value)" onclick="openModal()">
+        <button class="form-btn" onclick="openModalWithEmail(document.getElementById('form-email').value)">Sì, mi iscrivo →</button>
+      </div>
       <p class="form-note" style="margin-top:10px">Accetto la <a href="#">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</p>
       <div class="form-chips">
         <span class="form-chip"><span class="ok">✓</span> Gratis, per sempre</span>
@@ -564,15 +583,9 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="cta-final">
     <h2>La prossima esce<br>martedì mattina. <em>Otto minuti.</em></h2>
     <p>Ti iscrivi. La leggi col caffè. Se non ti cambia come guardi il calcio, ti cancelli in un click.</p>
-    <div style="max-width:460px;margin:0 auto 12px">
-      <iframe src="https://embeds.beehiiv.com/0e1fd7e2-cd02-4c5f-b508-b680a8009396" 
-        data-test-id="beehiiv-embed" 
-        width="100%" 
-        height="52" 
-        frameborder="0" 
-        scrolling="no" 
-        style="border-radius:0;background:transparent;width:100%">
-      </iframe>
+    <div class="cta-form">
+      <input type="email" class="cta-email" id="cta-email" placeholder="la tua email" autocomplete="email" onclick="openModal()">
+      <button class="cta-btn" onclick="openModalWithEmail(document.getElementById('cta-email').value)">Sì, mi iscrivo →</button>
     </div>
     <p class="cta-note">8 min/settimana · Gratis · Dati veri · Nessun affiliato</p>
   </div>
@@ -663,6 +676,62 @@ function go(p){
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='archivio')loadArch();
   if(p==='home')loadPreview();
+
+// ── MODALE ──
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('modal-email').focus(),100);
+}
+
+function openModalWithEmail(email){
+  openModal();
+  if(email && email.includes('@')){
+    document.getElementById('modal-email').value = email;
+  }
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+async function doModalSignup(){
+  const email = document.getElementById('modal-email').value.trim();
+  const btn = document.getElementById('modal-btn');
+  const ok = document.getElementById('modal-ok');
+
+  if(!email || !email.includes('@')){
+    document.getElementById('modal-email').style.borderColor='rgba(181,34,26,.7)';
+    document.getElementById('modal-email').focus();
+    return;
+  }
+  document.getElementById('modal-email').style.borderColor='';
+  btn.disabled=true; btn.textContent='Iscrizione in corso…';
+
+  try{
+    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({email, created_at: new Date().toISOString()})
+    });
+    ok.style.display='block';
+    document.getElementById('modal-email').style.display='none';
+    btn.style.display='none';
+    setTimeout(closeModal, 3000);
+  }catch(e){
+    btn.disabled=false;
+    btn.textContent='Sì, mi iscrivo gratis →';
+  }
+}
+
 }
 
 function scrollForm(){
@@ -784,6 +853,82 @@ async function doSignup(emailId,btnId,okId){
 }
 
 loadPreview();
+
+// ── MODALE ──
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('modal-email').focus(),100);
+}
+
+function openModalWithEmail(email){
+  openModal();
+  if(email && email.includes('@')){
+    document.getElementById('modal-email').value = email;
+  }
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+async function doModalSignup(){
+  const email = document.getElementById('modal-email').value.trim();
+  const btn = document.getElementById('modal-btn');
+  const ok = document.getElementById('modal-ok');
+
+  if(!email || !email.includes('@')){
+    document.getElementById('modal-email').style.borderColor='rgba(181,34,26,.7)';
+    document.getElementById('modal-email').focus();
+    return;
+  }
+  document.getElementById('modal-email').style.borderColor='';
+  btn.disabled=true; btn.textContent='Iscrizione in corso…';
+
+  try{
+    await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/subscribers',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4',
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({email, created_at: new Date().toISOString()})
+    });
+    ok.style.display='block';
+    document.getElementById('modal-email').style.display='none';
+    btn.style.display='none';
+    setTimeout(closeModal, 3000);
+  }catch(e){
+    btn.disabled=false;
+    btn.textContent='Sì, mi iscrivo gratis →';
+  }
+}
+
 </script>
+
+<!-- MODALE ISCRIZIONE -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-logo">Valore Atteso</div>
+    <div class="modal-sub">Newsletter gratuita · Ogni martedì</div>
+    <div class="modal-title">Il calcio dei numeri,<br>non dei gol.</div>
+    <p class="modal-desc">Un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti ogni martedì mattina.</p>
+    <div class="modal-ok" id="modal-ok">✓ Iscritto — controlla la tua inbox per confermare l'iscrizione</div>
+    <input type="email" class="modal-email" id="modal-email" placeholder="la tua email" autocomplete="email">
+    <button class="modal-btn" id="modal-btn" onclick="doModalSignup()">Sì, mi iscrivo gratis →</button>
+    <p class="modal-note">Accetto la <a href="#">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</p>
+    <div class="modal-chips">
+      <span class="modal-chip"><span class="ok">✓</span> Gratis</span>
+      <span class="modal-chip"><span class="ok">✓</span> 8 minuti</span>
+      <span class="modal-chip"><span class="ok">✓</span> Cancellabile in 1 click</span>
+    </div>
+  </div>
+</div>
 </body>
 </html>
