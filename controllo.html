@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valore Atteso — Control Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F7F4EE;--cream2:#EDE9E0;--ink:#111010;--ink2:#3D3C39;--ink3:#888480;
+  --rule:#C8C4BB;--green:#1A3A2A;--gpal:#E8F0EB;--red:#B5221A;
+  --dp:'Playfair Display',Georgia,serif;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;
+}
+body{background:var(--ink);color:var(--cream);font-family:var(--sf);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── LOGIN ── */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:var(--cream);color:var(--ink);padding:48px 40px;max-width:380px;width:100%;text-align:center}
+.login-logo{font-family:var(--dp);font-size:1.8rem;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+.login-sub{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:32px}
+.login-label{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);text-align:left;margin-bottom:6px;display:block}
+.login-input{width:100%;height:46px;border:1.5px solid var(--rule);background:#fff;padding:0 14px;font-family:var(--mn);font-size:14px;color:var(--ink);outline:none;margin-bottom:10px;letter-spacing:.06em;border-radius:3px;transition:border-color .15s}
+.login-input:focus{border-color:var(--ink)}
+.login-btn{width:100%;height:46px;background:var(--ink);color:var(--cream);border:none;font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background .15s}
+.login-btn:hover{background:var(--ink2)}
+.login-err{font-family:var(--mn);font-size:10px;color:var(--red);margin-top:10px;letter-spacing:.04em;display:none}
+
+/* ── APP ── */
+#app-screen{display:none}
+
+/* NAV */
+.app-nav{border-bottom:1px solid rgba(255,255,255,.1);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100;background:var(--ink)}
+.app-logo{font-family:var(--dp);font-size:16px;font-weight:900;letter-spacing:-.5px;color:var(--cream)}
+.app-tabs{display:flex;gap:0}
+.tab-btn{padding:0 20px;height:52px;background:none;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s}
+.tab-btn:hover{color:rgba(255,255,255,.7)}
+.tab-btn.active{color:var(--cream);border-bottom-color:var(--cream)}
+.app-exit{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);background:none;border:none;cursor:pointer;transition:color .15s}
+.app-exit:hover{color:rgba(255,255,255,.6)}
+
+/* PANELS */
+.panel{display:none;padding:32px}
+.panel.active{display:block}
+
+/* ── DASHBOARD PANEL ── */
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.dash-card{border:1px solid rgba(255,255,255,.1);padding:20px;background:rgba(255,255,255,.03)}
+.dash-label{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.dash-val{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:4px}
+.dash-sub{font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.04em}
+.dash-val.green{color:#7FCF97}
+.agents-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.agent-card{border:1px solid rgba(255,255,255,.1);padding:18px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.03)}
+.agent-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.agent-dot.on{background:#7FCF97;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.agent-dot.off{background:rgba(255,255,255,.2)}
+.agent-name{font-family:var(--sf);font-size:13px;color:var(--cream);margin-bottom:2px}
+.agent-desc{font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.04em}
+.sec-title{font-family:var(--dp);font-size:1.1rem;font-weight:700;letter-spacing:-.3px;margin-bottom:14px;color:var(--cream)}
+
+/* ── AD PANEL ── */
+.ad-wrap{display:flex;gap:0;height:calc(100vh - 116px);border:1px solid rgba(255,255,255,.1)}
+.ad-chat{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.chat-msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.chat-msgs::-webkit-scrollbar{width:3px}
+.chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+.msg{display:flex;gap:8px;max-width:80%;animation:msgin .2s ease}
+@keyframes msgin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg.ad{align-self:flex-start}
+.msg-av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:500;margin-top:2px}
+.msg.ad .msg-av{background:var(--cream);color:var(--ink)}
+.msg.user .msg-av{background:rgba(255,255,255,.12);color:rgba(255,255,255,.5)}
+.msg-bub{padding:10px 14px;font-family:var(--sf);font-size:13px;line-height:1.65;font-weight:300}
+.msg.ad .msg-bub{background:rgba(255,255,255,.07);color:var(--cream);border-radius:3px 10px 10px 10px}
+.msg.user .msg-bub{background:var(--cream);color:var(--ink);border-radius:10px 3px 10px 10px}
+.typing-wrap{display:none;align-self:flex-start;align-items:center;gap:8px}
+.typing-dots{background:rgba(255,255,255,.07);padding:10px 14px;border-radius:3px 10px 10px 10px;display:flex;gap:3px}
+.td{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.35);animation:tdot 1.2s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+.quick-btns{padding:10px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:6px;flex-wrap:wrap}
+.qb{padding:5px 12px;border:1px solid rgba(255,255,255,.12);background:none;font-family:var(--mn);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer;border-radius:100px;transition:all .15s}
+.qb:hover{border-color:rgba(255,255,255,.35);color:var(--cream)}
+.chat-input-area{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;align-items:flex-end}
+.chat-ta{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:10px 14px;font-family:var(--sf);font-size:13px;color:var(--cream);outline:none;resize:none;min-height:42px;max-height:100px;border-radius:6px;line-height:1.5;font-weight:300;transition:border-color .15s}
+.chat-ta:focus{border-color:rgba(255,255,255,.25)}
+.chat-ta::placeholder{color:rgba(255,255,255,.2)}
+.chat-send{width:36px;height:36px;background:var(--cream);border:none;border-radius:6px;cursor:pointer;font-size:14px;transition:opacity .15s;flex-shrink:0}
+.chat-send:hover{opacity:.85}
+.chat-send:disabled{opacity:.3;cursor:not-allowed}
+.ad-ctx{width:240px;border-left:1px solid rgba(255,255,255,.08);padding:18px;overflow-y:auto;flex-shrink:0}
+.ctx-sec{margin-bottom:20px}
+.ctx-sec-title{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ctx-row{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.ctx-lbl{font-family:var(--mn);font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.ctx-v{font-family:var(--sf);font-size:12px;color:rgba(255,255,255,.65);font-weight:300}
+.ctx-v.ok{color:#7FCF97}
+
+/* ── REDAZIONE PANEL ── */
+.red-config{display:grid;grid-template-columns:1fr 280px;gap:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:24px}
+.red-title{font-family:var(--dp);font-size:1.6rem;font-weight:900;letter-spacing:-.5px;margin-bottom:8px}
+.red-desc{font-family:var(--sf);font-size:13px;color:rgba(255,255,255,.5);font-weight:300;line-height:1.7;margin-bottom:18px}
+.mode-opt{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.12);cursor:pointer;margin-bottom:8px;transition:all .12s}
+.mode-opt:hover,.mode-opt.sel{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)}
+.mode-opt input{display:none}
+.mo-tag{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px}
+.mo-title{font-family:var(--sf);font-size:13px;color:var(--cream)}
+.hint-wrap{margin-top:10px;display:none}
+.hint-label{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px}
+.hint-input{width:100%;height:34px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);padding:0 10px;font-family:var(--sf);font-size:13px;color:var(--cream);outline:none}
+.hint-input:focus{border-color:rgba(255,255,255,.4)}
+.hint-input::placeholder{color:rgba(255,255,255,.2);font-size:12px;font-style:italic}
+.red-side{}
+.red-side-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.08)}
+.red-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-family:var(--mn);font-size:9px}
+.red-row span:first-child{color:rgba(255,255,255,.3)}
+.red-row span:last-child{color:rgba(255,255,255,.7);font-weight:500}
+.apikey-wrap{margin:12px 0 10px}
+.apikey-label{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.apikey-label a{color:rgba(255,255,255,.2);text-decoration:none;font-size:8px}
+.apikey-input{width:100%;height:34px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);padding:0 10px;font-family:var(--mn);font-size:10px;color:var(--cream);outline:none}
+.apikey-input:focus{border-color:rgba(255,255,255,.35)}
+.btn-gen{width:100%;height:44px;background:var(--cream);color:var(--ink);border:none;font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s;margin-top:6px}
+.btn-gen:hover{opacity:.88}
+.btn-gen:disabled{opacity:.4;cursor:not-allowed}
+
+/* PROGRESS */
+.prog-wrap{display:none;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);margin-bottom:20px}
+.prog-hd{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08);font-family:var(--mn);font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.35)}
+.prog-steps{padding:14px}
+.prog-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:.2;transition:opacity .3s}
+.prog-step:last-child{border-bottom:none}
+.prog-step.active{opacity:1}
+.prog-step.done{opacity:.55}
+.ps-icon{width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:7px;flex-shrink:0;margin-top:1px;color:rgba(255,255,255,.4)}
+.prog-step.active .ps-icon{border-color:var(--cream);color:var(--cream);animation:spin .8s linear infinite}
+.prog-step.done .ps-icon{border-color:#7FCF97;color:#7FCF97;animation:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ps-text{font-family:var(--sf);font-size:12px;color:rgba(255,255,255,.65);font-weight:300;line-height:1.5}
+.ps-sub{font-family:var(--mn);font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.04em;margin-top:1px}
+
+/* ERROR */
+.err-box{padding:12px 16px;border:1px solid rgba(181,34,26,.4);background:rgba(181,34,26,.08);font-family:var(--mn);font-size:9px;color:#f28472;letter-spacing:.04em;line-height:1.7;margin-bottom:16px;display:none}
+
+/* OUTPUT */
+.out-wrap{display:none}
+.out-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-bottom:none}
+.out-bar-l{display:flex;align-items:center;gap:8px;font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.04em}
+.out-bar-r{display:flex;gap:6px}
+.btn-sm{height:28px;padding:0 12px;border:1px solid rgba(255,255,255,.12);background:none;font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,.4);transition:all .12s}
+.btn-sm:hover{border-color:rgba(255,255,255,.35);color:var(--cream)}
+.btn-pub{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.btn-pub:hover{opacity:.88;color:var(--ink)}
+.btn-pub:disabled{opacity:.35;cursor:not-allowed}
+
+/* NL PREVIEW */
+.nl-preview{border:1px solid rgba(255,255,255,.1);background:var(--cream);color:var(--ink)}
+.nl-mh{border-bottom:2px solid var(--ink);padding:18px 24px 14px;background:var(--cream)}
+.nl-top{display:flex;justify-content:space-between;font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.06em;margin-bottom:8px}
+.nl-logo{font-family:var(--dp);font-size:1.6rem;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:3px}
+.nl-tag{text-align:center;font-family:var(--mn);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.nl-opener{padding:14px 24px;border-bottom:1px solid var(--rule);background:var(--cream2)}
+.nl-opener-text{font-family:var(--sf);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.75;font-style:italic;outline:none}
+.nl-opener-text:focus{background:#fdf5e0}
+.nl-sec{border-bottom:1px solid var(--rule);padding:18px 24px;position:relative}
+.nl-sec:last-child{border-bottom:none}
+.nl-sec-tag{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.nl-sec-tag::before{content:'';width:16px;height:1px;background:var(--red)}
+.nl-sec-title{font-family:var(--dp);font-size:1.1rem;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin-bottom:8px;outline:none}
+.nl-sec-title:focus,.nl-sec-body:focus{background:#fdf5e0}
+.nl-sec-body{font-family:var(--sf);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.75;margin-bottom:12px;outline:none;white-space:pre-line}
+.nl-kpi{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:10px;margin-bottom:10px;background:var(--cream2)}
+.nl-kpi tr{border-bottom:1px solid var(--rule)}
+.nl-kpi tr:last-child{border-bottom:none}
+.nl-kpi td{padding:5px 10px}
+.nl-kpi td:first-child{color:var(--ink);font-weight:500}
+.nl-kpi td:last-child{text-align:right;color:var(--ink2)}
+.nl-verdict{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.nl-verdict::before{content:'';width:12px;height:1px;background:var(--red)}
+.nl-sources{font-family:var(--mn);font-size:8px;color:var(--green);letter-spacing:.04em;padding:6px 10px;background:var(--gpal);border-left:2px solid var(--green)}
+.edit-hint{position:absolute;top:8px;right:10px;font-family:var(--mn);font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);opacity:0;transition:opacity .15s;pointer-events:none}
+.nl-sec:hover .edit-hint{opacity:1}
+.pub-status{margin-top:10px;padding:10px 14px;font-family:var(--mn);font-size:9px;letter-spacing:.04em;line-height:1.6;display:none;border-radius:2px}
+.pub-status.ok{background:var(--gpal);color:var(--green);border-left:3px solid var(--green)}
+.pub-status.err{background:rgba(181,34,26,.1);color:#f28472;border-left:3px solid var(--red)}
+
+@media(max-width:700px){
+  .dash-grid{grid-template-columns:1fr 1fr}
+  .agents-grid{grid-template-columns:1fr}
+  .red-config{grid-template-columns:1fr}
+  .ad-ctx{display:none}
+  .app-tabs .tab-btn{padding:0 12px;font-size:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Valore Atteso</div>
+    <div class="login-sub">Control Room · Accesso riservato</div>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Entra →</button>
+    <div class="login-err" id="login-err">Password errata.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <nav class="app-nav">
+    <div class="app-logo">Valore Atteso</div>
+    <div class="app-tabs">
+      <button class="tab-btn active" onclick="showPanel('dashboard')">Dashboard</button>
+      <button class="tab-btn" onclick="showPanel('ad')">AD</button>
+      <button class="tab-btn" onclick="showPanel('redazione')">Redazione</button>
+    </div>
+    <button class="app-exit" onclick="doLogout()">Esci</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard" style="padding:32px">
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-label">Iscritti confermati</div>
+        <div class="dash-val green" id="d-subs">—</div>
+        <div class="dash-sub">su Supabase</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">Edizioni pubblicate</div>
+        <div class="dash-val" id="d-eds">—</div>
+        <div class="dash-sub" id="d-last">—</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">Sito</div>
+        <div class="dash-val green">Live</div>
+        <div class="dash-sub">valore-atteso.vercel.app</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">Stack</div>
+        <div class="dash-val" style="font-size:1rem;margin-top:4px">Vercel · Supa · Resend</div>
+        <div class="dash-sub">GitHub Actions attivi</div>
+      </div>
+    </div>
+    <div class="sec-title">Agenti attivi</div>
+    <div class="agents-grid">
+      <div class="agent-card">
+        <div class="agent-dot on"></div>
+        <div>
+          <div class="agent-name">Editoriale Agent</div>
+          <div class="agent-desc">Genera bozza ogni lunedì 8:00 · Ti manda email per approvazione</div>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-dot on"></div>
+        <div>
+          <div class="agent-name">Cost Guardian</div>
+          <div class="agent-desc">Report costi ogni venerdì 9:00 · Alert se superi €10/mese</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="panel" id="panel-ad" style="padding:20px">
+    <div class="ad-wrap">
+      <div class="ad-chat">
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="typing-wrap" id="ad-typing">
+            <div style="width:26px;height:26px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:500;color:var(--ink);flex-shrink:0">AD</div>
+            <div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+          </div>
+        </div>
+        <div class="quick-btns">
+          <button class="qb" onclick="adSend('Come stiamo questa settimana?')">Come stiamo?</button>
+          <button class="qb" onclick="adSend('Quanti iscritti abbiamo?')">Iscritti</button>
+          <button class="qb" onclick="adSend('Cosa devo fare per crescere?')">Crescita</button>
+          <button class="qb" onclick="adSend('Dimmi le ultime edizioni')">Archivio</button>
+          <button class="qb" onclick="adSend('Stato dei costi questa settimana')">Costi</button>
+        </div>
+        <div class="chat-input-area">
+          <textarea class="chat-ta" id="ad-input" placeholder="Scrivi all'AD…" rows="1"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();adSendInput()}"
+            oninput="autoResize(this)"></textarea>
+          <button class="chat-send" id="ad-send-btn" onclick="adSendInput()">↑</button>
+        </div>
+      </div>
+      <div class="ad-ctx">
+        <div class="ctx-sec">
+          <div class="ctx-sec-title">Stato sistema</div>
+          <div class="ctx-row"><div class="ctx-lbl">Iscritti</div><div class="ctx-v ok" id="ctx-subs">—</div></div>
+          <div class="ctx-row"><div class="ctx-lbl">Edizioni</div><div class="ctx-v" id="ctx-eds">—</div></div>
+          <div class="ctx-row"><div class="ctx-lbl">Ultima edizione</div><div class="ctx-v" id="ctx-last-ed">—</div></div>
+          <div class="ctx-row"><div class="ctx-lbl">Sito</div><div class="ctx-v ok">Online ✓</div></div>
+        </div>
+        <div class="ctx-sec">
+          <div class="ctx-sec-title">Agenti</div>
+          <div class="ctx-row"><div class="ctx-lbl">Editoriale</div><div class="ctx-v ok">Attivo · Lun 8:00</div></div>
+          <div class="ctx-row"><div class="ctx-lbl">Cost Guardian</div><div class="ctx-v ok">Attivo · Ven 9:00</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REDAZIONE -->
+  <div class="panel" id="panel-redazione" style="padding:32px">
+    <div class="red-config">
+      <div>
+        <div class="red-title">Genera edizione</div>
+        <p class="red-desc">Il sistema cerca le notizie, seleziona i 3 temi più rilevanti nel business del calcio, scrive l'analisi con dati verificati. Tu leggi, correggi se vuoi, e pubblichi.</p>
+        <div class="mode-opt sel" onclick="selMode(this,'auto')">
+          <input type="radio" name="mode" value="auto" checked>
+          <div><div class="mo-tag">Modalità A</div><div class="mo-title">Automatica — trovo io i 3 temi più rilevanti</div></div>
+        </div>
+        <div class="mode-opt" onclick="selMode(this,'hint')">
+          <input type="radio" name="mode" value="hint">
+          <div><div class="mo-tag">Modalità B</div><div class="mo-title">Guidata — tu indichi un tema o club</div></div>
+        </div>
+        <div class="hint-wrap" id="hint-wrap">
+          <div class="hint-label">Il tuo hint</div>
+          <input type="text" class="hint-input" id="hint-input" placeholder="Es: «Inter», «diritti TV», «acquisizione club»…">
+        </div>
+      </div>
+      <div class="red-side">
+        <div class="red-side-label">Parametri</div>
+        <div class="red-row"><span>Sezioni</span><span>3 fisse</span></div>
+        <div class="red-row"><span>Lingua</span><span>Italiano</span></div>
+        <div class="red-row"><span>Lunghezza</span><span>~800 parole</span></div>
+        <div class="red-row"><span>Fact-check</span><span>Automatico ✓</span></div>
+        <div class="apikey-wrap">
+          <div class="apikey-label">
+            <span>Anthropic API Key</span>
+            <a href="https://console.anthropic.com/settings/keys" target="_blank">Ottieni →</a>
+          </div>
+          <input type="password" class="apikey-input" id="red-apikey" placeholder="sk-ant-api03-…" autocomplete="off">
+        </div>
+        <button class="btn-gen" id="gen-btn" onclick="genera()">
+          <span id="gen-label">Genera edizione →</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="prog-wrap" id="prog-wrap">
+      <div class="prog-hd">Generazione in corso — circa 30 secondi</div>
+      <div class="prog-steps">
+        <div class="prog-step" id="ps1"><div class="ps-icon">◌</div><div><div class="ps-text">Ricerca notizie della settimana</div><div class="ps-sub">Business calcio · Ultime 7 giorni</div></div></div>
+        <div class="prog-step" id="ps2"><div class="ps-icon">◌</div><div><div class="ps-text">Selezione 3 temi più rilevanti</div><div class="ps-sub">Rilevanza economica · Dati disponibili</div></div></div>
+        <div class="prog-step" id="ps3"><div class="ps-icon">◌</div><div><div class="ps-text">Ricerca fonti primarie</div><div class="ps-sub">Bilanci · Deloitte · UEFA · Swiss Ramble</div></div></div>
+        <div class="prog-step" id="ps4"><div class="ps-icon">◌</div><div><div class="ps-text">Scrittura analisi</div><div class="ps-sub">Tone of voice Valore Atteso · 3 sezioni</div></div></div>
+        <div class="prog-step" id="ps5"><div class="ps-icon">◌</div><div><div class="ps-text">Verifica dati</div><div class="ps-sub">Fact-check automatico</div></div></div>
+      </div>
+    </div>
+
+    <div class="err-box" id="err-box"></div>
+
+    <div class="out-wrap" id="out-wrap">
+      <div class="out-bar">
+        <div class="out-bar-l"><span style="color:#7FCF97">●</span><span>Edizione pronta — clicca sul testo per modificare</span><span id="out-meta" style="color:rgba(255,255,255,.2)"></span></div>
+        <div class="out-bar-r">
+          <button class="btn-sm" onclick="genera()">Rigenera</button>
+          <button class="btn-sm btn-pub" id="pub-btn" onclick="pubblica()">Pubblica + Invia →</button>
+        </div>
+      </div>
+      <div class="nl-preview" id="nl-preview"></div>
+      <div class="pub-status" id="pub-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PWD='valopro2025';
+const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
+const EDGE='https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/genera-newsletter';
+const BEEHIIV_KEY='xssPPenTw2EGpwCbDaDEwRhrjHkfXjvoRsfkb79JZybIK2ikb';
+const BEEHIIV_PUB='pub_a08a1caf-cd02-4c5f-b508-b680a8009396';
+const RESEND_KEY='re_8NSq3NEw_2SjYt5J4SiUw29AvEXcMzZHw';
+
+let adHistory=[];
+let sysCtx={};
+let currentData=null;
+let curStep=0;
+
+// ── LOGIN ──
+function doLogin(){
+  if(document.getElementById('pwd-input').value===PWD){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app-screen').style.display='block';
+    const saved=localStorage.getItem('va_apikey');
+    if(saved)document.getElementById('red-apikey').value=saved;
+    initApp();
+  }else{
+    document.getElementById('login-err').style.display='block';
+    document.getElementById('pwd-input').value='';
+  }
+}
+function doLogout(){location.reload();}
+
+// ── PANELS ──
+function showPanel(p){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('panel-'+p).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── INIT ──
+async function initApp(){
+  await loadSysCtx();
+  adAddMsg('ad','Buongiorno. Sono il tuo AD di Valore Atteso.\n\nHo accesso a tutto: iscritti, edizioni pubblicate, stato degli agenti. Usa i tasti rapidi o scrivimi direttamente.\n\nCosa vuoi sapere?');
+}
+
+async function loadSysCtx(){
+  try{
+    const[sr,er]=await Promise.all([
+      fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch(SURL+'/rest/v1/editions?select=num,title,date&published=eq.true&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+    ]);
+    const subs=await sr.json();
+    const eds=await er.json();
+    sysCtx={iscritti:subs.length,edizioni:eds.length,ultimaEd:eds[0]?`#${eds[0].num} — ${eds[0].title} (${eds[0].date})`:'Nessuna',edsList:eds.slice(0,5).map(e=>`#${e.num}: ${e.title}`).join('\n')};
+    document.getElementById('d-subs').textContent=subs.length;
+    document.getElementById('d-eds').textContent=eds.length;
+    document.getElementById('d-last').textContent=eds[0]?`Ultima: #${eds[0].num} — ${eds[0].date}`:'Nessuna ancora';
+    document.getElementById('ctx-subs').textContent=subs.length+' confermati';
+    document.getElementById('ctx-eds').textContent=eds.length;
+    document.getElementById('ctx-last-ed').textContent=eds[0]?`#${eds[0].num}`:'—';
+  }catch(e){console.error(e);}
+}
+
+// ── AD ──
+function adAddMsg(role,text){
+  const chat=document.getElementById('chat-msgs');
+  const typing=document.getElementById('ad-typing');
+  const time=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  const div=document.createElement('div');
+  div.className='msg '+role;
+  div.innerHTML=`<div class="msg-av">${role==='ad'?'AD':'PF'}</div><div><div class="msg-bub">${text.replace(/\n/g,'<br>')}</div></div>`;
+  chat.insertBefore(div,typing);
+  chat.scrollTop=chat.scrollHeight;
+  adHistory.push({role:role==='ad'?'assistant':'user',content:text});
+}
+function adShowTyping(show){
+  document.getElementById('ad-typing').style.display=show?'flex':'none';
+  document.getElementById('chat-msgs').scrollTop=document.getElementById('chat-msgs').scrollHeight;
+}
+function adSendInput(){const t=document.getElementById('ad-input').value.trim();if(!t)return;document.getElementById('ad-input').value='';autoResize(document.getElementById('ad-input'));adSend(t);}
+async function adSend(text){
+  document.getElementById('ad-send-btn').disabled=true;
+  adAddMsg('user',text);
+  adShowTyping(true);
+  const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara (Manager M&A, Andersen Italia). Dati attuali: ${sysCtx.iscritti} iscritti, ${sysCtx.edizioni} edizioni pubblicate, ultima: ${sysCtx.ultimaEd}. Edizioni recenti:\n${sysCtx.edsList}. Agenti: Editoriale (lun 8:00), Cost Guardian (ven 9:00), soglie €10/mese. Stack: Vercel+Supabase+Resend+GitHub Actions. Rispondi in italiano, diretto e concreto, max 150 parole, tono collega senior.`;
+  try{
+    const apikey=document.getElementById('red-apikey').value||localStorage.getItem('va_apikey')||'';
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apikey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:sys,messages:adHistory.slice(-10)})});
+    const d=await r.json();
+    adShowTyping(false);
+    if(r.ok&&d.content?.[0]?.text)adAddMsg('ad',d.content[0].text);
+    else adAddMsg('ad','Errore. Inserisci la API key Anthropic nella sezione Redazione.');
+  }catch(e){adShowTyping(false);adAddMsg('ad','Errore di connessione.');}
+  document.getElementById('ad-send-btn').disabled=false;
+}
+
+// ── REDAZIONE ──
+function selMode(el,mode){
+  document.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  el.querySelector('input').checked=true;
+  document.getElementById('hint-wrap').style.display=mode==='hint'?'block':'none';
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function setStep(n){
+  if(curStep>0&&curStep<=5){const p=document.getElementById('ps'+curStep);p.classList.remove('active');p.classList.add('done');const ic=p.querySelector('.ps-icon');ic.textContent='✓';ic.removeAttribute('style');}
+  curStep=n;if(n>5)return;
+  const s=document.getElementById('ps'+n);s.classList.add('active');
+}
+function resetSteps(){curStep=0;for(let i=1;i<=5;i++){const s=document.getElementById('ps'+i);s.classList.remove('active','done');s.querySelector('.ps-icon').textContent='◌';}}
+
+async function genera(){
+  const apiKey=document.getElementById('red-apikey').value.trim();
+  if(!apiKey||!apiKey.startsWith('sk-ant')){document.getElementById('red-apikey').style.borderColor='rgba(181,34,26,.7)';document.getElementById('red-apikey').focus();return;}
+  document.getElementById('red-apikey').style.borderColor='';
+  localStorage.setItem('va_apikey',apiKey);
+  const mode=document.querySelector('input[name=mode]:checked').value;
+  const hint=document.getElementById('hint-input').value.trim();
+  const btn=document.getElementById('gen-btn');const lbl=document.getElementById('gen-label');
+  btn.disabled=true;lbl.textContent='Generazione in corso…';
+  document.getElementById('prog-wrap').style.display='block';
+  document.getElementById('out-wrap').style.display='none';
+  document.getElementById('err-box').style.display='none';
+  document.getElementById('pub-status').style.display='none';
+  resetSteps();setStep(1);
+  const timers=[setTimeout(()=>setStep(2),4000),setTimeout(()=>setStep(3),9000),setTimeout(()=>setStep(4),15000),setTimeout(()=>setStep(5),22000)];
+  try{
+    const res=await fetch(EDGE,{method:'POST',headers:{'Content-Type':'application/json','x-anthropic-key':apiKey},body:JSON.stringify({mode,hint})});
+    timers.forEach(clearTimeout);setStep(6);
+    const data=await res.json();
+    if(!res.ok||data.error)throw new Error(data.error||'HTTP '+res.status);
+    currentData=data;renderPreview(data);
+  }catch(err){
+    timers.forEach(clearTimeout);
+    document.getElementById('prog-wrap').style.display='none';
+    const eb=document.getElementById('err-box');eb.style.display='block';
+    eb.textContent='Errore: '+err.message;
+  }finally{btn.disabled=false;lbl.textContent='Genera edizione →';}
+}
+
+function renderPreview(data){
+  document.getElementById('out-meta').textContent=' · Edizione #'+(data.edition_num||'—');
+  const secs=(data.sections||[]).map((s,i)=>`
+    <div class="nl-sec">
+      <span class="edit-hint">clicca per modificare</span>
+      <div class="nl-sec-tag">${esc(s.label||'0'+(i+1))}</div>
+      <div class="nl-sec-title" contenteditable="true">${esc(s.title)}</div>
+      <div class="nl-sec-body" contenteditable="true">${esc(s.body)}</div>
+      ${s.kpis&&s.kpis.length?'<table class="nl-kpi">'+s.kpis.map(k=>`<tr><td>${esc(k.key)}</td><td>${esc(k.value)}</td></tr>`).join('')+'</table>':''}
+      <div class="nl-verdict">${esc(s.verdict)}</div>
+      ${s.sources&&s.sources.length?'<div class="nl-sources">Fonti: '+s.sources.map(esc).join(' · ')+'</div>':''}
+    </div>`).join('');
+  document.getElementById('nl-preview').innerHTML=`
+    <div class="nl-mh">
+      <div class="nl-top"><span>Edizione #${esc(data.edition_num||'001')}</span><span>${esc(data.date||'')}</span><span>~8 min</span></div>
+      <div class="nl-logo">Valore Atteso</div>
+      <div class="nl-tag">Il calcio dei numeri, non dei goal</div>
+    </div>
+    <div class="nl-opener"><div class="nl-opener-text" contenteditable="true">${esc(data.opener||'')}</div></div>
+    <div>${secs}</div>`;
+  document.getElementById('prog-wrap').style.display='none';
+  document.getElementById('out-wrap').style.display='block';
+}
+
+async function pubblica(){
+  if(!currentData){alert('Nessuna edizione generata.');return;}
+  const btn=document.getElementById('pub-btn');const ps=document.getElementById('pub-status');
+  btn.disabled=true;btn.textContent='Pubblicazione in corso…';ps.style.display='none';
+  const preview=document.getElementById('nl-preview');
+  const titles=preview.querySelectorAll('.nl-sec-title');
+  const bodies=preview.querySelectorAll('.nl-sec-body');
+  const opener=preview.querySelector('.nl-opener-text');
+  const sections=(currentData.sections||[]).map((s,i)=>({...s,title:titles[i]?.innerText||s.title,body:bodies[i]?.innerText||s.body}));
+  const openerText=opener?.innerText||currentData.opener;
+  let errs=[];
+
+  // Salva su Supabase
+  try{
+    const r=await fetch(SURL+'/rest/v1/editions',{method:'POST',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'},body:JSON.stringify({...currentData,sections,opener:openerText,published:true,tags:sections.map(s=>s.label)})});
+    if(!r.ok)errs.push('Supabase: HTTP '+r.status);
+  }catch(e){errs.push('Supabase: '+e.message);}
+
+  // Invia a iscritti via Resend
+  try{
+    const sr=await fetch(SURL+'/rest/v1/subscribers?confirmed=eq.true&select=email',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const subs=await sr.json();
+    const secs=sections.map((s,i)=>`<tr><td style="padding:16px 24px;border-bottom:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;letter-spacing:.12em;text-transform:uppercase;margin:0 0 5px">0${i+1} · ${s.label}</p><h3 style="font-family:Georgia,serif;font-size:15px;font-weight:700;margin:0 0 7px">${s.title}</h3><p style="font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;line-height:1.7;margin:0 0 8px">${(s.body||'').replace(/\n/g,'<br>')}</p><p style="font-family:'Courier New',monospace;font-size:8px;color:#B5221A;margin:0">${s.verdict}</p></td></tr>`).join('');
+    const emailHTML=`<table width="560" style="max-width:560px;margin:0 auto;background:#F7F4EE"><tr><td style="padding:18px 24px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-family:Georgia,serif;font-size:28px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 0">Edizione #${currentData.edition_num} · ${currentData.date}</p></td></tr><tr><td style="padding:14px 24px;background:#EDE9E0;border-bottom:1px solid #C8C4BB"><p style="font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;line-height:1.75;font-style:italic;margin:0">${openerText}</p></td></tr>${secs}<tr><td style="padding:14px 24px;border-top:1px solid #C8C4BB;text-align:center"><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">© 2025 Valore Atteso · <a href="https://valore-atteso.vercel.app" style="color:#888480">valore-atteso.vercel.app</a></p></td></tr></table>`;
+    let inviati=0;
+    for(const sub of subs){
+      await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+RESEND_KEY},body:JSON.stringify({from:'Valore Atteso <onboarding@resend.dev>',to:sub.email,subject:'Valore Atteso #'+currentData.edition_num+' — '+currentData.title,html:emailHTML})}).catch(()=>{});
+      inviati++;
+    }
+    if(inviati>0)errs=errs.filter(e=>!e.startsWith('Resend'));
+  }catch(e){errs.push('Resend: '+e.message);}
+
+  btn.disabled=false;btn.textContent='Pubblica + Invia →';ps.style.display='block';
+  if(errs.length===0){ps.className='pub-status ok';ps.innerHTML='✓ Edizione pubblicata sul sito e inviata agli iscritti.';}
+  else{ps.className='pub-status err';ps.innerHTML='Errori: '+errs.join(' · ');}
+}
+
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+</script>
+</body>
+</html>
