@@ -754,19 +754,21 @@ async function doSignup(emailId,btnId,okId){
   document.getElementById(emailId).style.borderColor='';
   btn.disabled=true;btn.textContent='Iscrizione in corso…';
   try{
-    const r=await fetch(`https://api.beehiiv.com/v2/publications/${BPUB}/subscriptions`,{
+    const r=await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/iscriviti',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer xssPPenTw2EGpwCbDaDEwRhrjHkfXjvoRsfkb79JZybIK2ikb'},
-      body:JSON.stringify({email,reactivate_existing:true,send_welcome_email:true})
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email})
     });
-    if(r.ok){
+    const d=await r.json();
+    if(r.ok && d.ok){
       ok.style.display='block';
       document.getElementById(emailId).style.display='none';
       btn.style.display='none';
-    }else throw new Error();
-  }catch{
-    window.open('https://valore-atteso.beehiiv.com?utm_source=sito','_blank');
+    }else throw new Error(d.error||'Errore');
+  }catch(e){
+    document.getElementById(emailId).style.borderColor='rgba(181,34,26,.7)';
     btn.disabled=false;btn.textContent='Sì, mi iscrivo →';
+    alert('Errore iscrizione: '+e.message+'. Riprova.');
   }
 }
 
