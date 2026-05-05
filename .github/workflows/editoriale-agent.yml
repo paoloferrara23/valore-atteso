@@ -1,201 +1,20 @@
-name: Editoriale Agent — Valore Atteso
+name: Editoriale Agent
 
 on:
   schedule:
-    - cron: '0 7 * * 1'  # Ogni lunedì alle 8:00 ora italiana (7:00 UTC)
-  workflow_dispatch:       # Permette lancio manuale dalla dashboard GitHub
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
 
 jobs:
-  genera-edizione:
+  genera:
     runs-on: ubuntu-latest
     steps:
-      - name: Genera edizione e invia per approvazione
+      - uses: actions/checkout@v4
+      - name: Genera edizione
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
-          APPROVAL_SECRET: ${{ secrets.APPROVAL_SECRET }}
-        run: |
-          node -e "
-          const https = require('https');
-          const crypto = require('crypto');
-
-          async function fetch(url, opts={}) {
-            return new Promise((resolve, reject) => {
-              const u = new URL(url);
-              const options = {
-                hostname: u.hostname,
-                path: u.pathname + u.search,
-                method: opts.method || 'GET',
-                headers: opts.headers || {}
-              };
-              const req = https.request(options, res => {
-                let data = '';
-                res.on('data', chunk => data += chunk);
-                res.on('end', () => resolve({
-                  ok: res.statusCode >= 200 && res.statusCode < 300,
-                  status: res.statusCode,
-                  json: () => Promise.resolve(JSON.parse(data)),
-                  text: () => Promise.resolve(data)
-                }));
-              });
-              req.on('error', reject);
-              if(opts.body) req.write(opts.body);
-              req.end();
-            });
-          }
-
-          async function main() {
-            const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-            const RESEND_KEY = process.env.RESEND_KEY;
-            const SUPA_URL = process.env.SUPABASE_URL;
-            const SUPA_KEY = process.env.SUPABASE_KEY;
-            const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-            const APPROVAL_SECRET = process.env.APPROVAL_SECRET;
-            const SITE = 'https://valore-atteso.vercel.app';
-
-            console.log('1. Recupero numero edizione...');
-            const edRes = await fetch(SUPA_URL + '/rest/v1/editions?select=num&order=num.desc&limit=1', {
-              headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY }
-            });
-            const eds = await edRes.json();
-            const lastNum = eds && eds.length ? parseInt(eds[0].num) : 0;
-            const newNum = String(lastNum + 1).padStart(3, '0');
-            console.log('Nuova edizione: #' + newNum);
-
-            console.log('2. Genero edizione con Claude...');
-            const today = new Date().toLocaleDateString('it-IT', {day:'numeric',month:'long',year:'numeric'});
-            const prompt = \`Sei il redattore di Valore Atteso, una newsletter italiana sul business del calcio con tono da analista M&A.
-
-Genera l'edizione #\${newNum} del \${today} con questa struttura ESATTA in JSON valido:
-
-{
-  \"num\": \"\${newNum}\",
-  \"title\": \"titolo dell'edizione (max 8 parole)\",
-  \"subtitle\": \"sottotitolo descrittivo\",
-  \"date\": \"\${today}\",
-  \"opener\": \"paragrafo introduttivo di 2-3 righe che contestualizza i 3 temi\",
-  \"sections\": [
-    {
-      \"label\": \"Il Bilancio\",
-      \"title\": \"titolo sezione bilancio\",
-      \"body\": \"analisi approfondita 150-200 parole con dati reali e fonti\",
-      \"kpis\": [{\"key\": \"nome KPI\", \"value\": \"valore\"}, ...],
-      \"verdict\": \"giudizio netto in una frase\",
-      \"sources\": [\"fonte 1\", \"fonte 2\"]
-    },
-    {
-      \"label\": \"Il Deal\",
-      \"title\": \"titolo sezione deal\",
-      \"body\": \"analisi deal 150-200 parole con multipli e struttura\",
-      \"kpis\": [{\"key\": \"nome KPI\", \"value\": \"valore\"}, ...],
-      \"verdict\": \"giudizio netto in una frase\",
-      \"sources\": [\"fonte 1\", \"fonte 2\"]
-    },
-    {
-      \"label\": \"La Metrica\",
-      \"title\": \"titolo sezione metrica\",
-      \"body\": \"spiegazione metrica 150-200 parole con benchmark internazionale\",
-      \"kpis\": [{\"key\": \"club/entità\", \"value\": \"valore\"}, ...],
-      \"verdict\": \"giudizio netto in una frase\",
-      \"sources\": [\"fonte 1\", \"fonte 2\"]
-    }
-  ]
-}
-
-Usa dati reali verificabili. Tono: IB memo, diretto, no fuffa. Rispondi SOLO con il JSON valido.\`;
-
-            const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': ANTHROPIC_KEY,
-                'anthropic-version': '2023-06-01'
-              },
-              body: JSON.stringify({
-                model: 'claude-opus-4-5',
-                max_tokens: 4000,
-                messages: [{ role: 'user', content: prompt }]
-              })
-            });
-
-            const claudeData = await claudeRes.json();
-            if (!claudeRes.ok) throw new Error('Claude error: ' + JSON.stringify(claudeData));
-
-            const rawText = claudeData.content[0].text;
-            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-            if (!jsonMatch) throw new Error('JSON non trovato nella risposta');
-            const edition = JSON.parse(jsonMatch[0]);
-            console.log('Edizione generata: ' + edition.title);
-
-            console.log('3. Salvo bozza su Supabase...');
-            const draftToken = crypto.randomUUID();
-            const saveRes = await fetch(SUPA_URL + '/rest/v1/editions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                apikey: SUPA_KEY,
-                Authorization: 'Bearer ' + SUPA_KEY,
-                Prefer: 'return=representation'
-              },
-              body: JSON.stringify({
-                ...edition,
-                published: false,
-                draft_token: draftToken,
-                tags: edition.sections.map(s => s.label)
-              })
-            });
-            console.log('Bozza salvata, status:', saveRes.status);
-
-            console.log('4. Invio email di approvazione...');
-            const approveUrl = SITE + '/approva.html?token=' + draftToken + '&secret=' + APPROVAL_SECRET;
-
-            const sectionsHTML = edition.sections.map((s, i) => \`
-              <tr><td style=\"padding:20px 28px;border-bottom:1px solid #C8C4BB\">
-                <p style=\"font-family:'Courier New',monospace;font-size:9px;color:#B5221A;letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px\">0\${i+1} · \${s.label}</p>
-                <h3 style=\"font-family:Georgia,serif;font-size:16px;font-weight:700;margin:0 0 8px\">\${s.title}</h3>
-                <p style=\"font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;line-height:1.65;margin:0 0 10px\">\${s.body.substring(0,200)}...</p>
-                <p style=\"font-family:'Courier New',monospace;font-size:9px;color:#B5221A;margin:0\">\${s.verdict}</p>
-              </td></tr>\`).join('');
-
-            const emailHTML = \`
-              <table width="600" style="max-width:600px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif">
-                <tr><td style="padding:20px 28px;border-bottom:2px solid #111010;background:#111010;text-align:center">
-                  <h1 style="color:#F7F4EE;font-size:24px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
-                  <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Editoriale Agent · Bozza #\${newNum}</p>
-                </td></tr>
-                <tr><td style="padding:20px 28px;background:#EDE9E0;border-bottom:1px solid #C8C4BB">
-                  <p style="font-family:'Courier New',monospace;font-size:10px;color:#888480;margin:0 0 6px">EDIZIONE #\${newNum} · \${today}</p>
-                  <h2 style="font-family:Georgia,serif;font-size:20px;font-weight:700;letter-spacing:-.5px;margin:0 0 8px">\${edition.title}</h2>
-                  <p style="font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;font-style:italic;line-height:1.6;margin:0">\${edition.opener}</p>
-                </td></tr>
-                \${sectionsHTML}
-                <tr><td style="padding:28px;text-align:center;border-top:2px solid #111010">
-                  <p style="font-family:'Courier New',monospace;font-size:10px;color:#888480;margin:0 0 16px">Approva l'edizione per pubblicarla e inviarla agli iscritti martedì mattina.</p>
-                  <a href="\${approveUrl}" style="background:#111010;color:#F7F4EE;padding:14px 32px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">✓ Approva e pubblica →</a>
-                  <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8C4BB;margin:16px 0 0">Oppure ignora questa email per non pubblicare.</p>
-                </td></tr>
-              </table>\`;
-
-            const emailRes = await fetch('https://api.resend.com/emails', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + RESEND_KEY
-              },
-              body: JSON.stringify({
-                from: 'Valore Atteso Agent <onboarding@resend.dev>',
-                to: APPROVAL_EMAIL,
-                subject: '[Bozza #' + newNum + '] ' + edition.title + ' — In attesa di approvazione',
-                html: emailHTML
-              })
-            });
-
-            console.log('Email approvazione inviata, status:', emailRes.status);
-            console.log('✓ Agent completato con successo!');
-          }
-
-          main().catch(e => { console.error('ERRORE:', e); process.exit(1); });
-          "
+        run: node scripts/agent.js
