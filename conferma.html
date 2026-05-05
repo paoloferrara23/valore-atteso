@@ -59,7 +59,7 @@ async function conferma(){
   }
 
   try{
-    const r = await fetch('https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/subscribe',{
+    const r = await fetch('/api/subscribe',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'conferma',token,email})
