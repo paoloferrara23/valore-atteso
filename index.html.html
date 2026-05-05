@@ -192,25 +192,6 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 .art-cta{margin-top:48px;padding:28px;background:var(--cream2);border:1px solid var(--rule);text-align:center;border-radius:8px}
 .art-cta p{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
 
-/* ── PRO ── */
-.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:40px}
-.tier{padding:28px 22px;border-right:1px solid var(--rule);background:var(--cream)}
-.tier:last-child{border-right:none}
-.tier.ft{background:var(--ink);color:#fff}
-.tier-name{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
-.tier.ft .tier-name{color:rgba(255,255,255,.5)}
-.tier-price{font-family:var(--dp);font-size:2.5rem;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
-.tier-per{font-family:var(--mn);font-size:10px;color:var(--ink3);margin-bottom:18px;letter-spacing:.04em}
-.tier.ft .tier-per{color:rgba(255,255,255,.4)}
-.tier ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.tier ul li{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
-.tier.ft ul li{color:rgba(255,255,255,.8)}
-.tier ul li .ic{flex-shrink:0;font-size:11px}
-.tier-btn{width:100%;height:42px;border:1px solid var(--rule);background:transparent;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:20px;color:var(--ink);transition:all .15s;border-radius:3px}
-.tier-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.tier.ft .tier-btn{background:#fff;color:var(--ink);border-color:#fff}
-.tier.ft .tier-btn:hover{opacity:.88}
-
 /* ── ABOUT ── */
 .about-body{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.8}
 .about-body p{margin-bottom:20px}
@@ -265,7 +246,6 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
     <a class="nav-logo" onclick="go('home')">Valore Atteso</a>
     <div class="nav-links">
       <a class="nav-a" onclick="go('archivio')">Archivio</a>
-      <a class="nav-a" onclick="go('pro')">Pro</a>
       <a class="nav-a" onclick="go('about')">About</a>
       <button class="nav-cta" onclick="scrollForm()">Iscriviti gratis →</button>
     </div>
@@ -469,60 +449,6 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="section">
     <a class="art-back" onclick="go('archivio')">Torna all'archivio</a>
     <div id="art-content"></div>
-  </div>
-</div>
-
-<!-- ═══════════════ PRO ═══════════════ -->
-<div class="pg" id="pg-pro">
-  <div class="section">
-    <div class="sec-ey">Valore Atteso Pro</div>
-    <h2 class="sec-h2">Per chi vuole<br>andare più in fondo.</h2>
-    <p class="sec-desc">La newsletter gratuita copre il 70% del valore. Il tier Pro è per chi vuole i modelli, i report approfonditi e l'accesso istituzionale.</p>
-    <div class="tier-grid">
-      <div class="tier">
-        <div class="tier-name">Free</div>
-        <div class="tier-price">€0</div>
-        <div class="tier-per">per sempre</div>
-        <ul>
-          <li><span class="ic" style="color:var(--green)">✓</span>Newsletter settimanale completa</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>Archivio ultime 4 edizioni</li>
-          <li><span class="ic" style="color:var(--rule)">–</span>Archivio storico completo</li>
-          <li><span class="ic" style="color:var(--rule)">–</span>Modelli Excel (DCF, LBO)</li>
-          <li><span class="ic" style="color:var(--rule)">–</span>Report deal approfonditi</li>
-          <li><span class="ic" style="color:var(--rule)">–</span>Webinar mensili</li>
-        </ul>
-        <button class="tier-btn" onclick="scrollForm();go('home')">Iscriviti gratis</button>
-      </div>
-      <div class="tier ft">
-        <div style="font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;display:inline-block;margin-bottom:10px;border-radius:2px">Consigliato</div>
-        <div class="tier-name">Pro</div>
-        <div class="tier-price">€9</div>
-        <div class="tier-per">al mese · €89/anno</div>
-        <ul>
-          <li><span class="ic">✓</span>Tutto il Free</li>
-          <li><span class="ic">✓</span>Archivio storico completo</li>
-          <li><span class="ic">✓</span>Modelli Excel scaricabili</li>
-          <li><span class="ic">✓</span>Report deal approfonditi</li>
-          <li><span class="ic">✓</span>Webinar mensili</li>
-          <li><span class="ic">✓</span>Community Pro</li>
-        </ul>
-        <button class="tier-btn" onclick="window.open('https://valore-atteso.beehiiv.com','_blank')">Inizia il periodo di prova</button>
-      </div>
-      <div class="tier">
-        <div class="tier-name">Institutional</div>
-        <div class="tier-price">€800</div>
-        <div class="tier-per">al mese · team fino a 5</div>
-        <ul>
-          <li><span class="ic" style="color:var(--green)">✓</span>Tutto il Pro</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>Brief settimanale custom</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>Tutti i report inclusi</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>Database dati storici</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>Call mensile dedicata</li>
-          <li><span class="ic" style="color:var(--green)">✓</span>White-label per team</li>
-        </ul>
-        <button class="tier-btn" onclick="window.location.href='mailto:hello@valoreatteso.it?subject=Institutional'">Contattaci</button>
-      </div>
-    </div>
   </div>
 </div>
 
