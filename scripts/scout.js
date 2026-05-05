@@ -83,7 +83,11 @@ Rispondi SOLO con JSON valido:
       "angolo_cf": "l'angolo corporate finance specifico",
       "dati_chiave": ["dato 1 verificabile", "dato 2"],
       "sezione_suggerita": "Il Bilancio|Il Deal|La Metrica",
-      "fonti_suggerite": ["fonte primaria da verificare"]
+      "fonti": {
+        "primaria": "nome fonte primaria (bilancio depositato CCIAA, comunicato UEFA, Deloitte, Swiss Ramble, ecc.)",
+        "url_suggerito": "URL specifico dove trovare il dato se disponibile",
+        "verificabilita": "alta|media|bassa — quanto è verificabile il dato"
+      }
     }
   ],
   "temi_settimana": ["tema principale 1", "tema principale 2", "tema principale 3"],
@@ -143,6 +147,7 @@ Rispondi SOLO con JSON valido:
         <p style="font-family:Georgia,serif;font-size:14px;font-weight:700;margin:0 0 6px;color:#111010">${n.titolo}</p>
         <p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.6;margin:0 0 8px"><strong style="font-weight:400;color:#111010">Angolo CF:</strong> ${n.angolo_cf}</p>
         ${n.dati_chiave && n.dati_chiave.length ? `<p style="font-family:'Courier New',monospace;font-size:10px;color:#888480;margin:0 0 4px">Dati: ${n.dati_chiave.join(' · ')}</p>` : ''}
+        ${n.fonti ? `<p style="font-family:'Courier New',monospace;font-size:9px;color:#1A3A2A;background:#E8F0EB;padding:5px 8px;margin:6px 0 4px;border-left:2px solid #1A3A2A">Fonte: ${n.fonti.primaria}${n.fonti.url_suggerito ? ' · ' + n.fonti.url_suggerito : ''} <span style="color:#888480">[${n.fonti.verificabilita}]</span></p>` : ''}
         <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;margin:0">→ ${n.sezione_suggerita}</p>
       </td></tr>`;
     }).join('');
