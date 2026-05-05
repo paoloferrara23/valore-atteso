@@ -91,31 +91,94 @@ async function approva(){
   const btn = document.getElementById('approve-btn');
   btn.disabled = true;
   btn.textContent = 'Pubblicazione in corso…';
+  const ok = document.getElementById('ok-box');
+  const err = document.getElementById('err-box');
+
   try{
+    // 1. Pubblica edizione su Supabase
     const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + editionId, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         apikey: SKEY,
         Authorization: 'Bearer ' + SKEY,
-        Prefer: 'return=minimal'
+        Prefer: 'return=representation'
       },
       body: JSON.stringify({ published: true, draft_token: null })
     });
-    if(r.ok){
-      const ok = document.getElementById('ok-box');
-      ok.style.display = 'block';
-      ok.innerHTML = '✓ Edizione pubblicata sul sito.<br>Gli iscritti la riceveranno martedì mattina via Resend.';
-      btn.style.display = 'none';
-    } else {
-      throw new Error('HTTP ' + r.status);
+    if(!r.ok) throw new Error('Errore pubblicazione: HTTP ' + r.status);
+    const editions = await r.json();
+    const edition = editions[0];
+
+    ok.style.display = 'block';
+    ok.innerHTML = '✓ Edizione pubblicata sul sito.<br>Invio email agli iscritti in corso…';
+
+    // 2. Recupera iscritti confermati
+    const subRes = await fetch(SURL + '/rest/v1/subscribers?confirmed=eq.true&select=email', {
+      headers: { apikey: SKEY, Authorization: 'Bearer ' + SKEY }
+    });
+    const subscribers = await subRes.json();
+    console.log('Iscritti da notificare:', subscribers.length);
+
+    // 3. Costruisci HTML email newsletter
+    const secs = (edition.sections || []).map((s, i) => `
+      <tr><td style="padding:20px 28px;border-bottom:1px solid #C8C4BB">
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;letter-spacing:.14em;text-transform:uppercase;margin:0 0 6px">0${i+1} · ${s.label}</p>
+        <h3 style="font-family:Georgia,serif;font-size:16px;font-weight:700;margin:0 0 8px">${s.title}</h3>
+        <p style="font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;line-height:1.7;margin:0 0 10px">${s.body.replace(/\n/g,'<br>')}</p>
+        ${s.kpis&&s.kpis.length?'<table width="100%" style="background:#EDE9E0;font-family:'Courier New',monospace;font-size:10px;border-collapse:collapse">'+s.kpis.map(k=>`<tr style="border-bottom:1px solid #C8C4BB"><td style="padding:5px 10px;font-weight:600">${k.key}</td><td style="padding:5px 10px;text-align:right">${k.value}</td></tr>`).join('')+'</table>':''}
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;margin:10px 0 0">${s.verdict}</p>
+        ${s.sources&&s.sources.length?'<p style="font-family:'Courier New',monospace;font-size:9px;color:#1A3A2A;background:#E8F0EB;padding:6px 10px;margin-top:8px;border-left:2px solid #1A3A2A">Fonti: '+s.sources.join(' · ')+'</p>':''}
+      </td></tr>`).join('');
+
+    const emailHTML = `<table width="600" style="max-width:600px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif">
+      <tr><td style="padding:20px 28px;border-bottom:2px solid #111010;text-align:center">
+        <h1 style="font-family:Georgia,serif;font-size:30px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.18em;text-transform:uppercase;margin:4px 0 0">Edizione #${edition.num} · ${edition.date}</p>
+      </td></tr>
+      <tr><td style="padding:18px 28px;background:#EDE9E0;border-bottom:1px solid #C8C4BB">
+        <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#3D3C39;line-height:1.75;font-style:italic;margin:0">${edition.opener||''}</p>
+      </td></tr>
+      ${secs}
+      <tr><td style="padding:20px 28px;border-top:1px solid #C8C4BB;text-align:center">
+        <a href="https://valore-atteso.vercel.app" style="font-family:'Courier New',monospace;font-size:10px;color:#888480;text-decoration:none">Leggi sul sito →</a>
+      </td></tr>
+      <tr><td style="padding:14px 28px;border-top:1px solid #C8C4BB">
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;margin:0">© 2025 Valore Atteso · <a href="https://valore-atteso.vercel.app" style="color:#888480">valore-atteso.vercel.app</a></p>
+      </td></tr>
+    </table>`;
+
+    // 4. Invia email a ogni iscritto
+    let inviati = 0;
+    for(const sub of subscribers){
+      try{
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer re_8NSq3NEw_2SjYt5J4SiUw29AvEXcMzZHw'
+          },
+          body: JSON.stringify({
+            from: 'Valore Atteso <onboarding@resend.dev>',
+            to: sub.email,
+            subject: 'Valore Atteso #' + edition.num + ' — ' + edition.title,
+            html: emailHTML
+          })
+        });
+        inviati++;
+      }catch(e){
+        console.error('Errore invio a ' + sub.email, e);
+      }
     }
+
+    ok.innerHTML = '✓ Edizione pubblicata sul sito.<br>Email inviata a ' + inviati + ' iscritti.';
+    btn.style.display = 'none';
+
   }catch(e){
-    const err = document.getElementById('err-box');
     err.style.display = 'block';
     err.textContent = 'Errore: ' + e.message;
     btn.disabled = false;
-    btn.textContent = '✓ Approva e pubblica martedì →';
+    btn.textContent = '✓ Approva e pubblica →';
   }
 }
 
