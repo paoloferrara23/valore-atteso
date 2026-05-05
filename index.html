@@ -1010,10 +1010,10 @@ async function crAdSend(text){
   const apikey=document.getElementById('cr-apikey').value||localStorage.getItem('va_apikey')||'';
   const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara (Manager M&A, Andersen Italia). Dati: ${crSysCtx.iscritti} iscritti, ${crSysCtx.edizioni} edizioni, ultima: ${crSysCtx.ultimaEd}. Edizioni recenti:\n${crSysCtx.edsList}. Agenti: Editoriale (lun 8:00), Cost Guardian (ven 9:00), soglie €10/mese. Stack: Vercel+Supabase+Resend+GitHub Actions. Rispondi in italiano, diretto, max 150 parole, tono collega senior.`;
   try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apikey,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:800,system:sys,messages:crAdHistory.slice(-10)})});
+    const r=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apikey,system:sys,messages:crAdHistory.slice(-10)})});
     const d=await r.json();crAdShowTyping(false);
-    if(r.ok&&d.content?.[0]?.text)crAdAddMsg('ad',d.content[0].text);
-    else crAdAddMsg('ad','Inserisci la API key Anthropic nella sezione Redazione per attivare l\'AD.');
+    if(r.ok&&d.text)crAdAddMsg('ad',d.text);
+    else crAdAddMsg('ad','Errore: '+(d.error||'Controlla la API key in Redazione.'));
   }catch(e){crAdShowTyping(false);crAdAddMsg('ad','Errore di connessione.');}
   document.getElementById('cr-send-btn').disabled=false;
 }
