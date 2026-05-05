@@ -3,611 +3,598 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Valore Atteso — Il calcio letto come un analista. Bilanci, deal, metriche ogni martedì.">
 <title>Valore Atteso</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
 :root{
   --cream:#F7F4EE;--cream-2:#EDE9E0;--cream-3:#E3DED4;
   --ink:#111010;--ink-2:#3D3C39;--ink-3:#888480;
   --rule:#C8C4BB;--accent:#B5221A;--green:#1A3A2A;--green-pale:#E8F0EB;
-  --display:'Playfair Display',Georgia,serif;
-  --serif:'Source Serif 4',Georgia,serif;
-  --mono:'JetBrains Mono',monospace;
+  --dp:'Playfair Display',Georgia,serif;
+  --sf:'Source Serif 4',Georgia,serif;
+  --mn:'JetBrains Mono',monospace;
 }
-body{background:var(--cream);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
-
-/* ── NAV ── */
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
+/* NAV */
 nav{position:sticky;top:0;z-index:100;background:var(--cream);border-bottom:1px solid var(--rule)}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:52px}
-.nav-logo{font-family:var(--display);font-size:18px;font-weight:900;letter-spacing:-0.5px;color:var(--ink);text-decoration:none;cursor:pointer}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;cursor:pointer;transition:color .15s}
-.nav-link:hover,.nav-link.active{color:var(--ink)}
-.nav-cta{background:var(--ink);color:var(--cream);border:none;padding:8px 18px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background .15s}
-.nav-cta:hover{background:var(--ink-2)}
-
-/* ── PAGES ── */
-.page{display:none;min-height:100vh}
-.page.active{display:block}
-
-/* ── HOME ── */
-.hero{border-bottom:3px double var(--rule);padding:0 40px}
-.hero-top{max-width:1100px;margin:0 auto;padding:12px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase}
-.hero-masthead{text-align:center;padding:36px 0 28px}
-.hero-title{font-family:var(--display);font-size:clamp(3rem,8vw,6rem);font-weight:900;letter-spacing:-3px;line-height:1;color:var(--ink)}
-.hero-rule{display:flex;align-items:center;gap:16px;justify-content:center;margin:10px 0}
-.hero-rule hr{flex:1;max-width:100px;border:none;border-top:1px solid var(--ink)}
-.hero-tagline{font-family:var(--mono);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-3)}
-.hero-nav{display:flex;justify-content:center;gap:32px;padding:10px 0 14px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase}
-.hero-nav a{color:var(--ink-3);text-decoration:none;cursor:pointer;transition:color .15s}
-.hero-nav a:hover{color:var(--ink)}
-
-/* ticker */
-.ticker{background:var(--ink);overflow:hidden;padding:8px 0}
-.ticker-track{display:flex;animation:ticker 50s linear infinite;white-space:nowrap}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.tick{display:inline-flex;align-items:center;gap:6px;padding:0 24px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5);border-right:1px solid rgba(255,255,255,.1)}
-.tick b{color:#fff;font-weight:500}
-.tick .up{color:#7FCF97}
-.tick .dn{color:#F28472}
-
-/* home grid */
-.home-grid{max-width:1100px;margin:0 auto;padding:48px 40px 80px;display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:start}
-.home-left{}
-.kicker{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.kicker::before{content:'';width:24px;height:1px;background:var(--accent)}
-.home-h1{font-family:var(--display);font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:20px}
-.home-h1 em{font-style:italic;font-weight:400;color:var(--ink-3)}
-.home-desc{font-size:17px;color:var(--ink-2);line-height:1.75;font-weight:300;margin-bottom:32px;max-width:480px}
-
-/* pillole temi */
-.topics-overflow{overflow:hidden;margin:0 -40px;margin-top:32px}
-.topics-track{display:flex;gap:8px;animation:ticker 35s linear infinite;white-space:nowrap;padding:4px 40px}
-.topics-track.rev{animation:tickerrev 30s linear infinite;margin-top:8px}
-@keyframes tickerrev{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
-.topic-pill{display:inline-block;padding:6px 14px;border:1px solid var(--rule);border-radius:100px;font-family:var(--mono);font-size:10px;color:var(--ink-3);background:var(--cream);flex-shrink:0}
-.topic-pill.dark{background:var(--ink);color:rgba(255,255,255,.75);border-color:var(--ink)}
-
-/* signup sidebar */
-.signup-box{background:var(--ink);padding:32px 28px;position:sticky;top:68px}
-.sb-label{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:10px;margin-bottom:16px}
-.sb-title{font-family:var(--display);font-size:1.3rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:12px}
-.sb-desc{font-family:var(--serif);font-size:13px;color:rgba(255,255,255,.55);font-weight:300;line-height:1.65;margin-bottom:20px}
-.sb-input{width:100%;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:0 14px;font-family:var(--serif);font-size:14px;color:#fff;outline:none;margin-bottom:8px;transition:border-color .15s}
-.sb-input:focus{border-color:rgba(255,255,255,.5)}
-.sb-input::placeholder{color:rgba(255,255,255,.35)}
-.sb-btn{width:100%;height:44px;background:#fff;color:var(--ink);border:none;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-bottom:12px}
-.sb-btn:hover{opacity:.88}
-.sb-btn:disabled{opacity:.5;cursor:not-allowed}
-.sb-note{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:0.04em;line-height:1.6;text-align:center}
-.sb-stats{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
-.sb-stat-num{font-family:var(--display);font-size:1.5rem;font-weight:700;color:#fff;line-height:1;margin-bottom:3px}
-.sb-stat-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:0.06em;text-transform:uppercase;line-height:1.4}
-
-/* preview edizione */
-.preview-section{max-width:1100px;margin:0 auto;padding:0 40px 80px}
-.sec-header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:0}
-.sec-title{font-family:var(--display);font-size:1.6rem;font-weight:900;letter-spacing:-.5px}
-.sec-link{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;cursor:pointer}
-.sec-link:hover{color:var(--accent)}
-.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--rule)}
-.art-col{padding:28px 28px 28px 0;border-right:1px solid var(--rule)}
-.art-col:first-child{padding-left:0}
-.art-col:last-child{border-right:none;padding-right:0;padding-left:28px}
-.art-col:nth-child(2){padding-left:28px}
-.col-num{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.col-num::after{content:'';flex:1;height:1px;background:var(--rule)}
-.art-col h3{font-family:var(--display);font-size:1.1rem;font-weight:700;line-height:1.25;margin-bottom:10px;letter-spacing:-.2px}
-.art-col h3 em{font-style:italic;font-weight:400;color:var(--ink-3)}
-.art-col p{font-family:var(--serif);font-size:13px;color:var(--ink-2);font-weight:300;line-height:1.7;margin-bottom:12px}
-.col-kpi{background:var(--cream-2);padding:10px 12px;margin-bottom:12px}
-.kpi-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10px}
-.kpi-row:last-child{border-bottom:none}
-.kpi-row span:first-child{color:var(--ink-3)}
-.kpi-row span:last-child{color:var(--ink);font-weight:500}
-.col-verdict{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px}
-.col-verdict::before{content:'';width:14px;height:1px;background:var(--accent)}
-
-/* ── ARCHIVIO ── */
-.arch-wrap{max-width:860px;margin:0 auto;padding:56px 40px 80px}
-.arch-header{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:0}
-.arch-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-.arch-title{font-family:var(--display);font-size:2.2rem;font-weight:900;letter-spacing:-1px}
-.arch-desc{font-family:var(--serif);font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.7;padding:20px 0;border-bottom:1px solid var(--rule);margin-bottom:0}
-.edition-row{display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:start;padding:24px 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .12s}
-.edition-row:hover{background:var(--cream-2);margin:0 -20px;padding:24px 20px}
-.ed-num{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:0.06em;padding-top:3px}
-.ed-content{}
-.ed-title{font-family:var(--display);font-size:1.1rem;font-weight:700;line-height:1.25;margin-bottom:6px;letter-spacing:-.2px}
-.ed-tags{display:flex;gap:8px;flex-wrap:wrap}
-.ed-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);padding:3px 8px;border:1px solid var(--rule)}
-.ed-date{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:0.04em;white-space:nowrap;padding-top:3px}
-.arch-empty{text-align:center;padding:64px 0;font-family:var(--serif);font-size:15px;color:var(--ink-3);font-style:italic}
-
-/* ── PRO ── */
-.pro-wrap{max-width:860px;margin:0 auto;padding:56px 40px 80px}
-.pro-header{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:32px}
-.pro-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.pro-title{font-family:var(--display);font-size:2.2rem;font-weight:900;letter-spacing:-1px;margin-bottom:8px}
-.pro-subtitle{font-family:var(--serif);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.7}
-.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);margin-bottom:48px;overflow:hidden}
-.tier{padding:28px 24px;border-right:1px solid var(--rule)}
-.tier:last-child{border-right:none}
-.tier.featured{background:var(--ink);color:#fff}
-.tier-name{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
-.tier.featured .tier-name{color:rgba(255,255,255,.5)}
-.tier-price{font-family:var(--display);font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
-.tier-period{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-bottom:20px;letter-spacing:0.04em}
-.tier.featured .tier-period{color:rgba(255,255,255,.4)}
-.tier ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.tier ul li{font-family:var(--serif);font-size:13px;color:var(--ink-2);font-weight:300;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
-.tier.featured ul li{color:rgba(255,255,255,.8)}
-.tier ul li .ico{flex-shrink:0;font-size:11px}
-.tier.yes .ico{color:var(--green)}
-.tier.featured .ico{color:#7FCF97}
-.tier.no .ico{color:var(--rule)}
-.tier-btn{width:100%;height:40px;border:1px solid var(--rule);background:transparent;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:20px;color:var(--ink);transition:all .15s}
-.tier-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.tier.featured .tier-btn{background:#fff;color:var(--ink);border-color:#fff}
-.tier.featured .tier-btn:hover{background:rgba(255,255,255,.88)}
-
-/* pro features */
-.pro-features{margin-bottom:48px}
-.pf-title{font-family:var(--display);font-size:1.4rem;font-weight:700;letter-spacing:-.3px;margin-bottom:24px}
-.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule)}
-.pf-item{padding:20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.pf-item:nth-child(3n){border-right:none}
-.pf-item:nth-last-child(-n+3){border-bottom:none}
-.pf-icon{font-size:18px;margin-bottom:10px}
-.pf-name{font-family:var(--display);font-size:.95rem;font-weight:700;margin-bottom:6px}
-.pf-desc{font-family:var(--serif);font-size:12px;color:var(--ink-2);font-weight:300;line-height:1.6}
-
-/* ── ABOUT ── */
-.about-wrap{max-width:720px;margin:0 auto;padding:56px 40px 80px}
-.about-header{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:32px}
-.about-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-.about-title{font-family:var(--display);font-size:2.2rem;font-weight:900;letter-spacing:-1px}
-.about-body{font-family:var(--serif);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.8}
-.about-body p{margin-bottom:20px}
-.about-body strong{color:var(--ink);font-weight:400}
-.about-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--rule)}
-.about-section-title{font-family:var(--display);font-size:1.2rem;font-weight:700;margin-bottom:16px;letter-spacing:-.2px}
-.about-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.about-list li{font-family:var(--mono);font-size:11px;color:var(--ink-2);letter-spacing:0.04em;padding:8px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
-.about-list li::before{content:'→';color:var(--accent);flex-shrink:0}
-.manifest{margin-top:40px;padding:24px;border-left:3px solid var(--ink);background:var(--cream-2)}
-.manifest p{font-family:var(--display);font-size:1.1rem;font-style:italic;line-height:1.5;color:var(--ink)}
-
-/* ── FOOTER ── */
+.ni{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nl{font-family:var(--dp);font-size:18px;font-weight:900;letter-spacing:-.5px;color:var(--ink);cursor:pointer;text-decoration:none}
+.nls{display:flex;gap:24px;align-items:center}
+.nla{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);cursor:pointer;transition:color .15s;text-decoration:none}
+.nla:hover{color:var(--ink)}
+.ncta{background:var(--ink);color:var(--cream);border:none;padding:8px 18px;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s}
+.ncta:hover{background:var(--ink-2)}
+/* PAGES */
+.pg{display:none}.pg.on{display:block}
+/* TICKER */
+.tkr{background:var(--ink);overflow:hidden;padding:8px 0}
+.tkt{display:flex;animation:tk 50s linear infinite;white-space:nowrap}
+@keyframes tk{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tki{display:inline-flex;align-items:center;gap:6px;padding:0 24px;font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.5);border-right:1px solid rgba(255,255,255,.1)}
+.tki b{color:#fff;font-weight:500}.up{color:#7FCF97}.dn{color:#F28472}
+/* MASTHEAD */
+.mh{border-bottom:3px double var(--rule);padding:0 40px}
+.mht{max-width:1100px;margin:0 auto;padding:12px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;font-family:var(--mn);font-size:9px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase}
+.mhl{text-align:center;padding:32px 0 24px}
+.mhlt{font-family:var(--dp);font-size:clamp(3rem,8vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:1}
+.mhr{display:flex;align-items:center;gap:16px;justify-content:center;margin:10px 0}
+.mhr hr{flex:1;max-width:100px;border:none;border-top:1px solid var(--ink)}
+.mhrs{font-family:var(--mn);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
+.mhn{display:flex;justify-content:center;gap:32px;padding:10px 0 14px;border-top:1px solid var(--rule);font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.mhn a{color:var(--ink-3);cursor:pointer;text-decoration:none;transition:color .15s}
+.mhn a:hover{color:var(--ink)}
+/* HOME GRID */
+.hg{max-width:1100px;margin:0 auto;padding:48px 40px 64px;display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:start}
+.kk{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.kk::before{content:'';width:24px;height:1px;background:var(--accent)}
+.hh1{font-family:var(--dp);font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:18px}
+.hh1 em{font-style:italic;font-weight:400;color:var(--ink-3)}
+.hd{font-size:16px;color:var(--ink-2);line-height:1.75;font-weight:300;margin-bottom:28px;max-width:460px}
+/* TOPIC PILLS */
+.tpw{overflow:hidden;margin:0 -40px;margin-top:28px}
+.tpt{display:flex;gap:8px;animation:tk 35s linear infinite;white-space:nowrap;padding:4px 40px}
+.tpt.rv{animation:tkr 30s linear infinite}
+@keyframes tkr{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.tp{display:inline-block;padding:5px 14px;border:1px solid var(--rule);border-radius:100px;font-family:var(--mn);font-size:10px;color:var(--ink-3);background:var(--cream);flex-shrink:0}
+.tp.dk{background:var(--ink);color:rgba(255,255,255,.75);border-color:var(--ink)}
+/* SIGNUP BOX */
+.sb{background:var(--ink);padding:32px 28px;position:sticky;top:68px}
+.sbl{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:10px;margin-bottom:16px}
+.sbt{font-family:var(--dp);font-size:1.25rem;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px}
+.sbd{font-family:var(--sf);font-size:13px;color:rgba(255,255,255,.55);font-weight:300;line-height:1.65;margin-bottom:18px}
+.sbi{width:100%;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:0 14px;font-family:var(--sf);font-size:14px;color:#fff;outline:none;margin-bottom:8px;transition:border-color .15s}
+.sbi:focus{border-color:rgba(255,255,255,.5)}
+.sbi::placeholder{color:rgba(255,255,255,.35)}
+.sbb{width:100%;height:44px;background:#fff;color:var(--ink);border:none;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-bottom:12px}
+.sbb:hover{opacity:.88}
+.sbn{font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.6;text-align:center}
+.sbst{display:grid;grid-template-columns:1fr 1fr;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
+.sbsn{font-family:var(--dp);font-size:1.5rem;font-weight:700;color:#fff;line-height:1;margin-bottom:3px}
+.sbsl{font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;line-height:1.4}
+.sbsucc{background:var(--green-pale);border-left:3px solid var(--green);padding:10px 12px;font-family:var(--mn);font-size:10px;color:var(--green);letter-spacing:.04em;margin-bottom:8px;display:none}
+/* PREVIEW 3 COL */
+.ps{max-width:1100px;margin:0 auto;padding:0 40px 64px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:0}
+.sti{font-family:var(--dp);font-size:1.5rem;font-weight:900;letter-spacing:-.5px}
+.slk{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);cursor:pointer;text-decoration:none}
+.slk:hover{color:var(--accent)}
+.tc{display:grid;grid-template-columns:repeat(3,1fr)}
+.ac{padding:24px 24px 24px 0;border-right:1px solid var(--rule)}
+.ac:first-child{padding-left:0}
+.ac:last-child{border-right:none;padding-right:0;padding-left:24px}
+.ac:nth-child(2){padding-left:24px}
+.cn{font-family:var(--mn);font-size:9px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cn::after{content:'';flex:1;height:1px;background:var(--rule)}
+.ac h3{font-family:var(--dp);font-size:1rem;font-weight:700;line-height:1.25;margin-bottom:8px;letter-spacing:-.2px;cursor:pointer}
+.ac h3:hover{color:var(--accent)}
+.ac h3 em{font-style:italic;font-weight:400;color:var(--ink-3)}
+.ac p{font-family:var(--sf);font-size:13px;color:var(--ink-2);font-weight:300;line-height:1.7;margin-bottom:10px}
+.ck{background:var(--cream-2);padding:10px 12px;margin-bottom:10px}
+.kr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--rule);font-family:var(--mn);font-size:10px}
+.kr:last-child{border-bottom:none}
+.kr span:first-child{color:var(--ink-3)}.kr span:last-child{color:var(--ink);font-weight:500}
+.cv{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px}
+.cv::before{content:'';width:14px;height:1px;background:var(--accent)}
+/* ARCHIVIO */
+.aw{max-width:860px;margin:0 auto;padding:48px 40px 80px}
+.ah{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:0}
+.ae{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.at{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;margin-bottom:0}
+.adesc{font-family:var(--sf);font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.7;padding:20px 0;border-bottom:1px solid var(--rule)}
+.er{display:grid;grid-template-columns:70px 1fr auto;gap:20px;align-items:start;padding:24px 0;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .12s;border-radius:4px}
+.er:hover{background:var(--cream-2);margin:0 -16px;padding:24px 16px}
+.en{font-family:var(--mn);font-size:11px;color:var(--ink-3);letter-spacing:.06em;padding-top:2px}
+.ett{font-family:var(--dp);font-size:1.05rem;font-weight:700;line-height:1.25;margin-bottom:6px;letter-spacing:-.2px}
+.etg{display:flex;gap:6px;flex-wrap:wrap}
+.etag{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:2px 8px;border:1px solid var(--rule)}
+.edt{font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.04em;white-space:nowrap;padding-top:2px}
+.aempty{text-align:center;padding:48px 0;font-family:var(--sf);font-size:15px;color:var(--ink-3);font-style:italic}
+.aloading{text-align:center;padding:32px 0;font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase}
+/* ARTICLE PAGE */
+.artw{max-width:720px;margin:0 auto;padding:48px 40px 80px}
+.artback{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:32px;text-decoration:none}
+.artback:hover{color:var(--accent)}
+.artback::before{content:'←'}
+.artnum{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.arttitle{font-family:var(--dp);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-1px;line-height:1.1;margin-bottom:12px}
+.artsubtitle{font-family:var(--sf);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.6;margin-bottom:16px}
+.artmeta{display:flex;gap:16px;align-items:center;padding:16px 0;border-top:1px solid var(--rule);border-bottom:2px solid var(--ink);margin-bottom:28px;font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+.artopener{font-family:var(--sf);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.75;font-style:italic;padding:20px 24px;background:var(--cream-2);border-left:3px solid var(--ink);margin-bottom:36px}
+/* article sections */
+.asec{margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--rule)}
+.asec:last-child{border-bottom:none}
+.asectag{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.asectag::before{content:'';width:20px;height:1px;background:var(--accent)}
+.asectitle{font-family:var(--dp);font-size:1.5rem;font-weight:700;line-height:1.2;letter-spacing:-.4px;margin-bottom:16px}
+.asecbody{font-family:var(--sf);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.8;margin-bottom:20px;white-space:pre-line}
+.akpitable{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:11px;margin-bottom:16px;background:var(--cream-2)}
+.akpitable tr{border-bottom:1px solid var(--rule)}
+.akpitable tr:last-child{border-bottom:none}
+.akpitable td{padding:7px 14px}
+.akpitable td:first-child{color:var(--ink);font-weight:500}
+.akpitable td:last-child{text-align:right;color:var(--ink-2)}
+.averdict{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.averdict::before{content:'';width:16px;height:1px;background:var(--accent)}
+.asources{font-family:var(--mn);font-size:9px;color:var(--green);letter-spacing:.04em;line-height:1.7;padding:8px 12px;background:var(--green-pale);border-left:2px solid var(--green)}
+/* PRO */
+.pw{max-width:860px;margin:0 auto;padding:48px 40px 80px}
+.ph{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:32px}
+.pey{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.ptit{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;margin-bottom:8px}
+.psub{font-family:var(--sf);font-size:15px;color:var(--ink-2);font-weight:300;line-height:1.7}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);overflow:hidden;margin-bottom:40px}
+.tr{padding:28px 22px;border-right:1px solid var(--rule)}
+.tr:last-child{border-right:none}
+.tr.ft{background:var(--ink);color:#fff}
+.trn{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.tr.ft .trn{color:rgba(255,255,255,.5)}
+.trp{font-family:var(--dp);font-size:2.2rem;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
+.trper{font-family:var(--mn);font-size:10px;color:var(--ink-3);margin-bottom:18px;letter-spacing:.04em}
+.tr.ft .trper{color:rgba(255,255,255,.4)}
+.tr ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.tr ul li{font-family:var(--sf);font-size:13px;color:var(--ink-2);font-weight:300;display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+.tr.ft ul li{color:rgba(255,255,255,.8)}
+.tr ul li .ic{flex-shrink:0;font-size:11px}
+.trbtn{width:100%;height:40px;border:1px solid var(--rule);background:transparent;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:18px;color:var(--ink);transition:all .15s}
+.trbtn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tr.ft .trbtn{background:#fff;color:var(--ink);border-color:#fff}
+/* ABOUT */
+.abw{max-width:700px;margin:0 auto;padding:48px 40px 80px}
+.abh{border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:28px}
+.abey{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.abt{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px}
+.abb p{font-family:var(--sf);font-size:16px;color:var(--ink-2);font-weight:300;line-height:1.8;margin-bottom:20px}
+.abb strong{color:var(--ink);font-weight:400}
+.absc{margin-top:36px;padding-top:28px;border-top:1px solid var(--rule)}
+.abst{font-family:var(--dp);font-size:1.2rem;font-weight:700;margin-bottom:14px;letter-spacing:-.2px}
+.abl{list-style:none;display:flex;flex-direction:column;gap:0}
+.abl li{font-family:var(--mn);font-size:11px;color:var(--ink-2);letter-spacing:.04em;padding:8px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start;line-height:1.5}
+.abl li::before{content:'→';color:var(--accent);flex-shrink:0}
+.abmf{margin-top:36px;padding:22px;border-left:3px solid var(--ink);background:var(--cream-2)}
+.abmf p{font-family:var(--dp);font-size:1.05rem;font-style:italic;line-height:1.5;color:var(--ink)}
+/* FOOTER */
 footer{border-top:3px double var(--rule);padding:20px 40px;background:var(--cream-2)}
-.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.footer-logo{font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:-.3px}
-.footer-links{display:flex;gap:24px}
-.footer-links a{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;cursor:pointer}
-.footer-links a:hover{color:var(--ink)}
-.footer-right{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:0.04em}
-
-/* ── SUCCESS ── */
-.success-msg{background:var(--green-pale);border-left:3px solid var(--green);padding:12px 14px;font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.04em;margin-bottom:10px;display:none}
-
-/* ── ANIMATIONS ── */
-@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.fadein{animation:fadein .6s ease both}
-.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.38s}
-
-/* ── RESPONSIVE ── */
+.fi{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.flo{font-family:var(--dp);font-size:15px;font-weight:700;letter-spacing:-.3px}
+.fls{display:flex;gap:22px}
+.fls a{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;cursor:pointer}
+.fls a:hover{color:var(--ink)}
+.fr{font-family:var(--mn);font-size:9px;color:var(--ink-3);letter-spacing:.04em}
+/* ANIMATIONS */
+@keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fi1{animation:fi .6s ease both .05s}
+.fi2{animation:fi .6s ease both .15s}
+.fi3{animation:fi .6s ease both .28s}
+.fi4{animation:fi .6s ease both .4s}
+/* RESPONSIVE */
 @media(max-width:800px){
-  .nav-inner,.hero-top,.home-grid,.preview-section,.arch-wrap,.pro-wrap,.about-wrap,.footer-inner{padding-left:20px;padding-right:20px}
-  .home-grid{grid-template-columns:1fr;gap:40px}
-  .signup-box{position:static}
-  .three-col{grid-template-columns:1fr}
-  .art-col,.art-col:nth-child(2),.art-col:last-child{padding:20px 0;border-right:none;border-bottom:1px solid var(--rule)}
-  .art-col:last-child{border-bottom:none}
-  .tier-grid{grid-template-columns:1fr}
-  .tier{border-right:none;border-bottom:1px solid var(--rule)}
-  .tier:last-child{border-bottom:none}
-  .pf-grid{grid-template-columns:1fr 1fr}
-  .pf-item:nth-child(2n){border-right:none}
-  .pf-item:nth-child(3n){border-right:1px solid var(--rule)}
-  .nav-links .nav-link:not(.nav-cta){display:none}
-  .hero-nav{gap:16px;font-size:9px}
-  .topics-overflow{margin:0 -20px}
+  .ni,.mht,.hg,.ps,.aw,.pw,.abw,.artw,.fi{padding-left:20px;padding-right:20px}
+  .hg{grid-template-columns:1fr;gap:36px}
+  .sb{position:static}
+  .tc{grid-template-columns:1fr}
+  .ac,.ac:nth-child(2),.ac:last-child{padding:18px 0;border-right:none;border-bottom:1px solid var(--rule)}
+  .ac:last-child{border-bottom:none}
+  .tg{grid-template-columns:1fr}
+  .tr{border-right:none;border-bottom:1px solid var(--rule)}
+  .tr:last-child{border-bottom:none}
+  .nls .nla:not(.ncta){display:none}
+  .mhn{gap:16px;font-size:9px}
+  .tpw{margin:0 -20px}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <a class="nav-logo" onclick="showPage('home')">Valore Atteso</a>
-    <div class="nav-links">
-      <a class="nav-link" onclick="showPage('archivio')">Archivio</a>
-      <a class="nav-link" onclick="showPage('pro')">Pro</a>
-      <a class="nav-link" onclick="showPage('about')">About</a>
-      <button class="nav-cta" onclick="scrollToSignup()">Iscriviti →</button>
+  <div class="ni">
+    <a class="nl" onclick="go('home')">Valore Atteso</a>
+    <div class="nls">
+      <a class="nla" onclick="go('archivio')">Archivio</a>
+      <a class="nla" onclick="go('pro')">Pro</a>
+      <a class="nla" onclick="go('about')">About</a>
+      <button class="ncta" onclick="goSignup()">Iscriviti →</button>
     </div>
   </div>
 </nav>
 
-<!-- ══════════════ HOME ══════════════ -->
-<div class="page active" id="page-home">
-
-  <div class="hero">
-    <div class="hero-top">
-      <span id="hero-date"></span>
+<!-- ═══ HOME ═══ -->
+<div class="pg on" id="pg-home">
+  <div class="mh">
+    <div class="mht">
+      <span id="hdate"></span>
       <span>Business del calcio · Corporate finance</span>
     </div>
-    <div class="hero-masthead">
-      <h1 class="hero-title fadein d1">Valore Atteso</h1>
-      <div class="hero-rule fadein d2">
-        <hr><span class="hero-tagline">Il calcio letto come un analista</span><hr>
-      </div>
+    <div class="mhl">
+      <div class="mhlt fi1">Valore Atteso</div>
+      <div class="mhr fi2"><hr><span class="mhrs">Il calcio letto come un analista</span><hr></div>
     </div>
-    <nav class="hero-nav fadein d3">
-      <a onclick="showPage('archivio')">Archivio</a>
-      <a onclick="showPage('pro')">Pro</a>
-      <a onclick="showPage('about')">About</a>
+    <nav class="mhn fi3">
+      <a onclick="go('archivio')">Archivio</a>
+      <a onclick="go('pro')">Pro</a>
+      <a onclick="go('about')">About</a>
     </nav>
   </div>
 
-  <div class="ticker">
-    <div class="ticker-track">
-      <span class="tick"><b>Real Madrid</b> Ricavi 23/24 <span class="up">€831M ▲</span></span>
-      <span class="tick"><b>Juventus</b> Perdita netta 23/24 <span class="dn">€198M ▼</span></span>
-      <span class="tick"><b>RedBird → Milan</b> EV acquisizione <b>€1,2Mrd</b></span>
-      <span class="tick"><b>Premier League</b> Diritti TV 2025-28 <b>£6,7Mrd</b></span>
-      <span class="tick"><b>Serie A</b> Perdita aggregata 24/25 <span class="dn">€349M ▼</span></span>
-      <span class="tick"><b>Oaktree → Inter</b> Prestito convertito in equity</span>
-      <span class="tick"><b>Tottenham Arena</b> Matchday revenue <b>€130M/anno</b></span>
-      <span class="tick"><b>PE nel calcio EU</b> oltre il <b>36% dei club</b></span>
-      <span class="tick"><b>Real Madrid</b> Ricavi 23/24 <span class="up">€831M ▲</span></span>
-      <span class="tick"><b>Juventus</b> Perdita netta 23/24 <span class="dn">€198M ▼</span></span>
-      <span class="tick"><b>RedBird → Milan</b> EV acquisizione <b>€1,2Mrd</b></span>
-      <span class="tick"><b>Premier League</b> Diritti TV 2025-28 <b>£6,7Mrd</b></span>
-      <span class="tick"><b>Serie A</b> Perdita aggregata 24/25 <span class="dn">€349M ▼</span></span>
-      <span class="tick"><b>Oaktree → Inter</b> Prestito convertito in equity</span>
-      <span class="tick"><b>Tottenham Arena</b> Matchday revenue <b>€130M/anno</b></span>
-      <span class="tick"><b>PE nel calcio EU</b> oltre il <b>36% dei club</b></span>
+  <div class="tkr">
+    <div class="tkt">
+      <span class="tki"><b>Real Madrid</b> Ricavi 23/24 <span class="up">€831M ▲</span></span>
+      <span class="tki"><b>Juventus</b> Perdita netta 23/24 <span class="dn">€198M ▼</span></span>
+      <span class="tki"><b>RedBird → Milan</b> EV <b>€1,2Mrd</b> · 3,1×</span>
+      <span class="tki"><b>Serie A</b> Perdita aggregata 24/25 <span class="dn">€349M</span></span>
+      <span class="tki"><b>Oaktree → Inter</b> Prestito → equity</span>
+      <span class="tki"><b>Premier League</b> Diritti TV 2025-28 <b>£6,7Mrd</b></span>
+      <span class="tki"><b>Tottenham Arena</b> Matchday <b>€130M/anno</b></span>
+      <span class="tki"><b>PE nel calcio EU</b> <b>>36%</b> dei club top-5</span>
+      <span class="tki"><b>Real Madrid</b> Ricavi 23/24 <span class="up">€831M ▲</span></span>
+      <span class="tki"><b>Juventus</b> Perdita netta 23/24 <span class="dn">€198M ▼</span></span>
+      <span class="tki"><b>RedBird → Milan</b> EV <b>€1,2Mrd</b> · 3,1×</span>
+      <span class="tki"><b>Serie A</b> Perdita aggregata 24/25 <span class="dn">€349M</span></span>
+      <span class="tki"><b>Oaktree → Inter</b> Prestito → equity</span>
+      <span class="tki"><b>Premier League</b> Diritti TV 2025-28 <b>£6,7Mrd</b></span>
+      <span class="tki"><b>Tottenham Arena</b> Matchday <b>€130M/anno</b></span>
+      <span class="tki"><b>PE nel calcio EU</b> <b>>36%</b> dei club top-5</span>
     </div>
   </div>
 
-  <div class="home-grid">
-    <div class="home-left fadein d2">
-      <div class="kicker">Newsletter settimanale</div>
-      <h1 class="home-h1">Il calcio spiegato<br>come <em>un'operazione</em><br>di M&A.</h1>
-      <p class="home-desc">Ogni martedì: un bilancio analizzato, un deal sezionato, una metrica che ribalta la prospettiva. Otto minuti. Dati primari. Niente mediazione.</p>
-
-      <div class="topics-overflow">
-        <div class="topics-track">
-          <span class="topic-pill dark">Player trading</span><span class="topic-pill">Diritti TV</span><span class="topic-pill dark">M&A calcio</span><span class="topic-pill">FFP & PSR</span><span class="topic-pill dark">PE nel calcio</span><span class="topic-pill">Stadium economics</span><span class="topic-pill dark">Salary cap</span><span class="topic-pill">Governance</span><span class="topic-pill dark">Valutazioni club</span><span class="topic-pill">LBO nel calcio</span><span class="topic-pill dark">DCF calciatori</span><span class="topic-pill">Plusvalenze</span>
-          <span class="topic-pill dark">Player trading</span><span class="topic-pill">Diritti TV</span><span class="topic-pill dark">M&A calcio</span><span class="topic-pill">FFP & PSR</span><span class="topic-pill dark">PE nel calcio</span><span class="topic-pill">Stadium economics</span><span class="topic-pill dark">Salary cap</span><span class="topic-pill">Governance</span><span class="topic-pill dark">Valutazioni club</span><span class="topic-pill">LBO nel calcio</span><span class="topic-pill dark">DCF calciatori</span><span class="topic-pill">Plusvalenze</span>
+  <div class="hg">
+    <div class="fi2">
+      <div class="kk">Newsletter settimanale</div>
+      <h1 class="hh1">Il calcio spiegato<br>come <em>un'operazione</em><br>di M&A.</h1>
+      <p class="hd">Ogni martedì: un bilancio analizzato, un deal sezionato, una metrica che ribalta la prospettiva. Otto minuti. Dati primari. Niente mediazione.</p>
+      <div class="tpw">
+        <div class="tpt">
+          <span class="tp dk">Player trading</span><span class="tp">Diritti TV</span><span class="tp dk">M&A calcio</span><span class="tp">FFP & PSR</span><span class="tp dk">PE nel calcio</span><span class="tp">Stadium economics</span><span class="tp dk">Salary cap</span><span class="tp">Governance</span><span class="tp dk">Valutazioni club</span><span class="tp">LBO calcio</span><span class="tp dk">DCF calciatori</span><span class="tp">Plusvalenze</span>
+          <span class="tp dk">Player trading</span><span class="tp">Diritti TV</span><span class="tp dk">M&A calcio</span><span class="tp">FFP & PSR</span><span class="tp dk">PE nel calcio</span><span class="tp">Stadium economics</span><span class="tp dk">Salary cap</span><span class="tp">Governance</span><span class="tp dk">Valutazioni club</span><span class="tp">LBO calcio</span><span class="tp dk">DCF calciatori</span><span class="tp">Plusvalenze</span>
         </div>
-        <div class="topics-track rev" style="margin-top:8px">
-          <span class="topic-pill">Ammortamenti</span><span class="topic-pill dark">Multipli EV/Rev</span><span class="topic-pill">SuperLeague</span><span class="topic-pill dark">Sponsorship value</span><span class="topic-pill">Cash flow</span><span class="topic-pill dark">Acquisition premium</span><span class="topic-pill">Revenue mix</span><span class="topic-pill dark">Asset impairment</span><span class="topic-pill">Serie A vs PL</span><span class="topic-pill dark">Stadium yield</span>
-          <span class="topic-pill">Ammortamenti</span><span class="topic-pill dark">Multipli EV/Rev</span><span class="topic-pill">SuperLeague</span><span class="topic-pill dark">Sponsorship value</span><span class="topic-pill">Cash flow</span><span class="topic-pill dark">Acquisition premium</span><span class="topic-pill">Revenue mix</span><span class="topic-pill dark">Asset impairment</span><span class="topic-pill">Serie A vs PL</span><span class="topic-pill dark">Stadium yield</span>
+        <div class="tpt rv" style="margin-top:8px">
+          <span class="tp">Ammortamenti</span><span class="tp dk">EV/Rev multipli</span><span class="tp">SuperLeague</span><span class="tp dk">Sponsorship</span><span class="tp">Cash flow</span><span class="tp dk">Acquisition premium</span><span class="tp">Revenue mix</span><span class="tp dk">Stadium yield</span><span class="tp">Serie A vs PL</span><span class="tp dk">Asset impairment</span>
+          <span class="tp">Ammortamenti</span><span class="tp dk">EV/Rev multipli</span><span class="tp">SuperLeague</span><span class="tp dk">Sponsorship</span><span class="tp">Cash flow</span><span class="tp dk">Acquisition premium</span><span class="tp">Revenue mix</span><span class="tp dk">Stadium yield</span><span class="tp">Serie A vs PL</span><span class="tp dk">Asset impairment</span>
         </div>
       </div>
     </div>
 
-    <div class="fadein d4" id="signup-anchor">
-      <div class="signup-box">
-        <div class="sb-label">Iscrizione gratuita</div>
-        <div class="sb-title">La prossima edizione esce martedì.</div>
-        <p class="sb-desc">Unisciti a chi legge il calcio come un analista. Gratis, per sempre.</p>
-        <div class="success-msg" id="signup-success">✓ Iscrizione confermata — controlla la tua inbox</div>
-        <input type="email" class="sb-input" id="email-input" placeholder="la tua email" autocomplete="email">
-        <button class="sb-btn" id="signup-btn" onclick="handleSignup()">Iscriviti gratis →</button>
-        <p class="sb-note">Gratis · 8 min/settimana · cancellazione in 1 click</p>
-        <div class="sb-stats">
-          <div>
-            <div class="sb-stat-num">8′</div>
-            <div class="sb-stat-label">lettura col caffè</div>
-          </div>
-          <div>
-            <div class="sb-stat-num">€0</div>
-            <div class="sb-stat-label">per sempre</div>
-          </div>
+    <div class="fi4" id="signup-anchor">
+      <div class="sb">
+        <div class="sbl">Iscrizione gratuita</div>
+        <div class="sbt">La prossima edizione esce martedì.</div>
+        <p class="sbd">Unisciti a chi legge il calcio come un analista. Gratis, per sempre.</p>
+        <div class="sbsucc" id="sbsucc">✓ Iscritto — controlla la tua inbox</div>
+        <input type="email" class="sbi" id="sbemail" placeholder="la tua email" autocomplete="email">
+        <button class="sbb" id="sbtn" onclick="doSignup()">Iscriviti gratis →</button>
+        <p class="sbn">Gratis · 8 min/settimana · cancellazione in 1 click</p>
+        <div class="sbst">
+          <div><div class="sbsn">8′</div><div class="sbsl">col caffè</div></div>
+          <div><div class="sbsn">€0</div><div class="sbsl">per sempre</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- PREVIEW ULTIMA EDIZIONE -->
-  <div class="preview-section">
-    <div class="sec-header">
-      <span class="sec-title">L'ultima edizione</span>
-      <a class="sec-link" onclick="showPage('archivio')">Archivio completo →</a>
+  <div class="ps">
+    <div class="sh">
+      <span class="sti">L'ultima edizione</span>
+      <a class="slk" onclick="go('archivio')">Archivio completo →</a>
     </div>
-    <div class="three-col">
-      <div class="art-col">
-        <div class="col-num">01 — Il Bilancio</div>
-        <h3>Serie A 2024/25: ricavi record, perdite costanti. <em>Il problema non è il fatturato.</em></h3>
-        <p>€4,04 miliardi di ricavi aggregati — massimo storico. Ma i costi superano i ricavi di €200M. Solo 7 club su 20 in utile. La crescita è drogata da voci irripetibili.</p>
-        <div class="col-kpi">
-          <div class="kpi-row"><span>Ricavi aggregati</span><span>€4,04 Mrd</span></div>
-          <div class="kpi-row"><span>Perdita netta</span><span>€349M</span></div>
-          <div class="kpi-row"><span>Club in utile</span><span>7 su 20</span></div>
-        </div>
-        <div class="col-verdict">Sistema strutturalmente in rosso</div>
+    <div class="tc" id="home-preview">
+      <div style="padding:40px;text-align:center;font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;grid-column:1/-1">Caricamento...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ARCHIVIO ═══ -->
+<div class="pg" id="pg-archivio">
+  <div class="aw">
+    <div class="ah">
+      <div class="ae">Archivio edizioni</div>
+      <h1 class="at">Ogni martedì,<br>un'analisi.</h1>
+    </div>
+    <p class="adesc">Tutte le edizioni di Valore Atteso. Dati reali, fonti primarie, nessun filler.</p>
+    <div id="arch-list"><div class="aloading">Caricamento...</div></div>
+  </div>
+</div>
+
+<!-- ═══ ARTICLE ═══ -->
+<div class="pg" id="pg-article">
+  <div class="artw">
+    <a class="artback" onclick="go('archivio')">Torna all'archivio</a>
+    <div id="article-content"></div>
+  </div>
+</div>
+
+<!-- ═══ PRO ═══ -->
+<div class="pg" id="pg-pro">
+  <div class="pw">
+    <div class="ph">
+      <div class="pey">Valore Atteso Pro</div>
+      <h1 class="ptit">Per chi vuole<br>andare più in fondo.</h1>
+      <p class="psub">La newsletter gratuita copre il 70% del valore. Il tier Pro è per chi vuole i modelli, i report e l'accesso istituzionale.</p>
+    </div>
+    <div class="tg">
+      <div class="tr">
+        <div class="trn">Free</div>
+        <div class="trp">€0</div>
+        <div class="trper">per sempre</div>
+        <ul>
+          <li><span class="ic" style="color:var(--green)">✓</span>Newsletter settimanale completa</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>Ultime 4 edizioni in archivio</li>
+          <li><span class="ic" style="color:var(--rule)">–</span>Archivio storico completo</li>
+          <li><span class="ic" style="color:var(--rule)">–</span>Modelli Excel scaricabili</li>
+          <li><span class="ic" style="color:var(--rule)">–</span>Report deal approfonditi</li>
+          <li><span class="ic" style="color:var(--rule)">–</span>Webinar mensili</li>
+        </ul>
+        <button class="trbtn" onclick="goSignup()">Iscriviti gratis</button>
       </div>
-      <div class="art-col">
-        <div class="col-num">02 — Il Deal</div>
-        <h3>PE e calcio: perché i fondi comprano club <em>che perdono soldi.</em></h3>
-        <p>Oaktree, RedBird, Apollo. Oltre il 36% dei club top-5 europei ha un fondo PE come azionista. Non comprano una squadra — comprano un brand e un progetto immobiliare.</p>
-        <div class="col-kpi">
-          <div class="kpi-row"><span>PE nei top-5 EU</span><span>>36% club</span></div>
-          <div class="kpi-row"><span>Multiplo EV/Rev</span><span>4–5×</span></div>
-          <div class="kpi-row"><span>Man Utd rendimento</span><span>+444%</span></div>
-        </div>
-        <div class="col-verdict">Brand e mattone, non risultati</div>
+      <div class="tr ft">
+        <div style="font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;display:inline-block;margin-bottom:10px">Consigliato</div>
+        <div class="trn">Pro</div>
+        <div class="trp">€9</div>
+        <div class="trper">al mese · €89/anno</div>
+        <ul>
+          <li><span class="ic">✓</span>Tutto il Free</li>
+          <li><span class="ic">✓</span>Archivio storico completo</li>
+          <li><span class="ic">✓</span>Modelli Excel (DCF, LBO base)</li>
+          <li><span class="ic">✓</span>Report deal approfonditi</li>
+          <li><span class="ic">✓</span>Webinar mensili</li>
+          <li><span class="ic">✓</span>Community Pro</li>
+        </ul>
+        <button class="trbtn" onclick="window.open('https://valore-atteso.beehiiv.com','_blank')">Inizia il periodo di prova</button>
       </div>
-      <div class="art-col">
-        <div class="col-num">03 — La Metrica</div>
-        <h3>Stadium yield: il numero che spiega <em>vent'anni di ritardo.</em></h3>
-        <p>Real Madrid: €137/spettatore. Inter: €40. Milan: €36. Il gap non è sportivo — è di governance degli asset. San Siro lavora 20 giorni l'anno, il Tottenham 365.</p>
-        <div class="col-kpi">
-          <div class="kpi-row"><span>Real Madrid</span><span>€137/spt</span></div>
-          <div class="kpi-row"><span>Inter</span><span>€40/spt</span></div>
-          <div class="kpi-row"><span>Milan</span><span>€36/spt</span></div>
-        </div>
-        <div class="col-verdict">Gap immobiliare, non sportivo</div>
+      <div class="tr">
+        <div class="trn">Institutional</div>
+        <div class="trp">€800</div>
+        <div class="trper">al mese · team fino a 5</div>
+        <ul>
+          <li><span class="ic" style="color:var(--green)">✓</span>Tutto il Pro</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>Brief settimanale custom</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>Tutti i report inclusi</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>Database dati storici</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>Call mensile dedicata</li>
+          <li><span class="ic" style="color:var(--green)">✓</span>White-label per team</li>
+        </ul>
+        <button class="trbtn" onclick="window.location.href='mailto:hello@valoreatteso.it?subject=Institutional'">Contattaci</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════ ARCHIVIO ══════════════ -->
-<div class="page" id="page-archivio">
-  <div class="arch-wrap">
-    <div class="arch-header">
-      <div class="arch-eyebrow">Archivio edizioni</div>
-      <h1 class="arch-title">Ogni martedì,<br>un'analisi.</h1>
+<!-- ═══ ABOUT ═══ -->
+<div class="pg" id="pg-about">
+  <div class="abw">
+    <div class="abh">
+      <div class="abey">Chi siamo</div>
+      <h1 class="abt">Valore Atteso.</h1>
     </div>
-    <p class="arch-desc">Tutte le edizioni di Valore Atteso. Dati reali, fonti primarie, nessun filler. Scorri l'archivio o iscriviti per riceverle ogni martedì mattina.</p>
-
-    <div id="editions-list">
-      <div class="edition-row" onclick="window.open('https://valore-atteso.beehiiv.com','_blank')">
-        <div class="ed-num">#001</div>
-        <div class="ed-content">
-          <div class="ed-title">Serie A, Private Equity e lo Stadio come Bancomat</div>
-          <div class="ed-tags">
-            <span class="ed-tag">Bilanci Serie A</span>
-            <span class="ed-tag">PE nel calcio</span>
-            <span class="ed-tag">Stadium yield</span>
-          </div>
-        </div>
-        <div class="ed-date">22 apr 2025</div>
-      </div>
-      <div class="arch-empty">Le prossime edizioni appariranno qui ogni martedì.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ PRO ══════════════ -->
-<div class="page" id="page-pro">
-  <div class="pro-wrap">
-    <div class="pro-header">
-      <div class="pro-eyebrow">Valore Atteso Pro</div>
-      <h1 class="pro-title">Per chi vuole<br>andare più in fondo.</h1>
-      <p class="pro-subtitle">La newsletter gratuita copre il 70% del valore. Il tier Pro è per chi vuole i modelli, i report approfonditi e l'accesso istituzionale.</p>
-    </div>
-
-    <div class="tier-grid">
-      <div class="tier yes">
-        <div class="tier-name">Free</div>
-        <div class="tier-price">€0</div>
-        <div class="tier-period">per sempre</div>
-        <ul>
-          <li><span class="ico">✓</span>Newsletter settimanale completa</li>
-          <li><span class="ico">✓</span>Ultime 4 edizioni in archivio</li>
-          <li><span class="ico" style="color:var(--rule)">–</span>Archivio storico completo</li>
-          <li><span class="ico" style="color:var(--rule)">–</span>Modelli Excel scaricabili</li>
-          <li><span class="ico" style="color:var(--rule)">–</span>Report deal approfonditi</li>
-          <li><span class="ico" style="color:var(--rule)">–</span>Webinar mensili</li>
-        </ul>
-        <button class="tier-btn" onclick="scrollToSignup();showPage('home')">Iscriviti gratis</button>
-      </div>
-
-      <div class="tier featured yes">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,.15);color:#fff;padding:3px 10px;display:inline-block;margin-bottom:10px">Consigliato</div>
-        <div class="tier-name">Pro</div>
-        <div class="tier-price">€9</div>
-        <div class="tier-period">al mese · €89/anno</div>
-        <ul>
-          <li><span class="ico">✓</span>Tutto il Free</li>
-          <li><span class="ico">✓</span>Archivio storico completo</li>
-          <li><span class="ico">✓</span>Modelli Excel (DCF, LBO base)</li>
-          <li><span class="ico">✓</span>Report deal approfonditi</li>
-          <li><span class="ico">✓</span>Webinar mensili</li>
-          <li><span class="ico">✓</span>Sconto 30% su report one-shot</li>
-        </ul>
-        <button class="tier-btn" onclick="window.open('https://valore-atteso.beehiiv.com','_blank')">Inizia il periodo di prova</button>
-      </div>
-
-      <div class="tier yes">
-        <div class="tier-name">Institutional</div>
-        <div class="tier-price">€800</div>
-        <div class="tier-period">al mese · team fino a 5</div>
-        <ul>
-          <li><span class="ico">✓</span>Tutto il Pro</li>
-          <li><span class="ico">✓</span>Brief settimanale custom</li>
-          <li><span class="ico">✓</span>Tutti i report inclusi</li>
-          <li><span class="ico">✓</span>Database dati storici</li>
-          <li><span class="ico">✓</span>Call mensile</li>
-          <li><span class="ico">✓</span>White-label per team</li>
-        </ul>
-        <button class="tier-btn" onclick="window.location.href='mailto:hello@valoreatteso.it?subject=Institutional'">Contattaci</button>
-      </div>
-    </div>
-
-    <div class="pro-features">
-      <h2 class="pf-title">Cosa include il tier Pro</h2>
-      <div class="pf-grid">
-        <div class="pf-item">
-          <div class="pf-icon">📊</div>
-          <div class="pf-name">Archivio completo</div>
-          <div class="pf-desc">Accesso a tutte le edizioni pubblicate. Cerca per club, tema, metrica.</div>
-        </div>
-        <div class="pf-item">
-          <div class="pf-icon">📐</div>
-          <div class="pf-name">Modelli Excel</div>
-          <div class="pf-desc">DCF semplificato, LBO base, comparable transactions. Scaricabili e modificabili.</div>
-        </div>
-        <div class="pf-item">
-          <div class="pf-icon">🔍</div>
-          <div class="pf-name">Report deal</div>
-          <div class="pf-desc">Ogni acquisizione analizzata in 10 pagine: struttura, multipli, razionale, rischi.</div>
-        </div>
-        <div class="pf-item">
-          <div class="pf-icon">🎙️</div>
-          <div class="pf-name">Webinar mensili</div>
-          <div class="pf-desc">Un tema al mese approfondito live. Registrazione disponibile per chi non può partecipare.</div>
-        </div>
-        <div class="pf-item">
-          <div class="pf-icon">💬</div>
-          <div class="pf-name">Community Pro</div>
-          <div class="pf-desc">Accesso al gruppo privato di lettori Pro. Discussioni, domande, networking.</div>
-        </div>
-        <div class="pf-item">
-          <div class="pf-icon">📬</div>
-          <div class="pf-name">Priority inbox</div>
-          <div class="pf-desc">Le tue domande su bilanci e deal ricevono risposta entro 48 ore.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════ ABOUT ══════════════ -->
-<div class="page" id="page-about">
-  <div class="about-wrap">
-    <div class="about-header">
-      <div class="about-eyebrow">Chi siamo</div>
-      <h1 class="about-title">Valore Atteso.</h1>
-    </div>
-
-    <div class="about-body">
+    <div class="abb">
       <p>Il calcio è un'industria da <strong>€50 miliardi</strong>. Quasi nessuno la legge con gli strumenti giusti. I giornalisti sportivi guardano i gol. I giornalisti economici guardano il PIL. Nessuno guarda le note integrative dei bilanci, i term sheet delle acquisizioni, i multipli di valutazione.</p>
-      <p>Valore Atteso nasce da una domanda semplice: <strong>cosa succederebbe se applicassimo gli strumenti del corporate finance al calcio?</strong> DCF, LBO analysis, comparable transactions, player asset turnover. Gli stessi modelli che usi in un deal team di una banca d'investimento, applicati al pallone.</p>
-      <p>Il nome non è casuale. <strong>Il valore atteso</strong> è un concetto della statistica — il risultato medio ponderato per la probabilità. È anche il termine usato nel calcio moderno per misurare la qualità delle occasioni (xG). Due mondi, un concetto. Esattamente quello che facciamo ogni martedì.</p>
+      <p>Valore Atteso nasce da una domanda semplice: <strong>cosa succederebbe se applicassimo gli strumenti del corporate finance al calcio?</strong> DCF, LBO analysis, comparable transactions. Gli stessi modelli di un deal team di una banca d'investimento, applicati al pallone.</p>
+      <p>Il nome non è casuale. <strong>Il valore atteso</strong> è un concetto della statistica e anche il termine usato nel calcio moderno per le occasioni da gol (xG). Due mondi, un concetto.</p>
     </div>
-
-    <div class="about-section">
-      <h2 class="about-section-title">Come lavoriamo</h2>
-      <ul class="about-list">
-        <li>Ogni dato numerico ha una fonte primaria verificabile — bilanci depositati, comunicati societari, report Deloitte/KPMG/UEFA</li>
-        <li>Non pubblichiamo indiscrezioni di mercato o stime non attribuite</li>
+    <div class="absc">
+      <h2 class="abst">Come lavoriamo</h2>
+      <ul class="abl">
+        <li>Ogni dato numerico ha una fonte primaria verificabile</li>
+        <li>Non pubblichiamo indiscrezioni o stime non attribuite</li>
         <li>Nessun link affiliato, nessun advertorial non dichiarato</li>
-        <li>Il tono è analitico e diretto — come il Financial Times applicato al calcio</li>
-        <li>Ogni edizione ha la stessa struttura: un bilancio, un deal, una metrica</li>
+        <li>Tono analitico e diretto — come il Financial Times applicato al calcio</li>
+        <li>Struttura fissa: un bilancio, un deal, una metrica</li>
       </ul>
     </div>
-
-    <div class="about-section">
-      <h2 class="about-section-title">Fonti primarie accettate</h2>
-      <ul class="about-list">
+    <div class="absc">
+      <h2 class="abst">Fonti accettate</h2>
+      <ul class="abl">
         <li>Bilanci societari depositati in CCIAA o Companies House</li>
         <li>Comunicati ufficiali UEFA, FIFA, leghe nazionali</li>
-        <li>Deloitte Football Money League (annuale)</li>
-        <li>KPMG Football Benchmark</li>
-        <li>Swiss Ramble — analisi finanziaria indipendente</li>
+        <li>Deloitte Football Money League · KPMG Football Benchmark</li>
+        <li>Swiss Ramble · Calcio e Finanza (con fonte primaria)</li>
         <li>Filing SEC per club quotati (Juventus, Roma)</li>
-        <li>Relazioni assembleari pubbliche</li>
       </ul>
     </div>
-
-    <div class="manifest">
+    <div class="abmf">
       <p>"Il calcio è lo sport più popolare del mondo e uno dei settori più opachi dal punto di vista finanziario. Valore Atteso esiste per colmare questo gap — un'edizione alla volta."</p>
     </div>
-
-    <div class="about-section">
-      <h2 class="about-section-title">Contatti</h2>
-      <ul class="about-list">
+    <div class="absc">
+      <h2 class="abst">Contatti</h2>
+      <ul class="abl">
         <li>Email: hello@valoreatteso.it</li>
-        <li>Newsletter: valore-atteso.beehiiv.com</li>
         <li>Collaborazioni e sponsorship: hello@valoreatteso.it</li>
       </ul>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo">Valore Atteso</div>
-    <div class="footer-links">
-      <a onclick="showPage('archivio')">Archivio</a>
-      <a onclick="showPage('pro')">Pro</a>
-      <a onclick="showPage('about')">About</a>
+  <div class="fi">
+    <div class="flo">Valore Atteso</div>
+    <div class="fls">
+      <a onclick="go('archivio')">Archivio</a>
+      <a onclick="go('pro')">Pro</a>
+      <a onclick="go('about')">About</a>
       <a href="mailto:hello@valoreatteso.it">Contatti</a>
     </div>
-    <div class="footer-right">© 2025 Valore Atteso</div>
+    <div class="fr">© 2025 Valore Atteso</div>
   </div>
 </footer>
 
 <script>
-// Date
-document.getElementById('hero-date').textContent =
+const SUPA_URL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
+const BEEHIIV_PUB = 'pub_a08a1caf-cd02-4c5f-b508-b680a8009396';
+
+document.getElementById('hdate').textContent =
   new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-// Page routing
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+// ── ROUTING ──
+function go(page){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+page).classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
-  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  if(page==='archivio') loadArchivio();
+  if(page==='home') loadHomePreview();
 }
 
-function scrollToSignup(){
-  showPage('home');
+function goSignup(){
+  go('home');
   setTimeout(()=>{
     document.getElementById('signup-anchor').scrollIntoView({behavior:'smooth',block:'center'});
-    document.getElementById('email-input').focus();
-  },100);
+    document.getElementById('sbemail').focus();
+  },120);
 }
 
-// Signup — Beehiiv API
-async function handleSignup(){
-  const email = document.getElementById('email-input').value.trim();
-  const btn = document.getElementById('signup-btn');
-  const success = document.getElementById('signup-success');
+// ── SUPABASE FETCH ──
+async function fetchEditions(limit=null){
+  let url = `${SUPA_URL}/rest/v1/editions?select=*&order=num.desc&published=eq.true`;
+  if(limit) url += `&limit=${limit}`;
+  const r = await fetch(url,{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}});
+  return r.json();
+}
 
-  if(!email || !email.includes('@')){
-    document.getElementById('email-input').style.borderColor='rgba(181,34,26,0.6)';
-    document.getElementById('email-input').focus();
-    return;
+async function fetchEdition(num){
+  const url = `${SUPA_URL}/rest/v1/editions?num=eq.${num}&published=eq.true&select=*`;
+  const r = await fetch(url,{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}});
+  const data = await r.json();
+  return data[0];
+}
+
+// ── HOME PREVIEW ──
+async function loadHomePreview(){
+  try{
+    const editions = await fetchEditions(1);
+    if(!editions||!editions.length){
+      document.getElementById('home-preview').innerHTML='<div style="padding:40px;text-align:center;grid-column:1/-1;font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase">Prima edizione in arrivo martedì.</div>';
+      return;
+    }
+    const e = editions[0];
+    const secs = e.sections||[];
+    document.getElementById('home-preview').innerHTML = secs.map((s,i)=>`
+      <div class="ac" onclick="openArticle('${e.num}')">
+        <div class="cn">0${i+1} — ${esc(s.label)}</div>
+        <h3>${esc(s.title)}</h3>
+        <p>${esc((s.body||'').split('\n')[0].substring(0,120))}...</p>
+        ${s.kpis&&s.kpis.length?`<div class="ck">${s.kpis.slice(0,3).map(k=>`<div class="kr"><span>${esc(k.key)}</span><span>${esc(k.value)}</span></div>`).join('')}</div>`:''}
+        <div class="cv">${esc(s.verdict)}</div>
+      </div>`).join('');
+  }catch(err){
+    document.getElementById('home-preview').innerHTML='<div style="padding:40px;text-align:center;grid-column:1/-1;font-family:var(--mn);font-size:10px;color:var(--ink-3)">Errore nel caricamento.</div>';
   }
-  document.getElementById('email-input').style.borderColor='';
+}
 
-  btn.disabled=true;
-  btn.textContent='Iscrizione in corso…';
+// ── ARCHIVIO ──
+async function loadArchivio(){
+  const list = document.getElementById('arch-list');
+  list.innerHTML='<div class="aloading">Caricamento...</div>';
+  try{
+    const editions = await fetchEditions();
+    if(!editions||!editions.length){
+      list.innerHTML='<div class="aempty">Nessuna edizione pubblicata ancora.<br>La prima arriva martedì.</div>';
+      return;
+    }
+    list.innerHTML = editions.map(e=>`
+      <div class="er" onclick="openArticle('${e.num}')">
+        <div class="en">#${esc(e.num)}</div>
+        <div>
+          <div class="ett">${esc(e.title)}</div>
+          <div class="etg">${(e.tags||[]).map(t=>`<span class="etag">${esc(t)}</span>`).join('')}</div>
+        </div>
+        <div class="edt">${esc(e.date)}</div>
+      </div>`).join('');
+  }catch(err){
+    list.innerHTML='<div class="aempty">Errore nel caricamento. Riprova.</div>';
+  }
+}
 
-  try {
-    const res = await fetch('https://api.beehiiv.com/v2/publications/pub_a08a1caf-cd02-4c5f-b508-b680a8009396/subscriptions',{
+// ── ARTICLE ──
+async function openArticle(num){
+  go('article');
+  const content = document.getElementById('article-content');
+  content.innerHTML='<div style="padding:40px 0;font-family:var(--mn);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase">Caricamento edizione...</div>';
+  try{
+    const e = await fetchEdition(num);
+    if(!e){content.innerHTML='<p>Edizione non trovata.</p>';return;}
+    const secs = e.sections||[];
+    content.innerHTML=`
+      <div class="artnum">Edizione #${esc(e.num)}</div>
+      <h1 class="arttitle">${esc(e.title)}</h1>
+      ${e.subtitle?`<div class="artsubtitle">${esc(e.subtitle)}</div>`:''}
+      <div class="artmeta">
+        <span>${esc(e.date)}</span>
+        <span>·</span>
+        <span>~8 min lettura</span>
+        ${(e.tags||[]).map(t=>`<span>· ${esc(t)}</span>`).join('')}
+      </div>
+      ${e.opener?`<div class="artopener">${esc(e.opener)}</div>`:''}
+      ${secs.map(s=>`
+        <div class="asec">
+          <div class="asectag">${esc(s.label)}</div>
+          <h2 class="asectitle">${esc(s.title)}</h2>
+          <div class="asecbody">${esc(s.body)}</div>
+          ${s.kpis&&s.kpis.length?`
+            <table class="akpitable">
+              ${s.kpis.map(k=>`<tr><td>${esc(k.key)}</td><td>${esc(k.value)}</td></tr>`).join('')}
+            </table>`:''}
+          <div class="averdict">${esc(s.verdict)}</div>
+          ${s.sources&&s.sources.length?`<div class="asources">Fonti: ${s.sources.map(esc).join(' · ')}</div>`:''}
+        </div>`).join('')}
+      <div style="margin-top:40px;padding:20px;background:var(--cream-2);text-align:center">
+        <div style="font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px">Ricevi ogni edizione il martedì mattina</div>
+        <button class="ncta" onclick="goSignup()">Iscriviti gratis →</button>
+      </div>`;
+  }catch(err){
+    content.innerHTML='<p style="font-family:var(--sf);color:var(--ink-3)">Errore nel caricamento. Riprova.</p>';
+  }
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ── SIGNUP ──
+async function doSignup(){
+  const email=document.getElementById('sbemail').value.trim();
+  const btn=document.getElementById('sbtn');
+  if(!email||!email.includes('@')){
+    document.getElementById('sbemail').style.borderColor='rgba(181,34,26,.6)';
+    document.getElementById('sbemail').focus();return;
+  }
+  document.getElementById('sbemail').style.borderColor='';
+  btn.disabled=true;btn.textContent='Iscrizione in corso…';
+  try{
+    const r=await fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB}/subscriptions`,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer YOUR_BEEHIIV_API_KEY'},
       body:JSON.stringify({email,reactivate_existing:true,send_welcome_email:true})
     });
-
-    if(res.ok){
-      success.style.display='block';
-      document.getElementById('email-input').style.display='none';
+    if(r.ok){
+      document.getElementById('sbsucc').style.display='block';
+      document.getElementById('sbemail').style.display='none';
       btn.style.display='none';
-    } else {
-      throw new Error('Errore iscrizione');
-    }
-  } catch(e){
-    // Fallback: apri Beehiiv direttamente
+    } else throw new Error();
+  }catch{
     window.open('https://valore-atteso.beehiiv.com?utm_source=website','_blank');
-    btn.disabled=false;
-    btn.textContent='Iscriviti gratis →';
+    btn.disabled=false;btn.textContent='Iscriviti gratis →';
   }
 }
+
+// ── INIT ──
+loadHomePreview();
 </script>
 </body>
 </html>
