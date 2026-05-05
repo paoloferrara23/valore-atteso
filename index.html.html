@@ -299,11 +299,16 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
     <p class="hero-sub a3">Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.</p>
 
     <div class="form-wrap a4" id="form-anchor">
-      <div class="form-success" id="form-ok">✓ Iscritto — controlla la tua inbox per confermare</div>
-      <div class="form-row">
-        <input type="email" class="form-email" id="form-email" placeholder="la tua email" autocomplete="email">
-        <button class="form-btn" id="form-btn" onclick="doSignup('form-email','form-btn','form-ok')">Sì, mi iscrivo →</button>
-      </div>
+      <form action="https://app.beehiiv.com/forms/pub_a08a1caf-cd02-4c5f-b508-b680a8009396/subscribe" method="POST" target="_blank" onsubmit="handleBeehiivSubmit(event)">
+        <div class="form-row">
+          <input type="email" name="email" class="form-email" id="form-email" placeholder="la tua email" autocomplete="email" required>
+          <button type="submit" class="form-btn">Sì, mi iscrivo →</button>
+        </div>
+        <input type="hidden" name="utm_source" value="sito">
+        <input type="hidden" name="utm_medium" value="organic">
+        <input type="hidden" name="double_opt_in" value="true">
+      </form>
+      <div class="form-success" id="form-ok" style="display:none">✓ Controlla la tua inbox — ti abbiamo inviato un link di conferma</div>
       <p class="form-note" style="margin-top:10px">Accetto la <a href="#">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</p>
       <div class="form-chips">
         <span class="form-chip"><span class="ok">✓</span> Gratis, per sempre</span>
@@ -562,11 +567,13 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="cta-final">
     <h2>La prossima esce<br>martedì mattina. <em>Otto minuti.</em></h2>
     <p>Ti iscrivi. La leggi col caffè. Se non ti cambia come guardi il calcio, ti cancelli in un click.</p>
-    <div class="cta-form">
-      <input type="email" class="cta-email" id="cta-email" placeholder="la tua email" autocomplete="email">
-      <button class="cta-btn" id="cta-btn" onclick="doSignup('cta-email','cta-btn','cta-ok')">Sì, mi iscrivo →</button>
-    </div>
-    <div class="form-success" id="cta-ok" style="max-width:460px;margin:0 auto 12px">✓ Iscritto — controlla la tua inbox</div>
+    <form class="cta-form" action="https://app.beehiiv.com/forms/pub_a08a1caf-cd02-4c5f-b508-b680a8009396/subscribe" method="POST" target="_blank" onsubmit="handleBeehiivSubmit(event)">
+      <input type="email" name="email" class="cta-email" placeholder="la tua email" autocomplete="email" required>
+      <button type="submit" class="cta-btn">Sì, mi iscrivo →</button>
+      <input type="hidden" name="utm_source" value="sito-cta">
+      <input type="hidden" name="double_opt_in" value="true">
+    </form>
+    <div class="form-success" id="cta-ok" style="max-width:460px;margin:0 auto 12px;display:none">✓ Controlla la tua inbox — ti abbiamo inviato un link di conferma</div>
     <p class="cta-note">8 min/settimana · Gratis · Dati veri · Nessun affiliato</p>
   </div>
 
@@ -656,6 +663,24 @@ function go(p){
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='archivio')loadArch();
   if(p==='home')loadPreview();
+
+function handleBeehiivSubmit(e){
+  // Non bloccare il submit — lascia che vada a Beehiiv in nuova scheda
+  // Mostra messaggio di conferma sul sito
+  const form = e.target;
+  const email = form.querySelector('input[type=email]').value;
+  if(!email || !email.includes('@')) return;
+  
+  setTimeout(()=>{
+    // Mostra messaggio dopo che la nuova scheda si è aperta
+    const ok = form.parentElement.querySelector('.form-success');
+    if(ok){
+      form.style.display='none';
+      ok.style.display='block';
+    }
+  }, 500);
+}
+
 
 
 function openModalWithEmail(email){
@@ -827,6 +852,24 @@ async function doSignup(emailId,btnId,okId){
 }
 
 loadPreview();
+
+function handleBeehiivSubmit(e){
+  // Non bloccare il submit — lascia che vada a Beehiiv in nuova scheda
+  // Mostra messaggio di conferma sul sito
+  const form = e.target;
+  const email = form.querySelector('input[type=email]').value;
+  if(!email || !email.includes('@')) return;
+  
+  setTimeout(()=>{
+    // Mostra messaggio dopo che la nuova scheda si è aperta
+    const ok = form.parentElement.querySelector('.form-success');
+    if(ok){
+      form.style.display='none';
+      ok.style.display='block';
+    }
+  }, 500);
+}
+
 
 
 function openModalWithEmail(email){
