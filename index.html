@@ -987,12 +987,28 @@ async function crInit(){
 
 async function crLoadCtx(){
   try{
-    const[sr,er]=await Promise.all([
+    const[sr,er,ar]=await Promise.all([
       fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/editions?select=num,title,date&published=eq.true&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+      fetch(SURL+'/rest/v1/editions?select=num,title,date&published=eq.true&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=10',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
     ]);
     const subs=await sr.json();const eds=await er.json();
-    crSysCtx={iscritti:subs.length,edizioni:eds.length,ultimaEd:eds[0]?`#${eds[0].num} — ${eds[0].title} (${eds[0].date})`:'Nessuna',edsList:eds.slice(0,5).map(e=>`#${e.num}: ${e.title}`).join('\n')};
+    const runs=await ar.json().catch(()=>[]);
+    
+    // Ultimo run per ogni agente
+    const agentStatus={};
+    (runs||[]).forEach(r=>{
+      if(!agentStatus[r.agent]) agentStatus[r.agent]={status:r.status,summary:r.summary,when:r.created_at};
+    });
+    
+    crSysCtx={
+      iscritti:subs.length,
+      edizioni:eds.length,
+      ultimaEd:eds[0]?`#${eds[0].num} — ${eds[0].title} (${eds[0].date})`:'Nessuna',
+      edsList:eds.slice(0,5).map(e=>`#${e.num}: ${e.title}`).join('\n'),
+      agenti:agentStatus,
+      agentiStr:Object.entries(agentStatus).map(([k,v])=>`${k}: ${v.status} — ${v.summary||''} (${new Date(v.when).toLocaleDateString('it-IT')})`).join('\n')
+    };
     document.getElementById('cr-d-subs').textContent=subs.length;
     document.getElementById('cr-d-eds').textContent=eds.length;
     document.getElementById('cr-d-last').textContent=eds[0]?`Ultima: #${eds[0].num} — ${eds[0].date}`:'Nessuna ancora';
@@ -1016,7 +1032,24 @@ async function crAdSend(text){
   document.getElementById('cr-send-btn').disabled=true;
   crAdAddMsg('user',text);crAdShowTyping(true);
   const apikey=document.getElementById('cr-ad-apikey')?.value||document.getElementById('cr-apikey')?.value||localStorage.getItem('va_apikey')||'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';
-  const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara (Manager M&A, Andersen Italia). Dati: ${crSysCtx.iscritti} iscritti, ${crSysCtx.edizioni} edizioni, ultima: ${crSysCtx.ultimaEd}. Edizioni recenti:\n${crSysCtx.edsList}. Agenti: Editoriale (lun 8:00), Cost Guardian (ven 9:00), soglie €10/mese. Stack: Vercel+Supabase+Resend+GitHub Actions. Rispondi in italiano, diretto, max 150 parole, tono collega senior.`;
+  const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara (Manager M&A, Andersen Italia).
+
+STATO SISTEMA:
+- Iscritti confermati: ${crSysCtx.iscritti}
+- Edizioni pubblicate: ${crSysCtx.edizioni}
+- Ultima edizione: ${crSysCtx.ultimaEd}
+- Edizioni recenti: ${crSysCtx.edsList}
+
+STATO AGENTI (ultimi run):
+${crSysCtx.agentiStr || 'Nessun run registrato ancora'}
+
+INFRASTRUTTURA: Vercel + Supabase + Resend + GitHub Actions
+AGENTI SCHEDULATI: Editoriale (lun 8:00), Scout (sab 7:00), SEO (dom 8:00), Cost Guardian (ven 9:00)
+SOGLIE COSTI: €10/mese Anthropic, €10/mese Resend
+
+RUOLO: Sei il supervisore del sistema. Paolo ti dà la direzione, tu coordini. Puoi spiegare cosa hanno trovato gli agenti, suggerire azioni, analizzare lo stato del progetto. Se Paolo chiede di lanciare un agente, digli di andare su GitHub Actions e lanciarlo manualmente per ora.
+
+Rispondi in italiano, diretto, max 200 parole, tono collega senior M&A.`;
   try{
     const r=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apikey,system:sys,messages:crAdHistory.slice(-10)})});
     const d=await r.json();crAdShowTyping(false);
@@ -1186,11 +1219,11 @@ async function crPubblica(){
             </div>
           </div>
           <div class="cr-quick">
-            <button class="cr-qb" onclick="crAdSend('Come stiamo questa settimana?')">Come stiamo?</button>
-            <button class="cr-qb" onclick="crAdSend('Quanti iscritti abbiamo?')">Iscritti</button>
-            <button class="cr-qb" onclick="crAdSend('Cosa devo fare per crescere?')">Crescita</button>
-            <button class="cr-qb" onclick="crAdSend('Dimmi le ultime edizioni pubblicate')">Archivio</button>
-            <button class="cr-qb" onclick="crAdSend('Stato dei costi questa settimana')">Costi</button>
+            <button class="cr-qb" onclick="crAdSend('Dammi un brief completo: stato iscritti, ultima edizione, ultimi run degli agenti e cosa devo fare questa settimana.')">Brief completo</button>
+            <button class="cr-qb" onclick="crAdSend('Cosa hanno trovato gli agenti questa settimana?')">Agenti</button>
+            <button class="cr-qb" onclick="crAdSend('Quanti iscritti abbiamo e come cresciamo?')">Iscritti</button>
+            <button class="cr-qb" onclick="crAdSend('Cosa pubblichiamo questa settimana e quale angolo CF è più forte?')">Edizione</button>
+            <button class="cr-qb" onclick="crAdSend('Stato dei costi e proiezione fine mese')">Costi</button>
           </div>
           <div class="cr-input-area">
             <textarea class="cr-ta" id="cr-ad-input" placeholder="Scrivi all'AD…" rows="1"
