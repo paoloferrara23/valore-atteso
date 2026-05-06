@@ -49,20 +49,14 @@ export default async function handler(req, res) {
 
   const tok = crypto.randomUUID();
 
-  // Prima elimina eventuale record esistente non confermato
-  await fetch(`${SUPA_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`, {
-    method: 'DELETE',
-    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-  }).catch(() => {});
-
-  // Salva su Supabase con token
-  const saveRes = await fetch(`${SUPA_URL}/rest/v1/subscribers`, {
+  // UPSERT — aggiorna se esiste, inserisce se non esiste
+  const saveRes = await fetch(`${SUPA_URL}/rest/v1/subscribers?on_conflict=email`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'apikey': SUPA_KEY,
       'Authorization': `Bearer ${SUPA_KEY}`,
-      'Prefer': 'return=minimal'
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
     },
     body: JSON.stringify({ email, token: tok, confirmed: false })
   });
