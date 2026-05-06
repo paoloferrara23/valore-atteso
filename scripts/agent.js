@@ -141,6 +141,7 @@ async function main() {
   });
 
   console.log('Email inviata, status: ' + emailRes.status);
+  await logRun(SUPA_URL, SUPA_KEY, 'editoriale', 'ok', 'Edizione #' + newNum + ' generata e inviata per approvazione', {edition_num: newNum, title: edition.title});
   console.log('Fatto!');
 }
 
