@@ -5,13 +5,14 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { messages, system, apikey } = req.body;
+  const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+  const { messages, system } = req.body;
 
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apikey,
+      'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
