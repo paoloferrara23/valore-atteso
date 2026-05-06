@@ -1015,7 +1015,7 @@ function crAdSendInput(){const t=document.getElementById('cr-ad-input').value.tr
 async function crAdSend(text){
   document.getElementById('cr-send-btn').disabled=true;
   crAdAddMsg('user',text);crAdShowTyping(true);
-  const apikey=document.getElementById('cr-ad-apikey')?.value||document.getElementById('cr-apikey')?.value||localStorage.getItem('va_apikey')||'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';
+  const apikey=document.getElementById('cr-ad-apikey')?.value||document.getElementById('cr-apikey')?.value||localStorage.getItem('va_apikey')||'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';
   const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara (Manager M&A, Andersen Italia). Dati: ${crSysCtx.iscritti} iscritti, ${crSysCtx.edizioni} edizioni, ultima: ${crSysCtx.ultimaEd}. Edizioni recenti:\n${crSysCtx.edsList}. Agenti: Editoriale (lun 8:00), Cost Guardian (ven 9:00), soglie €10/mese. Stack: Vercel+Supabase+Resend+GitHub Actions. Rispondi in italiano, diretto, max 150 parole, tono collega senior.`;
   try{
     const r=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({apikey,system:sys,messages:crAdHistory.slice(-10)})});
