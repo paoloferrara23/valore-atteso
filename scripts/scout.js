@@ -58,6 +58,9 @@ FONTI ACCETTATE — cerca SOLO su queste fonti autorevoli:
 - bundesliga.com (comunicati ufficiali Bundesliga)
 - transfermarkt.it (valutazioni cartellini verificabili)
 - rivista-contrasti.it
+- figc.it (FIGC — comunicati ufficiali, relazioni finanziarie sul calcio italiano)
+- legaseriea.it (Lega Serie A — relazioni ufficiali, dati aggregati campionato)
+- mergermarket.com (Mergermarket — operazioni M&A nel settore sport e calcio)
 
 FONTI NON ACCETTATE: calciomercato.com, tuttomercatoweb, gazzetta.it (solo notizie sportive), forum, siti generalisti senza fonte primaria.
 
