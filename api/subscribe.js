@@ -50,7 +50,7 @@ export default async function handler(req, res) {
   const tok = crypto.randomUUID();
 
   // Prima elimina eventuale record esistente non confermato
-  await fetch(`${SUPA_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}&confirmed=eq.false`, {
+  await fetch(`${SUPA_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`, {
     method: 'DELETE',
     headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
   }).catch(() => {});
