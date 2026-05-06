@@ -132,23 +132,32 @@ Rispondi SOLO con JSON valido:
 
   console.log('1. Analisi SEO con web search...');
 
-  const claudeRes = await httpRequest('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_KEY,
-      'anthropic-version': '2023-06-01'
-    },
-    body: JSON.stringify({
-      model: 'claude-opus-4-5',
-      max_tokens: 4000,
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-
-  const claudeData = claudeRes.json();
-  if (!claudeRes.ok) throw new Error('Claude error: ' + JSON.stringify(claudeData));
+  // Retry con backoff per overloaded_error
+  let claudeRes, claudeData;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    claudeRes = await httpRequest('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 4000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    claudeData = claudeRes.json();
+    if (claudeRes.ok) break;
+    if (claudeData?.error?.type === 'overloaded_error' && attempt < 3) {
+      console.log(`Anthropic overloaded, attendo 30 secondi (tentativo ${attempt}/3)...`);
+      await new Promise(r => setTimeout(r, 30000));
+    } else {
+      throw new Error('Claude error: ' + JSON.stringify(claudeData));
+    }
+  }
 
   const textBlocks = (claudeData.content || []).filter(b => b.type === 'text');
   if (!textBlocks.length) throw new Error('Nessun testo nella risposta');
