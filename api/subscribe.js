@@ -49,6 +49,12 @@ export default async function handler(req, res) {
 
   const tok = crypto.randomUUID();
 
+  // Prima elimina eventuale record esistente non confermato
+  await fetch(`${SUPA_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}&confirmed=eq.false`, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  }).catch(() => {});
+
   // Salva su Supabase con token
   const saveRes = await fetch(`${SUPA_URL}/rest/v1/subscribers`, {
     method: 'POST',
@@ -56,7 +62,7 @@ export default async function handler(req, res) {
       'Content-Type': 'application/json',
       'apikey': SUPA_KEY,
       'Authorization': `Bearer ${SUPA_KEY}`,
-      'Prefer': 'resolution=merge-duplicates,return=minimal'
+      'Prefer': 'return=minimal'
     },
     body: JSON.stringify({ email, token: tok, confirmed: false })
   });
