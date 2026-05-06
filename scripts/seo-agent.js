@@ -143,10 +143,44 @@ Rispondi SOLO con JSON valido:
   const textBlocks = (claudeData.content || []).filter(b => b.type === 'text');
   if (!textBlocks.length) throw new Error('Nessun testo nella risposta');
 
-  const rawText = textBlocks[textBlocks.length - 1].text;
-  const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('JSON non trovato');
-  const report = JSON.parse(jsonMatch[0]);
+  // Cerca JSON in tutti i blocchi di testo
+  let report = null;
+  for (const block of textBlocks) {
+    const matches = block.text.match(/\{[\s\S]*\}/g);
+    if (matches) {
+      for (const m of matches) {
+        try { report = JSON.parse(m); break; } catch(e) {}
+      }
+    }
+    if (report) break;
+  }
+  
+  // Se non trovato, chiedi a Claude di riformattare
+  if (!report) {
+    console.log('JSON non trovato nella prima risposta, richiedo riformattazione...');
+    const retry = await httpRequest('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 4000,
+        messages: [
+          { role: 'user', content: prompt },
+          ...claudeData.content.filter(b => b.type === 'text').map(b => ({ role: 'assistant', content: b.text })),
+          { role: 'user', content: 'Rispondi SOLO con il JSON valido richiesto, niente altro testo prima o dopo.' }
+        ]
+      })
+    });
+    const retryData = retry.json();
+    const retryText = (retryData.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const retryMatch = retryText.match(/\{[\s\S]*\}/);
+    if (!retryMatch) throw new Error('JSON non trovato nemmeno nel retry');
+    report = JSON.parse(retryMatch[0]);
+  }
 
   console.log(`Keyword opportunities: ${report.keyword_opportunities?.length || 0}`);
   console.log(`Contenuti suggeriti: ${report.contenuti_suggeriti?.length || 0}`);
