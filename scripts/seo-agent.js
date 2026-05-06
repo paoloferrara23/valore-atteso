@@ -25,8 +25,18 @@ function httpRequest(url, opts = {}) {
   });
 }
 
+async function logRun(url, key, agent, status, summary, data={}) {
+  await httpRequest(url + '/rest/v1/agent_runs', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal'},
+    body: JSON.stringify({agent, status, summary, data})
+  }).catch(e => console.error('Log error:', e.message));
+}
+
 async function main() {
   const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+  const SUPA_URL = process.env.SUPABASE_URL || 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
+  const SUPA_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
   const RESEND_KEY = process.env.RESEND_KEY;
   const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
   const SITE = 'https://valore-atteso.vercel.app';
