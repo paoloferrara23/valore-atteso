@@ -28,7 +28,8 @@ async function main() {
   console.log('Growth Agent avviato:', new Date().toISOString());
 
   // Dati iscritti
-  const tutti = await supaFetch('/rest/v1/subscribers?select=email,confirmed,created_at,source');
+  const tuttiRaw = await supaFetch('/rest/v1/subscribers?select=email,confirmed,created_at,source');
+  const tutti = Array.isArray(tuttiRaw) ? tuttiRaw : [];
   const confermati = tutti.filter(s => s.confirmed);
   const nonConfermati = tutti.filter(s => !s.confirmed);
 
