@@ -5,15 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Valore Atteso — Il calcio dei numeri, non dei goal. Ogni martedì in 8 minuti: un bilancio, un deal, una metrica.">
 <title>Valore Atteso — Il calcio dei numeri, non dei goal</title>
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://valore-atteso.vercel.app">
+<meta property="og:title" content="Valore Atteso — Il calcio dei numeri, non dei goal">
+<meta property="og:description" content="Ogni martedì in 8 minuti: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. Gratis.">
+<meta property="og:image" content="https://valore-atteso.vercel.app/og.png">
+<meta property="og:locale" content="it_IT">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Valore Atteso — Il calcio dei numeri, non dei goal">
+<meta name="twitter:description" content="Ogni martedì in 8 minuti: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. Gratis.">
+<meta name="twitter:image" content="https://valore-atteso.vercel.app/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 :root{
-  --cream:#F7F4EE;--cream2:#EDE9E0;--cream3:#E4DFD6;
-  --ink:#111010;--ink2:#3D3C39;--ink3:#888480;
-  --rule:#C8C4BB;--red:#B5221A;--green:#1A3A2A;--gpal:#E8F0EB;
+  --cream:#F5F2EB;--cream2:#EDE9E0;--cream3:#E2DDD4;
+  --ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
+  --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;--gpal:#E4EDE7;--accent:#D4A017;
+  --dark:#1A1A1A;--dark2:#2A2A2A;--dark3:#222222;
   --dp:'Playfair Display',Georgia,serif;
   --sf:'Source Serif 4',Georgia,serif;
   --mn:'JetBrains Mono',monospace;
@@ -22,14 +35,14 @@ html{scroll-behavior:smooth}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule)}
+nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule);box-shadow:0 1px 12px rgba(0,0,0,.06)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:50px}
 .nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);cursor:pointer;text-decoration:none}
 .nav-links{display:flex;gap:24px;align-items:center}
 .nav-a{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);cursor:pointer;text-decoration:none;transition:color .15s}
 .nav-a:hover{color:var(--ink)}
-.nav-cta{background:var(--ink);color:var(--cream);border:none;padding:8px 18px;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s;border-radius:3px}
-.nav-cta:hover{background:var(--ink2)}
+.nav-cta{background:var(--red);color:#fff;border:none;padding:8px 18px;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s;border-radius:3px}
+.nav-cta:hover{background:#a01e17}
 
 /* PAGES */
 .pg{display:none;min-height:80vh}.pg.on{display:block}
@@ -38,7 +51,7 @@ nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px 
 .hero{max-width:var(--max);margin:0 auto;padding:64px 24px 48px;text-align:center}
 .hero-label{font-family:var(--mn);font-size:11px;letter-spacing:.06em;color:var(--ink3);margin-bottom:12px;font-style:italic}
 .hero h1{font-family:var(--dp);font-size:clamp(2.6rem,7vw,4.4rem);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:20px}
-.hero h1 em{font-style:italic;font-weight:400;color:var(--ink3)}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--red)}
 .hero-sub{font-size:17px;color:var(--ink2);font-weight:300;line-height:1.7;max-width:520px;margin:0 auto 28px}
 
 /* FORM */
@@ -47,8 +60,8 @@ nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px 
 .form-email{width:100%;height:54px;border:1.5px solid var(--rule);background:#fff;padding:0 18px;font-family:var(--sf);font-size:16px;color:var(--ink);outline:none;border-radius:6px;transition:border-color .15s;-webkit-appearance:none}
 .form-email:focus{border-color:var(--ink)}
 .form-email::placeholder{color:var(--ink3)}
-.form-btn{width:100%;height:54px;padding:0 24px;background:var(--ink);color:var(--cream);border:none;font-family:var(--mn);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;border-radius:6px;transition:background .15s;-webkit-appearance:none}
-.form-btn:hover{background:var(--ink2)}
+.form-btn{width:100%;height:54px;padding:0 24px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;border-radius:6px;transition:background .15s;-webkit-appearance:none}
+.form-btn:hover{background:#a01e17}
 .form-btn:disabled{opacity:.5;cursor:not-allowed}
 @media(min-width:600px){.form-row{flex-direction:row}.form-email{flex:1;width:auto;border-radius:3px}.form-btn{width:auto;border-radius:3px}}
 .form-note{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;line-height:1.6;text-align:center}
@@ -58,8 +71,56 @@ nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px 
 .form-chip .ok{color:var(--green);font-weight:700}
 .form-success{background:var(--gpal);border-left:3px solid var(--green);padding:12px 16px;font-family:var(--mn);font-size:11px;color:var(--green);letter-spacing:.04em;text-align:left;display:none;border-radius:0 3px 3px 0;margin-bottom:10px}
 
-/* 3 BENEFIT ICONS */
-.benefits{max-width:var(--max);margin:0 auto;padding:0 24px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center}
+/* SEZIONI COLORATE */
+.section-dark{background:var(--dark);border-top:1px solid rgba(255,255,255,.06)}
+.section-dark-inner .sec-ey{color:rgba(255,255,255,.4)}
+.section-dark-inner .sec-h2{color:#fff}
+.section-dark-inner .cosè-body{color:rgba(255,255,255,.65)}
+.section-dark-inner .cosè-body strong{color:#fff}
+.section-dark-inner .fondatore{background:var(--dark2);border-color:var(--dark3);border-left-color:var(--accent)}
+.section-dark-inner .fondatore-avatar{background:var(--accent);color:var(--dark)}
+.section-dark-inner .fondatore-label{color:var(--accent);background:rgba(212,160,23,.15)}
+.section-dark-inner .fondatore-name{color:#fff}
+.section-dark-inner .fondatore-desc{color:rgba(255,255,255,.5)}
+
+.section-green{background:var(--cream);border-top:3px solid var(--red)}
+.section-green-inner .pert{background:#fff;border-color:var(--rule)}
+.section-green-inner .pert h3{color:var(--ink);border-bottom-color:var(--rule)}
+.section-green-inner .pert ul li{color:var(--ink2);border-bottom-color:var(--rule)}
+.section-green-inner .pert.yes li .ic{color:var(--green)}
+.section-green-inner .pert.no li .ic{color:var(--ink3)}
+.section-green-inner .pert-note{color:var(--ink3)}
+
+
+.nl-preview-wrap{max-width:600px;margin:0 auto}
+.nl-mock{border:1px solid var(--rule);border-radius:8px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.08)}
+.nl-mock-header{background:var(--cream2);border-bottom:1px solid var(--rule);padding:14px 20px}
+.nl-mock-meta{display:flex;flex-direction:column;gap:4px}
+.nl-mock-from{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em}
+.nl-mock-subject{font-family:var(--sf);font-size:13px;color:var(--ink);font-weight:400}
+.nl-mock-body{background:var(--cream);padding:0}
+.nl-mock-logo{font-family:var(--dp);font-size:1.6rem;font-weight:900;letter-spacing:-1px;text-align:center;padding:20px 24px 4px}
+.nl-mock-tag{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);text-align:center;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.nl-mock-opener{font-family:var(--sf);font-size:14px;color:var(--ink2);font-weight:300;line-height:1.8;font-style:italic;padding:18px 24px;background:var(--cream2);border-bottom:1px solid var(--rule)}
+.nl-mock-sec{padding:18px 24px;border-bottom:1px solid var(--rule)}
+.nl-mock-sec-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.nl-mock-sec-label::before{content:'';width:12px;height:1px;background:var(--red)}
+.nl-mock-sec-title{font-family:var(--dp);font-size:1.05rem;font-weight:700;line-height:1.25;margin-bottom:10px;letter-spacing:-.2px}
+.nl-mock-sec-body{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.75;margin-bottom:12px}
+.nl-mock-kpi{background:var(--cream2);padding:10px 12px;margin-bottom:10px;border-radius:3px}
+.nl-mock-kpi-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--rule);font-family:var(--mn);font-size:10px}
+.nl-mock-kpi-row:last-child{border-bottom:none}
+.nl-mock-kpi-row span:first-child{color:var(--ink3)}
+.nl-mock-kpi-row span:last-child{color:var(--ink);font-weight:500}
+.nl-mock-verdict{font-family:var(--mn);font-size:9px;letter-spacing:.08em;color:var(--red);padding:4px 0}
+.nl-mock-cta{padding:20px 24px;text-align:center;background:var(--ink)}
+.nl-mock-cta-text{font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.nl-mock-cta-btn{background:#fff;color:var(--ink);border:none;padding:12px 28px;font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:opacity .15s}
+.nl-mock-cta-btn:hover{opacity:.85}
+
+
+.benefits{max-width:var(--max);margin:0 auto;padding:0 24px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center}
+.benefits>div{padding:28px 20px;border:1px solid var(--rule);border-top:3px solid var(--red);border-radius:0 0 6px 6px;background:var(--cream)}
 .ben-icon{font-size:28px;margin-bottom:10px}
 .ben-title{font-family:var(--dp);font-size:1rem;font-weight:700;margin-bottom:6px}
 .ben-desc{font-family:var(--sf);font-size:13.5px;color:var(--ink2);font-weight:300;line-height:1.6}
@@ -73,16 +134,16 @@ nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px 
 .topic-item{display:inline-block;padding:0 20px;font-family:var(--mn);font-size:11px;color:var(--ink3);letter-spacing:.04em;border-right:1px solid var(--rule)}
 
 /* STATS */
-.stats{display:flex;border-bottom:1px solid var(--rule)}
-.stat{flex:1;text-align:center;padding:28px 16px;border-right:1px solid var(--rule)}
+.stats{display:flex;border-bottom:1px solid rgba(255,255,255,.06);background:var(--dark)}
+.stat{flex:1;text-align:center;padding:28px 16px;border-right:1px solid rgba(255,255,255,.1)}
 .stat:last-child{border-right:none}
-.stat-n{font-family:var(--dp);font-size:2.2rem;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:6px}
-.stat-l{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;line-height:1.5}
+.stat-n{font-family:var(--dp);font-size:2.2rem;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:6px;color:var(--accent)}
+.stat-l{font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;line-height:1.5}
 
 /* SECTION */
 .section{max-width:var(--max);margin:0 auto;padding:64px 24px}
 .section.tight{padding-top:48px;padding-bottom:48px}
-.sec-ey{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
+.sec-ey{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
 .sec-h2{font-family:var(--dp);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
 .sec-desc{font-size:16px;color:var(--ink2);font-weight:300;line-height:1.75;max-width:580px;margin-bottom:32px}
 hr.div{border:none;border-top:1px solid var(--rule);margin:0}
@@ -90,15 +151,19 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 /* COS'E' — paragrafo + fondatore */
 .cosè-body{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.8;margin-bottom:36px}
 .cosè-body strong{color:var(--ink);font-weight:400}
-.fondatore{display:flex;align-items:flex-start;gap:24px;padding:24px;border:1px solid var(--rule);border-radius:8px;background:var(--cream2)}
+.fondatore{display:flex;align-items:flex-start;gap:24px;padding:24px;border:1px solid var(--rule);border-left:4px solid var(--green);border-radius:0 8px 8px 0;background:var(--cream2)}
 .fondatore-avatar{width:56px;height:56px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:var(--dp);font-size:20px;font-weight:700;color:#fff;flex-shrink:0}
-.fondatore-label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.fondatore-label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--cream);padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:8px}
 .fondatore-name{font-family:var(--dp);font-size:1.1rem;font-weight:700;margin-bottom:4px}
 .fondatore-desc{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.6}
 
 /* DI COSA PARLIAMO — 4 aree */
 .topics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:16px}
 .topic-card{padding:24px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--cream)}
+.topic-card:first-child{border-top:3px solid var(--red)}
+.topic-card:nth-child(2){border-top:3px solid var(--accent)}
+.topic-card:nth-child(3){border-top:3px solid var(--green)}
+.topic-card:nth-child(4){border-top:3px solid var(--ink)}
 .topic-card:nth-child(2n){border-right:none}
 .topic-card:nth-last-child(-n+2){border-bottom:none}
 .topic-card.featured{background:var(--ink);color:#fff}
@@ -135,7 +200,7 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
 .proc{padding:28px 22px;border-right:1px solid var(--rule);background:var(--cream)}
 .proc:last-child{border-right:none}
-.proc-n{font-family:var(--dp);font-size:3rem;font-weight:900;letter-spacing:-2px;color:var(--cream3);line-height:1;margin-bottom:10px}
+.proc-n{font-family:var(--dp);font-size:3rem;font-weight:900;letter-spacing:-2px;color:var(--red);opacity:.25;line-height:1;margin-bottom:10px}
 .proc h3{font-family:var(--dp);font-size:1rem;font-weight:700;margin-bottom:8px}
 .proc p{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.6}
 
@@ -173,15 +238,15 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 .pert-note{font-family:var(--mn);font-size:11px;color:var(--ink3);letter-spacing:.04em;text-align:center;padding:16px 0;font-style:italic}
 
 /* CTA FINALE */
-.cta-final{background:var(--ink);color:#fff;padding:72px 24px;text-align:center}
+.cta-final{background:var(--dark);color:#fff;padding:72px 24px;text-align:center}
 .cta-final h2{font-family:var(--dp);font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
-.cta-final h2 em{font-style:italic;font-weight:400;color:rgba(255,255,255,.55)}
+.cta-final h2 em{font-style:italic;font-weight:400;color:var(--accent)}
 .cta-final p{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:32px;font-weight:300}
 .cta-form{display:flex;flex-direction:column;gap:10px;max-width:460px;margin:0 auto 12px}
 .cta-email{width:100%;height:54px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);padding:0 18px;font-family:var(--sf);font-size:16px;color:#fff;outline:none;border-radius:6px;transition:border-color .15s;-webkit-appearance:none}
 .cta-email:focus{border-color:rgba(255,255,255,.5)}
 .cta-email::placeholder{color:rgba(255,255,255,.35)}
-.cta-btn{width:100%;height:54px;padding:0 24px;background:#fff;color:var(--ink);border:none;font-family:var(--mn);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;border-radius:6px;transition:opacity .15s;-webkit-appearance:none}
+.cta-btn{width:100%;height:54px;padding:0 24px;background:var(--accent);color:var(--ink);border:none;font-family:var(--mn);font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;border-radius:6px;transition:opacity .15s;-webkit-appearance:none}
 .cta-btn:hover{opacity:.88}
 @media(min-width:600px){.cta-form{flex-direction:row}.cta-email{flex:1;width:auto;border-radius:3px}.cta-btn{width:auto;border-radius:3px}}
 .cta-note{font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.04em}
@@ -257,8 +322,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 @media(max-width:640px){
   .form-row{flex-direction:column}
   .stats{flex-wrap:wrap}
-  .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--rule)}
-  .stat:nth-child(odd){border-right:1px solid var(--rule)}
+  .stat{min-width:50%;border-right:none;border-bottom:1px solid rgba(255,255,255,.1)}
+  .stat:nth-child(odd){border-right:1px solid rgba(255,255,255,.1)}
   .benefits{grid-template-columns:1fr}
   .topics-grid{grid-template-columns:1fr}
   .topic-card{border-right:none}
@@ -443,7 +508,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 .stagger-4{transition-delay:.4s}
 
 /* TICKER */
-.ticker-wrap{overflow:hidden;background:var(--ink);padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.ticker-wrap{overflow:hidden;background:var(--dark);padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
 .ticker{display:flex;animation:ticker 30s linear infinite;width:max-content}
 .ticker:hover{animation-play-state:paused}
 .ticker-item{font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.6);letter-spacing:.08em;padding:0 32px;white-space:nowrap}
@@ -566,8 +631,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   </div>
 
   <!-- COS'E' -->
-  <hr class="div">
-  <div class="section">
+  <div class="section-dark">
+  <div class="section section-dark-inner">
     <div class="sec-ey">Cos'è Valore Atteso?</div>
     <h2 class="sec-h2">Il calcio è un'industria da €50 miliardi.<br>Quasi nessuno la legge bene.</h2>
     <div class="cosè-body">
@@ -582,6 +647,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
         <div class="fondatore-desc">Cresciuto nel calcio, formato in finanza. Valore Atteso nasce dall'idea che i due mondi parlino la stessa lingua — e che quasi nessuno se ne sia accorto.</div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- DI COSA PARLIAMO -->
@@ -703,6 +769,65 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
     <p style="font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;text-align:center;padding:16px 0">Tre sezioni. 8 minuti. Martedì mattina sei preparato. ✓</p>
   </div>
 
+  <!-- ANTEPRIMA NEWSLETTER — sezione strategica post-contenuto -->
+  <hr class="div">
+  <div class="section tight" id="anteprima-section">
+    <div class="sec-ey">Un assaggio. Edizione #001</div>
+    <h2 class="sec-h2">Così appare nella tua inbox<br>ogni martedì mattina.</h2>
+    <p class="sec-desc">Non ti chiediamo di fidarti. Ti mostriamo esattamente cosa ricevi — formato, tono, profondità.</p>
+
+    <div class="nl-preview-wrap">
+      <!-- EMAIL MOCK -->
+      <div class="nl-mock">
+        <div class="nl-mock-header">
+          <div class="nl-mock-meta">
+            <span class="nl-mock-from">Da: Valore Atteso &lt;newsletter@fidesrara.com&gt;</span>
+            <span class="nl-mock-subject">Valore Atteso #001 — Il modello RedBird: come si compra un club di calcio</span>
+          </div>
+        </div>
+        <div class="nl-mock-body">
+          <div class="nl-mock-logo">Valore Atteso</div>
+          <div class="nl-mock-tag">Edizione #001 · Martedì 7 gennaio 2025 · ~8 min</div>
+
+          <div class="nl-mock-opener">
+            Milan, Inter, Liverpool. Tre club, tre fondi di private equity, tre strutture di deal completamente diverse. Questa settimana apriamo con il caso RedBird-Milan: il deal più discusso degli ultimi anni, e uno dei più mal capiti.
+          </div>
+
+          <div class="nl-mock-sec">
+            <div class="nl-mock-sec-label">01 · Il Bilancio</div>
+            <div class="nl-mock-sec-title">AC Milan 2022/23: il primo bilancio dell'era RedBird</div>
+            <div class="nl-mock-sec-body">Il primo esercizio completo sotto RedBird chiude con ricavi a €397M (+18% YoY) e un EBITDA adjusted positivo per la prima volta in 5 anni. Il player trading resta il motore: €89M di plusvalenze nette, pari al 22% dei ricavi totali. La nota integrativa rivela un debito finanziario netto di €134M — basso per gli standard del settore, ma con covenant legati ai risultati sportivi che potrebbero cambiare la struttura nei prossimi 18 mesi.</div>
+            <div class="nl-mock-kpi">
+              <div class="nl-mock-kpi-row"><span>Ricavi totali</span><span>€397M (+18%)</span></div>
+              <div class="nl-mock-kpi-row"><span>EBITDA adjusted</span><span>€31M (primo positivo)</span></div>
+              <div class="nl-mock-kpi-row"><span>Player trading</span><span>€89M plusvalenze nette</span></div>
+              <div class="nl-mock-kpi-row"><span>Debito netto</span><span>€134M</span></div>
+            </div>
+            <div class="nl-mock-verdict">→ Modello in transizione: buoni numeri, ma dipendenza dal trading ancora alta</div>
+          </div>
+
+          <div class="nl-mock-sec">
+            <div class="nl-mock-sec-label">02 · Il Deal</div>
+            <div class="nl-mock-sec-title">RedBird → AC Milan: la struttura che nessuno ha spiegato bene</div>
+            <div class="nl-mock-sec-body">Enterprise Value €1,2 miliardi. Multiplo EV/Revenues 3,1× — in linea con i precedenti di Premier League, sopra la media Serie A (1,8×). La struttura prevedeva equity RedBird + vendor financing di Elliott per €600M, con un meccanismo di earn-out legato al raggiungimento della Champions League entro il 2025. Elliott non è uscito dal tutto: mantiene un'esposizione creditizia che lo rende de facto co-investitore.</div>
+            <div class="nl-mock-kpi">
+              <div class="nl-mock-kpi-row"><span>Enterprise Value</span><span>€1,2 miliardi</span></div>
+              <div class="nl-mock-kpi-row"><span>Multiplo EV/Rev</span><span>3,1×</span></div>
+              <div class="nl-mock-kpi-row"><span>Vendor financing Elliott</span><span>€600M</span></div>
+              <div class="nl-mock-kpi-row"><span>Earn-out trigger</span><span>UCL entro 2025</span></div>
+            </div>
+            <div class="nl-mock-verdict">→ Deal complesso: RedBird compra il controllo, Elliott mantiene l'esposizione</div>
+          </div>
+
+          <div class="nl-mock-cta">
+            <div class="nl-mock-cta-text">Vuoi ricevere l'edizione completa ogni martedì?</div>
+            <button class="nl-mock-cta-btn" onclick="document.getElementById('form-anchor').scrollIntoView({behavior:'smooth',block:'center'});document.getElementById('form-email').focus()">Iscriviti gratis →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- COME NASCE -->
   <hr class="div">
   <div class="section tight">
@@ -747,8 +872,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   </div>
 
   <!-- FA PER TE -->
-  <hr class="div">
-  <div class="section tight">
+  <div class="section-green">
+  <div class="section tight section-green-inner">
     <div class="sec-ey">Fa per te? Dipende.</div>
     <div class="pert-grid">
       <div class="pert yes">
@@ -773,6 +898,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       </div>
     </div>
     <p class="pert-note">Hai scrollato fin qui. Buon segno.</p>
+  </div>
   </div>
 
   <!-- CTA FINALE -->
