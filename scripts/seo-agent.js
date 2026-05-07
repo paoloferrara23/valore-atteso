@@ -1,327 +1,135 @@
-const https = require('https');
+// seo-agent.js — Analisi keyword, salva su memoria condivisa
+// Gira: domenica 8:00 | Scrive: seo_keywords, seo_report
 
-function httpRequest(url, opts = {}) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    const options = {
-      hostname: u.hostname,
-      path: u.pathname + u.search,
-      method: opts.method || 'GET',
-      headers: opts.headers || {}
-    };
-    const req = https.request(options, res => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve({
-        ok: res.statusCode >= 200 && res.statusCode < 300,
-        status: res.statusCode,
-        json: () => JSON.parse(data),
-        text: () => data
-      }));
-    });
-    req.on('error', reject);
-    if (opts.body) req.write(opts.body);
-    req.end();
-  });
+const { memSet, logRun } = require('./memory');
+
+const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+const RESEND_KEY = process.env.RESEND_KEY;
+const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
+const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+
+async function httpRequest(url, opts = {}) {
+  const r = await fetch(url, opts);
+  const text = await r.text();
+  return { status: r.status, ok: r.ok, text, json: () => JSON.parse(text) };
 }
 
-async function logRun(url, key, agent, status, summary, data={}) {
-  await httpRequest(url + '/rest/v1/agent_runs', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal'},
-    body: JSON.stringify({agent, status, summary, data})
-  }).catch(e => console.error('Log error:', e.message));
-}
-
-async function main() {
-  const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-  const SUPA_URL = process.env.SUPABASE_URL || 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
-  const SUPA_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-  const RESEND_KEY = process.env.RESEND_KEY;
-  const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-  const SITE = 'https://valore-atteso.vercel.app';
-
-  console.log('SEO Agent avviato...');
-
-  const today = new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
-
-  const prompt = `Sei il SEO Agent di Valore Atteso, newsletter italiana che legge il calcio con gli occhi di un analista M&A.
-
-Il sito è: ${SITE}
-Target: professionisti di finanza, PE, consulenza, M&A che seguono il business del calcio.
-Stack: sito statico su Vercel con archivio edizioni, form iscrizione, sezioni Bilancio/Deal/Metrica.
-
-Il tuo compito settimanale: analizzare le opportunità SEO per Valore Atteso e produrre un report con azioni concrete.
-
-Usa web search per:
-
-1. KEYWORD RESEARCH
-Cerca le query più cercate su Google in italiano relative a:
-- "bilancio calcio" + varianti (bilancio Serie A, bilancio Inter, bilancio Juventus ecc.)
-- "M&A calcio" / "acquisizione club calcio"
-- "diritti TV Serie A" / "diritti televisivi calcio"
-- "finanza calcio" / "business calcio"
-- "valutazione club calcio" / "quanto vale [club]"
-- "private equity calcio" / "fondo investimento calcio"
-- "stadium yield" / "ricavi stadio calcio"
-- "financial fair play" / "PSR calcio"
-
-Per ogni keyword identifica:
-- Volume di ricerca stimato (alto/medio/basso)
-- Difficoltà SEO (alta/media/bassa) — cerca se ci sono siti autorevoli che già la presidiano
-- Opportunità per Valore Atteso (quanto è facile scalare)
-
-2. ANALISI CONCORRENZA
-Cerca chi appare su Google per queste keyword in italiano:
-- Quali siti dominano
-- Se ci sono newsletter o blog simili a Valore Atteso già posizionati
-- Dove ci sono gap di contenuto che Valore Atteso può sfruttare
-
-3. OTTIMIZZAZIONI TECNICHE SUGGERITE
-Basandoti su best practice SEO per siti di newsletter:
-- Meta title e description ottimali per la homepage
-- Schema markup suggerito
-- Opportunità di internal linking
-
-4. CONTENUTI SUGGERITI
-Identifica 3-5 articoli/pagine che Valore Atteso potrebbe creare per catturare traffico organico:
-- Tipo: "Glossario finanza calcio" (cos'è EBITDA di un club, player trading, salary ratio ecc.)
-- Tipo: articolo evergreen "Come leggere il bilancio di un club di calcio"
-- Tipo: pagine specifiche per query ad alto volume ("Bilancio Inter 2024", "Quanto vale il Milan")
-
-Rispondi SOLO con JSON valido:
-{
-  "data": "${today}",
-  "keyword_opportunities": [
-    {
-      "keyword": "query esatta",
-      "volume": "alto|medio|basso",
-      "difficolta": "alta|media|bassa",
-      "opportunita": "alta|media|bassa",
-      "note": "perché è interessante per Valore Atteso",
-      "contenuto_suggerito": "tipo di contenuto per presidiare questa keyword"
-    }
-  ],
-  "concorrenza": {
-    "siti_dominanti": ["sito 1", "sito 2"],
-    "newsletter_simili": ["newsletter 1"],
-    "gap_identificati": ["gap 1", "gap 2"]
-  },
-  "ottimizzazioni_tecniche": [
-    {
-      "elemento": "meta title|meta description|schema|altro",
-      "attuale": "valore attuale stimato",
-      "suggerito": "valore ottimizzato",
-      "priorita": "alta|media|bassa"
-    }
-  ],
-  "contenuti_suggeriti": [
-    {
-      "titolo": "titolo dell'articolo/pagina",
-      "tipo": "glossario|articolo|pagina specifica|faq",
-      "keyword_target": "keyword principale",
-      "volume_stimato": "alto|medio|basso",
-      "difficolta": "alta|media|bassa",
-      "descrizione": "di cosa tratta e perché funzionerebbe",
-      "priorita": 1
-    }
-  ],
-  "azione_prioritaria": "la singola azione più impattante da fare questa settimana",
-  "score_opportunita": 1-10
-}`;
-
-  console.log('1. Analisi SEO con web search...');
-
-  // Retry con backoff per overloaded_error
-  let claudeRes, claudeData;
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    claudeRes = await httpRequest('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    claudeData = claudeRes.json();
-    if (claudeRes.ok) break;
-    if (claudeData?.error?.type === 'overloaded_error' && attempt < 3) {
-      console.log(`Anthropic overloaded, attendo 30 secondi (tentativo ${attempt}/3)...`);
-      await new Promise(r => setTimeout(r, 30000));
-    } else {
-      throw new Error('Claude error: ' + JSON.stringify(claudeData));
-    }
-  }
-
-  const textBlocks = (claudeData.content || []).filter(b => b.type === 'text');
-  if (!textBlocks.length) throw new Error('Nessun testo nella risposta');
-
-  // Cerca JSON in tutti i blocchi di testo
-  let report = null;
-  for (const block of textBlocks) {
-    const matches = block.text.match(/\{[\s\S]*\}/g);
-    if (matches) {
-      for (const m of matches) {
-        try { report = JSON.parse(m); break; } catch(e) {}
-      }
-    }
-    if (report) break;
-  }
-  
-  // Se non trovato, chiedi a Claude di riformattare
-  if (!report) {
-    console.log('JSON non trovato nella prima risposta, richiedo riformattazione...');
-    const retry = await httpRequest('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
-        messages: [
-          { role: 'user', content: prompt },
-          ...claudeData.content.filter(b => b.type === 'text').map(b => ({ role: 'assistant', content: b.text })),
-          { role: 'user', content: 'Rispondi SOLO con il JSON valido richiesto, niente altro testo prima o dopo.' }
-        ]
-      })
-    });
-    const retryData = retry.json();
-    const retryText = (retryData.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-    const retryMatch = retryText.match(/\{[\s\S]*\}/);
-    if (!retryMatch) throw new Error('JSON non trovato nemmeno nel retry');
-    report = JSON.parse(retryMatch[0]);
-  }
-
-  console.log(`Keyword opportunities: ${report.keyword_opportunities?.length || 0}`);
-  console.log(`Contenuti suggeriti: ${report.contenuti_suggeriti?.length || 0}`);
-  console.log('Azione prioritaria:', report.azione_prioritaria);
-
-  // Costruisci email report
-  console.log('2. Costruzione report SEO...');
-
-  const oppColor = score => score >= 7 ? '#1A3A2A' : score >= 5 ? '#F5A623' : '#888480';
-  const diffBadge = d => ({ alta: '#B5221A', media: '#F5A623', bassa: '#1A3A2A' }[d] || '#888480');
-
-  const keywords_html = (report.keyword_opportunities || [])
-    .sort((a, b) => ({ alta: 3, media: 2, bassa: 1 }[b.opportunita] - { alta: 3, media: 2, bassa: 1 }[a.opportunita]))
-    .slice(0, 8)
-    .map(k => `<tr style="border-bottom:1px solid #C8C4BB">
-      <td style="padding:8px 12px;font-family:'Courier New',monospace;font-size:10px;color:#111010;font-weight:600">${k.keyword}</td>
-      <td style="padding:8px 12px;text-align:center"><span style="font-family:'Courier New',monospace;font-size:8px;color:#888480;text-transform:uppercase">${k.volume}</span></td>
-      <td style="padding:8px 12px;text-align:center"><span style="font-family:'Courier New',monospace;font-size:8px;background:${diffBadge(k.difficolta)};color:#fff;padding:2px 6px">${k.difficolta}</span></td>
-      <td style="padding:8px 12px;text-align:center"><span style="font-family:'Courier New',monospace;font-size:8px;background:${diffBadge(k.opportunita)};color:#fff;padding:2px 6px">${k.opportunita}</span></td>
-    </tr>`).join('');
-
-  const contenuti_html = (report.contenuti_suggeriti || [])
-    .sort((a, b) => a.priorita - b.priorita)
-    .slice(0, 5)
-    .map((c, i) => `<tr><td style="padding:14px 20px;border-bottom:1px solid #C8C4BB">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
-        <span style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#888480;background:#EDE9E0;padding:2px 8px">${c.tipo}</span>
-        <span style="font-family:'Courier New',monospace;font-size:8px;color:${diffBadge(c.difficolta)};font-weight:600">Difficoltà ${c.difficolta}</span>
-      </div>
-      <p style="font-family:Georgia,serif;font-size:13px;font-weight:700;margin:0 0 4px;color:#111010">${i+1}. ${c.titolo}</p>
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;margin:0 0 6px">Keyword: ${c.keyword_target} · Volume ${c.volume_stimato}</p>
-      <p style="font-family:Georgia,serif;font-size:11px;color:#3D3C39;font-weight:300;line-height:1.6;margin:0">${c.descrizione}</p>
-    </td></tr>`).join('');
-
-  const ottimizzazioni_html = (report.ottimizzazioni_tecniche || [])
-    .filter(o => o.priorita === 'alta')
-    .map(o => `<tr><td style="padding:10px 16px;border-bottom:1px solid #C8C4BB">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px">${o.elemento}</p>
-      <p style="font-family:Georgia,serif;font-size:12px;color:#111010;font-weight:300;line-height:1.5;margin:0 0 4px"><strong style="font-weight:500">Suggerito:</strong> ${o.suggerito}</p>
-      ${o.attuale ? `<p style="font-family:Georgia,serif;font-size:11px;color:#888480;font-weight:300;margin:0">Attuale: ${o.attuale}</p>` : ''}
-    </td></tr>`).join('');
-
-  const emailHTML = `<table width="620" style="max-width:620px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif">
-    <tr><td style="padding:20px 28px;background:#111010;text-align:center">
-      <h1 style="color:#F7F4EE;font-size:22px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">SEO Agent · Report settimanale · ${today}</p>
-    </td></tr>
-
-    <!-- AZIONE PRIORITARIA -->
-    <tr><td style="padding:20px 24px;background:#111010;border-top:1px solid rgba(255,255,255,.1)">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Azione prioritaria questa settimana</p>
-      <p style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#F7F4EE;margin:0 0 8px;line-height:1.3">${report.azione_prioritaria}</p>
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.4);margin:0">Score opportunità SEO: ${report.score_opportunita}/10</p>
-    </td></tr>
-
-    <!-- KEYWORD -->
-    <tr><td style="padding:0">
-      <table width="100%" style="border-collapse:collapse">
-        <tr><td colspan="4" style="padding:10px 16px;background:#EDE9E0;border-bottom:1px solid #C8C4BB">
-          <span style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#888480">Keyword opportunities — ordinate per opportunità</span>
-        </td></tr>
-        <tr style="background:#EDE9E0;border-bottom:1px solid #C8C4BB">
-          <th style="padding:6px 12px;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#888480;text-align:left">Keyword</th>
-          <th style="padding:6px 12px;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#888480;text-align:center">Volume</th>
-          <th style="padding:6px 12px;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#888480;text-align:center">Difficoltà</th>
-          <th style="padding:6px 12px;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:#888480;text-align:center">Opportunità</th>
-        </tr>
-        ${keywords_html}
-      </table>
-    </td></tr>
-
-    <!-- GAP CONCORRENZA -->
-    ${report.concorrenza?.gap_identificati?.length ? `
-    <tr><td style="padding:16px 24px;background:#EDE9E0;border-top:1px solid #C8C4BB">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Gap di contenuto identificati</p>
-      ${report.concorrenza.gap_identificati.map(g => `<p style="font-family:Georgia,serif;font-size:12px;color:#111010;font-weight:300;margin:0 0 4px">· ${g}</p>`).join('')}
-    </td></tr>` : ''}
-
-    <!-- CONTENUTI SUGGERITI -->
-    <tr><td style="padding:0;border-top:2px solid #111010">
-      <table width="100%" style="border-collapse:collapse">
-        <tr><td style="padding:10px 20px;border-bottom:1px solid #C8C4BB">
-          <span style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#888480">Contenuti da creare — priorità SEO</span>
-        </td></tr>
-        ${contenuti_html}
-      </table>
-    </td></tr>
-
-    <!-- OTTIMIZZAZIONI TECNICHE -->
-    ${ottimizzazioni_html ? `
-    <tr><td style="padding:0;border-top:2px solid #111010">
-      <table width="100%" style="border-collapse:collapse">
-        <tr><td style="padding:10px 16px;background:#EDE9E0;border-bottom:1px solid #C8C4BB">
-          <span style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#888480">Ottimizzazioni tecniche — priorità alta</span>
-        </td></tr>
-        ${ottimizzazioni_html}
-      </table>
-    </td></tr>` : ''}
-
-    <tr><td style="padding:14px 24px;border-top:1px solid #C8C4BB">
-      <p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">SEO Agent · Valore Atteso · ${today} · <a href="${SITE}" style="color:#888480">valore-atteso.vercel.app</a></p>
-    </td></tr>
-  </table>`;
-
-  console.log('3. Invio report SEO a', APPROVAL_EMAIL);
-
-  const emailRes = await httpRequest('https://api.resend.com/emails', {
+async function callClaude(messages, system) {
+  const r = await httpRequest('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + RESEND_KEY
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01'
     },
-    body: JSON.stringify({
-      from: 'Valore Atteso SEO <onboarding@resend.dev>',
-      to: APPROVAL_EMAIL,
-      subject: `SEO Agent · ${report.azione_prioritaria?.substring(0, 55) || 'Report ' + today}`,
-      html: emailHTML
-    })
+    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 2000, system, messages })
+  });
+  if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
+  const data = r.json();
+  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+}
+
+async function main() {
+  const start = Date.now();
+  console.log('SEO Agent avviato:', new Date().toISOString());
+
+  const system = `Sei il SEO Agent di Valore Atteso, newsletter sul business del calcio.
+Analizza le opportunità SEO per il sito e il glossario.
+
+Rispondi SOLO in JSON:
+{
+  "keyword_prioritarie": [
+    {
+      "keyword": "...",
+      "volume_stimato": "alto|medio|basso",
+      "difficolta": "alta|media|bassa",
+      "intento": "informativo|navigazionale|transazionale",
+      "pagina_suggerita": "glossario|articolo|home",
+      "titolo_suggerito": "..."
+    }
+  ],
+  "opportunita_glossario": ["termine1", "termine2"],
+  "titoli_articoli_suggeriti": ["titolo1", "titolo2", "titolo3"],
+  "note": "..."
+}`;
+
+  const oggi = new Date().toLocaleDateString('it-IT');
+  const testo = await callClaude([{
+    role: 'user',
+    content: `Oggi è ${oggi}. Analizza le opportunità SEO per Valore Atteso — newsletter italiana sul business del calcio. Focus su keyword long-tail nel settore corporate finance applicato al calcio. Considera il glossario già presente sul sito con termini come EBITDA calcio, player trading, salary ratio, stadium yield, LBO calcio.`
+  }], system);
+
+  let report;
+  try {
+    const match = testo.match(/\{[\s\S]*\}/);
+    report = JSON.parse(match[0]);
+  } catch {
+    // Retry
+    const retry = await callClaude([
+      { role: 'user', content: `Oggi è ${oggi}. Analizza keyword SEO per Valore Atteso.` },
+      { role: 'assistant', content: testo },
+      { role: 'user', content: 'Rispondi SOLO con il JSON, nessun testo prima o dopo.' }
+    ], system);
+    const match2 = retry.match(/\{[\s\S]*\}/);
+    if (!match2) throw new Error('JSON SEO non trovato');
+    report = JSON.parse(match2[0]);
+  }
+
+  // Salva keyword per l'Editoriale Agent
+  await memSet('seo_keywords', report.keyword_prioritarie, 'seo');
+  await memSet('seo_report', report, 'seo');
+
+  console.log('Report SEO salvato. Keyword trovate:', report.keyword_prioritarie?.length);
+
+  // Email report
+  const kwHTML = report.keyword_prioritarie?.slice(0, 8).map(k => `
+    <tr>
+      <td style="padding:8px 12px;border-bottom:1px solid #E2DDD4;font-family:'Courier New',monospace;font-size:11px;color:#1A1A1A">${k.keyword}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #E2DDD4;font-family:'Courier New',monospace;font-size:10px;color:#9A9690;text-align:center">${k.volume_stimato}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #E2DDD4;font-family:'Courier New',monospace;font-size:10px;color:#9A9690;text-align:center">${k.difficolta}</td>
+      <td style="padding:8px 12px;border-bottom:1px solid #E2DDD4;font-family:'Courier New',monospace;font-size:10px;color:#1B4332">${k.pagina_suggerita}</td>
+    </tr>`).join('') || '';
+
+  const html = `
+    <table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB">
+      <tr><td style="padding:20px 24px;background:#1A1A1A">
+        <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#fff">Valore Atteso</div>
+        <div style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">SEO Agent · Report ${oggi}</div>
+      </td></tr>
+      <tr><td style="padding:16px 24px">
+        <div style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">Keyword prioritarie</div>
+        <table width="100%" style="border-collapse:collapse;font-size:11px">
+          <tr style="background:#EDE9E0">
+            <th style="padding:8px 12px;text-align:left;font-family:'Courier New',monospace;font-size:9px;color:#9A9690;font-weight:400">Keyword</th>
+            <th style="padding:8px 12px;font-family:'Courier New',monospace;font-size:9px;color:#9A9690;font-weight:400">Volume</th>
+            <th style="padding:8px 12px;font-family:'Courier New',monospace;font-size:9px;color:#9A9690;font-weight:400">Difficoltà</th>
+            <th style="padding:8px 12px;font-family:'Courier New',monospace;font-size:9px;color:#9A9690;font-weight:400">Pagina</th>
+          </tr>
+          ${kwHTML}
+        </table>
+      </td></tr>
+      ${report.titoli_articoli_suggeriti?.length ? `
+      <tr><td style="padding:0 24px 16px">
+        <div style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Articoli suggeriti</div>
+        ${report.titoli_articoli_suggeriti.map(t => `<div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;padding:4px 0;border-bottom:1px solid #E2DDD4">→ ${t}</div>`).join('')}
+      </td></tr>` : ''}
+      <tr><td style="padding:12px 24px;border-top:1px solid #D0CBC0">
+        <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690">Keyword salvate su Supabase · disponibili per l'Editoriale Agent</div>
+      </td></tr>
+    </table>`;
+
+  await httpRequest('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `SEO Agent VA · ${report.keyword_prioritarie?.length || 0} keyword`, html })
   });
 
-  console.log('Report inviato, status:', emailRes.status);
+  await logRun('seo', 'success', `${report.keyword_prioritarie?.length || 0} keyword trovate`, report, Date.now() - start);
   console.log('SEO Agent completato.');
 }
 
-main().catch(e => { console.error('ERRORE SEO Agent:', e.message); process.exit(1); });
+main().catch(async e => {
+  console.error('ERRORE SEO Agent:', e.message);
+  await logRun('seo', 'error', e.message).catch(() => {});
+  process.exit(1);
+});
