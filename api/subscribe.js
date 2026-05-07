@@ -13,6 +13,18 @@ export default async function handler(req, res) {
 
   const { email, action, token } = req.body || {};
 
+  const emailFooter = (email) => `
+    <tr>
+      <td style="padding:14px 28px;border-top:1px solid #C8C4BB;text-align:center">
+        <p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0 0 6px;letter-spacing:.04em">
+          © 2025 Valore Atteso · <a href="${SITE}" style="color:#888480;text-decoration:none">valore-atteso.vercel.app</a>
+        </p>
+        <p style="font-family:'Courier New',monospace;font-size:8px;color:#aaa;margin:0;letter-spacing:.04em">
+          <a href="${SITE}/cancella.html?email=${encodeURIComponent(email)}" style="color:#aaa;text-decoration:underline">Cancella iscrizione</a>
+        </p>
+      </td>
+    </tr>`;
+
   // CONFERMA iscrizione
   if (action === 'conferma' && token) {
     const r = await fetch(`${SUPA_URL}/rest/v1/subscribers?token=eq.${token}`, {
@@ -35,7 +47,18 @@ export default async function handler(req, res) {
         from: FROM,
         to: rows[0].email,
         subject: 'Benvenuto in Valore Atteso',
-        html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif"><tr><td style="padding:24px 28px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-family:Georgia,serif;font-size:28px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal</p></td></tr><tr><td style="padding:28px"><p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#3D3C39;line-height:1.75;margin:0 0 16px">Benvenuto.</p><p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#3D3C39;line-height:1.75;margin:0 0 20px">Ogni martedì mattina riceverai un'analisi del business del calcio — un bilancio, un deal, una metrica — in 8 minuti. Dati verificati, nessun gossip di mercato.</p><a href="${SITE}" style="background:#111010;color:#F7F4EE;padding:12px 24px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Leggi la prima edizione →</a></td></tr><tr><td style="padding:14px 28px;border-top:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">© 2025 Valore Atteso · <a href="${SITE}" style="color:#888480">valore-atteso.vercel.app</a></p></td></tr></table>`
+        html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif">
+          <tr><td style="padding:24px 28px;border-bottom:2px solid #1A1A1A;text-align:center">
+            <h1 style="font-family:Georgia,serif;font-size:28px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
+            <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal</p>
+          </td></tr>
+          <tr><td style="padding:28px">
+            <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 16px">Benvenuto.</p>
+            <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 20px">Ogni martedì mattina riceverai un'analisi del business del calcio — un bilancio, un deal, una metrica — in 8 minuti. Dati verificati, nessun gossip di mercato.</p>
+            <a href="${SITE}" style="background:#1A1A1A;color:#F5F2EB;padding:12px 24px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Leggi la prima edizione →</a>
+          </td></tr>
+          ${emailFooter(rows[0].email)}
+        </table>`
       })
     }).catch(e => console.error('Welcome email error:', e));
 
@@ -72,7 +95,20 @@ export default async function handler(req, res) {
       from: FROM,
       to: email,
       subject: 'Conferma la tua iscrizione a Valore Atteso',
-      html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif"><tr><td style="padding:24px 28px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-family:Georgia,serif;font-size:28px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal</p></td></tr><tr><td style="padding:28px"><p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#3D3C39;line-height:1.75;margin:0 0 20px">Ciao, clicca il link qui sotto per completare l'iscrizione:</p><table width="100%"><tr><td style="text-align:center;padding:8px 0 24px"><a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" style="background:#111010;color:#F7F4EE;padding:14px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Conferma iscrizione →</a></td></tr></table><p style="font-family:Georgia,serif;font-size:13px;font-weight:300;color:#888480;line-height:1.6;margin:0">Il link scade fra 7 giorni. Se non sei stato tu, ignora questa email.</p></td></tr><tr><td style="padding:14px 28px;border-top:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">© 2025 Valore Atteso</p></td></tr></table>`
+      html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif">
+        <tr><td style="padding:24px 28px;border-bottom:2px solid #1A1A1A;text-align:center">
+          <h1 style="font-family:Georgia,serif;font-size:28px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
+          <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal</p>
+        </td></tr>
+        <tr><td style="padding:28px">
+          <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 20px">Ciao, clicca il link qui sotto per completare l'iscrizione:</p>
+          <table width="100%"><tr><td style="text-align:center;padding:8px 0 24px">
+            <a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" style="background:#C8251D;color:#fff;padding:14px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Conferma iscrizione →</a>
+          </td></tr></table>
+          <p style="font-family:Georgia,serif;font-size:13px;font-weight:300;color:#888480;line-height:1.6;margin:0">Il link scade fra 7 giorni. Se non sei stato tu, ignora questa email.</p>
+        </td></tr>
+        ${emailFooter(email)}
+      </table>`
     })
   });
 
