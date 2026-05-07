@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const SUPA_URL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
   const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
   const SITE = 'https://valore-atteso.vercel.app';
-  const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+  const FROM = 'Valore Atteso <newsletter@valoreatteso.com>';
 
   const { email, action, token } = req.body || {};
 
