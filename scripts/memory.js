@@ -15,7 +15,9 @@ async function supaFetch(path, opts = {}) {
     }
   });
   if (!r.ok) throw new Error(`Supabase ${path}: ${r.status} ${await r.text()}`);
-  return r.json();
+  const text = await r.text();
+  if (!text || text.trim() === '') return null;
+  return JSON.parse(text);
 }
 
 // Legge un valore dalla memoria condivisa
