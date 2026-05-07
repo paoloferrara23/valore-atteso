@@ -7,7 +7,7 @@ const RESEND_KEY = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL = process.env.SUPABASE_URL;
 const SUPA_KEY = process.env.SUPABASE_KEY;
-const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+const FROM = 'Valore Atteso <info@valoreatteso.com>';
 
 async function supaFetch(path) {
   const r = await fetch(`${SUPA_URL}${path}`, {
