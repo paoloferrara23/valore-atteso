@@ -1,0 +1,19 @@
+name: Growth Agent
+
+on:
+  schedule:
+    - cron: '0 7 * * 3'  # Mercoledì 8:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  growth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Analizza crescita iscritti
+        env:
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+        run: node scripts/growth-agent.js
