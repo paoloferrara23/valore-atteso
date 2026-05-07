@@ -443,43 +443,43 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 .cr-ctx-v.ok{color:#7FCF97}
 /* REDAZIONE */
 .cr-red-config{display:grid;grid-template-columns:1fr 260px;gap:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:20px}
-.cr-red-title{font-family:var(--dp);font-size:1.4rem;font-weight:900;letter-spacing:-.5px;color:#fff;margin-bottom:7px}
-.cr-red-desc{font-family:var(--sf);font-size:13px;color:rgba(255,255,255,.4);font-weight:300;line-height:1.7;margin-bottom:14px}
-.cr-mode-opt{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid rgba(255,255,255,.1);cursor:pointer;margin-bottom:7px;transition:all .12s}
-.cr-mode-opt:hover,.cr-mode-opt.on{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04)}
+.cr-red-title{font-family:var(--dp);font-size:1.4rem;font-weight:900;letter-spacing:-.5px;color:var(--ink);margin-bottom:7px}
+.cr-red-desc{font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.7;margin-bottom:14px}
+.cr-mode-opt{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--rule);background:#fff;cursor:pointer;margin-bottom:7px;transition:all .12s;border-radius:4px}
+.cr-mode-opt:hover,.cr-mode-opt.on{border-color:var(--ink);background:var(--cream2)}
 .cr-mode-opt input{display:none}
-.cr-mo-tag{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:2px}
-.cr-mo-title{font-family:var(--sf);font-size:12px;color:#fff}
+.cr-mo-tag{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.cr-mo-title{font-family:var(--sf);font-size:12px;color:var(--ink)}
 .cr-hint-wrap{margin-top:8px;display:none}
-.cr-hint-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:4px}
-.cr-hint-input{width:100%;height:32px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);padding:0 10px;font-family:var(--sf);font-size:12px;color:#fff;outline:none}
+.cr-hint-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.cr-hint-input{width:100%;height:32px;border:1px solid var(--rule);background:var(--cream);padding:0 10px;font-family:var(--sf);font-size:12px;color:var(--ink);outline:none;border-radius:3px}
 .cr-hint-input::placeholder{color:rgba(255,255,255,.18);font-size:11px;font-style:italic}
-.cr-side-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,.06)}
-.cr-side-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-family:var(--mn);font-size:8px}
-.cr-side-row span:first-child{color:rgba(255,255,255,.25)}
-.cr-side-row span:last-child{color:rgba(255,255,255,.6);font-weight:500}
+.cr-side-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid var(--rule)}
+.cr-side-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--rule);font-family:var(--mn);font-size:8px}
+.cr-side-row span:first-child{color:var(--ink3)}
+.cr-side-row span:last-child{color:var(--ink);font-weight:500}
 .cr-apikey-wrap{margin:10px 0 8px}
-.cr-apikey-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:4px;display:flex;justify-content:space-between}
-.cr-apikey-label a{color:rgba(255,255,255,.15);text-decoration:none}
-.cr-apikey-input{width:100%;height:32px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);padding:0 10px;font-family:var(--mn);font-size:9px;color:#fff;outline:none}
+.cr-apikey-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;display:flex;justify-content:space-between}
+.cr-apikey-label a{color:var(--ink3);text-decoration:underline}
+.cr-apikey-input{width:100%;height:32px;border:1px solid var(--rule);background:var(--cream);padding:0 10px;font-family:var(--mn);font-size:9px;color:var(--ink);outline:none;border-radius:3px}
 .cr-btn-gen{width:100%;height:40px;background:rgba(255,255,255,.9);color:#111;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;margin-top:6px;transition:opacity .15s}
 .cr-btn-gen:hover{opacity:.85}
 .cr-btn-gen:disabled{opacity:.3;cursor:not-allowed}
-.cr-prog-wrap{display:none;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);margin-bottom:18px}
-.cr-prog-hd{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-family:var(--mn);font-size:8px;letter-spacing:.08em;color:rgba(255,255,255,.3)}
+.cr-prog-wrap{display:none;border:1px solid var(--rule);background:var(--cream2);margin-bottom:18px;border-radius:6px}
+.cr-prog-hd{padding:8px 12px;border-bottom:1px solid var(--rule);font-family:var(--mn);font-size:8px;letter-spacing:.08em;color:var(--ink3)}
 .cr-prog-steps{padding:12px}
-.cr-ps{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);opacity:.2;transition:opacity .3s}
+.cr-ps{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--rule);opacity:.3;transition:opacity .3s}
 .cr-ps:last-child{border-bottom:none}
 .cr-ps.active{opacity:1}.cr-ps.done{opacity:.5}
-.cr-ps-ic{width:16px;height:16px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:6px;flex-shrink:0;margin-top:1px;color:rgba(255,255,255,.3)}
-.cr-ps.active .cr-ps-ic{border-color:#fff;color:#fff;animation:spin .8s linear infinite}
+.cr-ps-ic{width:16px;height:16px;border-radius:50%;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:6px;flex-shrink:0;margin-top:1px;color:var(--ink3)}
+.cr-ps.active .cr-ps-ic{border-color:var(--ink);color:var(--ink);animation:spin .8s linear infinite}
 .cr-ps.done .cr-ps-ic{border-color:#7FCF97;color:#7FCF97;animation:none}
-.cr-ps-text{font-family:var(--sf);font-size:11px;color:rgba(255,255,255,.6);font-weight:300;line-height:1.5}
-.cr-ps-sub{font-family:var(--mn);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.04em;margin-top:1px}
+.cr-ps-text{font-family:var(--sf);font-size:11px;color:var(--ink2);font-weight:300;line-height:1.5}
+.cr-ps-sub{font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.04em;margin-top:1px}
 .cr-err-box{padding:10px 14px;border:1px solid rgba(181,34,26,.3);background:rgba(181,34,26,.07);font-family:var(--mn);font-size:8px;color:#f28472;letter-spacing:.04em;line-height:1.7;margin-bottom:14px;display:none}
 .cr-out-wrap{display:none}
-.cr-out-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-bottom:none}
-.cr-out-bar-l{display:flex;align-items:center;gap:7px;font-family:var(--mn);font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.04em}
+.cr-out-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--cream2);border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0}
+.cr-out-bar-l{display:flex;align-items:center;gap:7px;font-family:var(--mn);font-size:8px;color:var(--ink2);letter-spacing:.04em}
 .cr-out-bar-r{display:flex;gap:6px}
 .cr-btn-sm{height:26px;padding:0 10px;border:1px solid rgba(255,255,255,.1);background:none;font-family:var(--mn);font-size:7px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,.35);transition:all .12s}
 .cr-btn-sm:hover{border-color:rgba(255,255,255,.3);color:#fff}
@@ -1393,6 +1393,31 @@ function crRenderPreview(data){
   document.getElementById('cr-out-wrap').style.display='block';
 }
 
+async function crSendExisting(){
+  const num=document.getElementById('cr-send-num').value.trim();
+  if(!num){document.getElementById('cr-send-num').focus();return;}
+  const btn=event.target;
+  const ps=document.getElementById('cr-send-status');
+  btn.disabled=true;btn.textContent='Invio in corso…';
+  ps.style.display='none';
+  try{
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num.padStart(3,'0')})});
+    const d=await r.json();
+    ps.style.display='block';
+    if(r.ok&&d.ok){
+      ps.style.background='var(--gpal)';ps.style.color='var(--green)';ps.style.borderLeft='3px solid var(--green)';
+      ps.innerHTML=`✓ Edizione ${d.edition} inviata a <strong>${d.sent}</strong> iscritti.${d.errors>0?' ⚠ '+d.errors+' errori.':''}`;
+    }else{
+      ps.style.background='rgba(200,37,29,.06)';ps.style.color='var(--red)';ps.style.borderLeft='3px solid var(--red)';
+      ps.innerHTML='Errore: '+(d.error||r.status);
+    }
+  }catch(e){
+    ps.style.display='block';ps.style.background='rgba(200,37,29,.06)';ps.style.color='var(--red)';ps.style.borderLeft='3px solid var(--red)';
+    ps.innerHTML='Errore connessione: '+e.message;
+  }
+  btn.disabled=false;btn.textContent='Invia ora →';
+}
+
 async function crPubblica(){
   if(!crCurrentData){return;}
   const btn=document.getElementById('cr-pub-btn');const ps=document.getElementById('cr-pub-status');
@@ -1403,22 +1428,37 @@ async function crPubblica(){
   const opener=preview.querySelector('.cr-nl-opener-text');
   const sections=(crCurrentData.sections||[]).map((s,i)=>({...s,title:titles[i]?.innerText||s.title,body:bodies[i]?.innerText||s.body}));
   const openerText=opener?.innerText||crCurrentData.opener;
-  let errs=[];
+  let editionId=null;
+
+  // 1. Salva su Supabase
   try{
-    const r=await fetch(SURL+'/rest/v1/editions',{method:'POST',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'},body:JSON.stringify({...crCurrentData,sections,opener:openerText,published:true,tags:sections.map(s=>s.label)})});
-    if(!r.ok)errs.push('Supabase HTTP '+r.status);
-  }catch(e){errs.push('Supabase: '+e.message);}
+    const r=await fetch(SURL+'/rest/v1/editions',{method:'POST',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=representation'},body:JSON.stringify({...crCurrentData,sections,opener:openerText,published:true,tags:sections.map(s=>s.label)})});
+    const saved=await r.json();
+    editionId=saved[0]?.id;
+    if(!r.ok||!editionId) throw new Error('Errore salvataggio Supabase');
+  }catch(e){
+    btn.disabled=false;btn.textContent='Pubblica + Invia →';
+    ps.style.display='block';ps.className='cr-pub-status err';ps.innerHTML='Errore salvataggio: '+e.message;
+    return;
+  }
+
+  // 2. Invia via endpoint server-side
   try{
-    const sr=await fetch(SURL+'/rest/v1/subscribers?confirmed=eq.true&select=email',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    const subs=await sr.json();
-    const shtml=sections.map((s,i)=>`<tr><td style="padding:14px 20px;border-bottom:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:8px;color:#B5221A;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">0${i+1} · ${s.label}</p><h3 style="font-family:Georgia,serif;font-size:14px;font-weight:700;margin:0 0 6px">${s.title}</h3><p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.7;margin:0 0 6px">${(s.body||'').replace(/\n/g,'<br>')}</p><p style="font-family:'Courier New',monospace;font-size:7px;color:#B5221A;margin:0">${s.verdict}</p></td></tr>`).join('');
-    const ehtml=`<table width="560" style="max-width:560px;margin:0 auto;background:#F7F4EE"><tr><td style="padding:16px 20px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;letter-spacing:.14em;text-transform:uppercase;margin:3px 0 0">Edizione #${crCurrentData.edition_num} · ${crCurrentData.date}</p></td></tr><tr><td style="padding:12px 20px;background:#EDE9E0;border-bottom:1px solid #C8C4BB"><p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.75;font-style:italic;margin:0">${openerText}</p></td></tr>${shtml}<tr><td style="padding:12px 20px;border-top:1px solid #C8C4BB;text-align:center"><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">© 2025 Valore Atteso · valore-atteso.vercel.app</p></td></tr></table>`;
-    let inv=0;
-    for(const sub of subs){await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+CR_RESEND},body:JSON.stringify({from:'Valore Atteso <info@valoreatteso.com>',to:sub.email,subject:'Valore Atteso #'+crCurrentData.edition_num+' — '+crCurrentData.title,html:ehtml})}).catch(()=>{});inv++;}
-  }catch(e){errs.push('Resend: '+e.message);}
-  btn.disabled=false;btn.textContent='Pubblica + Invia →';ps.style.display='block';
-  if(errs.length===0){ps.className='cr-pub-status ok';ps.innerHTML='✓ Pubblicata sul sito e inviata agli iscritti.';}
-  else{ps.className='cr-pub-status err';ps.innerHTML='Errori: '+errs.join(' · ');}
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_id:editionId})});
+    const d=await r.json();
+    btn.disabled=false;btn.textContent='Pubblica + Invia →';
+    ps.style.display='block';
+    if(r.ok&&d.ok){
+      ps.className='cr-pub-status ok';
+      ps.innerHTML=`✓ Pubblicata e inviata a <strong>${d.sent}</strong> iscritti.${d.errors>0?' ⚠ '+d.errors+' errori.':''}`;
+    }else{
+      ps.className='cr-pub-status err';
+      ps.innerHTML='Errore invio: '+(d.error||r.status);
+    }
+  }catch(e){
+    btn.disabled=false;btn.textContent='Pubblica + Invia →';
+    ps.style.display='block';ps.className='cr-pub-status err';ps.innerHTML='Errore connessione: '+e.message;
+  }
   crLoadCtx();
 }
 // ══════════════ END CONTROL ROOM ══════════════
@@ -1462,6 +1502,19 @@ async function crPubblica(){
         <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val g">Live</div><div class="cr-card-sub">vercel.app</div></div>
         <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:.9rem;margin-top:4px">Vercel · Supa · Resend</div><div class="cr-card-sub">GitHub Actions attivi</div></div>
       </div>
+      <!-- INVIA EDIZIONE ESISTENTE -->
+      <div class="cr-sec-title">Invia edizione agli iscritti</div>
+      <div style="border:1px solid var(--rule);border-radius:8px;padding:16px;background:#fff;margin-bottom:24px">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:200px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px">Numero edizione</div>
+            <input type="text" id="cr-send-num" placeholder="es. 001" style="width:100%;height:36px;border:1px solid var(--rule);background:var(--cream);padding:0 10px;font-family:var(--mn);font-size:12px;color:var(--ink);outline:none;border-radius:4px">
+          </div>
+          <button onclick="crSendExisting()" style="height:36px;padding:0 20px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:4px;margin-top:20px">Invia ora →</button>
+        </div>
+        <div id="cr-send-status" style="display:none;margin-top:10px;padding:8px 12px;font-family:var(--mn);font-size:9px;letter-spacing:.04em;border-radius:4px"></div>
+      </div>
+
       <div class="cr-sec-title">Agenti attivi</div>
       <div class="cr-agents" style="grid-template-columns:1fr 1fr">
         <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Scout</div><div class="cr-agent-desc">Sabato 7:00 · Trova i 5 temi CF più rilevanti della settimana · Salva su Supabase per l'Editoriale</div></div></div>
@@ -1474,7 +1527,7 @@ async function crPubblica(){
 
       <!-- ORGANIGRAMMA -->
       <div class="cr-sec-title" style="margin-top:24px">Struttura sistema</div>
-      <div style="border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;padding:16px">
+      <div style="border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;padding:8px;max-width:600px;margin:0 auto">
         <svg width="100%" viewBox="0 0 680 660" role="img">
           <title>Organigramma Valore Atteso</title>
           <defs><marker id="crarrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
