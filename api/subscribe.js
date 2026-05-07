@@ -75,12 +75,25 @@ export default async function handler(req, res) {
 
       if (edition && edition.sections?.length) {
         const secsHTML = edition.sections.map((s, i) => `
-          <tr><td style="padding:14px 20px;border-bottom:1px solid #D0CBC0">
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">0${i+1} · ${s.label}</p>
-            <h3 style="font-family:Georgia,serif;font-size:14px;font-weight:700;margin:0 0 6px">${s.title}</h3>
-            <p style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.75;margin:0 0 8px">${(s.body || '').replace(/\n/g, '<br>')}</p>
-            ${s.kpis?.length ? `<table width="100%" style="border-collapse:collapse;font-family:'Courier New',monospace;font-size:10px;background:#EDE9E0;margin-bottom:8px">${s.kpis.map(k => `<tr><td style="padding:4px 10px;color:#9A9690">${k.key}</td><td style="padding:4px 10px;text-align:right;color:#1A1A1A;font-weight:500">${k.value}</td></tr>`).join('')}</table>` : ''}
-            <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin:0">→ ${s.verdict}</p>
+          <tr><td style="padding:0">
+            <table width="100%" style="border-collapse:collapse">
+              <tr><td style="padding:16px 24px 6px;background:#F5F2EB">
+                <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;letter-spacing:.14em;text-transform:uppercase;margin:0">&#8212; 0${i+1} &middot; ${s.label}</p>
+              </td></tr>
+              <tr><td style="padding:6px 24px 12px;background:#F5F2EB;border-bottom:1px solid #D0CBC0">
+                <h2 style="font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:-.3px;line-height:1.25;color:#1A1A1A;margin:0 0 10px">${s.title}</h2>
+                <p style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.8;margin:0">${(s.body || '').replace(/\n/g, '<br>')}</p>
+              </td></tr>
+              ${s.kpis?.length ? `<tr><td style="padding:0;background:#EDE9E0;border-bottom:1px solid #D0CBC0">
+                <table width="100%" style="border-collapse:collapse;font-family:'Courier New',monospace;font-size:10px">
+                  <tr style="background:#D0CBC0"><td colspan="2" style="padding:6px 24px;font-size:8px;color:#1A1A1A;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Dati chiave</td></tr>
+                  ${s.kpis.map((k,ki) => `<tr style="background:${ki%2===0?'#EDE9E0':'#E6E1D8'}"><td style="padding:7px 24px;color:#4A4845;font-size:10px">${k.key}</td><td style="padding:7px 24px;text-align:right;color:#1A1A1A;font-weight:700;font-size:11px">${k.value}</td></tr>`).join('')}
+                </table>
+              </td></tr>` : ''}
+              <tr><td style="padding:10px 24px 18px;background:#F5F2EB;border-bottom:2px solid #D0CBC0">
+                <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin:0;letter-spacing:.06em">&#8594; ${s.verdict}</p>
+              </td></tr>
+            </table>
           </td></tr>`).join('');
 
         await fetch('https://api.resend.com/emails', {
@@ -90,16 +103,21 @@ export default async function handler(req, res) {
             from: FROM,
             to: userEmail,
             subject: `Valore Atteso #${edition.num} — ${edition.title}`,
-            html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif">
-              <tr><td style="padding:20px 24px;border-bottom:2px solid #1A1A1A;text-align:center">
-                <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.14em;text-transform:uppercase;margin:3px 0 0">Edizione #${edition.num} · ${edition.date}</p>
+            html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
+              <tr><td style="padding:24px 28px;border-bottom:3px solid #1A1A1A;text-align:center;background:#F5F2EB">
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px">${edition.date}</p>
+                <h1 style="font-family:Georgia,serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#1A1A1A;margin:0 0 4px;line-height:1">Valore Atteso</h1>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal &middot; Edizione #${edition.num}</p>
               </td></tr>
-              ${edition.opener ? `<tr><td style="padding:14px 20px;background:#EDE9E0;border-bottom:1px solid #D0CBC0"><p style="font-family:Georgia,serif;font-size:14px;color:#4A4845;font-weight:300;line-height:1.75;font-style:italic;margin:0">${edition.opener}</p></td></tr>` : ''}
-              <table width="100%" style="border-collapse:collapse">${secsHTML}</table>
-              <tr><td style="padding:12px 20px;border-top:1px solid #D0CBC0;text-align:center">
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0">© 2025 Valore Atteso · <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#bbb;margin:4px 0 0"><a href="https://valoreatteso.com/cancella.html?email=${encodeURIComponent(userEmail)}" style="color:#bbb;text-decoration:underline">Cancella iscrizione</a></p>
+              ${edition.opener ? `<tr><td style="padding:16px 28px;background:#EDE9E0;border-bottom:1px solid #D0CBC0;border-left:3px solid #1A1A1A"><p style="font-family:Georgia,serif;font-size:14px;color:#4A4845;font-weight:300;line-height:1.8;font-style:italic;margin:0">${edition.opener}</p></td></tr>` : ''}
+              <tr><td style="padding:0"><table width="100%" style="border-collapse:collapse">${secsHTML}</table></td></tr>
+              <tr><td style="padding:24px 28px;text-align:center;border-top:2px solid #1A1A1A;background:#1A1A1A">
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
+                <a href="https://valoreatteso.com" style="background:#F5F2EB;color:#1A1A1A;padding:12px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:inline-block;font-weight:500">Leggi sul sito &#8594;</a>
+              </td></tr>
+              <tr><td style="padding:14px 28px;border-top:1px solid #D0CBC0;text-align:center;background:#EDE9E0">
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0 0 4px">&copy; 2025 Valore Atteso &middot; <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8C4BB;margin:0"><a href="https://valoreatteso.com/cancella.html?email=${encodeURIComponent(userEmail)}" style="color:#C8C4BB;text-decoration:underline">Cancella iscrizione</a></p>
               </td></tr>
             </table>`
           })
