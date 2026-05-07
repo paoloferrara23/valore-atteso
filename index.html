@@ -34,6 +34,18 @@ html{scroll-behavior:smooth}
 }
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
 
+/* HAMBURGER MENU */
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.ham span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .25s}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:50px;left:0;right:0;background:var(--cream);border-bottom:2px solid var(--ink);z-index:199;padding:16px 24px;flex-direction:column;gap:0;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.mobile-menu.open{display:flex}
+.mobile-menu a,.mobile-menu span{font-family:var(--mn);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--rule);cursor:pointer;display:block}
+.mobile-menu a:last-child,.mobile-menu span:last-child{border-bottom:none}
+.mobile-menu .mob-cta{background:var(--red);color:#fff;padding:12px 20px;border-radius:3px;text-align:center;margin-top:12px;border-bottom:none!important;letter-spacing:.1em}
+
 /* NAV */
 nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule);box-shadow:0 1px 12px rgba(0,0,0,.06)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:50px}
@@ -370,6 +382,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   .pcol:last-child{border-bottom:none}
   .cta-form{flex-direction:column}
   .nav-links .nav-a:not(.nav-cta){display:none}
+  .ham{display:flex}
+  .nav-cta{display:none}
 }
 
 
@@ -580,8 +594,20 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       <a class="nav-a" onclick="go('about')">About</a>
       <button class="nav-cta" onclick="scrollForm()">Iscriviti gratis →</button>
     </div>
+    <button class="ham" id="ham-btn" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <span onclick="go('home');closeMenu()">Home</span>
+  <span onclick="go('archivio');closeMenu()">Archivio</span>
+  <a href="/glossario.html" onclick="closeMenu()">Glossario</a>
+  <span onclick="go('about');closeMenu()">About</span>
+  <span class="mob-cta" onclick="scrollForm();closeMenu()">Iscriviti gratis →</span>
+</div>
 
 <!-- ═══ HOME ═══ -->
 
@@ -997,6 +1023,17 @@ function toggleBtn(btnId, checkId) {
   btn.disabled = !checked;
   btn.style.opacity = checked ? '1' : '.4';
   btn.style.cursor = checked ? 'pointer' : 'not-allowed';
+}
+
+function toggleMenu(){
+  const btn=document.getElementById('ham-btn');
+  const menu=document.getElementById('mobile-menu');
+  btn.classList.toggle('open');
+  menu.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('ham-btn').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
 }
 
 function go(p){
