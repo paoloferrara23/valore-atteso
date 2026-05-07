@@ -30,7 +30,7 @@ async function memGet(key) {
 
 // Scrive un valore nella memoria condivisa
 async function memSet(key, value, writtenBy) {
-  await supaFetch('/rest/v1/agent_memory', {
+  await supaFetch('/rest/v1/agent_memory?on_conflict=key', {
     method: 'POST',
     headers: {
       'Prefer': 'resolution=merge-duplicates,return=minimal'
