@@ -32,7 +32,9 @@ async function memGet(key) {
 async function memSet(key, value, writtenBy) {
   await supaFetch('/rest/v1/agent_memory', {
     method: 'POST',
-    headers: { 'Prefer': 'resolution=merge-duplicates' },
+    headers: {
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
     body: JSON.stringify({ key, value, written_by: writtenBy, updated_at: new Date().toISOString() })
   });
 }
