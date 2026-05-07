@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Valore Atteso</title>
+<meta name="description" content="Privacy Policy di Valore Atteso, la newsletter sul business del calcio.">
+<meta property="og:title" content="Privacy Policy — Valore Atteso">
+<meta property="og:description" content="Come trattiamo i tuoi dati. In modo semplice e trasparente.">
+<meta property="og:url" content="https://valore-atteso.vercel.app/privacy.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F2EB;--cream2:#EDE9E0;--cream3:#E2DDD4;
+  --ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
+  --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;
+  --dp:'Playfair Display',Georgia,serif;
+  --sf:'Source Serif 4',Georgia,serif;
+  --mn:'JetBrains Mono',monospace;
+  --max:720px;
+}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule);box-shadow:0 1px 12px rgba(0,0,0,.06)}
+.nav{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:50px}
+.nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+.nav-back{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .15s}
+.nav-back:hover{color:var(--red)}
+
+/* CONTENT */
+.wrap{max-width:var(--max);margin:0 auto;padding:56px 24px 80px}
+
+.page-label{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.page-title{font-family:var(--dp);font-size:clamp(2rem,5vw,3rem);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px}
+.page-date{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.06em;margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
+
+/* SOMMARIO */
+.summary{background:var(--cream2);border-left:4px solid var(--green);padding:20px 24px;margin-bottom:48px;border-radius:0 6px 6px 0}
+.summary-title{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.summary p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;line-height:1.75}
+.summary strong{color:var(--ink);font-weight:400}
+
+/* SEZIONI */
+.section{margin-bottom:44px}
+.section h2{font-family:var(--dp);font-size:1.3rem;font-weight:700;letter-spacing:-.3px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.section h3{font-family:var(--dp);font-size:1rem;font-weight:700;margin:20px 0 8px}
+.section p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;line-height:1.8;margin-bottom:14px}
+.section p:last-child{margin-bottom:0}
+.section ul{list-style:none;margin:0 0 14px}
+.section ul li{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;padding:7px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start;line-height:1.55}
+.section ul li:last-child{border-bottom:none}
+.section ul li::before{content:'→';color:var(--red);flex-shrink:0;font-family:var(--mn);font-size:11px;margin-top:2px}
+.section a{color:var(--red);text-decoration:none}
+.section a:hover{text-decoration:underline}
+
+/* TABELLA */
+.table-wrap{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:11px}
+th{background:var(--ink);color:#fff;padding:10px 14px;text-align:left;letter-spacing:.06em;font-weight:500}
+td{padding:10px 14px;border-bottom:1px solid var(--rule);color:var(--ink2);font-family:var(--sf);font-size:13px;font-weight:300;line-height:1.5}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--cream2)}
+
+/* CONTACT BOX */
+.contact-box{background:var(--ink);color:#fff;padding:28px;border-radius:6px;margin-top:48px}
+.contact-box .label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.contact-box h3{font-family:var(--dp);font-size:1.2rem;font-weight:700;margin-bottom:12px}
+.contact-box p{font-family:var(--sf);font-size:14px;color:rgba(255,255,255,.65);font-weight:300;line-height:1.7;margin-bottom:8px}
+.contact-box a{color:rgba(255,255,255,.65);text-decoration:underline}
+
+/* FOOTER */
+footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
+.footer-in{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-logo{font-family:var(--dp);font-size:16px;font-weight:700;letter-spacing:-.3px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+.footer-r{font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav">
+    <a class="nav-logo" href="/">Valore Atteso</a>
+    <a class="nav-back" href="/">← Torna alla home</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-label">Informativa legale</div>
+  <h1 class="page-title">Privacy Policy</h1>
+  <div class="page-date">Ultimo aggiornamento: maggio 2025</div>
+
+  <div class="summary">
+    <div class="summary-title">In sintesi</div>
+    <p>Trattiamo i tuoi dati con rispetto e trasparenza. <strong>Non vendiamo mai i tuoi dati.</strong> Usiamo il tuo indirizzo email solo per inviare la newsletter che hai richiesto tu. Puoi cancellarti in qualsiasi momento con un click.</p>
+  </div>
+
+  <div class="section">
+    <h2>1. Chi siamo</h2>
+    <p>Valore Atteso è una newsletter indipendente sul business del calcio, ideata e gestita da Paolo Ferrara.</p>
+    <p>Per qualsiasi domanda relativa alla privacy:<br>
+    Email: <a href="mailto:hello@valoreatteso.it">hello@valoreatteso.it</a></p>
+  </div>
+
+  <div class="section">
+    <h2>2. A cosa si applica questa informativa</h2>
+    <p>A tutti i dati raccolti quando:</p>
+    <ul>
+      <li>visiti valore-atteso.vercel.app</li>
+      <li>ti iscrivi alla newsletter gratuita del martedì</li>
+      <li>ci scrivi via email</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3. Quali dati raccogliamo</h2>
+    <h3>Dati che ci fornisci tu</h3>
+    <ul>
+      <li>Indirizzo email (unico dato obbligatorio per l'iscrizione)</li>
+      <li>Contenuto dei messaggi che ci invii</li>
+    </ul>
+    <h3>Dati raccolti automaticamente</h3>
+    <ul>
+      <li>Dati tecnici di apertura e click sulle email (tramite Resend)</li>
+      <li>Dati di navigazione anonimi sul sito</li>
+    </ul>
+    <p>Non raccogliamo dati sensibili né dati di minori sotto i 18 anni.</p>
+  </div>
+
+  <div class="section">
+    <h2>4. Per quali finalità usiamo i tuoi dati</h2>
+    <ul>
+      <li>Inviarti la newsletter del martedì e comunicazioni strettamente legate al servizio</li>
+      <li>Gestire iscrizioni, disiscrizioni e sicurezza tecnica</li>
+      <li>Analizzare l'uso delle email per migliorare i contenuti</li>
+      <li>Rispondere alle tue richieste</li>
+      <li>Adempiere obblighi di legge</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>5. Base giuridica del trattamento</h2>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Finalità</th>
+          <th>Base giuridica</th>
+        </tr>
+        <tr>
+          <td>Invio newsletter</td>
+          <td>Consenso esplicito e revocabile</td>
+        </tr>
+        <tr>
+          <td>Gestione tecnica e sicurezza</td>
+          <td>Legittimo interesse</td>
+        </tr>
+        <tr>
+          <td>Analisi e miglioramento</td>
+          <td>Legittimo interesse (dati aggregati)</td>
+        </tr>
+        <tr>
+          <td>Risposta alle richieste</td>
+          <td>Legittimo interesse</td>
+        </tr>
+        <tr>
+          <td>Obblighi di legge</td>
+          <td>Adempimento obbligo legale</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>6. Newsletter e revoca del consenso</h2>
+    <p>Ti inviamo una newsletter ogni martedì con un'analisi del business del calcio.</p>
+    <p>Puoi disiscriverti in qualsiasi momento:</p>
+    <ul>
+      <li>Cliccando il link "Cancella iscrizione" in fondo a ogni email</li>
+      <li>Scrivendo a <a href="mailto:hello@valoreatteso.it">hello@valoreatteso.it</a></li>
+    </ul>
+    <p>La revoca è immediata. Dopo la disiscrizione conserveremo solo l'indirizzo email nella lista di soppressione, per non inviarti più nulla per errore.</p>
+  </div>
+
+  <div class="section">
+    <h2>7. Con chi condividiamo i tuoi dati</h2>
+    <p>Solo con fornitori indispensabili all'erogazione del servizio:</p>
+    <ul>
+      <li><strong>Resend</strong> — invio email transazionali e newsletter</li>
+      <li><strong>Supabase</strong> — database iscritti (hosting in UE)</li>
+      <li><strong>Vercel</strong> — hosting del sito</li>
+    </ul>
+    <p><strong>Non vendiamo, non cediamo e non condividiamo i tuoi dati con terzi per finalità di marketing.</strong></p>
+  </div>
+
+  <div class="section">
+    <h2>8. Per quanto tempo conserviamo i dati</h2>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Tipo di dato</th>
+          <th>Periodo di conservazione</th>
+        </tr>
+        <tr>
+          <td>Email iscritti newsletter</td>
+          <td>Fino a revoca del consenso</td>
+        </tr>
+        <tr>
+          <td>Lista di soppressione (unsub)</td>
+          <td>Indefinitamente (per evitare invii futuri)</td>
+        </tr>
+        <tr>
+          <td>Log tecnici</td>
+          <td>Massimo 12 mesi</td>
+        </tr>
+        <tr>
+          <td>Messaggi di contatto</td>
+          <td>Tempo necessario a rispondere + 12 mesi</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>9. I tuoi diritti (GDPR)</h2>
+    <p>In qualsiasi momento puoi:</p>
+    <ul>
+      <li>Accedere ai tuoi dati personali</li>
+      <li>Chiederne la rettifica o cancellazione</li>
+      <li>Limitare o opporti al trattamento</li>
+      <li>Ricevere i dati in formato portabile</li>
+      <li>Revocare il consenso in qualsiasi momento</li>
+    </ul>
+    <p>Per esercitare i tuoi diritti scrivi a <a href="mailto:hello@valoreatteso.it">hello@valoreatteso.it</a>. Risponderemo entro 30 giorni.</p>
+  </div>
+
+  <div class="section">
+    <h2>10. Reclami</h2>
+    <p>Se ritieni che il trattamento dei tuoi dati violi il GDPR, puoi presentare reclamo all'autorità di controllo italiana:</p>
+    <p><strong>Garante per la protezione dei dati personali</strong><br>
+    <a href="https://www.garanteprivacy.it" target="_blank">www.garanteprivacy.it</a></p>
+    <p>Ti invitiamo comunque a contattarci prima: risolviamo quasi sempre velocemente.</p>
+  </div>
+
+  <div class="section">
+    <h2>11. Modifiche a questa Privacy Policy</h2>
+    <p>Eventuali aggiornamenti saranno pubblicati qui con la nuova data. Ti consigliamo di controllare periodicamente.</p>
+  </div>
+
+  <div class="contact-box">
+    <div class="label">Contatti</div>
+    <h3>Valore Atteso</h3>
+    <p>Newsletter indipendente sul business del calcio</p>
+    <p>Email: <a href="mailto:hello@valoreatteso.it">hello@valoreatteso.it</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-logo">Valore Atteso</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:hello@valoreatteso.it">Contatti</a>
+    </div>
+    <div class="footer-r">© 2025 Valore Atteso</div>
+  </div>
+</footer>
+
+</body>
+</html>
