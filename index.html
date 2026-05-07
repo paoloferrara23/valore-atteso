@@ -1311,7 +1311,8 @@ STATO AGENTI (ultimi run):
 ${crSysCtx.agentiStr || 'Nessun run registrato ancora'}
 
 INFRASTRUTTURA: Vercel + Supabase + Resend + GitHub Actions
-AGENTI SCHEDULATI: Editoriale (lun 8:00), Scout (sab 7:00), SEO (dom 8:00), Cost Guardian (ven 9:00)
+AGENTI SCHEDULATI: Scout (sab 7:00), SEO Agent (dom 8:00), Editoriale (lun 8:00), Growth (mer 8:00), Deliverability (gio 8:00), Cost Guardian (ven 9:00)
+COMUNICAZIONE AGENTI: tutti scrivono/leggono da Supabase agent_memory — Scout trova temi → Editoriale li usa · SEO trova keyword → Editoriale le incorpora · Growth/Deliverability/Cost Guardian monitorano salute sistema
 SOGLIE COSTI: €10/mese Anthropic, €10/mese Resend
 
 RUOLO: Sei il supervisore del sistema. Paolo ti dà la direzione, tu coordini. Puoi spiegare cosa hanno trovato gli agenti, suggerire azioni, analizzare lo stato del progetto. Se Paolo chiede di lanciare un agente, digli di andare su GitHub Actions e lanciarlo manualmente per ora.
@@ -1463,10 +1464,12 @@ async function crPubblica(){
       </div>
       <div class="cr-sec-title">Agenti attivi</div>
       <div class="cr-agents" style="grid-template-columns:1fr 1fr">
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Editoriale Agent</div><div class="cr-agent-desc">Genera bozza lunedì 8:00 · Approvazione via email</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Scout</div><div class="cr-agent-desc">Cerca notizie CF sabato 7:00 · Brief via email</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">SEO Agent</div><div class="cr-agent-desc">Analisi keyword domenica 8:00 · Report via email</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Cost Guardian</div><div class="cr-agent-desc">Report costi venerdì 9:00 · Alert se superi €10/mese</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Scout</div><div class="cr-agent-desc">Sabato 7:00 · Trova i 5 temi CF più rilevanti della settimana · Salva su Supabase per l'Editoriale</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">SEO Agent</div><div class="cr-agent-desc">Domenica 8:00 · Analizza keyword long-tail calcio/finance · Salva su Supabase per l'Editoriale</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Editoriale Agent</div><div class="cr-agent-desc">Lunedì 8:00 · Legge Scout + SEO · Genera bozza edizione · Manda per approvazione</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Growth Agent</div><div class="cr-agent-desc">Mercoledì 8:00 · Monitora iscritti, tasso conversione e fonti acquisizione</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Deliverability Agent</div><div class="cr-agent-desc">Giovedì 8:00 · Controlla aperture, click e bounce delle email · Alert se sotto soglia</div></div></div>
+        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Cost Guardian</div><div class="cr-agent-desc">Venerdì 9:00 · Monitora spesa Anthropic e Resend · Alert se superi €10/mese</div></div></div>
       </div>
     </div>
 
@@ -1508,7 +1511,11 @@ async function crPubblica(){
           <div class="cr-ctx-row"><div class="cr-ctx-lbl">Ultima</div><div class="cr-ctx-v" id="cr-ctx-last">—</div></div>
           <div class="cr-ctx-row"><div class="cr-ctx-lbl">Sito</div><div class="cr-ctx-v ok">Online ✓</div></div>
           <div class="cr-ctx-title" style="margin-top:14px">Agenti</div>
+          <div class="cr-ctx-row"><div class="cr-ctx-lbl">Scout</div><div class="cr-ctx-v ok">Sab 7:00 ✓</div></div>
+          <div class="cr-ctx-row"><div class="cr-ctx-lbl">SEO Agent</div><div class="cr-ctx-v ok">Dom 8:00 ✓</div></div>
           <div class="cr-ctx-row"><div class="cr-ctx-lbl">Editoriale</div><div class="cr-ctx-v ok">Lun 8:00 ✓</div></div>
+          <div class="cr-ctx-row"><div class="cr-ctx-lbl">Growth</div><div class="cr-ctx-v ok">Mer 8:00 ✓</div></div>
+          <div class="cr-ctx-row"><div class="cr-ctx-lbl">Deliverability</div><div class="cr-ctx-v ok">Gio 8:00 ✓</div></div>
           <div class="cr-ctx-row"><div class="cr-ctx-lbl">Cost Guardian</div><div class="cr-ctx-v ok">Ven 9:00 ✓</div></div>
         </div>
       </div>
