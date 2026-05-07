@@ -965,8 +965,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
     <div class="about-sec">
       <h3>Contatti</h3>
       <ul class="about-list">
-        <li>Email: info@valoreatteso.com</li>
-        <li>Collaborazioni e sponsorship: info@valoreatteso.com</li>
+        <li>Email: hello@valoreatteso.it</li>
+        <li>Collaborazioni e sponsorship: hello@valoreatteso.it</li>
       </ul>
     </div>
   </div>
@@ -979,7 +979,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       <a onclick="go('archivio')">Archivio</a>
       <a onclick="go('about')">About</a>
       <a href="/glossario.html">Glossario</a>
-      <a href="mailto:info@valoreatteso.com">Contatti</a>
+      <a href="mailto:hello@valoreatteso.it">Contatti</a>
       <a href="/privacy.html">Privacy</a>
     </div>
     <div class="footer-r">© 2025 Valore Atteso</div>
@@ -1414,7 +1414,7 @@ async function crPubblica(){
     const shtml=sections.map((s,i)=>`<tr><td style="padding:14px 20px;border-bottom:1px solid #C8C4BB"><p style="font-family:'Courier New',monospace;font-size:8px;color:#B5221A;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">0${i+1} · ${s.label}</p><h3 style="font-family:Georgia,serif;font-size:14px;font-weight:700;margin:0 0 6px">${s.title}</h3><p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.7;margin:0 0 6px">${(s.body||'').replace(/\n/g,'<br>')}</p><p style="font-family:'Courier New',monospace;font-size:7px;color:#B5221A;margin:0">${s.verdict}</p></td></tr>`).join('');
     const ehtml=`<table width="560" style="max-width:560px;margin:0 auto;background:#F7F4EE"><tr><td style="padding:16px 20px;border-bottom:2px solid #111010;text-align:center"><h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;letter-spacing:.14em;text-transform:uppercase;margin:3px 0 0">Edizione #${crCurrentData.edition_num} · ${crCurrentData.date}</p></td></tr><tr><td style="padding:12px 20px;background:#EDE9E0;border-bottom:1px solid #C8C4BB"><p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.75;font-style:italic;margin:0">${openerText}</p></td></tr>${shtml}<tr><td style="padding:12px 20px;border-top:1px solid #C8C4BB;text-align:center"><p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0">© 2025 Valore Atteso · valore-atteso.vercel.app</p></td></tr></table>`;
     let inv=0;
-    for(const sub of subs){await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+CR_RESEND},body:JSON.stringify({from:'Valore Atteso <onboarding@resend.dev>',to:sub.email,subject:'Valore Atteso #'+crCurrentData.edition_num+' — '+crCurrentData.title,html:ehtml})}).catch(()=>{});inv++;}
+    for(const sub of subs){await fetch('https://api.resend.com/emails',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+CR_RESEND},body:JSON.stringify({from:'Valore Atteso <info@valoreatteso.com>',to:sub.email,subject:'Valore Atteso #'+crCurrentData.edition_num+' — '+crCurrentData.title,html:ehtml})}).catch(()=>{});inv++;}
   }catch(e){errs.push('Resend: '+e.message);}
   btn.disabled=false;btn.textContent='Pubblica + Invia →';ps.style.display='block';
   if(errs.length===0){ps.className='cr-pub-status ok';ps.innerHTML='✓ Pubblicata sul sito e inviata agli iscritti.';}
