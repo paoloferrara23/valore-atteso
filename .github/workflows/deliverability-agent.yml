@@ -1,0 +1,19 @@
+name: Deliverability Agent
+
+on:
+  schedule:
+    - cron: '0 7 * * 4'  # Giovedì 8:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  deliverability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla deliverability email
+        env:
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+        run: node scripts/deliverability-agent.js
