@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossario — Valore Atteso</title>
+<meta name="description" content="I termini del corporate finance applicati al calcio. EBITDA, LBO, player trading, stadium yield e molto altro.">
+<meta property="og:title" content="Glossario del business del calcio — Valore Atteso">
+<meta property="og:description" content="I termini del corporate finance applicati al calcio. Spiegati in modo diretto, senza fronzoli.">
+<meta property="og:url" content="https://valore-atteso.vercel.app/glossario.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --cream:#F5F2EB;--cream2:#EDE9E0;--cream3:#E2DDD4;
+  --ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
+  --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;--gpal:#E4EDE7;--accent:#D4A017;
+  --dark:#1A1A1A;
+  --dp:'Playfair Display',Georgia,serif;
+  --sf:'Source Serif 4',Georgia,serif;
+  --mn:'JetBrains Mono',monospace;
+  --max:860px;
+}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule);box-shadow:0 1px 12px rgba(0,0,0,.06)}
+.nav{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:50px}
+.nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+.nav-back{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .15s}
+.nav-back:hover{color:var(--red)}
+
+/* HERO */
+.hero{background:var(--dark);padding:56px 24px 48px;text-align:center}
+.hero-label{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.hero h1{font-family:var(--dp);font-size:clamp(2.4rem,6vw,3.8rem);font-weight:900;letter-spacing:-2px;line-height:1.05;color:#fff;margin-bottom:14px}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.hero-sub{font-family:var(--sf);font-size:16px;color:rgba(255,255,255,.55);font-weight:300;max-width:520px;margin:0 auto 32px;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-n{font-family:var(--dp);font-size:1.8rem;font-weight:900;letter-spacing:-1px;color:var(--accent);line-height:1}
+.hero-stat-l{font-family:var(--mn);font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+
+/* ALPHABET NAV */
+.alpha-nav{background:var(--cream2);border-bottom:1px solid var(--rule);padding:12px 24px;position:sticky;top:50px;z-index:100;overflow-x:auto}
+.alpha-nav-inner{max-width:var(--max);margin:0 auto;display:flex;gap:4px;flex-wrap:nowrap}
+.alpha-btn{font-family:var(--mn);font-size:11px;font-weight:500;color:var(--ink3);background:none;border:none;cursor:pointer;padding:5px 8px;border-radius:3px;transition:all .15s;white-space:nowrap;text-decoration:none;display:inline-block}
+.alpha-btn:hover{color:var(--ink);background:var(--cream3)}
+.alpha-btn.active{color:var(--cream);background:var(--red)}
+.alpha-btn.disabled{opacity:.3;cursor:default;pointer-events:none}
+
+/* SEARCH */
+.search-wrap{max-width:var(--max);margin:0 auto;padding:32px 24px 0}
+.search-box{position:relative}
+.search-input{width:100%;height:52px;border:1.5px solid var(--rule);background:#fff;padding:0 48px 0 18px;font-family:var(--sf);font-size:16px;color:var(--ink);outline:none;border-radius:6px;transition:border-color .15s}
+.search-input:focus{border-color:var(--ink)}
+.search-input::placeholder{color:var(--ink3)}
+.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:18px;pointer-events:none}
+.search-count{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;margin-top:10px;text-align:right}
+
+/* MAIN CONTENT */
+.main{max-width:var(--max);margin:0 auto;padding:0 24px 80px}
+
+/* CATEGORIA */
+.cat-section{margin-top:48px}
+.cat-title{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.cat-title::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+/* LETTERA */
+.letter-section{margin-top:40px;scroll-margin-top:110px}
+.letter-anchor{font-family:var(--dp);font-size:2.5rem;font-weight:900;letter-spacing:-2px;color:var(--cream3);line-height:1;margin-bottom:16px}
+
+/* TERMINE */
+.term{border-bottom:1px solid var(--rule);padding:20px 0;display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+.term:last-child{border-bottom:none}
+.term-left{position:relative}
+.term-name{font-family:var(--dp);font-size:1.05rem;font-weight:700;line-height:1.2;letter-spacing:-.2px;margin-bottom:6px}
+.term-tag{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:100px;display:inline-block}
+.term-tag.finanza{background:rgba(200,37,29,.1);color:var(--red)}
+.term-tag.calcio{background:rgba(27,67,50,.1);color:var(--green)}
+.term-tag.deal{background:rgba(212,160,23,.12);color:#9A6E00}
+.term-tag.metriche{background:rgba(26,26,26,.08);color:var(--ink2)}
+.term-body{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;line-height:1.8}
+.term-body strong{color:var(--ink);font-weight:400}
+.term-body .example{display:block;margin-top:10px;padding:10px 14px;background:var(--cream2);border-left:3px solid var(--accent);font-family:var(--mn);font-size:10px;color:var(--ink2);letter-spacing:.02em;line-height:1.6}
+.term-body .example::before{content:'Esempio reale: ';color:var(--accent);font-weight:500}
+
+/* NO RESULTS */
+.no-results{text-align:center;padding:60px 0;display:none}
+.no-results p{font-family:var(--sf);font-size:16px;color:var(--ink3);font-weight:300}
+
+/* CTA */
+.cta-strip{background:var(--dark);color:#fff;padding:48px 24px;text-align:center;margin-top:64px}
+.cta-strip h2{font-family:var(--dp);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-1px;margin-bottom:10px}
+.cta-strip h2 em{font-style:italic;font-weight:400;color:var(--accent)}
+.cta-strip p{font-family:var(--sf);font-size:15px;color:rgba(255,255,255,.55);font-weight:300;margin-bottom:24px}
+.cta-strip-form{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto}
+.cta-strip-email{width:100%;height:50px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);padding:0 18px;font-family:var(--sf);font-size:16px;color:#fff;outline:none;border-radius:4px;-webkit-appearance:none}
+.cta-strip-email::placeholder{color:rgba(255,255,255,.35)}
+.cta-strip-btn{width:100%;height:50px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:opacity .15s;-webkit-appearance:none}
+.cta-strip-btn:hover{opacity:.88}
+@media(min-width:600px){
+  .cta-strip-form{flex-direction:row}
+  .cta-strip-email{flex:1;width:auto}
+  .cta-strip-btn{width:auto;padding:0 24px}
+}
+.cta-success{font-family:var(--mn);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.06em;margin-top:10px;display:none}
+
+/* FOOTER */
+footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
+.footer-in{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-logo{font-family:var(--dp);font-size:16px;font-weight:700;letter-spacing:-.3px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none}
+.footer-links a:hover{color:var(--ink)}
+.footer-r{font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.04em}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .term{grid-template-columns:1fr}
+  .term-left{margin-bottom:4px}
+  .hero-stats{gap:24px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav">
+    <a class="nav-logo" href="/">Valore Atteso</a>
+    <a class="nav-back" href="/">← Home</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Valore Atteso · Glossario</div>
+  <h1>Il vocabolario del<br><em>business del calcio.</em></h1>
+  <p class="hero-sub">I termini del corporate finance applicati al calcio. Spiegati in modo diretto, con esempi reali dal settore.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-n">50+</div><div class="hero-stat-l">termini</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">4</div><div class="hero-stat-l">categorie</div></div>
+    <div class="hero-stat"><div class="hero-stat-n">100%</div><div class="hero-stat-l">esempi reali</div></div>
+  </div>
+</div>
+
+<!-- ALPHABET NAV -->
+<div class="alpha-nav">
+  <div class="alpha-nav-inner" id="alpha-nav">
+    <!-- Generata da JS -->
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-box">
+    <input type="search" class="search-input" id="search" placeholder="Cerca un termine… es. EBITDA, player trading, LBO" oninput="filterTerms()">
+    <span class="search-icon">⌕</span>
+  </div>
+  <div class="search-count" id="search-count"></div>
+</div>
+
+<!-- TERMINI -->
+<div class="main" id="glossary-main">
+  <div class="no-results" id="no-results">
+    <p>Nessun termine trovato. Prova con un'altra parola.</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Questi termini in azione,<br><em>ogni martedì mattina.</em></h2>
+  <p>La newsletter che usa questi strumenti per analizzare il business del calcio. Gratis.</p>
+  <div class="cta-strip-form">
+    <input type="email" class="cta-strip-email" id="cta-email" placeholder="la tua email" autocomplete="email" inputmode="email">
+    <button class="cta-strip-btn" onclick="doSignup()">Iscriviti →</button>
+  </div>
+  <div class="cta-success" id="cta-success">✓ Controlla la tua inbox per confermare l'iscrizione</div>
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-logo">Valore Atteso</div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="/glossario.html">Glossario</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="mailto:hello@valoreatteso.it">Contatti</a>
+    </div>
+    <div class="footer-r">© 2025 Valore Atteso</div>
+  </div>
+</footer>
+
+<script>
+const TERMS = [
+  // A
+  { letter:'A', name:'Ammortamento', tag:'finanza', body:'Processo contabile che distribuisce il costo di un asset (es. un calciatore acquistato) su più anni. Se compri un giocatore a €30M con contratto 5 anni, ammortizzi €6M/anno a conto economico. È il motivo per cui i bilanci dei club non mostrano mai il costo reale dei trasferimenti nell\'anno dell\'acquisto.', example:'Juventus 2021: Ronaldo ammortizzato a €31M/anno per 4 anni (acquisto €117M).' },
+  { letter:'A', name:'Asset Management (calcio)', tag:'deal', body:'Gestione strategica del portafoglio calciatori come se fossero asset finanziari. I club più avanzati — come il Manchester City Group — applicano modelli di valutazione, turnover e monetizzazione simili a quelli di un fondo di PE.', example:'RedBull Salzburg: talent factory con exit sistematiche verso i club top.' },
+
+  // B
+  { letter:'B', name:'Break-even (FFP)', tag:'calcio', body:'Regola UEFA che impone ai club di non spendere più di quanto guadagnano nel triennio di riferimento. Introdotto nel 2011 come Financial Fair Play, riformato nel 2022 come Financial Sustainability Regulations con soglie più flessibili.', example:'Milan 2018-2022: escluso dall\'Europa per violazione FFP, poi reintegrato.' },
+  { letter:'B', name:'Buy-out clause', tag:'calcio', body:'Clausola contrattuale che permette a un altro club di acquisire un giocatore pagando una cifra prestabilita, spesso senza possibilità di rifiuto da parte del club detentore. Comune in Spagna per obbligo di legge.', example:'Neymar 2017: buy-out da €222M attivata dal PSG sul Barcellona.' },
+
+  // C
+  { letter:'C', name:'CAGR', tag:'finanza', body:'Compound Annual Growth Rate — tasso di crescita annuo composto. Misura la crescita di un valore (ricavi, valutazione club) anno su anno in modo normalizzato, eliminando la volatilità dei singoli anni.', example:'Ricavi Premier League: CAGR +8,3% nel decennio 2013-2023.' },
+  { letter:'C', name:'Cash Flow Operativo', tag:'finanza', body:'Liquidità generata dalle operazioni ordinarie del club: matchday, diritti TV, commerciale. Esclude i proventi da trasferimenti. È il vero indicatore di sostenibilità finanziaria — molti club sopravvivono solo grazie al player trading.', example:'Atalanta 2022/23: CF operativo negativo, sostenuto da plusvalenze sistematiche.' },
+  { letter:'C', name:'Covenant', tag:'deal', body:'Clausola contrattuale in un accordo di finanziamento che impone al debitore di rispettare determinate condizioni (es. mantenere un certo livello di ricavi, qualificarsi per le coppe europee). La violazione può scatenare il rimborso anticipato del debito.', example:'Milan-Elliott: covenant legato alla qualificazione Champions League.' },
+
+  // D
+  { letter:'D', name:'DCF (Discounted Cash Flow)', tag:'finanza', body:'Metodo di valutazione che stima il valore attuale di un asset sommando i suoi flussi di cassa futuri attualizzati a un tasso di sconto. Applicato al calcio per valutare calciatori, diritti TV e club interi. Il tasso di sconto usato tipicamente è 8-12%.', example:'Valutazione calciatori: il DCF spiega perché un 19enne vale più di un 28enne a parità di performance.' },
+  { letter:'D', name:'Debt-to-Revenue ratio', tag:'metriche', body:'Rapporto tra debito netto e ricavi totali. Nel calcio, un ratio >1,5× segnala stress finanziario. La Premier League ha fissato un tetto di 1,5× come soglia di allerta nel suo regolamento PSR.', example:'Barcellona 2021: ratio >3× con debito netto di €1,3Mrd.' },
+
+  // E
+  { letter:'E', name:'Earn-out', tag:'deal', body:'Parte variabile del prezzo di acquisizione, pagata al verificarsi di condizioni future prestabilite (es. qualificazione Champions, gol segnati, presenze). Allinea gli interessi di venditori e compratori e riduce il rischio del deal.', example:'Dybala-Roma 2022: parte del compenso legata a presenze e obiettivi sportivi.' },
+  { letter:'E', name:'EBITDA', tag:'finanza', body:'Earnings Before Interest, Taxes, Depreciation and Amortization — utile prima di interessi, tasse, svalutazioni e ammortamenti. È la misura principale della redditività operativa di un club. I multipli di valutazione si esprimono spesso come EV/EBITDA.', example:'Real Madrid 2022/23: EBITDA di circa €280M su ricavi €831M (margine ~34%).' },
+  { letter:'E', name:'Enterprise Value (EV)', tag:'deal', body:'Valore totale di un club: capitalizzazione di mercato (o equity value) + debito netto. È il prezzo reale di un\'acquisizione. Nei deal calcistici si esprime spesso come multiplo di EV/Revenues o EV/EBITDA.', example:'RedBird su Milan 2022: EV €1,2Mrd = equity €600M + debito residuo.' },
+  { letter:'E', name:'Equity Value', tag:'deal', body:'Valore della sola quota azionaria di un club, senza considerare il debito. Equity Value = Enterprise Value − Debito Netto. È il prezzo che paga chi compra le azioni, non il club nel suo complesso.', example:'Friedkin su Roma 2020: equity value ~€591M, EV più alto per il debito.' },
+  { letter:'E', name:'EV/Revenues', tag:'metriche', body:'Multiplo di valutazione che divide l\'Enterprise Value per i ricavi annui. Nel calcio varia molto per lega: Premier League 3-5×, Serie A 1,5-2,5×, Bundesliga 2-3×. È il benchmark principale nelle M&A calcistiche.', example:'Chelsea 2022: EV £4,25Mrd su ricavi £481M = multiplo ~8,8× (premium da brand globale).' },
+
+  // F
+  { letter:'F', name:'FFP (Financial Fair Play)', tag:'calcio', body:'Sistema di controllo finanziario UEFA introdotto nel 2011, ora evoluto in Financial Sustainability Regulations. Impone ai club di non spendere significativamente più di quanto guadagnano. Criticato per aver favorito i club già ricchi.', example:'Manchester City 2023: sotto processo UEFA per 115 presunte violazioni FFP.' },
+  { letter:'F', name:'Free Cash Flow', tag:'finanza', body:'Cash flow operativo meno investimenti (capex). Nel calcio include i proventi netti da trasferimenti. Un FCF positivo significa che il club genera liquidità senza bisogno di finanziamenti esterni — raro tra i club di vertice.', example:'Brighton 2022/23: FCF positivo grazie al player trading sistematico.' },
+
+  // G
+  { letter:'G', name:'Goodwill', tag:'finanza', body:'Valore intangibile pagato in eccesso rispetto agli asset netti di un\'acquisizione. Nel calcio include brand, tifoseria, storia. Deve essere contabilizzato e può essere svalutato se il club non performa come previsto.', example:'Manchester United: goodwill significativo nei bilanci di Glazer dopo il LBO.' },
+
+  // I
+  { letter:'I', name:'IFRS 15', tag:'finanza', body:'Standard contabile internazionale che regola il riconoscimento dei ricavi. Nel calcio ha impatto sui diritti TV pluriennali, sponsorship e ricavi da trasferimenti con pagamenti dilazionati. Adottato dalla maggior parte dei club europei quotati.', example:'Juventus: applicazione IFRS 15 ha modificato la contabilizzazione delle plusvalenze.' },
+
+  // L
+  { letter:'L', name:'LBO (Leveraged Buyout)', tag:'deal', body:'Acquisizione finanziata principalmente con debito, usando gli asset del club come collaterale. Il compratore usa leva finanziaria per massimizzare il rendimento sull\'equity. Controverso nel calcio perché scarica il debito sulla società acquisita.', example:'Glazer su Manchester United 2005: LBO da £790M, debito rimasto sul club per 20 anni.' },
+  { letter:'L', name:'Leva Finanziaria', tag:'finanza', body:'Uso del debito per amplificare i rendimenti dell\'equity. Nel calcio: un club che genera €50M di EBITDA vale ~€250M (EV/EBITDA 5×). Con €100M di debito, l\'equity vale €150M. Se il club cresce e vale €350M, l\'equity è raddoppiata senza investire di più.', example:'RedBird su Milan: leva usata nella struttura con vendor financing Elliott.' },
+
+  // M
+  { letter:'M', name:'Matchday Revenue', tag:'metriche', body:'Ricavi generati direttamente dalle partite: biglietti, hospitality, food&beverage, parcheggi. È la fonte di ricavo più volatile (dipende dai risultati sportivi) e quella con il maggior potenziale inespresso in Serie A rispetto alla Premier League.', example:'Tottenham Hotspur Stadium: matchday revenue >£100M/anno grazie a concerti e NFL.' },
+  { letter:'M', name:'Multiplo di valutazione', tag:'deal', body:'Rapporto tra il valore di un club e una metrica finanziaria (ricavi, EBITDA, ecc.). Usato per comparare acquisizioni e stimare il fair value. I multipli calcistici sono aumentati del 300% negli ultimi 15 anni grazie all\'ingresso dei fondi PE.', example:'Premier League 2010: multiplo medio EV/Rev ~1,5×. 2023: ~4×.' },
+
+  // P
+  { letter:'P', name:'Player Asset Turnover', tag:'metriche', body:'Rapporto tra valore delle cessioni di calciatori e valore del portafoglio rosa. Misura l\'efficienza con cui un club monetizza i propri asset. I club con PAT elevato (Atalanta, Porto, Benfica) generano rendimenti superiori alla media.', example:'Benfica: PAT sistematicamente >1× — vende più del valore contabile della rosa.' },
+  { letter:'P', name:'Player Trading', tag:'calcio', body:'Attività di compravendita di calciatori intesa come business sistematico, non come necessità operativa. Comprende plusvalenze, ammortamenti, politiche di acquisto/vendita. Per molti club di Serie A è il principale driver di cash flow.', example:'Atalanta: player trading genera mediamente €60-80M/anno di plusvalenze nette.' },
+  { letter:'P', name:'Plusvalenza', tag:'calcio', body:'Differenza positiva tra il prezzo di cessione di un calciatore e il suo valore netto contabile (costo storico meno ammortamenti accumulati). È un ricavo a conto economico ma non genera cassa immediata se pagata a rate.', example:'Juventus-Genoa 2019: scambi con plusvalenze reciproche, poi sotto indagine FIGC.' },
+  { letter:'P', name:'Private Equity nel calcio', tag:'deal', body:'Ingresso di fondi di investimento (PE) nel capitale dei club calcistici. Caratterizzato da orizzonte temporale 5-10 anni, focus su crescita ricavi e exit tramite vendita o IPO. Ha trasformato le valutazioni dell\'industria nell\'ultimo decennio.', example:'CVC Capital: €1,2Mrd in LaLiga (2021), RedBird: €1,2Mrd su Milan (2022).' },
+  { letter:'P', name:'PSR (Profitability & Sustainability Rules)', tag:'calcio', body:'Regolamento finanziario della Premier League che limita le perdite a £105M in 3 anni. Ha sostituito il FFP in Inghilterra ed è più stringente. Nel 2023 ha portato a procedimenti disciplinari contro Everton e Nottingham Forest.', example:'Everton 2023: -10 punti per violazione PSR (perdite oltre soglia).' },
+
+  // R
+  { letter:'R', name:'Revenue Mix', tag:'metriche', body:'Composizione percentuale dei ricavi di un club tra le tre fonti principali: matchday, broadcasting (diritti TV) e commercial (sponsorship, merchandising). Un mix equilibrato (es. 30/40/30) indica minore dipendenza da una singola fonte e maggiore resilienza.', example:'Real Madrid 2022/23: commercial 40%, broadcasting 38%, matchday 22%.' },
+  { letter:'R', name:'Ricavi Commerciali', tag:'metriche', body:'Ricavi da sponsorship, merchandising, licensing e accordi commerciali. È la componente più scalabile dei ricavi di un club — non dipende dai risultati sportivi e può crescere indipendentemente dalla lega. I top club europei puntano a portarla oltre il 40%.', example:'Manchester United: ricavi commerciali >£300M/anno, indipendenti dai risultati.' },
+
+  // S
+  { letter:'S', name:'Salary Cap', tag:'calcio', body:'Limite massimo alla spesa per salari imposto da una lega. Inesistente in Europa a livello di club (esiste solo in MLS e alcune leghe minori), ma indirettamente regolato dal FFP/PSR tramite il controllo delle perdite.', example:'LaLiga: salary cap per club calcolato in base ai ricavi. Barcellona 2021: cap ridotto a €97M da €671M.' },
+  { letter:'S', name:'Salary Ratio', tag:'metriche', body:'Percentuale dei ricavi totali destinata ai costi del personale (principalmente stipendi calciatori e staff tecnico). Benchmark di sostenibilità: sotto il 60-65% è considerato sano, sopra il 70% è zona di attenzione.', example:'Serie A 2022/23: salary ratio medio ~72% dei ricavi — tra i più alti d\'Europa.' },
+  { letter:'S', name:'Stadium Yield', tag:'metriche', body:'Ricavi matchday generati per posto a sedere all\'anno. Misura l\'efficienza commerciale dello stadio indipendentemente dalla capienza. Formula: matchday revenue annui ÷ numero di posti. I club con stadio di proprietà e strutture hospitality avanzate hanno yield 2-4× superiori.', example:'Tottenham 2023: ~€3.100/posto. Juventus Allianz Stadium: ~€1.100/posto.' },
+  { letter:'S', name:'Sell-on clause', tag:'calcio', body:'Clausola contrattuale che garantisce al club cedente una percentuale sul prezzo della futura rivendita del calciatore. Tutela i club che vendono giovani talenti a prezzi contenuti. Percentuali tipiche: 10-20%.', example:'Southampton → Leicester su Maguire: sell-on che fruttò ~£15M alla cessione a Manchester United.' },
+
+  // T
+  { letter:'T', name:'Transfer Fee', tag:'calcio', body:'Corrispettivo pagato da un club per acquisire il cartellino di un calciatore sotto contratto. Non include lo stipendio. Si distingue in fee fissa, bonus condizionali e pagamenti dilazionati. Il valore contabile del giocatore viene ammortizzato sulla durata del contratto.', example:'Mbappé 2022: transfer fee zero (scadenza contratto), ma bonus alla firma stimato €130M.' },
+
+  // U
+  { letter:'U', name:'UEFA Coefficient', tag:'calcio', body:'Punteggio UEFA che misura le performance storiche di club e nazionali nelle competizioni europee. Determina il seeding nei sorteggi e, per i club, influenza i ricavi fissi distribuiti dalla UEFA. È un asset intangibile che aumenta il valore di mercato di un club.', example:'Real Madrid: coefficiente più alto della storia UEFA, vale decine di milioni in seeding vantaggiosi.' },
+
+  // V
+  { letter:'V', name:'Valutazione club', tag:'deal', body:'Stima del valore economico di un club calcistico. I metodi principali sono: multipli di mercato (EV/Revenues, EV/EBITDA), DCF sui flussi futuri, comparable transactions. Le valutazioni sono aumentate esponenzialmente con l\'ingresso dei fondi PE e la crescita dei diritti TV.', example:'Forbes 2023: Real Madrid #1 a $6,07Mrd. Inter Milano: $1,37Mrd.' },
+  { letter:'V', name:'Vendor Financing', tag:'deal', body:'Finanziamento concesso dal venditore al compratore nell\'ambito di un\'acquisizione. Nel calcio: il vecchio proprietario lascia parte del prezzo "sul tavolo" come prestito al nuovo acquirente, che lo restituirà nel tempo. Facilita deal dove l\'acquirente non ha liquidità sufficiente.', example:'Elliott → RedBird su Milan: Elliott mantiene esposizione creditizia come vendor loan.' },
+
+  // W
+  { letter:'W', name:'Wage Bill', tag:'metriche', body:'Totale annuo dei costi salariali di un club, inclusi calciatori, staff tecnico e dipendenti. È la voce di costo più rilevante nei bilanci calcistici (tipicamente 50-75% dei ricavi). La sua gestione è il principale driver di sostenibilità finanziaria.', example:'Chelsea 2022/23: wage bill >£600M, tra i più alti al mondo.' },
+
+  // X
+  { letter:'X', name:'xG (Expected Goals)', tag:'calcio', body:'Metrica statistica che misura la qualità delle occasioni da gol in base a posizione, tipo di tiro e assist. È il "valore atteso" applicato al calcio giocato — da qui il nome della newsletter. Usato sempre più nei modelli di scouting e valutazione calciatori.', example:'Da cui il nome "Valore Atteso": il ponte tra la statistica finanziaria e il calcio moderno.' },
+];
+
+// Build glossary
+function buildGlossary(terms) {
+  const main = document.getElementById('glossary-main');
+  const noResults = document.getElementById('no-results');
+  
+  // Group by letter
+  const byLetter = {};
+  terms.forEach(t => {
+    if (!byLetter[t.letter]) byLetter[t.letter] = [];
+    byLetter[t.letter].push(t);
+  });
+
+  const letters = Object.keys(byLetter).sort();
+  
+  if (letters.length === 0) {
+    noResults.style.display = 'block';
+    // Remove existing sections
+    document.querySelectorAll('.letter-section').forEach(s => s.remove());
+    document.getElementById('search-count').textContent = '0 termini trovati';
+    return;
+  }
+  
+  noResults.style.display = 'none';
+  document.querySelectorAll('.letter-section').forEach(s => s.remove());
+  document.getElementById('search-count').textContent = terms.length < TERMS.length ? `${terms.length} termini trovati` : '';
+
+  letters.forEach(letter => {
+    const section = document.createElement('div');
+    section.className = 'letter-section';
+    section.id = 'letter-' + letter;
+    
+    const letterEl = document.createElement('div');
+    letterEl.className = 'letter-anchor';
+    letterEl.textContent = letter;
+    section.appendChild(letterEl);
+
+    byLetter[letter].forEach(term => {
+      const div = document.createElement('div');
+      div.className = 'term';
+      div.innerHTML = `
+        <div class="term-left">
+          <div class="term-name">${term.name}</div>
+          <span class="term-tag ${term.tag}">${term.tag}</span>
+        </div>
+        <div class="term-body">
+          ${term.body}
+          ${term.example ? `<span class="example">${term.example}</span>` : ''}
+        </div>`;
+      section.appendChild(div);
+    });
+
+    main.insertBefore(section, document.getElementById('no-results'));
+  });
+
+  // Update alpha nav
+  buildAlphaNav(letters);
+}
+
+function buildAlphaNav(activeLetters) {
+  const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const nav = document.getElementById('alpha-nav');
+  nav.innerHTML = allLetters.map(l => {
+    const isActive = activeLetters.includes(l);
+    return `<a class="alpha-btn ${isActive ? '' : 'disabled'}" ${isActive ? `href="#letter-${l}"` : ''} >${l}</a>`;
+  }).join('');
+}
+
+function filterTerms() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  if (!q) {
+    buildGlossary(TERMS);
+    return;
+  }
+  const filtered = TERMS.filter(t =>
+    t.name.toLowerCase().includes(q) ||
+    t.body.toLowerCase().includes(q) ||
+    t.tag.toLowerCase().includes(q) ||
+    (t.example && t.example.toLowerCase().includes(q))
+  );
+  buildGlossary(filtered);
+}
+
+async function doSignup() {
+  const email = document.getElementById('cta-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('cta-email').style.borderColor = 'rgba(200,37,29,.7)';
+    return;
+  }
+  document.getElementById('cta-email').style.borderColor = '';
+  const btn = document.querySelector('.cta-strip-btn');
+  btn.disabled = true; btn.textContent = 'Iscrizione…';
+  try {
+    const r = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email})
+    });
+    const d = await r.json();
+    if (r.ok && d.ok) {
+      document.getElementById('cta-email').style.display = 'none';
+      btn.style.display = 'none';
+      document.getElementById('cta-success').style.display = 'block';
+    } else throw new Error();
+  } catch {
+    btn.disabled = false; btn.textContent = 'Iscriviti →';
+    document.getElementById('cta-email').style.borderColor = 'rgba(200,37,29,.7)';
+  }
+}
+
+// Init
+buildGlossary(TERMS);
+</script>
+</body>
+</html>
