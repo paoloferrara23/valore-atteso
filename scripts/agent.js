@@ -1,148 +1,173 @@
-const https = require('https');
-const crypto = require('crypto');
+// agent.js — Genera edizione leggendo i temi dello Scout
+// Gira: lunedì 8:00 | Legge: scout_brief, scout_themes, seo_keywords
 
-function httpRequest(url, opts = {}) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(url);
-    const options = {
-      hostname: u.hostname,
-      path: u.pathname + u.search,
-      method: opts.method || 'GET',
-      headers: opts.headers || {}
-    };
-    const req = https.request(options, res => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        resolve({
-          ok: res.statusCode >= 200 && res.statusCode < 300,
-          status: res.statusCode,
-          json: () => JSON.parse(data),
-          text: () => data
-        });
-      });
-    });
-    req.on('error', reject);
-    if (opts.body) req.write(opts.body);
-    req.end();
-  });
+const { memGet, memSet, logRun } = require('./memory');
+
+const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+const RESEND_KEY = process.env.RESEND_KEY;
+const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
+const SUPA_URL = process.env.SUPABASE_URL;
+const SUPA_KEY = process.env.SUPABASE_KEY;
+const SITE = 'https://valore-atteso.vercel.app';
+const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+
+async function httpRequest(url, opts = {}) {
+  const r = await fetch(url, opts);
+  const text = await r.text();
+  return { status: r.status, ok: r.ok, text, json: () => JSON.parse(text) };
 }
 
-async function main() {
-  const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-  const RESEND_KEY = process.env.RESEND_KEY;
-  const SUPA_URL = process.env.SUPABASE_URL;
-  const SUPA_KEY = process.env.SUPABASE_KEY;
-  const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-  const SITE = 'https://valore-atteso.vercel.app';
-
-  // 1. Numero edizione
-  console.log('1. Recupero numero edizione...');
-  const edRes = httpRequest(SUPA_URL + '/rest/v1/editions?select=num&order=num.desc&limit=1', {
-    headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY }
-  });
-  const eds = (await edRes).json();
-  const lastNum = eds && eds.length ? parseInt(eds[0].num) : 0;
-  const newNum = String(lastNum + 1).padStart(3, '0');
-  console.log('Nuova edizione: #' + newNum);
-
-  // 2. Genera con Claude
-  console.log('2. Genero edizione con Claude...');
-  const today = new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
-
-  const prompt = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio con tono da analista M&A. Genera l'edizione #${newNum} del ${today}. Rispondi SOLO con JSON valido senza markdown:
-{"num":"${newNum}","title":"titolo max 8 parole","subtitle":"sottotitolo","date":"${today}","opener":"intro 2-3 righe","sections":[{"label":"Il Bilancio","title":"titolo","body":"analisi 150 parole dati reali","kpis":[{"key":"KPI","value":"valore"}],"verdict":"giudizio netto","sources":["fonte"]},{"label":"Il Deal","title":"titolo","body":"analisi deal 150 parole","kpis":[{"key":"KPI","value":"valore"}],"verdict":"giudizio netto","sources":["fonte"]},{"label":"La Metrica","title":"titolo","body":"metrica 150 parole benchmark","kpis":[{"key":"entita","value":"valore"}],"verdict":"giudizio netto","sources":["fonte"]}]}`;
-
-  const claudeRes = await httpRequest('https://api.anthropic.com/v1/messages', {
+async function callClaude(messages, system) {
+  const r = await httpRequest('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01'
     },
-    body: JSON.stringify({
-      model: 'claude-opus-4-5',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }]
-    })
+    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 4000, system, messages })
   });
-
-  const claudeData = claudeRes.json();
-  if (!claudeRes.ok) throw new Error('Claude error: ' + JSON.stringify(claudeData));
-
-  const rawText = claudeData.content[0].text;
-  const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('JSON non trovato');
-  const edition = JSON.parse(jsonMatch[0]);
-  console.log('Edizione generata: ' + edition.title);
-
-  // 3. Salva bozza su Supabase
-  console.log('3. Salvo bozza su Supabase...');
-  const draftToken = crypto.randomUUID();
-  const saveRes = await httpRequest(SUPA_URL + '/rest/v1/editions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: SUPA_KEY,
-      Authorization: 'Bearer ' + SUPA_KEY,
-      Prefer: 'return=minimal'
-    },
-    body: JSON.stringify({
-      ...edition,
-      published: false,
-      draft_token: draftToken,
-      tags: edition.sections.map(s => s.label)
-    })
-  });
-  console.log('Bozza salvata, status: ' + saveRes.status);
-
-  // 4. Email approvazione
-  console.log('4. Invio email approvazione...');
-  const approveUrl = SITE + '/approva.html?token=' + draftToken;
-
-  const sectionsHTML = edition.sections.map((s, i) =>
-    `<tr><td style="padding:16px 24px;border-bottom:1px solid #C8C4BB">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">0${i+1} · ${s.label}</p>
-      <h3 style="font-family:Georgia,serif;font-size:15px;font-weight:700;margin:0 0 6px">${s.title}</h3>
-      <p style="font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-weight:300;line-height:1.6;margin:0 0 8px">${s.body.substring(0, 180)}...</p>
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#B5221A;margin:0">${s.verdict}</p>
-    </td></tr>`
-  ).join('');
-
-  const emailHTML = `<table width="600" style="max-width:600px;margin:0 auto;background:#F7F4EE;font-family:Georgia,serif">
-    <tr><td style="padding:20px 28px;background:#111010;text-align:center;border-bottom:2px solid #111010">
-      <h1 style="color:#F7F4EE;font-size:22px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.12em;text-transform:uppercase;margin:4px 0 0">Editoriale Agent · Bozza #${newNum}</p>
-    </td></tr>
-    <tr><td style="padding:18px 24px;background:#EDE9E0;border-bottom:1px solid #C8C4BB">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#888480;margin:0 0 4px">EDIZIONE #${newNum} · ${today}</p>
-      <h2 style="font-family:Georgia,serif;font-size:18px;font-weight:700;margin:0 0 6px">${edition.title}</h2>
-      <p style="font-family:Georgia,serif;font-size:13px;color:#3D3C39;font-weight:300;font-style:italic;line-height:1.6;margin:0">${edition.opener}</p>
-    </td></tr>
-    ${sectionsHTML}
-    <tr><td style="padding:24px;text-align:center;border-top:2px solid #111010">
-      <p style="font-family:'Courier New',monospace;font-size:10px;color:#888480;margin:0 0 14px">Approva per pubblicare sul sito e inviare agli iscritti.</p>
-      <a href="${approveUrl}" style="background:#111010;color:#F7F4EE;padding:12px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Approva e pubblica</a>
-    </td></tr>
-  </table>`;
-
-  const emailRes = await httpRequest('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + RESEND_KEY
-    },
-    body: JSON.stringify({
-      from: 'Valore Atteso <onboarding@resend.dev>',
-      to: APPROVAL_EMAIL,
-      subject: '[Bozza #' + newNum + '] ' + edition.title,
-      html: emailHTML
-    })
-  });
-
-  console.log('Email inviata, status: ' + emailRes.status);
-  await logRun(SUPA_URL, SUPA_KEY, 'editoriale', 'ok', 'Edizione #' + newNum + ' generata e inviata per approvazione', {edition_num: newNum, title: edition.title});
-  console.log('Fatto!');
+  if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
+  const data = r.json();
+  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
-main().catch(e => { console.error('ERRORE:', e.message); process.exit(1); });
+async function getNextEditionNum() {
+  const r = await fetch(`${SUPA_URL}/rest/v1/editions?select=num&order=num.desc&limit=1`, {
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  });
+  const rows = await r.json();
+  return rows[0] ? String(parseInt(rows[0].num) + 1).padStart(3, '0') : '001';
+}
+
+async function main() {
+  const start = Date.now();
+  console.log('Editoriale Agent avviato:', new Date().toISOString());
+
+  // Legge memoria condivisa
+  const scoutBrief = await memGet('scout_brief');
+  const seoKeywords = await memGet('seo_keywords');
+
+  let temiContext = '';
+  if (scoutBrief) {
+    const brief = scoutBrief.value;
+    temiContext = `\n\nLO SCOUT HA TROVATO QUESTI TEMI (aggiornati ${scoutBrief.updated_at}):\n` +
+      JSON.stringify(brief.temi, null, 2) +
+      `\n\nTEMA CONSIGLIATO DALLO SCOUT: ${brief.tema_consigliato}` +
+      (brief.note_editoriali ? `\nNOTE EDITORIALI: ${brief.note_editoriali}` : '');
+    console.log('Temi Scout caricati:', brief.temi?.length);
+  } else {
+    console.log('Nessun brief Scout disponibile, procedo in autonomia');
+  }
+
+  let seoContext = '';
+  if (seoKeywords) {
+    seoContext = `\n\nKEYWORD SEO DA PRESIDIARE (SEO Agent):\n${JSON.stringify(seoKeywords.value, null, 2)}`;
+    console.log('Keyword SEO caricate');
+  }
+
+  const editionNum = await getNextEditionNum();
+  const oggi = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.
+Ogni edizione ha 3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.
+Tono: analitico, diretto, dati verificabili, nessun gossip.
+Pubblico: professionisti M&A, PE, consulenza, finanza.
+${temiContext}
+${seoContext}
+
+Rispondi SOLO in JSON valido:
+{
+  "num": "${editionNum}",
+  "title": "titolo principale edizione",
+  "subtitle": "sottotitolo",
+  "date": "${oggi}",
+  "opener": "frase di apertura 2-3 righe",
+  "sections": [
+    {
+      "label": "Il Bilancio",
+      "title": "titolo sezione",
+      "body": "corpo testo 150-200 parole",
+      "kpis": [{"key": "metrica", "value": "valore"}],
+      "verdict": "verdetto finale",
+      "sources": ["fonte1", "fonte2"]
+    },
+    { "label": "Il Deal", ... },
+    { "label": "La Metrica", ... }
+  ]
+}`;
+
+  const testo = await callClaude([{
+    role: 'user',
+    content: `Genera l'edizione #${editionNum} di Valore Atteso per ${oggi}. Usa i temi dello Scout se disponibili.`
+  }], system);
+
+  let edition;
+  try {
+    const match = testo.match(/\{[\s\S]*\}/);
+    edition = JSON.parse(match[0]);
+  } catch {
+    throw new Error('JSON edizione non valido');
+  }
+
+  // Salva bozza su Supabase (non pubblicata)
+  const saveRes = await fetch(`${SUPA_URL}/rest/v1/editions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': `Bearer ${SUPA_KEY}`,
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify({ ...edition, published: false, tags: edition.sections.map(s => s.label) })
+  });
+  const saved = await saveRes.json();
+  const editionId = saved[0]?.id;
+
+  // Salva in memoria condivisa
+  await memSet('last_draft', { id: editionId, num: editionNum, title: edition.title, date: oggi }, 'editoriale');
+
+  // Email di approvazione
+  const secsHTML = edition.sections.map((s, i) => `
+    <div style="padding:16px 24px;border-bottom:1px solid #D0CBC0">
+      <div style="font-family:'Courier New',monospace;font-size:8px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">0${i+1} · ${s.label}</div>
+      <div style="font-family:Georgia,serif;font-size:15px;font-weight:700;margin-bottom:8px">${s.title}</div>
+      <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.7">${s.body}</div>
+      ${s.kpis?.length ? `<table style="width:100%;margin-top:10px;font-family:'Courier New',monospace;font-size:10px;background:#EDE9E0">${s.kpis.map(k => `<tr><td style="padding:4px 10px;color:#9A9690">${k.key}</td><td style="padding:4px 10px;text-align:right;color:#1A1A1A;font-weight:500">${k.value}</td></tr>`).join('')}</table>` : ''}
+      <div style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin-top:8px">→ ${s.verdict}</div>
+    </div>`).join('');
+
+  const approveUrl = `${SITE}/approva.html?id=${editionId}`;
+  const html = `
+    <table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB">
+      <tr><td style="padding:20px 24px;background:#1A1A1A">
+        <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#fff">Valore Atteso</div>
+        <div style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">Editoriale Agent · Bozza #${editionNum}</div>
+      </td></tr>
+      ${scoutBrief ? `<tr><td style="padding:10px 24px;background:#E4EDE7;border-bottom:1px solid #D0CBC0"><div style="font-family:'Courier New',monospace;font-size:9px;color:#1B4332">Generata dai temi dello Scout del ${new Date(scoutBrief.updated_at).toLocaleDateString('it-IT')}</div></td></tr>` : ''}
+      <tr><td style="padding:14px 24px;background:#EDE9E0;border-bottom:1px solid #D0CBC0">
+        <div style="font-family:Georgia,serif;font-size:18px;font-weight:900">${edition.title}</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;font-style:italic;margin-top:4px">${edition.opener}</div>
+      </td></tr>
+      ${secsHTML}
+      <tr><td style="padding:20px 24px;text-align:center;border-top:2px solid #1A1A1A">
+        <a href="${approveUrl}" style="background:#C8251D;color:#fff;padding:14px 32px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Approva e pubblica →</a>
+        <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin-top:12px">Clicca per approvare, pubblicare e inviare a tutti gli iscritti</div>
+      </td></tr>
+    </table>`;
+
+  await httpRequest('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `Approva VA #${editionNum}: ${edition.title}`, html })
+  });
+
+  await logRun('editoriale', 'success', `Bozza #${editionNum} generata: ${edition.title}`, { editionId, num: editionNum }, Date.now() - start);
+  console.log('Editoriale Agent completato. Bozza:', editionNum);
+}
+
+main().catch(async e => {
+  console.error('ERRORE Editoriale:', e.message);
+  await logRun('editoriale', 'error', e.message).catch(() => {});
+  process.exit(1);
+});
