@@ -188,6 +188,9 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 /* OK MA DENTRO CHE C'E'? — mock 3 sezioni */
 .inside-wrap{display:flex;flex-direction:column;gap:16px}
 .inside-card{border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.inside-card:nth-child(1){border-top:3px solid var(--red)}
+.inside-card:nth-child(2){border-top:3px solid var(--accent)}
+.inside-card:nth-child(3){border-top:3px solid var(--green)}
 .inside-card-header{background:var(--cream2);border-bottom:1px solid var(--rule);padding:12px 20px;display:flex;align-items:center;gap:12px}
 .inside-card-num{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--mn);font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .inside-card-tag{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
@@ -206,7 +209,16 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 .mock-verdict::before{content:'';width:12px;height:1px;background:var(--red)}
 .inside-footer{padding:10px 20px;border-top:1px solid var(--rule);background:var(--gpal);font-family:var(--mn);font-size:9px;color:var(--green);letter-spacing:.04em}
 
-/* PROCESSO */
+/* INSIDE CONNECTOR */
+.inside-connector{display:flex;align-items:center;margin:0 0 8px;padding:20px 24px;background:var(--ink);border-radius:8px}
+.inside-connector-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
+.inside-connector-num{font-family:var(--dp);font-size:1.6rem;font-weight:900;letter-spacing:-1px;color:var(--accent);line-height:1}
+.inside-connector-label{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.inside-connector-line{flex:1;height:1px;background:rgba(255,255,255,.15);margin:0 16px;position:relative}
+.inside-connector-line::after{content:'→';position:absolute;right:-6px;top:-9px;font-size:12px;color:rgba(255,255,255,.2)}
+.inside-connector-note{font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.08em;text-align:center;margin-bottom:20px}
+
+
 .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
 .proc{padding:28px 22px;border-right:1px solid var(--rule);background:var(--cream)}
 .proc:last-child{border-right:none}
@@ -699,8 +711,27 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <hr class="div">
   <div class="section tight">
     <div class="sec-ey">Ok ma dentro che c'è?</div>
-    <h2 class="sec-h2">Tre sezioni. Niente filosofia.<br>Solo dati che puoi usare.</h2>
-    <p class="sec-desc">Un bilancio da leggere, un deal da capire, una metrica da tenere a mente. Pensate per chi ha una riunione alle 10 e vuole arrivare preparato.</p>
+    <h2 class="sec-h2">Una newsletter.<br>Tre sezioni fisse. Ogni martedì.</h2>
+    <p class="sec-desc">Stesso formato ogni settimana — così sai già cosa aspettarti e puoi leggere in 8 minuti esatti.</p>
+
+    <!-- CONNETTORE VISIVO -->
+    <div class="inside-connector">
+      <div class="inside-connector-item">
+        <div class="inside-connector-num">01</div>
+        <div class="inside-connector-label">Il Bilancio</div>
+      </div>
+      <div class="inside-connector-line"></div>
+      <div class="inside-connector-item">
+        <div class="inside-connector-num">02</div>
+        <div class="inside-connector-label">Il Deal</div>
+      </div>
+      <div class="inside-connector-line"></div>
+      <div class="inside-connector-item">
+        <div class="inside-connector-num">03</div>
+        <div class="inside-connector-label">La Metrica</div>
+      </div>
+    </div>
+    <p class="inside-connector-note">↓ Scorri per vedere ogni sezione nel dettaglio</p>
 
     <div class="inside-wrap">
 
@@ -726,7 +757,6 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
             <div class="mock-verdict">Modello sotto stress</div>
           </div>
         </div>
-        <div class="inside-footer">Fonti: bilancio depositato CCIAA · Calcio e Finanza · dati verificabili</div>
       </div>
 
       <!-- IL DEAL -->
@@ -751,7 +781,6 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
             <div class="mock-verdict">Deal ben strutturato</div>
           </div>
         </div>
-        <div class="inside-footer">Fonti: comunicati societari · filing · Swiss Ramble · dati verificabili</div>
       </div>
 
       <!-- LA METRICA -->
@@ -776,70 +805,10 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
             <div class="mock-verdict">Gap strutturale</div>
           </div>
         </div>
-        <div class="inside-footer">Fonti: Deloitte Football Money League · Football Benchmark · dati verificabili</div>
       </div>
 
     </div>
     <p style="font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;text-align:center;padding:16px 0">Tre sezioni. 8 minuti. Martedì mattina sei preparato. ✓</p>
-  </div>
-
-  <!-- ANTEPRIMA NEWSLETTER — sezione strategica post-contenuto -->
-  <hr class="div">
-  <div class="section tight" id="anteprima-section">
-    <div class="sec-ey">Un assaggio. Edizione #001</div>
-    <h2 class="sec-h2">Così appare nella tua inbox<br>ogni martedì mattina.</h2>
-    <p class="sec-desc">Non ti chiediamo di fidarti. Ti mostriamo esattamente cosa ricevi — formato, tono, profondità.</p>
-
-    <div class="nl-preview-wrap">
-      <!-- EMAIL MOCK -->
-      <div class="nl-mock">
-        <div class="nl-mock-header">
-          <div class="nl-mock-meta">
-            <span class="nl-mock-from">Da: Valore Atteso &lt;newsletter@fidesrara.com&gt;</span>
-            <span class="nl-mock-subject">Valore Atteso #001 — Il modello RedBird: come si compra un club di calcio</span>
-          </div>
-        </div>
-        <div class="nl-mock-body">
-          <div class="nl-mock-logo">Valore Atteso</div>
-          <div class="nl-mock-tag">Edizione #001 · Martedì 7 gennaio 2025 · ~8 min</div>
-
-          <div class="nl-mock-opener">
-            Milan, Inter, Liverpool. Tre club, tre fondi di private equity, tre strutture di deal completamente diverse. Questa settimana apriamo con il caso RedBird-Milan: il deal più discusso degli ultimi anni, e uno dei più mal capiti.
-          </div>
-
-          <div class="nl-mock-sec">
-            <div class="nl-mock-sec-label">01 · Il Bilancio</div>
-            <div class="nl-mock-sec-title">AC Milan 2022/23: il primo bilancio dell'era RedBird</div>
-            <div class="nl-mock-sec-body">Il primo esercizio completo sotto RedBird chiude con ricavi a €397M (+18% YoY) e un EBITDA adjusted positivo per la prima volta in 5 anni. Il player trading resta il motore: €89M di plusvalenze nette, pari al 22% dei ricavi totali. La nota integrativa rivela un debito finanziario netto di €134M — basso per gli standard del settore, ma con covenant legati ai risultati sportivi che potrebbero cambiare la struttura nei prossimi 18 mesi.</div>
-            <div class="nl-mock-kpi">
-              <div class="nl-mock-kpi-row"><span>Ricavi totali</span><span>€397M (+18%)</span></div>
-              <div class="nl-mock-kpi-row"><span>EBITDA adjusted</span><span>€31M (primo positivo)</span></div>
-              <div class="nl-mock-kpi-row"><span>Player trading</span><span>€89M plusvalenze nette</span></div>
-              <div class="nl-mock-kpi-row"><span>Debito netto</span><span>€134M</span></div>
-            </div>
-            <div class="nl-mock-verdict">→ Modello in transizione: buoni numeri, ma dipendenza dal trading ancora alta</div>
-          </div>
-
-          <div class="nl-mock-sec">
-            <div class="nl-mock-sec-label">02 · Il Deal</div>
-            <div class="nl-mock-sec-title">RedBird → AC Milan: la struttura che nessuno ha spiegato bene</div>
-            <div class="nl-mock-sec-body">Enterprise Value €1,2 miliardi. Multiplo EV/Revenues 3,1× — in linea con i precedenti di Premier League, sopra la media Serie A (1,8×). La struttura prevedeva equity RedBird + vendor financing di Elliott per €600M, con un meccanismo di earn-out legato al raggiungimento della Champions League entro il 2025. Elliott non è uscito dal tutto: mantiene un'esposizione creditizia che lo rende de facto co-investitore.</div>
-            <div class="nl-mock-kpi">
-              <div class="nl-mock-kpi-row"><span>Enterprise Value</span><span>€1,2 miliardi</span></div>
-              <div class="nl-mock-kpi-row"><span>Multiplo EV/Rev</span><span>3,1×</span></div>
-              <div class="nl-mock-kpi-row"><span>Vendor financing Elliott</span><span>€600M</span></div>
-              <div class="nl-mock-kpi-row"><span>Earn-out trigger</span><span>UCL entro 2025</span></div>
-            </div>
-            <div class="nl-mock-verdict">→ Deal complesso: RedBird compra il controllo, Elliott mantiene l'esposizione</div>
-          </div>
-
-          <div class="nl-mock-cta">
-            <div class="nl-mock-cta-text">Vuoi ricevere l'edizione completa ogni martedì?</div>
-            <button class="nl-mock-cta-btn" onclick="document.getElementById('form-anchor').scrollIntoView({behavior:'smooth',block:'center'});document.getElementById('form-email').focus()">Iscriviti gratis →</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- COME NASCE -->
