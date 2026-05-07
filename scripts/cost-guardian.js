@@ -8,7 +8,7 @@ const RESEND_KEY = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SOGLIA_ANTHROPIC = parseFloat(process.env.SOGLIA_ANTHROPIC || '10');
 const SOGLIA_RESEND = parseFloat(process.env.SOGLIA_RESEND || '10');
-const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+const FROM = 'Valore Atteso <info@valoreatteso.com>';
 
 async function httpRequest(url, opts = {}) {
   const r = await fetch(url, opts);
