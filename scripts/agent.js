@@ -9,7 +9,7 @@ const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL = process.env.SUPABASE_URL;
 const SUPA_KEY = process.env.SUPABASE_KEY;
 const SITE = 'https://valore-atteso.vercel.app';
-const FROM = 'Valore Atteso <newsletter@fidesrara.com>';
+const FROM = 'Valore Atteso <info@valoreatteso.com>';
 
 async function httpRequest(url, opts = {}) {
   const r = await fetch(url, opts);
