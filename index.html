@@ -72,6 +72,10 @@ nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px 
 .form-success{background:var(--gpal);border-left:3px solid var(--green);padding:12px 16px;font-family:var(--mn);font-size:11px;color:var(--green);letter-spacing:.04em;text-align:left;display:none;border-radius:0 3px 3px 0;margin-bottom:10px}
 
 /* SEZIONI COLORATE */
+.section-cream3{background:var(--cream3);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.section-cream3-inner .topic-card{background:var(--cream2)}
+.section-cream3-inner .topic-card:first-child{background:#fff}
+
 .section-dark{background:var(--dark);border-top:1px solid rgba(255,255,255,.06)}
 .section-dark-inner .sec-ey{color:rgba(255,255,255,.4)}
 .section-dark-inner .sec-h2{color:#fff}
@@ -631,8 +635,8 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   </div>
 
   <!-- COS'E' -->
-  <div class="section-dark">
-  <div class="section section-dark-inner">
+  <hr class="div">
+  <div class="section">
     <div class="sec-ey">Cos'è Valore Atteso?</div>
     <h2 class="sec-h2">Il calcio è un'industria da €50 miliardi.<br>Quasi nessuno la legge bene.</h2>
     <div class="cosè-body">
@@ -648,11 +652,10 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       </div>
     </div>
   </div>
-  </div>
 
   <!-- DI COSA PARLIAMO -->
-  <hr class="div">
-  <div class="section tight">
+  <div class="section-cream3">
+  <div class="section tight section-cream3-inner">
     <div class="sec-ey">Di cosa parliamo?</div>
     <h2 class="sec-h2">Tutto quello che serve per<br>leggere il calcio come un analista.</h2>
     <div class="topics-grid">
@@ -679,6 +682,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       </div>
     </div>
     <p class="topics-note">✦ Ogni settimana peschiamo da queste aree, così non ti perdi nulla ✦</p>
+  </div>
   </div>
 
   <!-- OK MA DENTRO CHE C'E' -->
