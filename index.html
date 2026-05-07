@@ -1396,7 +1396,7 @@ function crRenderPreview(data){
 async function crSendExisting(){
   const num=document.getElementById('cr-send-num').value.trim();
   if(!num){document.getElementById('cr-send-num').focus();return;}
-  const btn=event.target;
+  const btn=document.querySelector('[onclick="crSendExisting()"]');
   const ps=document.getElementById('cr-send-status');
   btn.disabled=true;btn.textContent='Invio in corso…';
   ps.style.display='none';
