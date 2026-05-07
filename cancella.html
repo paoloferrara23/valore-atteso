@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancella iscrizione — Valore Atteso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F2EB;--ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
+  --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;--gpal:#E4EDE7;
+  --dp:'Playfair Display',Georgia,serif;
+  --sf:'Source Serif 4',Georgia,serif;
+  --mn:'JetBrains Mono',monospace;
+}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+nav{border-bottom:1px solid var(--rule);padding:0 24px;height:50px;display:flex;align-items:center}
+.nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+.wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.box{max-width:480px;width:100%;text-align:center}
+
+/* STATO: in attesa */
+.state{display:none}
+.state.on{display:block}
+
+.icon{font-size:40px;margin-bottom:20px}
+.title{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px}
+.desc{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.7;margin-bottom:28px}
+.email-display{font-family:var(--mn);font-size:12px;color:var(--ink3);background:white;border:1px solid var(--rule);padding:10px 16px;border-radius:4px;margin-bottom:24px;letter-spacing:.04em}
+
+.btn-cancel{width:100%;height:50px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:opacity .15s;margin-bottom:12px}
+.btn-cancel:hover{opacity:.88}
+.btn-cancel:disabled{opacity:.4;cursor:not-allowed}
+.btn-back{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:inline-block;margin-top:8px;transition:color .15s}
+.btn-back:hover{color:var(--ink)}
+
+/* STATO: successo */
+.success-icon{font-size:40px;margin-bottom:20px}
+.note{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;line-height:1.7;margin-top:20px}
+.note a{color:var(--red);text-decoration:none}
+.note a:hover{text-decoration:underline}
+
+/* STATO: errore */
+.err-box{background:#fef2f2;border:1px solid #fecaca;padding:16px;border-radius:4px;font-family:var(--mn);font-size:11px;color:var(--red);letter-spacing:.04em;margin-bottom:20px}
+
+footer{border-top:1px solid var(--rule);padding:20px 24px;text-align:center;font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">Valore Atteso</a>
+</nav>
+
+<div class="wrap">
+  <div class="box">
+
+    <!-- STATO: conferma -->
+    <div class="state on" id="state-confirm">
+      <div class="icon">👋</div>
+      <h1 class="title">Ci dispiace vederti andare.</h1>
+      <p class="desc">Stai per cancellare la tua iscrizione a Valore Atteso. Non riceverai più la newsletter del martedì.</p>
+      <div class="email-display" id="email-display">—</div>
+      <button class="btn-cancel" id="btn-cancel" onclick="doUnsubscribe()">Sì, cancella la mia iscrizione</button>
+      <br>
+      <a class="btn-back" href="/">← No, voglio restare iscritto</a>
+    </div>
+
+    <!-- STATO: successo -->
+    <div class="state" id="state-ok">
+      <div class="success-icon">✓</div>
+      <h1 class="title">Iscrizione cancellata.</h1>
+      <p class="desc">Sei stato rimosso dalla lista. Non riceverai più email da Valore Atteso.</p>
+      <p class="note">Hai cambiato idea? <a href="/">Puoi riscriverti in qualsiasi momento →</a></p>
+    </div>
+
+    <!-- STATO: errore -->
+    <div class="state" id="state-err">
+      <div class="icon">⚠️</div>
+      <h1 class="title">Qualcosa è andato storto.</h1>
+      <p class="desc">Non siamo riusciti a cancellare la tua iscrizione. Riprova o scrivici a <a href="mailto:hello@valoreatteso.it" style="color:var(--red)">hello@valoreatteso.it</a>.</p>
+      <a class="btn-back" href="/">← Torna alla home</a>
+    </div>
+
+    <!-- STATO: email mancante -->
+    <div class="state" id="state-missing">
+      <div class="icon">🔗</div>
+      <h1 class="title">Link non valido.</h1>
+      <p class="desc">Il link di cancellazione non è valido o è scaduto. Usa il link presente nell'email che hai ricevuto.</p>
+      <a class="btn-back" href="/">← Torna alla home</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>© 2025 Valore Atteso · valore-atteso.vercel.app</footer>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.state').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+const params = new URLSearchParams(window.location.search);
+const email = params.get('email');
+
+if (!email || !email.includes('@')) {
+  show('state-missing');
+} else {
+  document.getElementById('email-display').textContent = email;
+}
+
+async function doUnsubscribe() {
+  const btn = document.getElementById('btn-cancel');
+  btn.disabled = true;
+  btn.textContent = 'Cancellazione in corso…';
+
+  try {
+    const r = await fetch('/api/unsubscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const d = await r.json();
+    if (r.ok && d.ok) {
+      show('state-ok');
+    } else {
+      throw new Error(d.error || 'Errore');
+    }
+  } catch(e) {
+    show('state-err');
+  }
+}
+</script>
+</body>
+</html>
