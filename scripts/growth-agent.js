@@ -30,8 +30,8 @@ async function main() {
   // Dati iscritti
   const tuttiRaw = await supaFetch('/rest/v1/subscribers?select=email,confirmed,created_at,source');
   const tutti = Array.isArray(tuttiRaw) ? tuttiRaw : [];
-  const confermati = tutti.filter(s => s.confirmed);
-  const nonConfermati = tutti.filter(s => !s.confirmed);
+  const confermati = tutti.filter(s => s.confirmed).length;
+  const nonConfermati = tutti.filter(s => !s.confirmed).length;
 
   // Crescita ultima settimana
   const settimanaFa = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
