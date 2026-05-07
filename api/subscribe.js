@@ -78,7 +78,12 @@ export default async function handler(req, res) {
           <tr><td style="padding:0">
             <table width="100%" style="border-collapse:collapse">
               <tr><td style="padding:16px 24px 6px;background:#F5F2EB">
-                <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;letter-spacing:.14em;text-transform:uppercase;margin:0">&#8212; 0${i+1} &middot; ${s.label}</p>
+                <table width="100%" style="border-collapse:collapse"><tr>
+                  <td width="28" style="border-bottom:1px solid #C8251D;vertical-align:bottom;padding-bottom:4px">&nbsp;</td>
+                  <td style="padding-left:10px;vertical-align:bottom;padding-bottom:4px">
+                    <span style="font-family:Georgia,serif;font-size:10px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;font-style:italic">0${i+1} &middot; ${s.label}</span>
+                  </td>
+                </tr></table>
               </td></tr>
               <tr><td style="padding:6px 24px 12px;background:#F5F2EB;border-bottom:1px solid #D0CBC0">
                 <h2 style="font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:-.3px;line-height:1.25;color:#1A1A1A;margin:0 0 10px">${s.title}</h2>
@@ -91,7 +96,7 @@ export default async function handler(req, res) {
                 </table>
               </td></tr>` : ''}
               <tr><td style="padding:10px 24px 18px;background:#F5F2EB;border-bottom:2px solid #D0CBC0">
-                <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin:0;letter-spacing:.06em">&#8594; ${s.verdict}</p>
+                <p style="font-family:'Courier New',monospace;font-family:Georgia,serif;font-size:10px;color:#C8251D;margin:0;font-style:italic">&#8594; ${s.verdict}</p>
               </td></tr>
             </table>
           </td></tr>`).join('');
