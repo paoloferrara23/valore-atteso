@@ -43,7 +43,7 @@ async function main() {
   const nuoviMese = tutti.filter(s => s.created_at > meseFa);
 
   // Tasso di conversione (iscritti che confermano)
-  const tassoConversione = tutti.length > 0 ? ((confermati.length / tutti.length) * 100).toFixed(1) : 0;
+  const tassoConversione = tutti.length > 0 ? ((confermati / tutti.length) * 100).toFixed(1) : 0;
   const tassoConversioneSettimana = nuoviSettimana.length > 0
     ? ((nuoviConfermati.length / nuoviSettimana.length) * 100).toFixed(1) : 0;
 
@@ -57,8 +57,8 @@ async function main() {
   const report = {
     data: oggi,
     totale_iscritti: tutti.length,
-    confermati: confermati.length,
-    non_confermati: nonConfermati.length,
+    confermati: confermati,
+    non_confermati: nonConfermati,
     nuovi_settimana: nuoviSettimana.length,
     nuovi_confermati_settimana: nuoviConfermati.length,
     nuovi_mese: nuoviMese.length,
@@ -125,13 +125,13 @@ async function main() {
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
     body: JSON.stringify({
       from: FROM, to: APPROVAL_EMAIL,
-      subject: `Growth VA · ${confermati.length} iscritti confermati · +${nuoviSettimana.length} settimana`,
+      subject: `Growth VA · ${confermati} iscritti confermati · +${nuoviSettimana.length} settimana`,
       html
     })
   });
 
   await logRun('growth', alerts.length > 0 ? 'warning' : 'success',
-    `${confermati.length} confermati, +${nuoviSettimana.length} settimana, conversione ${tassoConversione}%`,
+    `${confermati} confermati, +${nuoviSettimana.length} settimana, conversione ${tassoConversione}%`,
     report, Date.now() - start);
 
   console.log('Growth Agent completato.');
