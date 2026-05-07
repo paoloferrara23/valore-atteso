@@ -40,12 +40,15 @@ export default async function handler(req, res) {
     const rows = await r.json();
     if (!r.ok || !rows?.length) return res.status(400).json({ error: 'Token non valido' });
 
+    const userEmail = rows[0].email;
+
+    // 1. Email di benvenuto
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
       body: JSON.stringify({
         from: FROM,
-        to: rows[0].email,
+        to: userEmail,
         subject: 'Benvenuto in Valore Atteso',
         html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif">
           <tr><td style="padding:24px 28px;border-bottom:2px solid #1A1A1A;text-align:center">
@@ -54,13 +57,57 @@ export default async function handler(req, res) {
           </td></tr>
           <tr><td style="padding:28px">
             <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 16px">Benvenuto.</p>
-            <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 20px">Ogni martedì mattina riceverai un'analisi del business del calcio — un bilancio, un deal, una metrica — in 8 minuti. Dati verificati, nessun gossip di mercato.</p>
-            <a href="${SITE}" style="background:#1A1A1A;color:#F5F2EB;padding:12px 24px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Leggi la prima edizione →</a>
+            <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0 0 20px">Ogni martedì mattina riceverai un'analisi del business del calcio: un bilancio, un deal, una metrica in 8 minuti. Dati verificati, nessun gossip di mercato.</p>
+            <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0">Ti mando subito la prima edizione, così puoi capire di cosa parliamo.</p>
           </td></tr>
-          ${emailFooter(rows[0].email)}
+          ${emailFooter(userEmail)}
         </table>`
       })
     }).catch(e => console.error('Welcome email error:', e));
+
+    // 2. Recupera ultima edizione pubblicata e la manda
+    try {
+      const edRes = await fetch(`${SUPA_URL}/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=*`, {
+        headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+      });
+      const editions = await edRes.json();
+      const edition = editions?.[0];
+
+      if (edition && edition.sections?.length) {
+        const secsHTML = edition.sections.map((s, i) => `
+          <tr><td style="padding:14px 20px;border-bottom:1px solid #D0CBC0">
+            <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">0${i+1} · ${s.label}</p>
+            <h3 style="font-family:Georgia,serif;font-size:14px;font-weight:700;margin:0 0 6px">${s.title}</h3>
+            <p style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.75;margin:0 0 8px">${(s.body || '').replace(/\n/g, '<br>')}</p>
+            ${s.kpis?.length ? `<table width="100%" style="border-collapse:collapse;font-family:'Courier New',monospace;font-size:10px;background:#EDE9E0;margin-bottom:8px">${s.kpis.map(k => `<tr><td style="padding:4px 10px;color:#9A9690">${k.key}</td><td style="padding:4px 10px;text-align:right;color:#1A1A1A;font-weight:500">${k.value}</td></tr>`).join('')}</table>` : ''}
+            <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin:0">→ ${s.verdict}</p>
+          </td></tr>`).join('');
+
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+          body: JSON.stringify({
+            from: FROM,
+            to: userEmail,
+            subject: `Valore Atteso #${edition.num} — ${edition.title}`,
+            html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif">
+              <tr><td style="padding:20px 24px;border-bottom:2px solid #1A1A1A;text-align:center">
+                <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;letter-spacing:-1px;margin:0">Valore Atteso</h1>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.14em;text-transform:uppercase;margin:3px 0 0">Edizione #${edition.num} · ${edition.date}</p>
+              </td></tr>
+              ${edition.opener ? `<tr><td style="padding:14px 20px;background:#EDE9E0;border-bottom:1px solid #D0CBC0"><p style="font-family:Georgia,serif;font-size:14px;color:#4A4845;font-weight:300;line-height:1.75;font-style:italic;margin:0">${edition.opener}</p></td></tr>` : ''}
+              <table width="100%" style="border-collapse:collapse">${secsHTML}</table>
+              <tr><td style="padding:12px 20px;border-top:1px solid #D0CBC0;text-align:center">
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0">© 2025 Valore Atteso · <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#bbb;margin:4px 0 0"><a href="https://valoreatteso.com/cancella.html?email=${encodeURIComponent(userEmail)}" style="color:#bbb;text-decoration:underline">Cancella iscrizione</a></p>
+              </td></tr>
+            </table>`
+          })
+        }).catch(e => console.error('Edition email error:', e));
+      }
+    } catch(e) {
+      console.error('Edition fetch error:', e);
+    }
 
     return res.status(200).json({ ok: true });
   }
