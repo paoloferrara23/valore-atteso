@@ -90,13 +90,13 @@ export default async function handler(req, res) {
       </tr>`).join('');
 
     const buildHtml = (email) => `
-      <table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
+      <!DOCTYPE html><html lang="it"><head><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light"><style>:root{color-scheme:light only}body{background-color:#F5F2EB!important}@media(prefers-color-scheme:dark){body,table,td,div,p,h1,h2,h3,span{background-color:#F5F2EB!important;color:#1A1A1A!important}.dk{background-color:#1A1A1A!important}.dk *{color:#ffffff!important}.dk p{color:#ffffff!important}}</style></head><body style="margin:0;padding:16px 0;background:#F5F2EB"><table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
         <!-- HEADER -->
         <tr>
-          <td style="padding:24px 28px;border-bottom:3px solid #1A1A1A;text-align:center;background:#F5F2EB">
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px">${edition.date}</p>
-            <h1 style="font-family:Georgia,serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#1A1A1A;margin:0 0 4px;line-height:1">Valore Atteso</h1>
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal &middot; Edizione #${edition.num}</p>
+          <td class="dk" style="padding:28px 32px;border-bottom:3px solid #D4A017;text-align:center;background:#1A1A1A">
+            <p style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px">${edition.date} &middot; Edizione #${edition.num}</p>
+            <h1 style="font-family:Georgia,serif;font-size:32px;font-weight:900;letter-spacing:-1.5px;color:#ffffff;margin:0 0 6px;line-height:1">Valore Atteso</h1>
+            <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;margin:0">Il calcio dei numeri, non dei goal</p>
           </td>
         </tr>
         <!-- OPENER -->
@@ -110,9 +110,9 @@ export default async function handler(req, res) {
         <tr><td style="padding:0"><table width="100%" style="border-collapse:collapse">${secsHTML}</table></td></tr>
         <!-- CTA -->
         <tr>
-          <td style="padding:24px 28px;text-align:center;border-top:2px solid #1A1A1A;background:#1A1A1A">
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
-            <a href="${SITE}" style="background:#F5F2EB;color:#1A1A1A;padding:12px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:inline-block;font-weight:500">Leggi sul sito &#8594;</a>
+          <td class="dk" style="padding:28px 32px;text-align:center;border-top:3px solid #D4A017;background:#1A1A1A">
+            <a href="${SITE}" style="background:#D4A017;color:#1A1A1A;padding:14px 32px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:inline-block;font-weight:700">Leggi sul sito &#8594;</a>
+            <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin:12px 0 0">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
           </td>
         </tr>
         <!-- FOOTER -->
@@ -126,7 +126,7 @@ export default async function handler(req, res) {
             </p>
           </td>
         </tr>
-      </table>`;
+      </table></body></html>`;
 
     // 4. Invia in batch (Resend batch API — max 100 per chiamata)
     const BATCH_SIZE = 100;
