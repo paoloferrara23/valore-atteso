@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F7F4EE;--ink:#111010;--ink2:#3D3C39;--ink3:#888480;--rule:#C8C4BB;--green:#1A3A2A;--gpal:#E8F0EB;--red:#B5221A;--dp:'Playfair Display',Georgia,serif;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace}
+:root{--cream:#F5F2EB;--ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;--rule:#D0CBC0;--green:#1B4332;--gpal:#E4EDE7;--red:#C8251D;--dp:'Playfair Display',Georgia,serif;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;-webkit-font-smoothing:antialiased}
 .box{max-width:480px;width:100%;text-align:center}
 .logo{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;margin-bottom:8px}
@@ -15,17 +15,17 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:1
 .icon{font-size:48px;margin-bottom:20px}
 .title{font-family:var(--dp);font-size:1.8rem;font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:14px}
 .desc{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.75;margin-bottom:32px}
-.btn{display:inline-block;background:var(--ink);color:var(--cream);padding:14px 28px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:background .15s}
-.btn:hover{background:var(--ink2)}
+.btn{display:inline-block;background:var(--red);color:#fff;padding:14px 28px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:3px;transition:opacity .15s}
+.btn:hover{opacity:.88}
 .loading{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
-.err{background:rgba(181,34,26,.08);border-left:3px solid var(--red);padding:14px 18px;font-family:var(--mn);font-size:10px;color:var(--red);letter-spacing:.04em;line-height:1.6;text-align:left;margin-bottom:20px;display:none}
+.err{background:rgba(200,37,29,.08);border-left:3px solid var(--red);padding:14px 18px;font-family:var(--mn);font-size:10px;color:var(--red);letter-spacing:.04em;line-height:1.6;text-align:left;margin-bottom:20px;display:none}
 </style>
 </head>
 <body>
 <div class="box">
   <div class="logo">Valore Atteso</div>
-  <div class="tag">Il calcio dei numeri, non dei gol</div>
-  
+  <div class="tag">Il calcio dei numeri, non dei goal</div>
+
   <div id="loading">
     <div class="loading">Conferma in corso…</div>
   </div>
@@ -34,8 +34,8 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:1
     <div class="icon">✓</div>
     <h1 class="title">Iscrizione confermata.</h1>
     <p class="desc">Benvenuto in Valore Atteso. Ogni martedì mattina trovi nella tua inbox un bilancio, un deal e una metrica del business del calcio. In 8 minuti.</p>
-    <p class="desc" style="font-size:14px;margin-bottom:28px">Ti abbiamo inviato un'email di benvenuto. Se non la vedi, controlla la cartella spam.</p>
-    <a href="https://valore-atteso.vercel.app" class="btn">Vai alle edizioni →</a>
+    <p class="desc" style="font-size:14px;margin-bottom:28px">Ti abbiamo inviato un'email di benvenuto con la prima edizione. Se non la vedi, controlla la cartella spam.</p>
+    <a href="https://valoreatteso.com" class="btn">Vai alle edizioni →</a>
   </div>
 
   <div id="error" style="display:none">
@@ -43,7 +43,7 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:1
     <h1 class="title">Link non valido.</h1>
     <p class="desc">Il link di conferma è scaduto o non è corretto. Prova a iscriverti di nuovo.</p>
     <div class="err" id="err-msg"></div>
-    <a href="https://valore-atteso.vercel.app" class="btn">Torna al sito →</a>
+    <a href="https://valoreatteso.com" class="btn">Torna al sito →</a>
   </div>
 </div>
 
