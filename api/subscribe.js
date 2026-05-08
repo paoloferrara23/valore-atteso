@@ -8,19 +8,16 @@ export default async function handler(req, res) {
   const RESEND_KEY = process.env.RESEND_KEY || 're_8NSq3NEw_2SjYt5J4SiUw29AvEXcMzZHw';
   const SUPA_URL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
   const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-  const SITE = 'https://valore-atteso.vercel.app';
+  const SITE = 'https://valoreatteso.com';
   const FROM = 'Valore Atteso <info@valoreatteso.com>';
 
   const { email, action, token } = req.body || {};
 
   const emailFooter = (email) => `
     <tr>
-      <td style="padding:14px 28px;border-top:1px solid #C8C4BB;text-align:center">
-        <p style="font-family:'Courier New',monospace;font-size:8px;color:#888480;margin:0 0 6px;letter-spacing:.04em">
-          © 2025 Valore Atteso · <a href="${SITE}" style="color:#888480;text-decoration:none">valore-atteso.vercel.app</a>
-        </p>
-        <p style="font-family:'Courier New',monospace;font-size:8px;color:#aaa;margin:0;letter-spacing:.04em">
-          <a href="${SITE}/cancella.html?email=${encodeURIComponent(email)}" style="color:#aaa;text-decoration:underline">Cancella iscrizione</a>
+      <td style="padding:14px 28px;border-top:1px solid #D0CBC0;text-align:center;background:#EDE9E0">
+        <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8C4BB;margin:0;letter-spacing:.04em">
+          <a href="${SITE}/cancella.html?email=${encodeURIComponent(email)}" style="color:#C8C4BB;text-decoration:underline">Cancella iscrizione</a>
         </p>
       </td>
     </tr>`;
@@ -121,7 +118,7 @@ export default async function handler(req, res) {
                 <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin:12px 0 0">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
               </td></tr>
               <tr><td style="padding:14px 28px;border-top:1px solid #D0CBC0;text-align:center;background:#EDE9E0">
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0 0 4px">&copy; 2025 Valore Atteso &middot; <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0 0 4px">&copy; ${new Date().getFullYear()} Valore Atteso &middot; <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
                 <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8C4BB;margin:0"><a href="https://valoreatteso.com/cancella.html?email=${encodeURIComponent(userEmail)}" style="color:#C8C4BB;text-decoration:underline">Cancella iscrizione</a></p>
               </td></tr>
             </table>`
