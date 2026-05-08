@@ -61,7 +61,7 @@ export default async function handler(req, res) {
             <p style="font-family:Georgia,serif;font-size:15px;font-weight:300;color:#4A4845;line-height:1.75;margin:0">Ti mando subito la prima edizione, così puoi capire di cosa parliamo.</p>
           </td></tr>
           ${emailFooter(userEmail)}
-        </table>`
+        </table></body></html>`
       })
     }).catch(e => console.error('Welcome email error:', e));
 
@@ -108,17 +108,17 @@ export default async function handler(req, res) {
             from: FROM,
             to: userEmail,
             subject: `Valore Atteso #${edition.num} — ${edition.title}`,
-            html: `<table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
-              <tr><td style="padding:24px 28px;border-bottom:3px solid #1A1A1A;text-align:center;background:#F5F2EB">
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px">${edition.date}</p>
-                <h1 style="font-family:Georgia,serif;font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#1A1A1A;margin:0 0 4px;line-height:1">Valore Atteso</h1>
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Il calcio dei numeri, non dei goal &middot; Edizione #${edition.num}</p>
+            html: `<!DOCTYPE html><html lang="it"><head><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light"><style>:root{color-scheme:light only}body{background-color:#F5F2EB!important}@media(prefers-color-scheme:dark){body,table,td,div,p,h1,h2,h3,span{background-color:#F5F2EB!important;color:#1A1A1A!important}.dk{background-color:#1A1A1A!important}.dk *{color:#ffffff!important}.dk p{color:#ffffff!important}}</style></head><body style="margin:0;padding:16px 0;background:#F5F2EB"><table width="560" style="max-width:560px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
+              <tr><td class="dk" style="padding:28px 32px;border-bottom:3px solid #D4A017;text-align:center;background:#1A1A1A">
+                <p style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px">${edition.date} &middot; Edizione #${edition.num}</p>
+                <h1 style="font-family:Georgia,serif;font-size:32px;font-weight:900;letter-spacing:-1.5px;color:#ffffff;margin:0 0 6px;line-height:1">Valore Atteso</h1>
+                <p style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.1em;text-transform:uppercase;margin:0">Il calcio dei numeri, non dei goal</p>
               </td></tr>
-              ${edition.opener ? `<tr><td style="padding:16px 28px;background:#EDE9E0;border-bottom:1px solid #D0CBC0;border-left:3px solid #1A1A1A"><p style="font-family:Georgia,serif;font-size:14px;color:#4A4845;font-weight:300;line-height:1.8;font-style:italic;margin:0">${edition.opener}</p></td></tr>` : ''}
+              ${edition.opener ? `<tr><td style="padding:16px 28px;background:#EDE9E0;border-bottom:1px solid #D0CBC0;border-left:3px solid #D4A017"><p style="font-family:Georgia,serif;font-size:14px;color:#4A4845;font-weight:300;line-height:1.8;font-style:italic;margin:0">${edition.opener}</p></td></tr>` : ''}
               <tr><td style="padding:0"><table width="100%" style="border-collapse:collapse">${secsHTML}</table></td></tr>
-              <tr><td style="padding:24px 28px;text-align:center;border-top:2px solid #1A1A1A;background:#1A1A1A">
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
-                <a href="https://valoreatteso.com" style="background:#F5F2EB;color:#1A1A1A;padding:12px 28px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:inline-block;font-weight:500">Leggi sul sito &#8594;</a>
+              <tr><td class="dk" style="padding:28px 32px;text-align:center;border-top:3px solid #D4A017;background:#1A1A1A">
+                <a href="https://valoreatteso.com" style="background:#D4A017;color:#1A1A1A;padding:14px 32px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;display:inline-block;font-weight:700">Leggi sul sito &#8594;</a>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin:12px 0 0">Ogni martedì mattina &middot; Gratis &middot; 8 minuti</p>
               </td></tr>
               <tr><td style="padding:14px 28px;border-top:1px solid #D0CBC0;text-align:center;background:#EDE9E0">
                 <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0 0 4px">&copy; 2025 Valore Atteso &middot; <a href="https://valoreatteso.com" style="color:#9A9690;text-decoration:none">valoreatteso.com</a></p>
