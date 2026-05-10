@@ -1,0 +1,20 @@
+name: Incident Response Agent
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Ogni giorno alle 9:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  incident-response:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla incidents e anomalie
+        env:
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: node scripts/incident-response-agent.js
