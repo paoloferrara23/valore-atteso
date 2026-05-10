@@ -22,7 +22,7 @@ async function callClaude(messages, system) {
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01'
     },
-    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 2000, system, messages })
+    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 1200, system, messages })
   });
   if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
   const data = r.json();
@@ -59,20 +59,33 @@ Rispondi SOLO in JSON:
     content: `Oggi è ${oggi}. Analizza le opportunità SEO per Valore Atteso — newsletter italiana sul business del calcio. Focus su keyword long-tail nel settore corporate finance applicato al calcio. Considera il glossario già presente sul sito con termini come EBITDA calcio, player trading, salary ratio, stadium yield, LBO calcio.`
   }], system);
 
+  function cleanJSON(str) {
+    // Extract JSON object from response
+    const match = str.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    let json = match[0];
+    // Remove control characters that break JSON
+    json = json.replace(/[\x00-\x1F\x7F]/g, ' ');
+    // Fix trailing commas
+    json = json.replace(/,(\s*[}\]])/g, '$1');
+    return json;
+  }
+
   let report;
   try {
-    const match = testo.match(/\{[\s\S]*\}/);
-    report = JSON.parse(match[0]);
+    const cleaned = cleanJSON(testo);
+    if (!cleaned) throw new Error('No JSON found');
+    report = JSON.parse(cleaned);
   } catch {
-    // Retry
+    // Retry with explicit instruction
     const retry = await callClaude([
       { role: 'user', content: `Oggi è ${oggi}. Analizza keyword SEO per Valore Atteso.` },
       { role: 'assistant', content: testo },
-      { role: 'user', content: 'Rispondi SOLO con il JSON, nessun testo prima o dopo.' }
+      { role: 'user', content: 'Il JSON era malformato. Rispondi SOLO con JSON valido, stringhe brevi, nessun carattere speciale.' }
     ], system);
-    const match2 = retry.match(/\{[\s\S]*\}/);
-    if (!match2) throw new Error('JSON SEO non trovato');
-    report = JSON.parse(match2[0]);
+    const cleaned2 = cleanJSON(retry);
+    if (!cleaned2) throw new Error('JSON SEO non trovato dopo retry');
+    report = JSON.parse(cleaned2);
   }
 
   // Salva keyword per l'Editoriale Agent
