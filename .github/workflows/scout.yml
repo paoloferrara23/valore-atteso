@@ -2,7 +2,7 @@ name: Scout — Business del Calcio
 
 on:
   schedule:
-    - cron: '0 6 * * 6'  # Ogni sabato alle 7:00 ora italiana
+    - cron: '0 6 * * 6'  # Sabato 7:00 ora italiana
   workflow_dispatch:
 
 jobs:
@@ -15,4 +15,6 @@ jobs:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: node scripts/scout.js
