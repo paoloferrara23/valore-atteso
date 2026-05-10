@@ -88,8 +88,8 @@ export default async function handler(req, res) {
               </td></tr>
               ${s.kpis?.length ? `<tr><td style="padding:0;background:#EDE9E0;border-bottom:1px solid #D0CBC0">
                 <table width="100%" style="border-collapse:collapse;font-family:'Courier New',monospace;font-size:10px">
-                  <tr style="background:#D0CBC0"><td colspan="2" style="padding:6px 24px;font-size:8px;color:#1A1A1A;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Dati chiave</td></tr>
-                  ${s.kpis.map((k,ki) => `<tr style="background:${ki%2===0?'#EDE9E0':'#E6E1D8'}"><td style="padding:7px 24px;color:#4A4845;font-size:10px">${k.key}</td><td style="padding:7px 24px;text-align:right;color:#1A1A1A;font-weight:700;font-size:11px">${k.value}</td></tr>`).join('')}
+                  <tr style="background:#1A1A1A"><td colspan="2" style="padding:7px 24px;font-family:'Courier New',monospace;font-size:9px;color:#ffffff;letter-spacing:.1em;text-transform:uppercase;font-weight:500">Dati chiave</td></tr>
+                  ${s.kpis.map((k,ki) => `<tr style="background:${ki%2===0?'#F5F2EB':'#EDE9E0'}"><td style="padding:7px 24px;color:#4A4845;font-size:10px;border-right:1px solid #D0CBC0">${k.key}</td><td style="padding:7px 24px;text-align:right;color:#1A1A1A;font-weight:900;font-size:12px;letter-spacing:-.3px">${k.value}</td></tr>`).join('')}
                 </table>
               </td></tr>` : ''}
               <tr><td style="padding:10px 24px 18px;background:#F5F2EB;border-bottom:2px solid #D0CBC0">
