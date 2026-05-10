@@ -73,6 +73,12 @@ async function main() {
 Ogni edizione ha 3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.
 Tono: analitico, diretto, dati verificabili, nessun gossip.
 Pubblico: professionisti M&A, PE, consulenza, finanza.
+
+REGOLA FONDAMENTALE — FONTI:
+- Ogni sezione DEVE citare le fonti dei dati usati
+- Fonti accettate: bilanci societari, comunicati ufficiali, report di settore, dati da testate economiche con fonte primaria
+- Non inventare dati: usa solo numeri verificabili dallo Scout o di dominio pubblico consolidato
+- Il campo "sources" è OBBLIGATORIO e deve contenere almeno 1 fonte per sezione
 ${temiContext}
 ${seoContext}
 
