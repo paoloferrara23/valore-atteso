@@ -1,0 +1,19 @@
+name: Security Agent
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Ogni giorno alle 10:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Controlla anomalie sicurezza
+        env:
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: node scripts/security-agent.js
