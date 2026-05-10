@@ -73,9 +73,9 @@ export default async function handler(req, res) {
                   <tr style="background:#D0CBC0">
                     <td colspan="2" style="padding:6px 24px;font-size:8px;color:#1A1A1A;letter-spacing:.08em;text-transform:uppercase;font-weight:500">Dati chiave</td>
                   </tr>
-                  ${s.kpis.map((k,ki) => `<tr style="background:${ki%2===0?'#EDE9E0':'#E6E1D8'}">
-                    <td style="padding:7px 24px;color:#4A4845;font-size:10px">${k.key}</td>
-                    <td style="padding:7px 24px;text-align:right;color:#1A1A1A;font-weight:700;font-size:11px">${k.value}</td>
+                  ${s.kpis.map((k,ki) => `<tr style="background:${ki%2===0?'#F5F2EB':'#EDE9E0'}">
+                    <td style="padding:7px 24px;color:#4A4845;font-size:10px;border-right:1px solid #D0CBC0">${k.key}</td>
+                    <td style="padding:7px 24px;text-align:right;color:#1A1A1A;font-weight:900;font-size:12px;letter-spacing:-.3px">${k.value}</td>
                   </tr>`).join('')}
                 </table>
               </td>
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
         <tr>
           <td style="padding:14px 28px;border-top:1px solid #D0CBC0;text-align:center;background:#EDE9E0">
             <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0 0 4px;letter-spacing:.04em">
-              &copy; 2025 Valore Atteso &middot; <a href="${SITE}" style="color:#9A9690;text-decoration:none">valoreatteso.com</a>
+              &copy; ${new Date().getFullYear()} Valore Atteso &middot; <a href="${SITE}" style="color:#9A9690;text-decoration:none">valoreatteso.com</a>
             </p>
             <p style="font-family:'Courier New',monospace;font-size:8px;color:#C8C4BB;margin:0">
               <a href="${SITE}/cancella.html?email=${encodeURIComponent(email)}" style="color:#C8C4BB;text-decoration:underline">Cancella iscrizione</a>
