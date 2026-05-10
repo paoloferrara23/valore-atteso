@@ -43,25 +43,33 @@ Il tuo compito: trovare le 5 notizie più rilevanti della settimana sul business
 
 Criteri di selezione:
 - Rilevanza economica: bilanci, acquisizioni, diritti TV, valutazioni, debito
-- Dati verificabili: preferisci notizie con numeri concreti
+- Dati verificabili: SOLO notizie con numeri concreti e fonti primarie identificabili
 - Angolo CF: ogni notizia deve avere un'analisi finanziaria possibile
 
-Escludi:
-- Gossip di mercato sui calciatori senza impatto finanziario
-- Risultati sportivi senza implicazioni economiche
-- Opinioni senza dati
+REGOLA ASSOLUTA — FONTI OBBLIGATORIE:
+- Il campo "fonti" è OBBLIGATORIO per ogni tema. Se non hai la fonte, NON includere la notizia.
+- Ogni fonte deve essere specifica: nome testata/ente + tipo documento + data (es. "Bilancio Juventus 2023/24 — depositato CCIAA — aprile 2024")
+- Fonti accettate: bilanci societari, comunicati ufficiali UEFA/FIFA/club, Deloitte Football Money League, KPMG Football Benchmark, articoli con fonte primaria citata
+- Se la notizia viene da un articolo di giornale, cita la testata E la fonte primaria che la testata cita
+- VIETATO: "fonte non disponibile", "dati stimati", campi fonti vuoti
 
-Rispondi SOLO in JSON, nessun testo prima o dopo:
+Escludi:
+- Notizie senza fonte verificabile
+- Gossip di mercato
+- Risultati sportivi senza implicazioni economiche
+
+Rispondi SOLO in JSON valido, nessun testo prima o dopo:
 {
   "settimana": "DD/MM/YYYY",
   "temi": [
     {
       "titolo": "...",
       "notizia": "...",
-      "angolo_cf": "...",
+      "angolo_cf": "Angolo di analisi: ...",
       "sezione_suggerita": "bilancio|deal|metrica",
-      "priorita": 1-5,
-      "dati_chiave": ["dato1", "dato2"]
+      "priorita": 1,
+      "dati_chiave": ["dato1 con numero", "dato2 con numero"],
+      "fonti": ["Testata/Ente — tipo documento — mese anno"]
     }
   ],
   "tema_consigliato": "...",
@@ -71,7 +79,7 @@ Rispondi SOLO in JSON, nessun testo prima o dopo:
   const oggi = new Date().toLocaleDateString('it-IT');
   const testo = await callClaude([{
     role: 'user',
-    content: `Oggi è ${oggi}. Analizza le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo e genera il brief settimanale per Valore Atteso.`
+    content: `Oggi è ${oggi}. Analizza le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo e genera il brief settimanale per Valore Atteso. IMPORTANTE: per ogni tema includi obbligatoriamente il campo "fonti" con almeno una fonte specifica e verificabile. Se non hai la fonte, non includere la notizia.`
   }], system);
 
   let brief;
@@ -81,6 +89,15 @@ Rispondi SOLO in JSON, nessun testo prima o dopo:
   } catch {
     throw new Error('JSON non valido dallo Scout');
   }
+
+  // Valida fonti — rimuovi temi senza fonti
+  const temiConFonti = (brief.temi || []).filter(t => t.fonti && t.fonti.length > 0 && t.fonti[0] !== '');
+  const temiSenzaFonti = (brief.temi || []).length - temiConFonti.length;
+  if (temiSenzaFonti > 0) {
+    console.log(`⚠ Rimossi ${temiSenzaFonti} temi senza fonti`);
+  }
+  brief.temi = temiConFonti;
+  console.log(`Temi con fonti: ${brief.temi.length}`);
 
   // Salva nella memoria condivisa per l'Editoriale Agent
   await memSet('scout_brief', brief, 'scout');
@@ -102,6 +119,7 @@ Rispondi SOLO in JSON, nessun testo prima o dopo:
           CF: ${t.angolo_cf}
         </div>
         ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690;margin-top:6px">Dati: ${t.dati_chiave.join(' · ')}</div>` : ''}
+        ${t.fonti?.length ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;background:#E4EDE7;padding:6px 10px;margin-top:6px;border-left:2px solid #1B4332">Fonti: ${t.fonti.join(' · ')}</div>` : ''}
       </td>
     </tr>`).join('');
 
