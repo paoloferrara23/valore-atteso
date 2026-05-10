@@ -139,8 +139,14 @@ Rispondi SOLO in JSON valido:
       <div style="font-family:'Courier New',monospace;font-size:8px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">0${i+1} · ${s.label}</div>
       <div style="font-family:Georgia,serif;font-size:15px;font-weight:700;margin-bottom:8px">${s.title}</div>
       <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.7">${s.body}</div>
-      ${s.kpis?.length ? `<table style="width:100%;margin-top:10px;font-family:'Courier New',monospace;font-size:10px;background:#EDE9E0">${s.kpis.map(k => `<tr><td style="padding:4px 10px;color:#9A9690">${k.key}</td><td style="padding:4px 10px;text-align:right;color:#1A1A1A;font-weight:500">${k.value}</td></tr>`).join('')}</table>` : ''}
-      <div style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;margin-top:8px">→ ${s.verdict}</div>
+      ${s.kpis?.length ? `<table style="width:100%;margin-top:10px;font-family:'Courier New',monospace;font-size:10px;border-collapse:collapse">
+        <tr style="background:#1A1A1A"><td colspan="2" style="padding:7px 10px;font-size:9px;color:#fff;letter-spacing:.1em;text-transform:uppercase;font-weight:600">Dati chiave</td></tr>
+        ${s.kpis.map((k,i) => `<tr style="background:${i%2===0?'#F5F2EB':'#EDE9E0'}"><td style="padding:7px 10px;color:#4A4845;font-size:11px">${k.key}</td><td style="padding:7px 10px;text-align:right;color:#111;font-weight:900;font-size:12px">${k.value}</td></tr>`).join('')}
+      </table>` : ''}
+      <div style="margin-top:10px">
+        <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Il verdetto</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:#C8251D;font-style:italic">→ ${s.verdict}</div>
+      </div>
     </div>`).join('');
 
   const approveUrl = `${SITE}/approva.html?id=${editionId}`;
