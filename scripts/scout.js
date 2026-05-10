@@ -69,7 +69,9 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
       "sezione_suggerita": "bilancio|deal|metrica",
       "priorita": 1,
       "dati_chiave": ["dato1 con numero", "dato2 con numero"],
-      "fonti": ["Testata/Ente — tipo documento — mese anno"]
+      "fonti": [
+        {"nome": "Testata/Ente", "tipo": "bilancio|comunicato|articolo|report", "data": "mese anno", "url": "https://... oppure null se non online"}
+      ]
     }
   ],
   "tema_consigliato": "...",
@@ -91,7 +93,12 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
   }
 
   // Valida fonti — rimuovi temi senza fonti
-  const temiConFonti = (brief.temi || []).filter(t => t.fonti && t.fonti.length > 0 && t.fonti[0] !== '');
+  const temiConFonti = (brief.temi || []).filter(t => {
+    if (!t.fonti || t.fonti.length === 0) return false;
+    const prima = t.fonti[0];
+    if (typeof prima === 'string') return prima !== '';
+    return prima.nome && prima.nome !== '';
+  });
   const temiSenzaFonti = (brief.temi || []).length - temiConFonti.length;
   if (temiSenzaFonti > 0) {
     console.log(`⚠ Rimossi ${temiSenzaFonti} temi senza fonti`);
@@ -119,7 +126,13 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
           CF: ${t.angolo_cf}
         </div>
         ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690;margin-top:6px">Dati: ${t.dati_chiave.join(' · ')}</div>` : ''}
-        ${t.fonti?.length ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;background:#E4EDE7;padding:6px 10px;margin-top:6px;border-left:2px solid #1B4332">Fonti: ${t.fonti.join(' · ')}</div>` : ''}
+        ${t.fonti?.length ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;background:#E4EDE7;padding:6px 10px;margin-top:6px;border-left:2px solid #1B4332">
+          Fonti: ${t.fonti.map(f => {
+            if (typeof f === 'string') return f;
+            const label = `${f.nome} — ${f.tipo} — ${f.data}`;
+            return f.url && f.url !== 'null' ? `<a href="${f.url}" style="color:#1B4332">${label}</a>` : label;
+          }).join(' · ')}
+        </div>` : ''}
       </td>
     </tr>`).join('');
 
