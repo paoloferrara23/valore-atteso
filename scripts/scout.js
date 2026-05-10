@@ -70,7 +70,7 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
       "priorita": 1,
       "dati_chiave": ["dato1 con numero", "dato2 con numero"],
       "fonti": [
-        {"nome": "Testata/Ente", "tipo": "bilancio|comunicato|articolo|report", "data": "mese anno", "url": "https://... oppure null se non online"}
+        "Testata/Ente — tipo — data — https://url.com (oppure 'no url' se non online)"
       ]
     }
   ],
@@ -86,10 +86,27 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
 
   let brief;
   try {
-    const match = testo.match(/\{[\s\S]*\}/);
-    brief = JSON.parse(match[0]);
-  } catch {
-    throw new Error('JSON non valido dallo Scout');
+    const raw = testo.replace(/```json|```/g, '').trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('No JSON found');
+    let json = match[0];
+    // Rimuove caratteri di controllo
+    json = json.replace(/[\x00-\x1F\x7F]/g, ' ');
+    // Fix trailing commas
+    json = json.replace(/,(\s*[}\]])/g, '$1');
+    brief = JSON.parse(json);
+  } catch(e) {
+    // Retry con istruzioni più semplici
+    const retry = await callClaude([
+      { role: 'user', content: `Oggi è ${oggi}. Genera il brief Scout per Valore Atteso. IMPORTANTE: rispondi SOLO con JSON valido, nessun testo aggiuntivo.` },
+      { role: 'assistant', content: testo },
+      { role: 'user', content: 'Il JSON era malformato. Rispondi SOLO con JSON valido. Usa stringhe semplici senza caratteri speciali. Campo fonti: array di stringhe nel formato "Testata — tipo — data — url".' }
+    ], system);
+    const raw2 = retry.replace(/```json|```/g, '').trim();
+    const match2 = raw2.match(/\{[\s\S]*\}/);
+    if (!match2) throw new Error('JSON non valido dallo Scout');
+    let json2 = match2[0].replace(/[\x00-\x1F\x7F]/g, ' ').replace(/,(\s*[}\]])/g, '$1');
+    brief = JSON.parse(json2);
   }
 
   // Valida fonti — rimuovi temi senza fonti
@@ -126,13 +143,12 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
           CF: ${t.angolo_cf}
         </div>
         ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690;margin-top:6px">Dati: ${t.dati_chiave.join(' · ')}</div>` : ''}
-        ${t.fonti?.length ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;background:#E4EDE7;padding:6px 10px;margin-top:6px;border-left:2px solid #1B4332">
-          Fonti: ${t.fonti.map(f => {
-            if (typeof f === 'string') return f;
-            const label = `${f.nome} — ${f.tipo} — ${f.data}`;
-            return f.url && f.url !== 'null' ? `<a href="${f.url}" style="color:#1B4332">${label}</a>` : label;
-          }).join(' · ')}
-        </div>` : ''}
+        ${t.fonti?.length ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;background:#E4EDE7;padding:6px 10px;margin-top:6px;border-left:2px solid #1B4332">Fonti: ${t.fonti.map(f => {
+          if (typeof f !== 'string') return JSON.stringify(f);
+          const urlMatch = f.match(/https?:\/\/[^\s]+/);
+          const label = f.replace(/\s*—\s*https?:\/\/[^\s]+/, '').trim();
+          return urlMatch ? `<a href="${urlMatch[0]}" style="color:#1B4332;text-decoration:underline">${label}</a>` : label;
+        }).join(' · ')}</div>` : '<div style="font-family:\'Courier New\',monospace;font-size:8px;color:#C8251D;padding:4px 10px;margin-top:4px">⚠ Fonti mancanti</div>'}
       </td>
     </tr>`).join('');
 
