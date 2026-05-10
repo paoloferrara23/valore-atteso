@@ -14,23 +14,32 @@ async function httpRequest(url, opts = {}) {
   return { status: r.status, ok: r.ok, text, json: () => JSON.parse(text) };
 }
 
-async function callClaude(messages, system) {
+async function callClaude(messages, system, useSearch = false) {
+  const body = {
+    model: 'claude-opus-4-5',
+    max_tokens: 3000,
+    system,
+    messages
+  };
+
+  if (useSearch) {
+    body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+    body['anthropic-beta'] = 'web-search-2025-03-05';
+  }
+
   const r = await httpRequest('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
-      'anthropic-version': '2023-06-01'
+      'anthropic-version': '2023-06-01',
+      ...(useSearch ? { 'anthropic-beta': 'web-search-2025-03-05' } : {})
     },
-    body: JSON.stringify({
-      model: 'claude-opus-4-5',
-      max_tokens: 2000,
-      system,
-      messages
-    })
+    body: JSON.stringify(body)
   });
   if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
   const data = r.json();
+  // Estrai solo i blocchi di testo dalla risposta (ignora tool_use e tool_result)
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
@@ -47,11 +56,13 @@ Criteri di selezione:
 - Angolo CF: ogni notizia deve avere un'analisi finanziaria possibile
 
 REGOLA ASSOLUTA — FONTI OBBLIGATORIE:
-- Il campo "fonti" è OBBLIGATORIO per ogni tema. Se non hai la fonte, NON includere la notizia.
-- Ogni fonte deve essere specifica: nome testata/ente + tipo documento + data (es. "Bilancio Juventus 2023/24 — depositato CCIAA — aprile 2024")
-- Fonti accettate: bilanci societari, comunicati ufficiali UEFA/FIFA/club, Deloitte Football Money League, KPMG Football Benchmark, articoli con fonte primaria citata
-- Se la notizia viene da un articolo di giornale, cita la testata E la fonte primaria che la testata cita
-- VIETATO: "fonte non disponibile", "dati stimati", campi fonti vuoti
+- Il campo "fonti" è OBBLIGATORIO per ogni tema. Se non hai la fonte esatta, NON includere la notizia.
+- La fonte deve essere il link DIRETTO all'articolo, comunicato o documento specifico — NON la homepage del sito
+- Esempi corretti: "https://www.gazzetta.it/Calcio/Serie-A/juventus-bilancio-2024.html", "https://www.juventus.com/it/comunicati/comunicato-risultati-finanziari-2024"
+- Esempi SBAGLIATI: "UEFA.com", "SerieA.it", "Gazzetta.it" — homepage generiche non accettate
+- Se non hai il link diretto all'articolo specifico, NON includere quella notizia
+- Per bilanci societari: link al comunicato ufficiale del club o alla pagina CCIAA
+- Per dati Deloitte/KPMG: link al report specifico scaricabile
 
 Escludi:
 - Notizie senza fonte verificabile
@@ -70,7 +81,7 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
       "priorita": 1,
       "dati_chiave": ["dato1 con numero", "dato2 con numero"],
       "fonti": [
-        "Testata/Ente — tipo — data — https://url.com (oppure 'no url' se non online)"
+        "Testata — titolo articolo specifico — data — https://link-diretto-articolo.com/pagina-specifica"
       ]
     }
   ],
@@ -79,10 +90,14 @@ Rispondi SOLO in JSON valido, nessun testo prima o dopo:
 }`;
 
   const oggi = new Date().toLocaleDateString('it-IT');
-  const testo = await callClaude([{
+  // Fase 1: ricerca web delle notizie della settimana
+  console.log('Ricerca notizie con web search...');
+  const testoRicerca = await callClaude([{
     role: 'user',
-    content: `Oggi è ${oggi}. Analizza le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo e genera il brief settimanale per Valore Atteso. IMPORTANTE: per ogni tema includi obbligatoriamente il campo "fonti" con almeno una fonte specifica e verificabile. Se non hai la fonte, non includere la notizia.`
-  }], system);
+    content: `Oggi è ${oggi}. Cerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo (bilanci, acquisizioni, diritti TV, deal finanziari). Per ogni notizia trovata includi il link DIRETTO all'articolo specifico. Poi genera il brief JSON per Valore Atteso con fonti verificabili e link diretti agli articoli. IMPORTANTE: per ogni tema includi il campo "fonti" con il link esatto all'articolo o documento, non la homepage del sito.`
+  }], system, true); // useSearch = true
+
+  const testo = testoRicerca;
 
   let brief;
   try {
