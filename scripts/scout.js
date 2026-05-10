@@ -24,7 +24,6 @@ async function callClaude(messages, system, useSearch = false) {
 
   if (useSearch) {
     body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
-    body['anthropic-beta'] = 'web-search-2025-03-05';
   }
 
   const r = await httpRequest('https://api.anthropic.com/v1/messages', {
@@ -33,13 +32,12 @@ async function callClaude(messages, system, useSearch = false) {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01',
-      ...(useSearch ? { 'anthropic-beta': 'web-search-2025-03-05' } : {})
+      'anthropic-beta': 'web-search-2025-03-05'
     },
     body: JSON.stringify(body)
   });
   if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
   const data = r.json();
-  // Estrai solo i blocchi di testo dalla risposta (ignora tool_use e tool_result)
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
