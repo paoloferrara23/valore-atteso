@@ -589,7 +589,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="nav">
     <a class="nav-logo" onclick="go('home')">Valore Atteso</a>
     <div class="nav-links">
-      <a class="nav-a" onclick="go('archivio')">Archivio</a>
+      <a class="nav-a" href="/archivio.html">Archivio</a>
       <a class="nav-a" href="/glossario.html">Glossario</a>
       <a class="nav-a" onclick="go('about')">About</a>
       <button class="nav-cta" onclick="scrollForm()">Iscriviti gratis →</button>
@@ -603,7 +603,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <span onclick="go('home');closeMenu()">Home</span>
-  <span onclick="go('archivio');closeMenu()">Archivio</span>
+  <a href="/archivio.html" onclick="closeMenu()">Archivio</a>
   <a href="/glossario.html" onclick="closeMenu()">Glossario</a>
   <span onclick="go('about');closeMenu()">About</span>
   <span class="mob-cta" onclick="scrollForm();closeMenu()">Iscriviti gratis →</span>
@@ -875,7 +875,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="section tight">
     <div class="preview-header">
       <span class="preview-h">L'ultima newsletter, quella vera.</span>
-      <a class="preview-link" onclick="go('archivio')">Archivio completo →</a>
+      <a class="preview-link" href="/archivio.html">Archivio completo →</a>
     </div>
     <div class="preview-cols" id="home-preview">
       <div style="grid-column:1/-1;padding:40px;text-align:center;font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Caricamento...</div>
@@ -932,7 +932,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 </div>
 
 <!-- ═══ ARCHIVIO ═══ -->
-<div class="pg" id="pg-archivio">
+<div class="pg" id="pg-archivio" style="background:var(--cream);min-height:100vh">
   <div class="section">
     <div class="sec-ey">Archivio edizioni</div>
     <h2 class="sec-h2">Ogni martedì,<br>un'analisi.</h2>
@@ -996,7 +996,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
   <div class="footer-in">
     <div class="footer-logo">Valore Atteso</div>
     <div class="footer-links">
-      <a onclick="go('archivio')">Archivio</a>
+      <a href="/archivio.html">Archivio</a>
       <a onclick="go('about')">About</a>
       <a href="/glossario.html">Glossario</a>
       <a href="mailto:info@valoreatteso.com">Contatti</a>
@@ -1030,8 +1030,10 @@ function closeMenu(){
 }
 
 function go(p){
+  console.log('go called with:', p);
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
   const el = document.getElementById('pg-'+p);
+  console.log('element found:', el ? 'yes' : 'NO - missing pg-'+p);
   if(el) el.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='archivio')loadArch();
