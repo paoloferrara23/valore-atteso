@@ -33,7 +33,7 @@ async function callClaude(messages, system) {
 }
 
 async function getNextEditionNum() {
-  const r = await fetch(`${SUPA_URL}/rest/v1/editions?select=num&order=num.desc&limit=1`, {
+  const r = await fetch(`${SUPA_URL}/rest/v1/editions?select=num&published=eq.true&order=num.desc&limit=1`, {
     headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
   });
   const rows = await r.json();
