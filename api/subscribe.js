@@ -93,7 +93,12 @@ export default async function handler(req, res) {
                 </table>
               </td></tr>` : ''}
               <tr><td style="padding:10px 24px 18px;background:#F5F2EB;border-bottom:2px solid #D0CBC0">
-                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin:0 0 3px">Il verdetto</p><p style="font-family:Georgia,serif;font-size:13px;color:#C8251D;margin:0;font-style:italic">&#8594; ${s.verdict}</p>
+                <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin:0 0 3px">Il verdetto</p>
+                <p style="font-family:Georgia,serif;font-size:13px;color:#C8251D;margin:0 0 10px;font-style:italic">&#8594; ${s.verdict}</p>
+                ${s.sources?.length ? `<div style="padding:8px 12px;background:#EDE9E0;border-left:2px solid #D0CBC0">
+                  <span style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.1em;text-transform:uppercase">Fonti: </span>
+                  <span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${s.sources.join(' · ')}</span>
+                </div>` : ''}
               </td></tr>
             </table>
           </td></tr>`).join('');
