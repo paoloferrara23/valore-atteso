@@ -146,6 +146,10 @@ Rispondi SOLO in JSON valido:
       <div style="margin-top:10px">
         <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Il verdetto</div>
         <div style="font-family:Georgia,serif;font-size:13px;color:#C8251D;font-style:italic">→ ${s.verdict}</div>
+      ${s.sources?.length ? `<div style="margin-top:10px;padding:8px 12px;background:#F5F2EB;border-left:2px solid #D0CBC0">
+        <span style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.1em;text-transform:uppercase">Fonti: </span>
+        <span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${s.sources.join(' · ')}</span>
+      </div>` : ''}
       </div>
     </div>`).join('');
 
