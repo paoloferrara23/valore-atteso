@@ -1,0 +1,20 @@
+name: Content Agent
+
+on:
+  schedule:
+    - cron: '0 9 * * 4'  # Ogni giovedì alle 10:00 ora italiana
+  workflow_dispatch:
+
+jobs:
+  content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Genera contenuti Instagram
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: node scripts/content-agent.js
