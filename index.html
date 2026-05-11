@@ -701,14 +701,7 @@ footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
       <p>Valore Atteso è una newsletter settimanale gratuita che usa gli strumenti del corporate finance per spiegare cosa succede davvero nel business del calcio. Ogni martedì mattina, chi lavora in finanza, consulenza e M&A riceve in 8 minuti tre cose concrete: un bilancio analizzato, un deal sezionato con i multipli reali, una metrica che cambia come si legge il settore.</p>
       <p>A differenza di chi parla di calcio in modo generico o di chi parla di finanza senza toccare il pallone, <strong>Valore Atteso si concentra sull'intersezione</strong>: i dati primari, bilanci depositati, comunicati ufficiali delle federazioni, report di settore, letti con gli stessi strumenti di un deal team. Niente indiscrezioni di mercato. Niente commenti post-partita. Solo numeri verificabili e ragionamento finanziario applicato al calcio.</p>
     </div>
-    <div class="fondatore">
-      <div class="fondatore-avatar">PF</div>
-      <div>
-        <div class="fondatore-label">Ideata da</div>
-        <div class="fondatore-name">Paolo Ferrara</div>
-        <div class="fondatore-desc">Cresciuto nel calcio, formato in finanza. Valore Atteso nasce dall'idea che i due mondi parlino la stessa lingua. Quasi nessuno se ne era accorto.</div>
-      </div>
-    </div>
+</div>
   </div>
 
   <!-- DI COSA PARLIAMO -->
@@ -1337,7 +1330,7 @@ async function crAdSend(text){
   document.getElementById('cr-send-btn').disabled=true;
   crAdAddMsg('user',text);crAdShowTyping(true);
   const apikey=document.getElementById('cr-ad-apikey')?.value||document.getElementById('cr-apikey')?.value||localStorage.getItem('va_apikey')||'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';
-  const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio di Paolo Ferrara.
+  const sys=`Sei l'AD virtuale di Valore Atteso, newsletter italiana sul business del calcio.
 
 STATO SISTEMA:
 - Iscritti confermati: ${crSysCtx.iscritti}
@@ -1572,8 +1565,8 @@ async function crPubblica(){
 
           <!-- PAOLO -->
           <rect x="275" y="20" width="130" height="52" rx="8" fill="#E2DDD4" stroke="#D0CBC0" stroke-width="0.5"/>
-          <text x="340" y="41" text-anchor="middle" dominant-baseline="central" style="font-family:Georgia,serif;font-size:13px;font-weight:700;fill:#1A1A1A">Paolo Ferrara</text>
-          <text x="340" y="59" text-anchor="middle" dominant-baseline="central" style="font-family:monospace;font-size:10px;fill:#9A9690">Direzione editoriale</text>
+          <text x="340" y="41" text-anchor="middle" dominant-baseline="central" style="font-family:Georgia,serif;font-size:13px;font-weight:700;fill:#1A1A1A">Direzione</text>
+          <text x="340" y="59" text-anchor="middle" dominant-baseline="central" style="font-family:monospace;font-size:10px;fill:#9A9690">Valore Atteso</text>
 
           <!-- Paolo → AD -->
           <line x1="340" y1="72" x2="340" y2="110" stroke="#9A9690" stroke-width="1" marker-end="url(#crarrow)"/>
