@@ -1031,7 +1031,8 @@ function closeMenu(){
 
 function go(p){
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
-  document.getElementById('pg-'+p).classList.add('on');
+  const el = document.getElementById('pg-'+p);
+  if(el) el.classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
   if(p==='archivio')loadArch();
   if(p==='home')loadPreview();
