@@ -2285,3 +2285,105 @@ async function crPubblica(){
 </div>
 </body>
 </html>
+
+<button id="regenEditionTitleBtn" style="margin-left:8px;">Rigenera Titolo Edizione</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("regenEditionTitleBtn");
+  if(btn){
+    btn.addEventListener("click", function(){
+      const editionTitle = document.querySelector("#editionTitle, .edition-title, input[name='editionTitle']");
+      if(!editionTitle) return;
+
+      const current = editionTitle.value || editionTitle.innerText || "";
+      const variants = [
+        "Weekly Intelligence Report",
+        "Market Pulse Edition",
+        "Inside Sports Finance",
+        "Executive Briefing",
+        "Deal Flow Weekly"
+      ];
+
+      const randomTitle = variants[Math.floor(Math.random()*variants.length)] + " — " + new Date().toLocaleDateString();
+
+      if(editionTitle.value !== undefined){
+        editionTitle.value = randomTitle;
+      } else {
+        editionTitle.innerText = randomTitle;
+      }
+    });
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  function getEditionTitle(){
+    const el = document.querySelector("#editionTitle, .edition-title, input[name='editionTitle']");
+    if(!el) return "Newsletter Edition";
+    return el.value || el.innerText || "Newsletter Edition";
+  }
+
+  function getSources(){
+    const sources = document.querySelector("#sources, textarea[name='sources']");
+    return sources ? (sources.value || sources.innerText || "") : "";
+  }
+
+  const approveBtn = document.querySelector("#approveBtn, .approve-btn");
+
+  if(approveBtn){
+    approveBtn.addEventListener("click", function(){
+
+      const content = document.querySelector("#newsletterContent, .newsletter-content");
+      if(!content){
+        alert("Contenuto newsletter non trovato");
+        return;
+      }
+
+      const approvedEdition = {
+        title: getEditionTitle(),
+        content: content.innerHTML,
+        sources: getSources(),
+        approvedAt: new Date().toISOString()
+      };
+
+      let archive = [];
+
+      try{
+        archive = JSON.parse(localStorage.getItem("newsletter_archive") || "[]");
+      } catch(e){
+        archive = [];
+      }
+
+      archive.unshift(approvedEdition);
+
+      localStorage.setItem("newsletter_archive", JSON.stringify(archive));
+
+      const archiveContainer = document.querySelector("#approvedArchive, .approved-archive");
+
+      if(archiveContainer){
+        const card = document.createElement("div");
+        card.style.border = "1px solid #ddd";
+        card.style.padding = "16px";
+        card.style.marginBottom = "16px";
+        card.style.borderRadius = "10px";
+
+        card.innerHTML = `
+          <h3>${approvedEdition.title}</h3>
+          <div>${approvedEdition.content}</div>
+          <hr />
+          <strong>Fonti</strong>
+          <div style="margin-top:8px; white-space:pre-wrap;">${approvedEdition.sources}</div>
+        `;
+
+        archiveContainer.prepend(card);
+      }
+
+      alert("Edizione approvata e salvata nell'archivio.");
+    });
+  }
+
+});
+</script>
