@@ -34,6 +34,57 @@ async function callClaude(messages, system) {
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
+
+function generateSVG(post) {
+  const tipo = (post.tipo || '').toUpperCase();
+  const kpi = post.kpi_visivo || '';
+  const titolo = (post.titolo_interno || '').substring(0, 60);
+  
+  // Determina layout in base al tipo
+  if (kpi) {
+    // Layout con numero grande
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <rect width="1080" height="1080" fill="#F5F2EB"/>
+  <!-- Bordo sottile -->
+  <rect x="40" y="40" width="1000" height="1000" fill="none" stroke="#D0CBC0" stroke-width="1"/>
+  <!-- Label tipo -->
+  <text x="80" y="120" font-family="'Courier New', monospace" font-size="22" fill="#9A9690" letter-spacing="4">${tipo}</text>
+  <!-- Linea rossa decorativa -->
+  <rect x="80" y="140" width="60" height="2" fill="#C8251D"/>
+  <!-- KPI grande -->
+  <text x="80" y="480" font-family="Georgia, serif" font-size="160" font-weight="900" fill="#C8251D" letter-spacing="-4">${kpi}</text>
+  <!-- Titolo -->
+  <foreignObject x="80" y="520" width="920" height="300">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Georgia,serif;font-size:52px;font-weight:700;color:#1A1A1A;line-height:1.2;letter-spacing:-1px">${titolo}</div>
+  </foreignObject>
+  <!-- Footer -->
+  <text x="80" y="980" font-family="'Courier New', monospace" font-size="22" fill="#9A9690" letter-spacing="2">VALORE ATTESO</text>
+  <text x="1000" y="980" font-family="'Courier New', monospace" font-size="22" fill="#C8251D" text-anchor="end" letter-spacing="1">valoreatteso.com</text>
+</svg>`;
+  } else {
+    // Layout testo
+    const righe = titolo.match(/.{1,35}/g) || [titolo];
+    const testoRighe = righe.map((r, i) => 
+      `<text x="80" y="${420 + i * 70}" font-family="Georgia, serif" font-size="58" font-weight="700" fill="#1A1A1A">${r}</text>`
+    ).join('\n  ');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <rect width="1080" height="1080" fill="#F5F2EB"/>
+  <rect x="40" y="40" width="1000" height="1000" fill="none" stroke="#D0CBC0" stroke-width="1"/>
+  <text x="80" y="120" font-family="'Courier New', monospace" font-size="22" fill="#9A9690" letter-spacing="4">${tipo}</text>
+  <rect x="80" y="140" width="60" height="2" fill="#C8251D"/>
+  ${testoRighe}
+  <rect x="80" y="${420 + righe.length * 70 + 30}" width="200" height="3" fill="#C8251D"/>
+  <text x="80" y="980" font-family="'Courier New', monospace" font-size="22" fill="#9A9690" letter-spacing="2">VALORE ATTESO</text>
+  <text x="1000" y="980" font-family="'Courier New', monospace" font-size="22" fill="#C8251D" text-anchor="end" letter-spacing="1">valoreatteso.com</text>
+</svg>`;
+  }
+}
+
+function svgToDataUrl(svg) {
+  const b64 = Buffer.from(svg).toString('base64');
+  return `data:image/svg+xml;base64,${b64}`;
+}
+
 function cleanJSON(str) {
   const match = str.replace(/```json|```/g, '').match(/\{[\s\S]*\}|\[[\s\S]*\]/);
   if (!match) return null;
@@ -167,26 +218,19 @@ Rispondi con JSON array.`
             ${p.quando_pubblicare ? `<span style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,.4);margin-left:12px">${p.quando_pubblicare}</span>` : ''}
           </td>
         </tr>
+        <!-- VISUAL SVG INLINE -->
+        <tr style="background:#EDE9E0">
+          <td style="padding:12px 24px;border-bottom:1px solid #D0CBC0;text-align:center">
+            <img src="${svgToDataUrl(generateSVG(p))}" width="400" height="400" style="max-width:100%;border:1px solid #D0CBC0" alt="Visual post ${i+1}"/>
+            <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:6px 0 0">Visual 1080x1080px — scarica e pubblica su Instagram</p>
+          </td>
+        </tr>
         <tr style="background:#F5F2EB">
           <td style="padding:14px 24px;border-bottom:1px solid #D0CBC0">
             <h3 style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#1A1A1A;margin:0 0 10px">${p.titolo_interno || `Post ${i+1}`}</h3>
-            ${p.kpi_visivo ? `<div style="font-family:'Courier New',monospace;font-size:28px;font-weight:900;color:#C8251D;margin:0 0 10px;letter-spacing:-1px">${p.kpi_visivo}</div>` : ''}
             <p style="font-family:Georgia,serif;font-size:12px;color:#4A4845;font-weight:300;line-height:1.7;margin:0 0 12px;white-space:pre-wrap">${p.caption}</p>
           </td>
         </tr>
-        <tr style="background:#EDE9E0">
-          <td style="padding:12px 24px;border-bottom:1px solid #D0CBC0">
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.1em;text-transform:uppercase;margin:0 0 5px">Visual Concept</p>
-            <p style="font-family:Georgia,serif;font-size:12px;color:#4A4845;font-weight:300;line-height:1.6;margin:0">${p.visual_concept}</p>
-          </td>
-        </tr>
-        ${p.note_canva ? `
-        <tr style="background:#F5F2EB">
-          <td style="padding:10px 24px;border-bottom:2px solid #D0CBC0">
-            <p style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px">Note Canva</p>
-            <p style="font-family:'Courier New',monospace;font-size:10px;color:#4A4845;line-height:1.6;margin:0">${p.note_canva}</p>
-          </td>
-        </tr>` : ''}
       </table>
     </td></tr>
     <tr><td style="padding:8px 0"></td></tr>`
