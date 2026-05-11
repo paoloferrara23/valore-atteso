@@ -1519,7 +1519,8 @@ async function crLoadBozze(){
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button onclick="crPreviewBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Modifica</button>
             <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--green);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva</button>
-            <button onclick="crRigeneraBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Rigenera</button>
+            <button onclick="crRigeneraTitoloBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Rigenera titolo</button>
+            <button onclick="crRigeneraBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Rigenera testo</button>
             <button onclick="crInviaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Invia</button>
           </div>
         </div>
@@ -1597,6 +1598,69 @@ async function crSaveBozzaTitle(id){
   });
 }
 
+
+function crBuildTitleFromEdition(edition){
+  const sections = edition && Array.isArray(edition.sections) ? edition.sections : [];
+  const raw = sections.map(s => [s.label, s.title].filter(Boolean).join(' ')).filter(Boolean);
+  const text = raw.join(' | ');
+  const fallback = (edition && edition.title) ? edition.title : 'Nuova edizione';
+
+  const clean = (v) => String(v || '').replace(/\s+/g,' ').trim();
+  const chunks = raw.map(x => clean(x).replace(/^(il bilancio|il deal|la metrica|bilancio|deal|metrica)\s*[:·-]?\s*/i,'')).filter(Boolean);
+  const a = chunks[0] || 'Bilanci';
+  const b = chunks[1] || 'Deal';
+  const c = chunks[2] || 'Metriche';
+
+  const variants = [
+    `${a}, ${b} e ${c}`,
+    `${a}: cosa dicono i numeri`,
+    `${a}, ${b} e il dato che cambia la lettura`,
+    `Dentro i numeri: ${a}, ${b} e ${c}`,
+    `La settimana del calcio-finanza: ${a}, ${b}, ${c}`,
+    `${a} e ${b}: la lettura finanziaria`,
+    `Bilanci, deal e metriche: ${a}`,
+    `${a}, tra campo e conto economico`
+  ];
+
+  const current = clean(fallback).toLowerCase();
+  const picked = variants.find(v => clean(v).toLowerCase() !== current) || variants[0];
+  return clean(picked).slice(0, 120);
+}
+
+async function crRigeneraTitoloBozza(id){
+  const btns = document.querySelectorAll(`[onclick="crRigeneraTitoloBozza('${id}')"]`);
+  btns.forEach(b => { b.disabled = true; b.textContent = 'Rigenero titolo...'; });
+
+  try {
+    const edition = await crFetchBozza(id);
+    const updated = crBuildTitleFromEdition(edition);
+    const titleEl = document.getElementById('bozza-title-' + id);
+    if(titleEl) titleEl.innerText = updated;
+
+    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY},
+      body:JSON.stringify({title:updated})
+    });
+    if(!r.ok) throw new Error('Errore salvataggio titolo.');
+
+    crSetStatus(id, 'ok', '✓ Titolo rigenerato e salvato.');
+  } catch(e) {
+    crSetStatus(id, 'err', 'Errore rigenerazione titolo: ' + e.message);
+  } finally {
+    btns.forEach(b => { b.disabled = false; b.textContent = 'Rigenera titolo'; });
+  }
+}
+
+function crRigeneraTitoloCorrente(){
+  if(!crCurrentData) return;
+  const edited = crExtractCurrentEdits();
+  const title = crBuildTitleFromEdition(edited);
+  const titleEl = document.getElementById('cr-current-title');
+  if(titleEl) titleEl.innerText = title;
+  crCurrentData = {...crCurrentData, title};
+}
+
 async function crFetchBozza(id){
   const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id + '&select=*', {
     headers:{apikey:SKEY,Authorization:'Bearer ' + SKEY}
@@ -1628,31 +1692,45 @@ async function crSaveBozzaEdits(id){
 async function crApprovaBozza(id, num){
   const btns = document.querySelectorAll(`[onclick="crApprovaBozza('${id}','${num}')"]`);
   btns.forEach(b => { b.disabled = true; b.textContent = 'Approvazione...'; });
+  crSetStatus(id, 'info', 'Approvazione in corso...');
 
   try {
-    let updated;
-    const preview = document.getElementById('bozza-preview-' + id);
-    if(preview && preview.style.display !== 'none'){
-      updated = await crSaveBozzaEdits(id);
-    } else {
-      updated = await crFetchBozza(id);
-    }
+    // Salva sempre tutte le modifiche visibili prima della pubblicazione.
+    // Se la preview è chiusa, mantiene i dati già presenti in Supabase.
+    const updated = await crSaveBozzaEdits(id);
 
-    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
+    const payload = {
+      title: updated.title,
+      subtitle: updated.subtitle,
+      opener: updated.opener,
+      sections: updated.sections || [],
+      tags: (updated.sections || []).map(s => s.label).filter(Boolean),
+      published: true
+    };
+
+    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id + '&select=*', {
       method:'PATCH',
-      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY},
-      body:JSON.stringify({
-        published:true,
-        tags:(updated.sections || []).map(s => s.label).filter(Boolean)
-      })
+      headers:{
+        'Content-Type':'application/json',
+        apikey:SKEY,
+        Authorization:'Bearer ' + SKEY,
+        Prefer:'return=representation'
+      },
+      body:JSON.stringify(payload)
     });
 
-    if(!r.ok) throw new Error('Errore pubblicazione archivio.');
+    const saved = await r.json().catch(() => []);
+    if(!r.ok) throw new Error('Errore pubblicazione archivio. HTTP ' + r.status);
+    if(!Array.isArray(saved) || !saved[0] || saved[0].published !== true) {
+      throw new Error('La pubblicazione non è stata confermata da Supabase.');
+    }
 
     crSetStatus(id, 'ok', '✓ Edizione #' + num + ' approvata e inserita in archivio. Ora puoi inviarla agli iscritti.');
     btns.forEach(b => { b.disabled = false; b.textContent = 'Approvata ✓'; });
+
     await crLoadCtx();
     await loadPreview();
+    setTimeout(() => crLoadBozze(), 900);
 
   } catch(e) {
     crSetStatus(id, 'err', 'Errore approvazione: ' + e.message);
@@ -1743,8 +1821,16 @@ async function crInviaBozza(id, num){
 // REDAZIONE
 function crSelMode(el,mode){
   document.querySelectorAll('.cr-mode-opt').forEach(o=>o.classList.remove('on'));
-  el.classList.add('on');el.querySelector('input').checked=true;
-  document.getElementById('cr-hint-wrap').style.display=mode==='hint'?'block':'none';
+  el.classList.add('on');
+  el.querySelector('input').checked = true;
+
+  const hintWrap = document.getElementById('cr-hint-wrap');
+  const scoutWrap = document.getElementById('cr-scout-picker-wrap');
+
+  if(hintWrap) hintWrap.style.display = mode === 'hint' ? 'block' : 'none';
+  if(scoutWrap) scoutWrap.style.display = mode === 'scout_manual' ? 'block' : 'none';
+
+  if(mode === 'scout_manual') crLoadScoutTopics();
 }
 function crSetStep(n){
   if(crCurStep>0&&crCurStep<=5){const p=document.getElementById('cr-ps'+crCurStep);p.classList.remove('active');p.classList.add('done');const ic=p.querySelector('.cr-ps-ic');ic.textContent='✓';ic.removeAttribute('style');}
@@ -1754,9 +1840,142 @@ function crSetStep(n){
 function crResetSteps(){crCurStep=0;for(let i=1;i<=5;i++){const s=document.getElementById('cr-ps'+i);s.classList.remove('active','done');s.querySelector('.cr-ps-ic').textContent='◌';}}
 function crEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+
+function crNormalizeScoutTopics(rows){
+  const topics = [];
+  const pushTopic = (title, note, source) => {
+    const cleanTitle = String(title || '').trim();
+    if(!cleanTitle) return;
+    if(topics.some(t => t.title.toLowerCase() === cleanTitle.toLowerCase())) return;
+    topics.push({
+      title: cleanTitle,
+      note: String(note || '').trim(),
+      source: String(source || 'Scout').trim()
+    });
+  };
+
+  const parseObj = (obj, sourceLabel) => {
+    if(!obj) return;
+
+    if(Array.isArray(obj)){
+      obj.forEach(x => {
+        if(typeof x === 'string') pushTopic(x, '', sourceLabel);
+        else if(x && typeof x === 'object') pushTopic(x.title || x.topic || x.name || x.headline, x.note || x.why || x.summary || x.description, sourceLabel);
+      });
+      return;
+    }
+
+    if(typeof obj === 'object'){
+      if(Array.isArray(obj.topics)) parseObj(obj.topics, sourceLabel);
+      if(Array.isArray(obj.ideas)) parseObj(obj.ideas, sourceLabel);
+      if(Array.isArray(obj.items)) parseObj(obj.items, sourceLabel);
+      if(Array.isArray(obj.news)) parseObj(obj.news, sourceLabel);
+      if(obj.title || obj.topic || obj.headline) pushTopic(obj.title || obj.topic || obj.headline, obj.note || obj.why || obj.summary || obj.description, sourceLabel);
+    }
+  };
+
+  (rows || []).forEach(row => {
+    const sourceLabel = row.agent ? 'Scout · ' + row.agent : 'Scout';
+
+    parseObj(row.topics, sourceLabel);
+    parseObj(row.data, sourceLabel);
+    parseObj(row.output, sourceLabel);
+    parseObj(row.payload, sourceLabel);
+    parseObj(row.result, sourceLabel);
+
+    const text = row.summary || row.content || row.memory || row.notes || row.description || '';
+    if(text && typeof text === 'string'){
+      text.split('\n').forEach(line => {
+        const cleaned = line.replace(/^[-•*\d.)\s]+/, '').trim();
+        if(cleaned.length > 18 && cleaned.length < 180) pushTopic(cleaned, '', sourceLabel);
+      });
+    }
+  });
+
+  return topics.slice(0, 12);
+}
+
+async function crLoadScoutTopics(){
+  const box = document.getElementById('cr-scout-topics');
+  if(!box) return;
+
+  box.innerHTML = '<div style="font-family:var(--mn);font-size:9px;color:var(--ink3);padding:8px 0">Caricamento temi Scout...</div>';
+
+  let rows = [];
+
+  try {
+    const r1 = await fetch(SURL + '/rest/v1/agent_memory?select=*&agent=eq.scout&order=created_at.desc&limit=30', {
+      headers: { apikey:SKEY, Authorization:'Bearer ' + SKEY }
+    });
+    if(r1.ok) rows = await r1.json();
+  } catch(e) {}
+
+  if(!Array.isArray(rows) || rows.length === 0){
+    try {
+      const r2 = await fetch(SURL + '/rest/v1/agent_runs?select=*&agent=eq.scout&order=created_at.desc&limit=20', {
+        headers: { apikey:SKEY, Authorization:'Bearer ' + SKEY }
+      });
+      if(r2.ok) rows = await r2.json();
+    } catch(e) {}
+  }
+
+  const topics = crNormalizeScoutTopics(rows);
+
+  if(!topics.length){
+    box.innerHTML = `
+      <div style="font-family:var(--mn);font-size:9px;color:var(--ink3);line-height:1.6;margin-bottom:8px">
+        Nessun tema Scout strutturato trovato. Puoi comunque inserire manualmente 1-3 argomenti qui sotto.
+      </div>
+    `;
+    return;
+  }
+
+  box.innerHTML = topics.map((t,i) => `
+    <label style="display:block;border:1px solid var(--rule);background:#fff;border-radius:5px;padding:9px 10px;margin-bottom:7px;cursor:pointer">
+      <div style="display:flex;gap:9px;align-items:flex-start">
+        <input type="checkbox" class="cr-scout-topic-check" value="${crEsc(t.title)}" data-note="${crEsc(t.note)}" style="margin-top:3px;accent-color:var(--red)">
+        <div>
+          <div style="font-family:var(--sf);font-size:12px;color:var(--ink);line-height:1.35">${crEsc(t.title)}</div>
+          ${t.note ? `<div style="font-family:var(--mn);font-size:8px;color:var(--ink3);line-height:1.5;margin-top:3px">${crEsc(t.note)}</div>` : ''}
+          <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-top:4px">${crEsc(t.source)}</div>
+        </div>
+      </div>
+    </label>
+  `).join('');
+}
+
+function crGetSelectedScoutTopics(){
+  const selected = Array.from(document.querySelectorAll('.cr-scout-topic-check:checked')).map(el => {
+    const note = el.getAttribute('data-note') || '';
+    return note ? el.value + ' — ' + note : el.value;
+  });
+
+  const manual = document.getElementById('cr-scout-manual-topics');
+  if(manual && manual.value.trim()){
+    manual.value.split('\n').map(x => x.trim()).filter(Boolean).forEach(x => selected.push(x));
+  }
+
+  return selected.slice(0, 6);
+}
+
+
 async function crGenera(){
-  const mode=document.querySelector('input[name="cr-mode"]:checked').value;
-  const hint=document.getElementById('cr-hint-input').value.trim();
+  const mode = document.querySelector('input[name="cr-mode"]:checked').value;
+  const selectedScoutTopics = mode === 'scout_manual' ? crGetSelectedScoutTopics() : [];
+  const hintField = document.getElementById('cr-hint-input');
+  const hint = mode === 'scout_manual'
+    ? selectedScoutTopics.join('\n')
+    : (hintField ? hintField.value.trim() : '');
+
+  if(mode === 'scout_manual' && selectedScoutTopics.length === 0){
+    const eb = document.getElementById('cr-err-box');
+    if(eb){
+      eb.style.display = 'block';
+      eb.textContent = 'Seleziona almeno un argomento Scout oppure inseriscilo manualmente.';
+    }
+    return;
+  }
+
   const btn=document.getElementById('cr-gen-btn');const lbl=document.getElementById('cr-gen-label');
   btn.disabled=true;lbl.textContent='Generazione in corso…';
   document.getElementById('cr-prog-wrap').style.display='block';
@@ -1781,7 +2000,7 @@ async function crGenera(){
     const res=await fetch('/api/genera-edizione',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({mode, hint, editionNum, oggi})
+      body:JSON.stringify({mode, hint, selectedTopics:selectedScoutTopics, editionNum, oggi})
     });
     timers.forEach(clearTimeout);crSetStep(6);
     const data=await res.json();
@@ -1833,7 +2052,10 @@ function crRenderPreview(data){
     </div>
 
     <div class="cr-nl-opener">
-      <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px">Titolo edizione</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px">
+        <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase">Titolo edizione</div>
+        <button type="button" onclick="crRigeneraTitoloCorrente()" style="height:24px;padding:0 9px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:7px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Rigenera titolo</button>
+      </div>
       <div class="cr-nl-sec-title" contenteditable="true" id="cr-current-title">${crEsc(data.title || '')}</div>
 
       <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 5px">Sottotitolo</div>
@@ -2234,15 +2456,43 @@ async function crPubblica(){
       <div class="cr-red-config">
         <div>
           <div class="cr-red-title">Genera edizione</div>
-          <p class="cr-red-desc">Il sistema cerca notizie, seleziona i 3 temi più rilevanti, scrive l'analisi con dati verificati. Tu leggi, correggi e pubblichi.</p>
+          <p class="cr-red-desc">Prima scegli se lasciare la selezione dei temi allo Scout oppure selezionare tu gli argomenti trovati. Poi il sistema scrive l'analisi con dati verificati.</p>
           <div class="cr-mode-opt on" onclick="crSelMode(this,'auto')">
             <input type="radio" name="cr-mode" value="auto" checked>
-            <div><div class="cr-mo-tag">Modalità A</div><div class="cr-mo-title">Automatica — trovo io i 3 temi più rilevanti</div></div>
+            <div>
+              <div class="cr-mo-tag">Modalità A</div>
+              <div class="cr-mo-title">Automatica — Scout + Redazione scelgono i 3 temi più interessanti</div>
+            </div>
           </div>
+
+          <div class="cr-mode-opt" onclick="crSelMode(this,'scout_manual')">
+            <input type="radio" name="cr-mode" value="scout_manual">
+            <div>
+              <div class="cr-mo-tag">Modalità B</div>
+              <div class="cr-mo-title">Manuale — scelgo io dagli argomenti trovati dallo Scout</div>
+            </div>
+          </div>
+
           <div class="cr-mode-opt" onclick="crSelMode(this,'hint')">
             <input type="radio" name="cr-mode" value="hint">
-            <div><div class="cr-mo-tag">Modalità B</div><div class="cr-mo-title">Guidata — tu indichi un tema o club</div></div>
+            <div>
+              <div class="cr-mo-tag">Modalità C</div>
+              <div class="cr-mo-title">Guidata — indico io un tema, club o deal specifico</div>
+            </div>
           </div>
+
+          <div class="cr-hint-wrap" id="cr-scout-picker-wrap" style="display:none">
+            <div class="cr-hint-label">Argomenti trovati dallo Scout</div>
+            <div id="cr-scout-topics" style="margin-bottom:8px">
+              <div style="font-family:var(--mn);font-size:9px;color:var(--ink3)">Apri questa modalità per caricare i temi Scout.</div>
+            </div>
+            <button type="button" onclick="crLoadScoutTopics()" style="height:28px;padding:0 10px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px;margin-bottom:8px">
+              Aggiorna temi Scout
+            </button>
+            <div class="cr-hint-label" style="margin-top:8px">Oppure aggiungi manualmente 1-3 temi</div>
+            <textarea id="cr-scout-manual-topics" rows="3" placeholder="Un tema per riga. Es: Distressed M&A Ternana\nPremi Champions UEFA\nPrestiti e player trading" style="width:100%;border:1px solid var(--rule);background:var(--cream);padding:8px 10px;font-family:var(--sf);font-size:12px;color:var(--ink);outline:none;border-radius:3px;resize:vertical"></textarea>
+          </div>
+
           <div class="cr-hint-wrap" id="cr-hint-wrap">
             <div class="cr-hint-label">Il tuo hint</div>
             <input type="text" class="cr-hint-input" id="cr-hint-input" placeholder="Es: Inter, diritti TV, acquisizione club…">
@@ -2261,7 +2511,7 @@ async function crPubblica(){
         <div class="cr-prog-hd">Generazione in corso — circa 30 secondi</div>
         <div class="cr-prog-steps">
           <div class="cr-ps" id="cr-ps1"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Ricerca notizie della settimana</div><div class="cr-ps-sub">Business calcio · Ultime 7 giorni</div></div></div>
-          <div class="cr-ps" id="cr-ps2"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Selezione 3 temi più rilevanti</div><div class="cr-ps-sub">Rilevanza economica · Dati disponibili</div></div></div>
+          <div class="cr-ps" id="cr-ps2"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Selezione temi editoriali</div><div class="cr-ps-sub">Automatica oppure basata sulla tua scelta Scout</div></div></div>
           <div class="cr-ps" id="cr-ps3"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Ricerca fonti primarie</div><div class="cr-ps-sub">Bilanci · Report certificati · Comunicati ufficiali</div></div></div>
           <div class="cr-ps" id="cr-ps4"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Scrittura analisi</div><div class="cr-ps-sub">Tone of voice Valore Atteso · 3 sezioni</div></div></div>
           <div class="cr-ps" id="cr-ps5"><div class="cr-ps-ic">◌</div><div><div class="cr-ps-text">Verifica dati</div><div class="cr-ps-sub">Fact-check automatico</div></div></div>
@@ -2273,7 +2523,7 @@ async function crPubblica(){
           <div class="cr-out-bar-l"><span style="color:#7FCF97">●</span><span>Pronta — clicca sul testo per modificare</span><span id="cr-out-meta" style="color:rgba(255,255,255,.2)"></span></div>
           <div class="cr-out-bar-r">
             <button class="cr-btn-sm cr-btn-pub" id="cr-approve-btn" onclick="crApprovaCorrente()">Approva →</button>
-            <button class="cr-btn-sm" onclick="crRigeneraCorrente()">Rigenera</button>
+            <button class="cr-btn-sm" onclick="crRigeneraCorrente()">Rigenera testo</button>
             <button class="cr-btn-sm cr-btn-pub" id="cr-send-current-btn" onclick="crInviaCorrente()">Invia →</button>
           </div>
         </div>
@@ -2285,105 +2535,3 @@ async function crPubblica(){
 </div>
 </body>
 </html>
-
-<button id="regenEditionTitleBtn" style="margin-left:8px;">Rigenera Titolo Edizione</button>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const btn = document.getElementById("regenEditionTitleBtn");
-  if(btn){
-    btn.addEventListener("click", function(){
-      const editionTitle = document.querySelector("#editionTitle, .edition-title, input[name='editionTitle']");
-      if(!editionTitle) return;
-
-      const current = editionTitle.value || editionTitle.innerText || "";
-      const variants = [
-        "Weekly Intelligence Report",
-        "Market Pulse Edition",
-        "Inside Sports Finance",
-        "Executive Briefing",
-        "Deal Flow Weekly"
-      ];
-
-      const randomTitle = variants[Math.floor(Math.random()*variants.length)] + " — " + new Date().toLocaleDateString();
-
-      if(editionTitle.value !== undefined){
-        editionTitle.value = randomTitle;
-      } else {
-        editionTitle.innerText = randomTitle;
-      }
-    });
-  }
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  function getEditionTitle(){
-    const el = document.querySelector("#editionTitle, .edition-title, input[name='editionTitle']");
-    if(!el) return "Newsletter Edition";
-    return el.value || el.innerText || "Newsletter Edition";
-  }
-
-  function getSources(){
-    const sources = document.querySelector("#sources, textarea[name='sources']");
-    return sources ? (sources.value || sources.innerText || "") : "";
-  }
-
-  const approveBtn = document.querySelector("#approveBtn, .approve-btn");
-
-  if(approveBtn){
-    approveBtn.addEventListener("click", function(){
-
-      const content = document.querySelector("#newsletterContent, .newsletter-content");
-      if(!content){
-        alert("Contenuto newsletter non trovato");
-        return;
-      }
-
-      const approvedEdition = {
-        title: getEditionTitle(),
-        content: content.innerHTML,
-        sources: getSources(),
-        approvedAt: new Date().toISOString()
-      };
-
-      let archive = [];
-
-      try{
-        archive = JSON.parse(localStorage.getItem("newsletter_archive") || "[]");
-      } catch(e){
-        archive = [];
-      }
-
-      archive.unshift(approvedEdition);
-
-      localStorage.setItem("newsletter_archive", JSON.stringify(archive));
-
-      const archiveContainer = document.querySelector("#approvedArchive, .approved-archive");
-
-      if(archiveContainer){
-        const card = document.createElement("div");
-        card.style.border = "1px solid #ddd";
-        card.style.padding = "16px";
-        card.style.marginBottom = "16px";
-        card.style.borderRadius = "10px";
-
-        card.innerHTML = `
-          <h3>${approvedEdition.title}</h3>
-          <div>${approvedEdition.content}</div>
-          <hr />
-          <strong>Fonti</strong>
-          <div style="margin-top:8px; white-space:pre-wrap;">${approvedEdition.sources}</div>
-        `;
-
-        archiveContainer.prepend(card);
-      }
-
-      alert("Edizione approvata e salvata nell'archivio.");
-    });
-  }
-
-});
-</script>
