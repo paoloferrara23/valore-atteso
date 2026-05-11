@@ -1283,6 +1283,62 @@ async function crInit(){
   crAdAddMsg('ad','Buongiorno. Sono il tuo AD di Valore Atteso.\n\nHo accesso a tutto: iscritti, edizioni, agenti. Cosa vuoi sapere?');
 }
 
+async function crLoadAgents(){
+  const el = document.getElementById('cr-agents-list');
+  if (!el) return;
+  try {
+    // Legge ultimi run per agente da Supabase
+    const r = await fetch(SURL+'/rest/v1/agent_runs?select=agent,status,created_at&order=created_at.desc&limit=100', {
+      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
+    });
+    const runs = await r.json();
+    if (!Array.isArray(runs) || runs.length === 0) {
+      el.innerHTML = '<div style="padding:14px;font-family:var(--mn);font-size:10px;color:var(--ink3)">Nessun agente ha ancora girato.</div>';
+      return;
+    }
+    // Raggruppa per agente — prendi ultimo run
+    const agenti = {};
+    runs.forEach(run => {
+      if (!agenti[run.agent]) agenti[run.agent] = run;
+    });
+    // Metadati agenti
+    const meta = {
+      'scout': { schedule: 'Sabato 7:00', desc: 'Trova temi CF della settimana · Salva su Supabase' },
+      'editoriale': { schedule: 'Lunedì 8:00', desc: 'Legge Scout + SEO · Genera bozza · Manda per approvazione' },
+      'seo': { schedule: 'Domenica 8:00', desc: 'Analizza keyword · Salva su Supabase per Editoriale' },
+      'growth': { schedule: 'Mercoledì 8:00', desc: 'Monitora iscritti e tasso conversione' },
+      'deliverability': { schedule: 'Giovedì 8:00', desc: 'Controlla aperture, click e bounce email' },
+      'cost-guardian': { schedule: 'Venerdì 9:00', desc: 'Monitora spesa Anthropic e Resend' },
+      'content-agent': { schedule: 'Giovedì 10:00', desc: 'Genera brief post Instagram settimanali' },
+      'incident-response': { schedule: 'Ogni giorno 9:00', desc: 'Monitora errori e anomalie sistema' },
+      'security': { schedule: 'Ogni giorno 10:00', desc: 'Controlla iscrizioni anomale e sicurezza' }
+    };
+    // Ora fa verifica stato (verde se run nelle ultime 8 giorni, rosso se errore)
+    const now = Date.now();
+    let html = '';
+    Object.entries(agenti).forEach(([nome, run]) => {
+      const m = meta[nome] || { schedule: 'Schedulato', desc: 'Agente attivo' };
+      const lastRun = new Date(run.created_at);
+      const giorniDa = (now - lastRun.getTime()) / (1000*60*60*24);
+      const isOk = run.status !== 'error' && giorniDa < 8;
+      const dotClass = isOk ? 'on' : '';
+      const nomeLabel = nome.replace(/-/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+      html += '<div class="cr-agent">' +
+        '<div class="cr-dot ' + dotClass + '"></div>' +
+        '<div>' +
+        '<div class="cr-agent-name">' + nomeLabel + '</div>' +
+        '<div class="cr-agent-desc">' + m.schedule + ' · ' + m.desc + '</div>' +
+        '<div style="font-family:var(--mn);font-size:8px;color:' + (run.status==='error'?'var(--red)':'var(--ink3)') + ';margin-top:2px">' +
+        'Ultimo run: ' + lastRun.toLocaleDateString('it-IT') + ' · ' + run.status +
+        '</div>' +
+        '</div></div>';
+    });
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div style="padding:14px;font-family:var(--mn);font-size:10px;color:var(--red)">Errore caricamento agenti: ' + e.message + '</div>';
+  }
+}
+
 async function crLoadCtx(){
   try{
     const[sr,er,ar]=await Promise.all([
@@ -1491,6 +1547,7 @@ async function crPubblica(){
     ps.style.display='block';ps.className='cr-pub-status err';ps.innerHTML='Errore connessione: '+e.message;
   }
   crLoadCtx();
+  crLoadAgents();
 }
 // ══════════════ END CONTROL ROOM ══════════════
 
@@ -1547,13 +1604,8 @@ async function crPubblica(){
       </div>
 
       <div class="cr-sec-title">Agenti attivi</div>
-      <div class="cr-agents" style="grid-template-columns:1fr 1fr">
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Scout</div><div class="cr-agent-desc">Sabato 7:00 · Trova i 5 temi CF più rilevanti della settimana · Salva su Supabase per l'Editoriale</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">SEO Agent</div><div class="cr-agent-desc">Domenica 8:00 · Analizza keyword long-tail calcio/finance · Salva su Supabase per l'Editoriale</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Editoriale Agent</div><div class="cr-agent-desc">Lunedì 8:00 · Legge Scout + SEO · Genera bozza edizione · Manda per approvazione</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Growth Agent</div><div class="cr-agent-desc">Mercoledì 8:00 · Monitora iscritti, tasso conversione e fonti acquisizione</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Deliverability Agent</div><div class="cr-agent-desc">Giovedì 8:00 · Controlla aperture, click e bounce delle email · Alert se sotto soglia</div></div></div>
-        <div class="cr-agent"><div class="cr-dot on"></div><div><div class="cr-agent-name">Cost Guardian</div><div class="cr-agent-desc">Venerdì 9:00 · Monitora spesa Anthropic e Resend · Alert se superi €10/mese</div></div></div>
+      <div class="cr-agents" id="cr-agents-list" style="grid-template-columns:1fr 1fr">
+        <div style="padding:14px;font-family:var(--mn);font-size:10px;color:var(--ink3)">Caricamento agenti...</div>
       </div>
 
       <!-- ORGANIGRAMMA -->
