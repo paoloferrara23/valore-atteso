@@ -1246,7 +1246,7 @@ initAnimations();
 const CR_PWD='valopro2025';
 const CR_EDGE='https://xxnmkiwnjpppfzrftvuv.supabase.co/functions/v1/genera-newsletter';
 const CR_RESEND='re_8NSq3NEw_2SjYt5J4SiUw29AvEXcMzZHw';
-let crAdHistory=[];let crSysCtx={};let crCurrentData=null;let crCurStep=0;
+let crAdHistory=[];let crSysCtx={};let crCurrentData=null;let crCurrentEditionId=null;let crCurStep=0;
 
 function crOpen(){document.getElementById('cr-overlay').classList.add('open');document.body.style.overflow='hidden';}
 function crClose(){document.getElementById('cr-overlay').classList.remove('open');document.body.style.overflow='';}
@@ -1419,135 +1419,326 @@ Rispondi in italiano, diretto, max 200 parole, tono collega senior M&A.`;
 function crAutoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';}
 
 // BOZZE IN ATTESA
+function crCleanEditableText(el, fallback){
+  return el ? el.innerText.replace(/\u00a0/g,' ').trim() : (fallback || '');
+}
+
+function crSetStatus(id, type, message){
+  const status = document.getElementById('bozza-status-' + id) || document.getElementById('cr-pub-status');
+  if(!status) return;
+  status.style.display = 'block';
+  status.className = status.id === 'cr-pub-status' ? 'cr-pub-status' : '';
+  if(type === 'ok'){
+    status.style.background = 'var(--gpal)';
+    status.style.color = 'var(--green)';
+    status.style.borderLeft = '3px solid var(--green)';
+  } else if(type === 'err'){
+    status.style.background = 'rgba(200,37,29,.06)';
+    status.style.color = 'var(--red)';
+    status.style.borderLeft = '3px solid var(--red)';
+  } else {
+    status.style.background = 'var(--cream2)';
+    status.style.color = 'var(--ink2)';
+    status.style.borderLeft = '3px solid var(--rule)';
+  }
+  status.innerHTML = message;
+}
+
+function crExtractBozzaEdits(id, original){
+  const titleEl = document.getElementById('bozza-title-' + id);
+  const subtitleEl = document.getElementById('bozza-subtitle-' + id);
+  const openerEl = document.getElementById('bozza-opener-' + id);
+
+  const sections = (original.sections || []).map((s, i) => {
+    const labelEl = document.getElementById('bozza-sec-' + id + '-' + i + '-label');
+    const titleSecEl = document.getElementById('bozza-sec-' + id + '-' + i + '-title');
+    const bodyEl = document.getElementById('bozza-sec-' + id + '-' + i + '-body');
+    const verdictEl = document.getElementById('bozza-sec-' + id + '-' + i + '-verdict');
+
+    const updatedKpis = (s.kpis || []).map((k, j) => {
+      const keyEl = document.getElementById('bozza-sec-' + id + '-' + i + '-kpi-' + j + '-key');
+      const valueEl = document.getElementById('bozza-sec-' + id + '-' + i + '-kpi-' + j + '-value');
+      return {
+        key: crCleanEditableText(keyEl, k.key),
+        value: crCleanEditableText(valueEl, k.value)
+      };
+    });
+
+    const sourcesEl = document.getElementById('bozza-sec-' + id + '-' + i + '-sources');
+    const sources = sourcesEl
+      ? crCleanEditableText(sourcesEl, '').split('·').map(x => x.trim()).filter(Boolean)
+      : (s.sources || []);
+
+    return {
+      ...s,
+      label: crCleanEditableText(labelEl, s.label),
+      title: crCleanEditableText(titleSecEl, s.title),
+      body: crCleanEditableText(bodyEl, s.body),
+      kpis: updatedKpis,
+      verdict: crCleanEditableText(verdictEl, s.verdict).replace(/^→\s*/, ''),
+      sources
+    };
+  });
+
+  return {
+    title: crCleanEditableText(titleEl, original.title),
+    subtitle: subtitleEl ? crCleanEditableText(subtitleEl, original.subtitle) : original.subtitle,
+    opener: openerEl ? crCleanEditableText(openerEl, original.opener) : original.opener,
+    sections,
+    tags: sections.map(s => s.label).filter(Boolean)
+  };
+}
+
 async function crLoadBozze(){
   const el = document.getElementById('cr-bozze-list');
   if(!el) return;
+
   try {
-    const r = await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{
-      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
+    const r = await fetch(SURL + '/rest/v1/editions?published=eq.false&order=created_at.desc&select=*', {
+      headers:{apikey:SKEY,Authorization:'Bearer ' + SKEY}
     });
+
     const bozze = await r.json();
-    if(!Array.isArray(bozze)||!bozze.length){
-      el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--ink3);padding:8px 0;border:1px solid var(--rule);padding:12px;border-radius:4px">Nessuna bozza in attesa.</div>';
+
+    if(!Array.isArray(bozze) || !bozze.length){
+      el.innerHTML = '<div style="font-family:var(--mn);font-size:10px;color:var(--ink3);padding:12px;border:1px solid var(--rule);border-radius:4px">Nessuna bozza in attesa.</div>';
       return;
     }
-    el.innerHTML = bozze.map(e=>`
-      <div style="border:1px solid var(--rule);border-radius:6px;overflow:hidden;margin-bottom:12px;background:#fff">
-        <div style="padding:12px 16px;background:var(--cream2);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule)">
-          <div>
-            <span style="font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Bozza #${e.num}</span>
-            <div style="font-family:var(--dp);font-size:1rem;font-weight:700;color:var(--ink);margin-top:2px" contenteditable="true" id="bozza-title-${e.id}" onblur="crSaveBozzaTitle('${e.id}')">${e.title||''}</div>
+
+    el.innerHTML = bozze.map(e => `
+      <div style="border:1px solid var(--rule);border-radius:6px;overflow:hidden;margin-bottom:14px;background:#fff">
+
+        <div style="padding:12px 16px;background:var(--cream2);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);gap:12px;flex-wrap:wrap">
+          <div style="min-width:260px;flex:1">
+            <span style="font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Bozza #${crEsc(e.num)}</span>
+            <div contenteditable="true" id="bozza-title-${e.id}" onblur="crSaveBozzaTitle('${e.id}')" style="font-family:var(--dp);font-size:1rem;font-weight:700;color:var(--ink);margin-top:2px;outline:none">
+              ${crEsc(e.title || '')}
+            </div>
           </div>
-          <div style="display:flex;gap:8px">
-            <button onclick="crPreviewBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Preview</button>
-            <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva</button>
-            <button onclick="crInviaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Invia →</button>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button onclick="crPreviewBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Modifica</button>
+            <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--green);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva</button>
+            <button onclick="crRigeneraBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Rigenera</button>
+            <button onclick="crInviaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Invia</button>
           </div>
         </div>
+
         <div id="bozza-preview-${e.id}" style="display:none;padding:16px;border-bottom:1px solid var(--rule)">
-          ${(e.sections||[]).map((s,i)=>`
-            <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--rule)">
-              <div style="font-family:var(--mn);font-size:8px;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">${s.label}</div>
-              <div style="font-family:var(--dp);font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-title">${s.title||''}</div>
-              <div style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.75;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-body">${s.body||''}</div>
-              ${s.verdict?`<div style="font-family:var(--mn);font-size:10px;color:var(--red);margin-top:10px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-verdict">→ ${s.verdict}</div>`:''}
-              ${s.sources&&s.sources.length?`<div style="margin-top:8px;padding:8px 10px;background:var(--cream2);border-left:2px solid var(--rule)"><span style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Fonti: </span><span style="font-family:var(--mn);font-size:9px;color:var(--ink3)">${s.sources.join(' · ')}</span></div>`:''}
-            </div>`).join('')}
+
+          <div style="margin-bottom:16px;padding:14px;background:var(--cream2);border-left:3px solid var(--ink)">
+            <div style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">Sottotitolo</div>
+            <div contenteditable="true" id="bozza-subtitle-${e.id}" style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.65;outline:none">${crEsc(e.subtitle || '')}</div>
+          </div>
+
+          <div style="margin-bottom:22px;padding:14px;background:var(--cream2);border-left:3px solid var(--ink)">
+            <div style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">Opener</div>
+            <div contenteditable="true" id="bozza-opener-${e.id}" style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.75;outline:none;white-space:pre-line">${crEsc(e.opener || '')}</div>
+          </div>
+
+          ${(e.sections || []).map((s,i) => `
+            <div style="margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--rule)">
+              <div contenteditable="true" id="bozza-sec-${e.id}-${i}-label" style="font-family:var(--mn);font-size:8px;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;outline:none">${crEsc(s.label || '')}</div>
+
+              <div contenteditable="true" id="bozza-sec-${e.id}-${i}-title" style="font-family:var(--dp);font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;outline:none">${crEsc(s.title || '')}</div>
+
+              <div contenteditable="true" id="bozza-sec-${e.id}-${i}-body" style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.75;outline:none;white-space:pre-line">${crEsc(s.body || '')}</div>
+
+              ${(s.kpis && s.kpis.length) ? `
+                <div style="margin-top:12px">
+                  <div style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">Dati chiave / KPI</div>
+                  <table style="width:100%;border-collapse:collapse;font-family:var(--mn);font-size:10px;background:var(--cream2)">
+                    ${s.kpis.map((k,j) => `
+                      <tr style="border-bottom:1px solid var(--rule)">
+                        <td contenteditable="true" id="bozza-sec-${e.id}-${i}-kpi-${j}-key" style="width:50%;padding:7px 10px;color:var(--ink);font-weight:500;outline:none">${crEsc(k.key || '')}</td>
+                        <td contenteditable="true" id="bozza-sec-${e.id}-${i}-kpi-${j}-value" style="width:50%;padding:7px 10px;text-align:right;color:var(--ink2);outline:none">${crEsc(k.value || '')}</td>
+                      </tr>
+                    `).join('')}
+                  </table>
+                </div>
+              ` : ''}
+
+              <div style="margin-top:12px">
+                <div style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">Verdict</div>
+                <div contenteditable="true" id="bozza-sec-${e.id}-${i}-verdict" style="font-family:var(--mn);font-size:10px;color:var(--red);outline:none">→ ${crEsc(s.verdict || '')}</div>
+              </div>
+
+              <div style="margin-top:10px;padding:8px 10px;background:var(--cream2);border-left:2px solid var(--rule)">
+                <div style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">Fonti, separate da “·”</div>
+                <div contenteditable="true" id="bozza-sec-${e.id}-${i}-sources" style="font-family:var(--mn);font-size:9px;color:var(--ink3);outline:none">${crEsc((s.sources || []).join(' · '))}</div>
+              </div>
+            </div>
+          `).join('')}
+
         </div>
+
         <div id="bozza-status-${e.id}" style="display:none;padding:8px 16px;font-family:var(--mn);font-size:9px"></div>
-      </div>`).join('');
+      </div>
+    `).join('');
+
   } catch(e) {
-    el.innerHTML = '<div style="font-family:var(--mn);font-size:10px;color:var(--red)">Errore: '+e.message+'</div>';
+    el.innerHTML = '<div style="font-family:var(--mn);font-size:10px;color:var(--red)">Errore: ' + e.message + '</div>';
   }
 }
 
 function crPreviewBozza(id){
-  const el = document.getElementById('bozza-preview-'+id);
-  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+  const el = document.getElementById('bozza-preview-' + id);
+  if(el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 async function crSaveBozzaTitle(id){
-  const el = document.getElementById('bozza-title-'+id);
+  const el = document.getElementById('bozza-title-' + id);
   if(!el) return;
   const newTitle = el.innerText.trim();
-  await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
+  await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
     method:'PATCH',
-    headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+    headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY},
     body:JSON.stringify({title:newTitle})
   });
 }
 
+async function crFetchBozza(id){
+  const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id + '&select=*', {
+    headers:{apikey:SKEY,Authorization:'Bearer ' + SKEY}
+  });
+  const rows = await r.json();
+  const edition = rows && rows[0];
+  if(!edition) throw new Error('Edizione non trovata.');
+  return edition;
+}
+
+async function crSaveBozzaEdits(id){
+  const original = await crFetchBozza(id);
+  const edits = crExtractBozzaEdits(id, original);
+
+  const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
+    method:'PATCH',
+    headers:{
+      'Content-Type':'application/json',
+      apikey:SKEY,
+      Authorization:'Bearer ' + SKEY
+    },
+    body:JSON.stringify(edits)
+  });
+
+  if(!r.ok) throw new Error('Errore salvataggio modifiche.');
+  return {...original, ...edits};
+}
+
 async function crApprovaBozza(id, num){
-  const status = document.getElementById('bozza-status-'+id);
   const btns = document.querySelectorAll(`[onclick="crApprovaBozza('${id}','${num}')"]`);
-  btns.forEach(b=>{b.disabled=true;b.textContent='Approvazione...';});
+  btns.forEach(b => { b.disabled = true; b.textContent = 'Approvazione...'; });
+
   try {
-    const r = await fetch(SURL+'/rest/v1/editions?id=eq.'+id+'&select=sections',{
-      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
-    });
-    const rows = await r.json();
-    const sections = rows[0]?.sections || [];
-    const updatedSections = sections.map((s,i)=>{
-      const titleEl = document.getElementById('bozza-sec-'+id+'-'+i+'-title');
-      const bodyEl = document.getElementById('bozza-sec-'+id+'-'+i+'-body');
-      const verdictEl = document.getElementById('bozza-sec-'+id+'-'+i+'-verdict');
-      return {
-        ...s,
-        title: titleEl ? titleEl.innerText.trim() : s.title,
-        body: bodyEl ? bodyEl.innerText.trim() : s.body,
-        verdict: verdictEl ? verdictEl.innerText.replace(/^→\s*/,'').trim() : s.verdict
-      };
-    });
-    const titleEl = document.getElementById('bozza-title-'+id);
-    const newTitle = titleEl ? titleEl.innerText.trim() : null;
-    await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
-      body:JSON.stringify({published:true, sections:updatedSections, ...(newTitle?{title:newTitle}:{})})
-    });
-    if(status){
-      status.style.display='block';
-      status.style.background='var(--gpal)';
-      status.style.color='var(--green)';
-      status.innerHTML='✓ Edizione #'+num+' approvata e pubblicata. Clicca "Invia" per mandarla agli iscritti.';
+    let updated;
+    const preview = document.getElementById('bozza-preview-' + id);
+    if(preview && preview.style.display !== 'none'){
+      updated = await crSaveBozzaEdits(id);
+    } else {
+      updated = await crFetchBozza(id);
     }
-    btns.forEach(b=>{b.disabled=false;b.textContent='Approvata ✓';});
-    crLoadCtx();
+
+    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY},
+      body:JSON.stringify({
+        published:true,
+        tags:(updated.sections || []).map(s => s.label).filter(Boolean)
+      })
+    });
+
+    if(!r.ok) throw new Error('Errore pubblicazione archivio.');
+
+    crSetStatus(id, 'ok', '✓ Edizione #' + num + ' approvata e inserita in archivio. Ora puoi inviarla agli iscritti.');
+    btns.forEach(b => { b.disabled = false; b.textContent = 'Approvata ✓'; });
+    await crLoadCtx();
+    await loadPreview();
+
   } catch(e) {
-    if(status){status.style.display='block';status.style.color='var(--red)';status.innerHTML='Errore: '+e.message;}
-    btns.forEach(b=>{b.disabled=false;b.textContent='Approva';});
+    crSetStatus(id, 'err', 'Errore approvazione: ' + e.message);
+    btns.forEach(b => { b.disabled = false; b.textContent = 'Approva'; });
+  }
+}
+
+async function crRigeneraBozza(id){
+  const btns = document.querySelectorAll(`[onclick="crRigeneraBozza('${id}')"]`);
+  btns.forEach(b => { b.disabled = true; b.textContent = 'Rigenero...'; });
+  crSetStatus(id, 'info', 'Rigenerazione in corso. La nuova versione resterà in bozza.');
+
+  try {
+    const edition = await crFetchBozza(id);
+
+    const regen = await fetch('/api/genera-edizione', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        mode:'rewrite',
+        existingEdition:edition,
+        editionNum:edition.num,
+        oggi:new Date().toLocaleDateString('it-IT')
+      })
+    });
+
+    const data = await regen.json();
+
+    if(!regen.ok || data.error) throw new Error(data.error || 'Errore rigenerazione.');
+
+    const newEdition = data.edition || data;
+
+    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + id, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY},
+      body:JSON.stringify({
+        title:newEdition.title || edition.title,
+        subtitle:newEdition.subtitle || edition.subtitle,
+        opener:newEdition.opener || edition.opener,
+        sections:newEdition.sections || edition.sections,
+        published:false
+      })
+    });
+
+    if(!r.ok) throw new Error('Errore salvataggio bozza rigenerata.');
+
+    crSetStatus(id, 'ok', '✓ Bozza rigenerata. Apri “Modifica” per rivederla prima di approvare.');
+    await crLoadBozze();
+
+  } catch(e) {
+    crSetStatus(id, 'err', 'Errore rigenerazione: ' + e.message);
+  } finally {
+    btns.forEach(b => { b.disabled = false; b.textContent = 'Rigenera'; });
   }
 }
 
 async function crInviaBozza(id, num){
-  const status = document.getElementById('bozza-status-'+id);
   const btns = document.querySelectorAll(`[onclick="crInviaBozza('${id}','${num}')"]`);
-  btns.forEach(b=>{b.disabled=true;b.textContent='Invio...';});
+  btns.forEach(b => { b.disabled = true; b.textContent = 'Invio...'; });
+
   try {
-    const r = await fetch('/api/send-newsletter',{
+    const edition = await crFetchBozza(id);
+
+    if(edition.published !== true){
+      throw new Error('Devi prima approvare la bozza. Solo le edizioni approvate possono essere inviate.');
+    }
+
+    const r = await fetch('/api/send-newsletter', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({edition_num:num})
+      body:JSON.stringify({edition_num:String(num).padStart(3,'0')})
     });
+
     const d = await r.json();
-    if(status){
-      status.style.display='block';
-      if(r.ok&&d.ok){
-        status.style.background='var(--gpal)';
-        status.style.color='var(--green)';
-        status.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';
-      } else {
-        status.style.background='rgba(200,37,29,.06)';
-        status.style.color='var(--red)';
-        status.innerHTML='Errore invio: '+(d.error||r.status);
-      }
-    }
-    btns.forEach(b=>{b.disabled=false;b.textContent='Invia →';});
+
+    if(!r.ok || !d.ok) throw new Error(d.error || 'Errore invio newsletter.');
+
+    crSetStatus(id, 'ok', '✓ Newsletter inviata a <strong>' + d.sent + '</strong> iscritti.' + (d.errors > 0 ? ' ⚠ ' + d.errors + ' errori.' : ''));
+
   } catch(e) {
-    if(status){status.style.display='block';status.style.color='var(--red)';status.innerHTML='Errore: '+e.message;}
-    btns.forEach(b=>{b.disabled=false;b.textContent='Invia →';});
+    crSetStatus(id, 'err', 'Errore invio: ' + e.message);
+  } finally {
+    btns.forEach(b => { b.disabled = false; b.textContent = 'Invia'; });
   }
 }
+
 
 // REDAZIONE
 function crSelMode(el,mode){
@@ -1606,26 +1797,197 @@ async function crGenera(){
 }
 
 function crRenderPreview(data){
-  document.getElementById('cr-out-meta').textContent=' · #'+(data.edition_num||'—');
-  const secs=(data.sections||[]).map((s,i)=>`
-    <div class="cr-nl-sec">
-      <div class="cr-nl-sec-tag">${crEsc(s.label||'0'+(i+1))}</div>
-      <div class="cr-nl-sec-title" contenteditable="true">${crEsc(s.title)}</div>
-      <div class="cr-nl-sec-body" contenteditable="true">${crEsc(s.body)}</div>
-      ${s.kpis&&s.kpis.length?'<table class="cr-nl-kpi">'+s.kpis.map(k=>`<tr><td>${crEsc(k.key)}</td><td>${crEsc(k.value)}</td></tr>`).join('')+'</table>':''}
-      <div class="cr-nl-verdict">${crEsc(s.verdict)}</div>
-      ${s.sources&&s.sources.length?'<div class="cr-nl-sources">Fonti: '+s.sources.map(crEsc).join(' · ')+'</div>':''}
-    </div>`).join('');
-  document.getElementById('cr-nl-preview').innerHTML=`
+  crCurrentEditionId = null;
+  document.getElementById('cr-out-meta').textContent = ' · #' + (data.edition_num || '—');
+
+  const secs = (data.sections || []).map((s,i) => `
+    <div class="cr-nl-sec" data-sec-index="${i}">
+      <div class="cr-nl-sec-tag" contenteditable="true" data-field="label">${crEsc(s.label || '0' + (i+1))}</div>
+      <div class="cr-nl-sec-title" contenteditable="true" data-field="title">${crEsc(s.title || '')}</div>
+      <div class="cr-nl-sec-body" contenteditable="true" data-field="body">${crEsc(s.body || '')}</div>
+
+      ${(s.kpis && s.kpis.length) ? `
+        <table class="cr-nl-kpi">
+          ${s.kpis.map((k,j) => `
+            <tr data-kpi-index="${j}">
+              <td contenteditable="true" data-field="kpi-key">${crEsc(k.key || '')}</td>
+              <td contenteditable="true" data-field="kpi-value">${crEsc(k.value || '')}</td>
+            </tr>
+          `).join('')}
+        </table>
+      ` : ''}
+
+      <div class="cr-nl-verdict" contenteditable="true" data-field="verdict">${crEsc(s.verdict || '')}</div>
+
+      <div class="cr-nl-sources" style="outline:none" contenteditable="true" data-field="sources">
+        Fonti: ${crEsc((s.sources || []).join(' · '))}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('cr-nl-preview').innerHTML = `
     <div class="cr-nl-mh">
-      <div class="cr-nl-top"><span>#${crEsc(data.edition_num||'001')}</span><span>${crEsc(data.date||'')}</span><span>~8 min</span></div>
+      <div class="cr-nl-top"><span>#${crEsc(data.edition_num || '001')}</span><span>${crEsc(data.date || '')}</span><span>~8 min</span></div>
       <div class="cr-nl-logo">Valore Atteso</div>
       <div class="cr-nl-tag">Il calcio dei numeri, non dei goal</div>
     </div>
-    <div class="cr-nl-opener"><div class="cr-nl-opener-text" contenteditable="true">${crEsc(data.opener||'')}</div></div>
-    <div>${secs}</div>`;
-  document.getElementById('cr-prog-wrap').style.display='none';
-  document.getElementById('cr-out-wrap').style.display='block';
+
+    <div class="cr-nl-opener">
+      <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px">Titolo edizione</div>
+      <div class="cr-nl-sec-title" contenteditable="true" id="cr-current-title">${crEsc(data.title || '')}</div>
+
+      <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 5px">Sottotitolo</div>
+      <div class="cr-nl-sec-body" contenteditable="true" id="cr-current-subtitle">${crEsc(data.subtitle || '')}</div>
+
+      <div style="font-family:var(--mn);font-size:7px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin:10px 0 5px">Opener</div>
+      <div class="cr-nl-opener-text" contenteditable="true" id="cr-current-opener">${crEsc(data.opener || '')}</div>
+    </div>
+
+    <div>${secs}</div>
+  `;
+
+  document.getElementById('cr-prog-wrap').style.display = 'none';
+  document.getElementById('cr-out-wrap').style.display = 'block';
+
+  const ps = document.getElementById('cr-pub-status');
+  if(ps) ps.style.display = 'none';
+
+  const approveBtn = document.getElementById('cr-approve-btn');
+  const sendBtn = document.getElementById('cr-send-current-btn');
+  if(approveBtn) approveBtn.textContent = 'Approva →';
+  if(sendBtn) sendBtn.textContent = 'Invia →';
+}
+
+function crExtractCurrentEdits(){
+  const preview = document.getElementById('cr-nl-preview');
+
+  const sections = Array.from(preview.querySelectorAll('.cr-nl-sec')).map((sec, i) => {
+    const original = (crCurrentData.sections || [])[i] || {};
+    const kpis = Array.from(sec.querySelectorAll('[data-kpi-index]')).map(row => ({
+      key: crCleanEditableText(row.querySelector('[data-field="kpi-key"]'), ''),
+      value: crCleanEditableText(row.querySelector('[data-field="kpi-value"]'), '')
+    }));
+
+    const sourcesRaw = crCleanEditableText(sec.querySelector('[data-field="sources"]'), '');
+    const sources = sourcesRaw.replace(/^Fonti:\s*/i,'').split('·').map(x => x.trim()).filter(Boolean);
+
+    return {
+      ...original,
+      label: crCleanEditableText(sec.querySelector('[data-field="label"]'), original.label),
+      title: crCleanEditableText(sec.querySelector('[data-field="title"]'), original.title),
+      body: crCleanEditableText(sec.querySelector('[data-field="body"]'), original.body),
+      kpis,
+      verdict: crCleanEditableText(sec.querySelector('[data-field="verdict"]'), original.verdict).replace(/^→\s*/, ''),
+      sources
+    };
+  });
+
+  return {
+    ...crCurrentData,
+    title: crCleanEditableText(document.getElementById('cr-current-title'), crCurrentData.title),
+    subtitle: crCleanEditableText(document.getElementById('cr-current-subtitle'), crCurrentData.subtitle),
+    opener: crCleanEditableText(document.getElementById('cr-current-opener'), crCurrentData.opener),
+    sections,
+    tags: sections.map(s => s.label).filter(Boolean)
+  };
+}
+
+async function crApprovaCorrente(){
+  if(!crCurrentData) return;
+
+  const btn = document.getElementById('cr-approve-btn');
+  const ps = document.getElementById('cr-pub-status');
+  btn.disabled = true;
+  btn.textContent = 'Approvazione…';
+  ps.style.display = 'none';
+
+  try {
+    const edited = crExtractCurrentEdits();
+
+    let r;
+    if(crCurrentEditionId){
+      r = await fetch(SURL + '/rest/v1/editions?id=eq.' + crCurrentEditionId + '&select=*', {
+        method:'PATCH',
+        headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY,Prefer:'return=representation'},
+        body:JSON.stringify({...edited,published:true})
+      });
+    } else {
+      r = await fetch(SURL + '/rest/v1/editions', {
+        method:'POST',
+        headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer ' + SKEY,Prefer:'return=representation'},
+        body:JSON.stringify({...edited,published:true})
+      });
+    }
+
+    const saved = await r.json();
+    if(!r.ok || !saved[0]) throw new Error('Errore salvataggio archivio.');
+
+    crCurrentEditionId = saved[0].id;
+    crCurrentData = saved[0];
+
+    ps.style.display = 'block';
+    ps.className = 'cr-pub-status ok';
+    ps.innerHTML = '✓ Edizione approvata e inserita in archivio. Ora puoi inviarla agli iscritti.';
+
+    await crLoadCtx();
+    await loadPreview();
+
+  } catch(e) {
+    ps.style.display = 'block';
+    ps.className = 'cr-pub-status err';
+    ps.innerHTML = 'Errore approvazione: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Approva →';
+  }
+}
+
+async function crRigeneraCorrente(){
+  await crGenera();
+}
+
+async function crInviaCorrente(){
+  const btn = document.getElementById('cr-send-current-btn');
+  const ps = document.getElementById('cr-pub-status');
+  btn.disabled = true;
+  btn.textContent = 'Invio…';
+  ps.style.display = 'none';
+
+  try {
+    if(!crCurrentEditionId){
+      throw new Error('Devi prima approvare la newsletter. Solo le edizioni approvate possono essere inviate.');
+    }
+
+    const check = await fetch(SURL + '/rest/v1/editions?id=eq.' + crCurrentEditionId + '&select=published,num', {
+      headers:{apikey:SKEY,Authorization:'Bearer ' + SKEY}
+    });
+
+    const rows = await check.json();
+    if(!rows[0] || rows[0].published !== true){
+      throw new Error('Devi prima approvare la newsletter. Solo le edizioni approvate possono essere inviate.');
+    }
+
+    const r = await fetch('/api/send-newsletter', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({edition_id:crCurrentEditionId})
+    });
+
+    const d = await r.json();
+    if(!r.ok || !d.ok) throw new Error(d.error || 'Errore invio newsletter.');
+
+    ps.style.display = 'block';
+    ps.className = 'cr-pub-status ok';
+    ps.innerHTML = '✓ Newsletter inviata a <strong>' + d.sent + '</strong> iscritti.' + (d.errors > 0 ? ' ⚠ ' + d.errors + ' errori.' : '');
+
+  } catch(e) {
+    ps.style.display = 'block';
+    ps.className = 'cr-pub-status err';
+    ps.innerHTML = 'Errore invio: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Invia →';
+  }
 }
 
 async function crSendExisting(){
@@ -1654,49 +2016,7 @@ async function crSendExisting(){
 }
 
 async function crPubblica(){
-  if(!crCurrentData){return;}
-  const btn=document.getElementById('cr-pub-btn');const ps=document.getElementById('cr-pub-status');
-  btn.disabled=true;btn.textContent='Pubblicazione…';ps.style.display='none';
-  const preview=document.getElementById('cr-nl-preview');
-  const titles=preview.querySelectorAll('.cr-nl-sec-title');
-  const bodies=preview.querySelectorAll('.cr-nl-sec-body');
-  const opener=preview.querySelector('.cr-nl-opener-text');
-  const sections=(crCurrentData.sections||[]).map((s,i)=>({...s,title:titles[i]?.innerText||s.title,body:bodies[i]?.innerText||s.body}));
-  const openerText=opener?.innerText||crCurrentData.opener;
-  let editionId=null;
-
-  // 1. Salva su Supabase
-  try{
-    const r=await fetch(SURL+'/rest/v1/editions',{method:'POST',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=representation'},body:JSON.stringify({...crCurrentData,sections,opener:openerText,published:true,tags:sections.map(s=>s.label)})});
-    const saved=await r.json();
-    editionId=saved[0]?.id;
-    if(!r.ok||!editionId) throw new Error('Errore salvataggio Supabase');
-  }catch(e){
-    btn.disabled=false;btn.textContent='Pubblica + Invia →';
-    ps.style.display='block';ps.className='cr-pub-status err';ps.innerHTML='Errore salvataggio: '+e.message;
-    return;
-  }
-
-  // 2. Invia via endpoint server-side
-  try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_id:editionId})});
-    const d=await r.json();
-    btn.disabled=false;btn.textContent='Pubblica + Invia →';
-    ps.style.display='block';
-    if(r.ok&&d.ok){
-      ps.className='cr-pub-status ok';
-      ps.innerHTML=`✓ Pubblicata e inviata a <strong>${d.sent}</strong> iscritti.${d.errors>0?' ⚠ '+d.errors+' errori.':''}`;
-    }else{
-      ps.className='cr-pub-status err';
-      ps.innerHTML='Errore invio: '+(d.error||r.status);
-    }
-  }catch(e){
-    btn.disabled=false;btn.textContent='Pubblica + Invia →';
-    ps.style.display='block';ps.className='cr-pub-status err';ps.innerHTML='Errore connessione: '+e.message;
-  }
-  crLoadCtx();
-  crLoadAgents();
-  crLoadBozze();
+  return crApprovaCorrente();
 }
 // ══════════════ END CONTROL ROOM ══════════════
 
@@ -1952,8 +2272,9 @@ async function crPubblica(){
         <div class="cr-out-bar">
           <div class="cr-out-bar-l"><span style="color:#7FCF97">●</span><span>Pronta — clicca sul testo per modificare</span><span id="cr-out-meta" style="color:rgba(255,255,255,.2)"></span></div>
           <div class="cr-out-bar-r">
-            <button class="cr-btn-sm" onclick="crGenera()">Rigenera</button>
-            <button class="cr-btn-sm cr-btn-pub" id="cr-pub-btn" onclick="crPubblica()">Pubblica + Invia →</button>
+            <button class="cr-btn-sm cr-btn-pub" id="cr-approve-btn" onclick="crApprovaCorrente()">Approva →</button>
+            <button class="cr-btn-sm" onclick="crRigeneraCorrente()">Rigenera</button>
+            <button class="cr-btn-sm cr-btn-pub" id="cr-send-current-btn" onclick="crInviaCorrente()">Invia →</button>
           </div>
         </div>
         <div class="cr-nl" id="cr-nl-preview"></div>
