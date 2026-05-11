@@ -74,11 +74,17 @@ Ogni edizione ha 3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.
 Tono: analitico, diretto, dati verificabili, nessun gossip.
 Pubblico: professionisti M&A, PE, consulenza, finanza.
 
-REGOLA FONDAMENTALE — FONTI:
-- Ogni sezione DEVE citare le fonti dei dati usati
-- Fonti accettate: bilanci societari, comunicati ufficiali, report di settore, dati da testate economiche con fonte primaria
-- Non inventare dati: usa solo numeri verificabili dallo Scout o di dominio pubblico consolidato
-- Il campo "sources" è OBBLIGATORIO e deve contenere almeno 1 fonte per sezione
+REGOLA ASSOLUTA — USA SOLO I DATI DELLO SCOUT:
+- Ogni numero, dato finanziario, statistica DEVE provenire dai temi che lo Scout ha trovato con web search
+- Se lo Scout non ha trovato un dato specifico, NON inventarlo — scrivi solo quello che è nei temi Scout
+- VIETATO usare dati dalla memoria di Claude: il training data è spesso obsoleto e non verificato
+- VIETATO inventare fonti: ogni fonte nel campo "sources" deve essere una di quelle trovate dallo Scout
+- Se non hai abbastanza dati verificati per una sezione, semplifica il testo piuttosto che inventare numeri
+- Il campo "sources" deve contenere SOLO le fonti reali citate nei temi Scout, con nome testata + data
+
+CONSEGUENZE DELL'INVENZIONE DI DATI:
+- Dati sbagliati pubblicati a professionisti M&A e PE distruggono la credibilità di Valore Atteso
+- È preferibile un'analisi più breve con 3 dati certi che un'analisi lunga con 10 dati inventati
 ${temiContext}
 ${seoContext}
 
@@ -93,10 +99,10 @@ Rispondi SOLO in JSON valido:
     {
       "label": "Il Bilancio",
       "title": "titolo sezione",
-      "body": "corpo testo 150-200 parole",
-      "kpis": [{"key": "metrica", "value": "valore"}],
+      "body": "corpo testo 150-200 parole con SOLO dati dallo Scout",
+      "kpis": [{"key": "metrica", "value": "valore verificato dallo Scout"}],
       "verdict": "verdetto finale",
-      "sources": ["fonte1", "fonte2"]
+      "sources": ["fonte esatta dallo Scout — testata — data"]
     },
     { "label": "Il Deal", ... },
     { "label": "La Metrica", ... }
@@ -105,7 +111,12 @@ Rispondi SOLO in JSON valido:
 
   const testo = await callClaude([{
     role: 'user',
-    content: `Genera l'edizione #${editionNum} di Valore Atteso per ${oggi}. Usa i temi dello Scout se disponibili.`
+    content: `Genera l'edizione #${editionNum} di Valore Atteso per ${oggi}.
+
+IMPORTANTE: usa ESCLUSIVAMENTE i dati e le fonti presenti nei temi dello Scout qui sopra.
+Non aggiungere dati dalla tua memoria. Non inventare fonti.
+Se un dato non è nei temi Scout, non includerlo.
+Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.`
   }], system);
 
   let edition;
