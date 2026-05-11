@@ -254,7 +254,7 @@ hr.div{border:none;border-top:1px solid var(--rule);margin:0}
 .preview-link{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);cursor:pointer;text-decoration:none;transition:color .15s}
 .preview-link:hover{color:var(--red)}
 .preview-cols{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--rule)}
-.pcol{padding:28px 24px 28px 0;border-right:1px solid var(--rule);cursor:pointer}
+.pcol{padding:28px 24px 28px 0;border-right:1px solid var(--rule)}
 .pcol:first-child{padding-left:0}
 .pcol:last-child{border-right:none;padding-right:0;padding-left:24px}
 .pcol:nth-child(2){padding-left:24px}
@@ -1100,7 +1100,7 @@ async function loadPreview(){
     const e=eds[0];
     const secs=e.sections||[];
     document.getElementById('home-preview').innerHTML=secs.map((s,i)=>`
-      <div class="pcol" onclick="openArt('${e.num}')">
+      <div class="pcol">
         <div class="pcol-tag">0${i+1} · ${esc(s.label)}</div>
         <h3>${esc(s.title)}</h3>
         <p>${esc((s.body||'').split('\n')[0].substring(0,130))}…</p>
