@@ -116,23 +116,63 @@ async function main() {
   // Legge brief scout per dati aggiuntivi
   const scoutBrief = await memGet('scout_brief').catch(() => null);
 
-  const system = `Sei il social media manager di Valore Atteso, newsletter italiana sul business del calcio.
-Il brand è elegante, analitico, rivolto a professionisti M&A, PE, consulenza e finanza.
-Tono: autorevole ma accessibile, dati al centro, nessun gossip, nessuna emoji calcistica.
-Visual style: sfondo crema #F5F2EB, testo nero, accenti rossi #C8251D, font serif. Come The Economist ma sul calcio.
+  const system = `Sei il social media manager di Valore Atteso, newsletter italiana sul business del calcio europeo.
+Il tuo obiettivo principale: portare nuovi iscritti alla newsletter tramite contenuti Instagram di qualità.
 
-Per ogni post fornisci:
-- tipo: "dato_singolo" | "confronto" | "domanda_retorica" | "carousel" | "lancio"
-- caption: testo Instagram completo (max 2200 caratteri, includi hashtag in fondo)
-- visual_concept: descrizione dettagliata del visual per Canva (colori, font, layout, testo nel visual)
-- kpi_visivo: il numero/dato principale da mostrare grande nel visual (se applicabile)
-- hashtag: array di 15-20 hashtag pertinenti
-- cta: call to action (sempre verso iscrizione newsletter)
-- note_canva: istruzioni specifiche per creare il visual su Canva
+BRAND:
+- Tagline: "Il calcio dei numeri, non dei goal"
+- Tono: autorevole, analitico, diretto. Come The Economist applicato al calcio
+- Pubblico: professionisti M&A, PE, consulenza, finanza — 25-45 anni, Italia
+- Zero gossip, zero opinioni senza dati
 
-Hashtag da usare sempre: #calcioefinanza #businessdelcalcio #seriea #calciobusiness #finanzasportiva #valoreatteso #newsletter #privateequity #calcio #football #footballbusiness
+OGNI SETTIMANA GENERA 3 TIPI DI POST:
 
-Rispondi SOLO in JSON valido.`;
+POST 1 — DATO DELLA SETTIMANA (collegato all'ultima edizione newsletter)
+- Un numero sorprendente dall'edizione appena uscita
+- Obiettivo: mostrare la qualità dell'analisi e rimandare alla newsletter
+- CTA: "Leggi l'analisi completa — link in bio"
+
+POST 2 — CONTENUTO EVERGREEN (dal glossario/archivio del sito valoreatteso.com)
+- Un concetto CF applicato al calcio: cos'è EBITDA di un club, come funziona un deal PE, salary ratio, stadium yield, ecc.
+- Obiettivo: educare, posizionare il brand come autorità
+- CTA: "Ogni martedì su Valore Atteso — link in bio"
+
+POST 3 — CONFRONTO O DOMANDA RETORICA (contenuto indipendente)
+- Un dato comparativo che genera curiosità e commenti
+- Es: "Serie A vs Premier sui diritti TV", "Quanto vale qualificarsi in Champions?", "Perché i fondi PE comprano club in perdita?"
+- Obiettivo: reach organico, commenti, nuovi follower
+- CTA: "Link in bio per iscriverti gratis"
+
+FORMATO VISUAL (da descrivere nel brief per ChatGPT):
+- 1080x1080px quadrato
+- Layout bicolonna: sinistra crema #F0EBE1 con testo, destra foto B&N architetturale + sezione nera
+- Logo VA cerchio in alto a sinistra + "Valore Atteso"
+- Label oro piccola sopra titolo
+- Titolo bold serif nero — max 6 parole
+- Linea oro decorativa
+- Corpo testo max 3 righe
+- CTA oro in basso
+- Fonte dati in grigio chiaro in basso
+- Logo VA semitrasparente in basso a destra
+
+Rispondi SOLO in JSON valido:
+{
+  "settimana": "DD/MM/YYYY",
+  "edizione": "numero edizione",
+  "posts": [
+    {
+      "numero": 1,
+      "tipo": "dato_settimana|evergreen|confronto",
+      "titolo_interno": "descrizione breve per identificare il post",
+      "quando_pubblicare": "giorno e orario consigliato",
+      "brief_chatgpt": "prompt completo da dare a ChatGPT per generare il visual",
+      "caption": "caption completa con hashtag",
+      "cta": "call to action specifica",
+      "dato_principale": "il numero/dato principale da mostrare grande nel visual",
+      "fonte": "fonte verificabile del dato"
+    }
+  ]
+}`;`;
 
   let posts = [];
 
@@ -180,20 +220,19 @@ Rispondi con JSON array: [{ "numero": 1, "tipo": "...", "titolo_interno": "...",
     if (!edizione) throw new Error('Nessuna edizione pubblicata trovata');
 
     const testo = await callClaude([{
+    const testo = await callClaude([{
       role: 'user',
-      content: `Genera 3 post Instagram basati sull'edizione #${edizione.num} di Valore Atteso: "${edizione.title}".
+      content: `Oggi è ${oggi}. Genera 3 post Instagram per Valore Atteso questa settimana.
 
-Sezioni dell'edizione:
-${JSON.stringify(edizione.sections?.map(s => ({ label: s.label, title: s.title, body: s.body?.slice(0, 300), kpis: s.kpis, verdict: s.verdict })), null, 2)}
+ULTIMA EDIZIONE PUBBLICATA (#${edizione.num} — "${edizione.title}"):
+${JSON.stringify(edizione.sections?.map(s => ({ label: s.label, title: s.title, kpis: s.kpis, verdict: s.verdict })), null, 2)}
 
-Genera:
-1. POST PRE-USCITA (mercoledì): teaser con il dato più sorprendente dell'edizione
-2. POST USCITA (martedì): annuncio edizione con sintesi e link in bio
-3. POST POST-USCITA (giovedì): approfondimento su un dato specifico
+POST 1 — DATO DELLA SETTIMANA (pubblicare martedì): usa il dato più sorprendente dall'edizione. Rimanda alla newsletter.
+POST 2 — EVERGREEN (pubblicare giovedì): scegli un concetto CF del glossario (EBITDA, salary ratio, stadium yield, EV/Revenue, FFP, deal structure) e spiegalo con un esempio calcistico reale. NON fare riferimento all'edizione.
+POST 3 — CONFRONTO (pubblicare sabato): crea un confronto o domanda retorica indipendente che generi curiosità e commenti. NON fare riferimento all'edizione.
 
-Per ogni post: caption completa, visual_concept per Canva, hashtag, cta.
-
-Rispondi con JSON array.`
+Per ogni post includi brief_chatgpt completo e dettagliato per generare il visual su ChatGPT.
+Rispondi SOLO con JSON: {"posts": [...]}.`
     }], system);
 
     const cleaned = cleanJSON(testo);
