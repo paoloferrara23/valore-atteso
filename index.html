@@ -1450,6 +1450,7 @@ async function crLoadBozze(){
               <div style="font-family:var(--dp);font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-title">${s.title||''}</div>
               <div style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.75;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-body">${s.body||''}</div>
               ${s.verdict?`<div style="font-family:var(--mn);font-size:10px;color:var(--red);margin-top:10px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-verdict">→ ${s.verdict}</div>`:''}
+              ${s.sources&&s.sources.length?`<div style="margin-top:8px;padding:8px 10px;background:var(--cream2);border-left:2px solid var(--rule)"><span style="font-family:var(--mn);font-size:8px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Fonti: </span><span style="font-family:var(--mn);font-size:9px;color:var(--ink3)">${s.sources.join(' · ')}</span></div>`:''}
             </div>`).join('')}
         </div>
         <div id="bozza-status-${e.id}" style="display:none;padding:8px 16px;font-family:var(--mn);font-size:9px"></div>
