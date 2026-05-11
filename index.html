@@ -1270,6 +1270,7 @@ function crTab(p,btn){
   document.querySelectorAll('.cr-tab').forEach(x=>x.classList.remove('on'));
   document.getElementById('cr-'+p).classList.add('on');
   btn.classList.add('on');
+  if(p==='redazione') crLoadBozze();
 }
 
 async function crInit(){
@@ -1417,6 +1418,124 @@ Rispondi in italiano, diretto, max 200 parole, tono collega senior M&A.`;
 }
 function crAutoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';}
 
+// BOZZE IN ATTESA
+async function crLoadBozze(){
+  const el = document.getElementById('cr-bozze-list');
+  if(!el) return;
+  try {
+    const r = await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{
+      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
+    });
+    const bozze = await r.json();
+    if(!Array.isArray(bozze)||!bozze.length){
+      el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--ink3);padding:8px 0;border:1px solid var(--rule);padding:12px;border-radius:4px">Nessuna bozza in attesa.</div>';
+      return;
+    }
+    el.innerHTML = bozze.map(e=>`
+      <div style="border:1px solid var(--rule);border-radius:6px;overflow:hidden;margin-bottom:12px;background:#fff">
+        <div style="padding:12px 16px;background:var(--cream2);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule)">
+          <div>
+            <span style="font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase">Bozza #${e.num}</span>
+            <div style="font-family:var(--dp);font-size:1rem;font-weight:700;color:var(--ink);margin-top:2px" contenteditable="true" id="bozza-title-${e.id}" onblur="crSaveBozzaTitle('${e.id}')">${e.title||''}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="crPreviewBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Preview</button>
+            <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva + Invia →</button>
+          </div>
+        </div>
+        <div id="bozza-preview-${e.id}" style="display:none;padding:16px;border-bottom:1px solid var(--rule)">
+          ${(e.sections||[]).map((s,i)=>`
+            <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--rule)">
+              <div style="font-family:var(--mn);font-size:8px;color:var(--red);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">${s.label}</div>
+              <div style="font-family:var(--dp);font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-title">${s.title||''}</div>
+              <div style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.75;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-body">${s.body||''}</div>
+              ${s.verdict?`<div style="font-family:var(--mn);font-size:10px;color:var(--red);margin-top:10px;outline:none" contenteditable="true" id="bozza-sec-${e.id}-${i}-verdict">→ ${s.verdict}</div>`:''}
+            </div>`).join('')}
+        </div>
+        <div id="bozza-status-${e.id}" style="display:none;padding:8px 16px;font-family:var(--mn);font-size:9px"></div>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="font-family:var(--mn);font-size:10px;color:var(--red)">Errore: '+e.message+'</div>';
+  }
+}
+
+function crPreviewBozza(id){
+  const el = document.getElementById('bozza-preview-'+id);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+async function crSaveBozzaTitle(id){
+  const el = document.getElementById('bozza-title-'+id);
+  if(!el) return;
+  const newTitle = el.innerText.trim();
+  await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
+    method:'PATCH',
+    headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+    body:JSON.stringify({title:newTitle})
+  });
+}
+
+async function crApprovaBozza(id, num){
+  const btn = document.querySelector(`[onclick="crApprovaBozza('${id}','${num}')"]`);
+  const status = document.getElementById('bozza-status-'+id);
+  if(btn) { btn.disabled=true; btn.textContent='Approvazione...'; }
+
+  // Salva eventuali modifiche alle sezioni
+  try {
+    // Recupera sezioni attuali
+    const r = await fetch(SURL+'/rest/v1/editions?id=eq.'+id+'&select=sections',{
+      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
+    });
+    const rows = await r.json();
+    const sections = rows[0]?.sections || [];
+
+    // Leggi modifiche dai campi editabili
+    const updatedSections = sections.map((s,i)=>{
+      const titleEl = document.getElementById('bozza-sec-'+id+'-'+i+'-title');
+      const bodyEl = document.getElementById('bozza-sec-'+id+'-'+i+'-body');
+      const verdictEl = document.getElementById('bozza-sec-'+id+'-'+i+'-verdict');
+      return {
+        ...s,
+        title: titleEl ? titleEl.innerText.trim() : s.title,
+        body: bodyEl ? bodyEl.innerText.trim() : s.body,
+        verdict: verdictEl ? verdictEl.innerText.replace(/^→\s*/,'').trim() : s.verdict
+      };
+    });
+
+    // Salva titolo aggiornato
+    const titleEl = document.getElementById('bozza-title-'+id);
+    const newTitle = titleEl ? titleEl.innerText.trim() : null;
+
+    // Pubblica
+    await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+      body:JSON.stringify({published:true, sections:updatedSections, ...(newTitle?{title:newTitle}:{})})
+    });
+
+    // Invia newsletter
+    const sendR = await fetch('/api/send-newsletter',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({edition_num:num})
+    });
+    const sendD = await sendR.json();
+
+    if(status){
+      status.style.display='block';
+      status.style.background='var(--gpal)';
+      status.style.color='var(--green)';
+      status.innerHTML = sendD.ok ? `✓ Pubblicata e inviata a ${sendD.sent} iscritti.` : '✓ Pubblicata. Errore invio: '+(sendD.error||'');
+    }
+    if(btn){ btn.textContent='Approvata ✓'; }
+    crLoadBozze();
+    crLoadCtx();
+  } catch(e) {
+    if(status){ status.style.display='block'; status.style.color='var(--red)'; status.innerHTML='Errore: '+e.message; }
+    if(btn){ btn.disabled=false; btn.textContent='Approva + Invia →'; }
+  }
+}
+
 // REDAZIONE
 function crSelMode(el,mode){
   document.querySelectorAll('.cr-mode-opt').forEach(o=>o.classList.remove('on'));
@@ -1550,6 +1669,7 @@ async function crPubblica(){
   }
   crLoadCtx();
   crLoadAgents();
+  crLoadBozze();
 }
 // ══════════════ END CONTROL ROOM ══════════════
 
@@ -1756,6 +1876,14 @@ async function crPubblica(){
 
     <!-- REDAZIONE -->
     <div class="cr-panel" id="cr-redazione">
+
+      <!-- BOZZE IN ATTESA -->
+      <div id="cr-bozze-wrap" style="margin-bottom:28px">
+        <div class="cr-sec-title">Bozze in attesa</div>
+        <div id="cr-bozze-list"><div style="font-family:var(--mn);font-size:10px;color:var(--ink3);padding:8px 0">Caricamento...</div></div>
+      </div>
+
+      <div class="cr-sec-title">Genera nuova edizione</div>
       <div class="cr-red-config">
         <div>
           <div class="cr-red-title">Genera edizione</div>
