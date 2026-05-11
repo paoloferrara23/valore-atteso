@@ -1843,13 +1843,33 @@ function crEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 
 function crNormalizeScoutTopics(rows){
   const topics = [];
+
+  const isBadText = (txt) => {
+    const s = String(txt || '').toLowerCase();
+    return (
+      !s ||
+      s.includes('invalid_request_error') ||
+      s.includes('anthropic: 400') ||
+      s.includes('extra inputs are not permitted') ||
+      s.includes('json non valido') ||
+      s.includes('"type":"error"') ||
+      s.includes('error":') ||
+      s.includes('errore') ||
+      s.length < 12
+    );
+  };
+
   const pushTopic = (title, note, source) => {
-    const cleanTitle = String(title || '').trim();
-    if(!cleanTitle) return;
+    const cleanTitle = String(title || '').replace(/^[-•*\d.)\s]+/, '').trim();
+    const cleanNote = String(note || '').trim();
+
+    if(isBadText(cleanTitle)) return;
+    if(cleanTitle.length > 180) return;
     if(topics.some(t => t.title.toLowerCase() === cleanTitle.toLowerCase())) return;
+
     topics.push({
       title: cleanTitle,
-      note: String(note || '').trim(),
+      note: isBadText(cleanNote) ? '' : cleanNote,
       source: String(source || 'Scout').trim()
     });
   };
@@ -1857,24 +1877,62 @@ function crNormalizeScoutTopics(rows){
   const parseObj = (obj, sourceLabel) => {
     if(!obj) return;
 
+    if(typeof obj === 'string'){
+      if(isBadText(obj)) return;
+
+      try {
+        const parsed = JSON.parse(obj);
+        parseObj(parsed, sourceLabel);
+        return;
+      } catch(e) {}
+
+      obj.split('\n')
+        .map(line => line.replace(/^[-•*\d.)\s]+/, '').trim())
+        .filter(line => !isBadText(line) && line.length < 180)
+        .forEach(line => pushTopic(line, '', sourceLabel));
+
+      return;
+    }
+
     if(Array.isArray(obj)){
       obj.forEach(x => {
         if(typeof x === 'string') pushTopic(x, '', sourceLabel);
-        else if(x && typeof x === 'object') pushTopic(x.title || x.topic || x.name || x.headline, x.note || x.why || x.summary || x.description, sourceLabel);
+        else if(x && typeof x === 'object') {
+          pushTopic(
+            x.title || x.topic || x.name || x.headline || x.argomento,
+            x.note || x.why || x.summary || x.description || x.motivo,
+            sourceLabel
+          );
+        }
       });
       return;
     }
 
     if(typeof obj === 'object'){
+      if(obj.error || obj.type === 'error' || obj.status === 'error') return;
+
       if(Array.isArray(obj.topics)) parseObj(obj.topics, sourceLabel);
       if(Array.isArray(obj.ideas)) parseObj(obj.ideas, sourceLabel);
       if(Array.isArray(obj.items)) parseObj(obj.items, sourceLabel);
       if(Array.isArray(obj.news)) parseObj(obj.news, sourceLabel);
-      if(obj.title || obj.topic || obj.headline) pushTopic(obj.title || obj.topic || obj.headline, obj.note || obj.why || obj.summary || obj.description, sourceLabel);
+      if(Array.isArray(obj.argomenti)) parseObj(obj.argomenti, sourceLabel);
+
+      if(obj.title || obj.topic || obj.headline || obj.argomento) {
+        pushTopic(
+          obj.title || obj.topic || obj.headline || obj.argomento,
+          obj.note || obj.why || obj.summary || obj.description || obj.motivo,
+          sourceLabel
+        );
+      }
     }
   };
 
   (rows || []).forEach(row => {
+    if(!row) return;
+
+    const rowStatus = String(row.status || '').toLowerCase();
+    if(rowStatus === 'error' || rowStatus === 'failed') return;
+
     const sourceLabel = row.agent ? 'Scout · ' + row.agent : 'Scout';
 
     parseObj(row.topics, sourceLabel);
@@ -1882,14 +1940,11 @@ function crNormalizeScoutTopics(rows){
     parseObj(row.output, sourceLabel);
     parseObj(row.payload, sourceLabel);
     parseObj(row.result, sourceLabel);
-
-    const text = row.summary || row.content || row.memory || row.notes || row.description || '';
-    if(text && typeof text === 'string'){
-      text.split('\n').forEach(line => {
-        const cleaned = line.replace(/^[-•*\d.)\s]+/, '').trim();
-        if(cleaned.length > 18 && cleaned.length < 180) pushTopic(cleaned, '', sourceLabel);
-      });
-    }
+    parseObj(row.summary, sourceLabel);
+    parseObj(row.content, sourceLabel);
+    parseObj(row.memory, sourceLabel);
+    parseObj(row.notes, sourceLabel);
+    parseObj(row.description, sourceLabel);
   });
 
   return topics.slice(0, 12);
@@ -1924,7 +1979,7 @@ async function crLoadScoutTopics(){
   if(!topics.length){
     box.innerHTML = `
       <div style="font-family:var(--mn);font-size:9px;color:var(--ink3);line-height:1.6;margin-bottom:8px">
-        Nessun tema Scout strutturato trovato. Puoi comunque inserire manualmente 1-3 argomenti qui sotto.
+        Nessun tema Scout valido trovato. Ho escluso eventuali errori tecnici dello Scout. Inserisci manualmente 1-3 argomenti qui sotto oppure rilancia lo Scout da GitHub Actions.
       </div>
     `;
     return;
