@@ -1440,7 +1440,8 @@ async function crLoadBozze(){
           </div>
           <div style="display:flex;gap:8px">
             <button onclick="crPreviewBozza('${e.id}')" style="padding:6px 14px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Preview</button>
-            <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva + Invia →</button>
+            <button onclick="crApprovaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Approva</button>
+            <button onclick="crInviaBozza('${e.id}','${e.num}')" style="padding:6px 14px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Invia →</button>
           </div>
         </div>
         <div id="bozza-preview-${e.id}" style="display:none;padding:16px;border-bottom:1px solid var(--rule)">
@@ -1477,20 +1478,15 @@ async function crSaveBozzaTitle(id){
 }
 
 async function crApprovaBozza(id, num){
-  const btn = document.querySelector(`[onclick="crApprovaBozza('${id}','${num}')"]`);
   const status = document.getElementById('bozza-status-'+id);
-  if(btn) { btn.disabled=true; btn.textContent='Approvazione...'; }
-
-  // Salva eventuali modifiche alle sezioni
+  const btns = document.querySelectorAll(`[onclick="crApprovaBozza('${id}','${num}')"]`);
+  btns.forEach(b=>{b.disabled=true;b.textContent='Approvazione...';});
   try {
-    // Recupera sezioni attuali
     const r = await fetch(SURL+'/rest/v1/editions?id=eq.'+id+'&select=sections',{
       headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
     });
     const rows = await r.json();
     const sections = rows[0]?.sections || [];
-
-    // Leggi modifiche dai campi editabili
     const updatedSections = sections.map((s,i)=>{
       const titleEl = document.getElementById('bozza-sec-'+id+'-'+i+'-title');
       const bodyEl = document.getElementById('bozza-sec-'+id+'-'+i+'-body');
@@ -1502,38 +1498,54 @@ async function crApprovaBozza(id, num){
         verdict: verdictEl ? verdictEl.innerText.replace(/^→\s*/,'').trim() : s.verdict
       };
     });
-
-    // Salva titolo aggiornato
     const titleEl = document.getElementById('bozza-title-'+id);
     const newTitle = titleEl ? titleEl.innerText.trim() : null;
-
-    // Pubblica
     await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
       method:'PATCH',
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
       body:JSON.stringify({published:true, sections:updatedSections, ...(newTitle?{title:newTitle}:{})})
     });
-
-    // Invia newsletter
-    const sendR = await fetch('/api/send-newsletter',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({edition_num:num})
-    });
-    const sendD = await sendR.json();
-
     if(status){
       status.style.display='block';
       status.style.background='var(--gpal)';
       status.style.color='var(--green)';
-      status.innerHTML = sendD.ok ? `✓ Pubblicata e inviata a ${sendD.sent} iscritti.` : '✓ Pubblicata. Errore invio: '+(sendD.error||'');
+      status.innerHTML='✓ Edizione #'+num+' approvata e pubblicata. Clicca "Invia" per mandarla agli iscritti.';
     }
-    if(btn){ btn.textContent='Approvata ✓'; }
-    crLoadBozze();
+    btns.forEach(b=>{b.disabled=false;b.textContent='Approvata ✓';});
     crLoadCtx();
   } catch(e) {
-    if(status){ status.style.display='block'; status.style.color='var(--red)'; status.innerHTML='Errore: '+e.message; }
-    if(btn){ btn.disabled=false; btn.textContent='Approva + Invia →'; }
+    if(status){status.style.display='block';status.style.color='var(--red)';status.innerHTML='Errore: '+e.message;}
+    btns.forEach(b=>{b.disabled=false;b.textContent='Approva';});
+  }
+}
+
+async function crInviaBozza(id, num){
+  const status = document.getElementById('bozza-status-'+id);
+  const btns = document.querySelectorAll(`[onclick="crInviaBozza('${id}','${num}')"]`);
+  btns.forEach(b=>{b.disabled=true;b.textContent='Invio...';});
+  try {
+    const r = await fetch('/api/send-newsletter',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({edition_num:num})
+    });
+    const d = await r.json();
+    if(status){
+      status.style.display='block';
+      if(r.ok&&d.ok){
+        status.style.background='var(--gpal)';
+        status.style.color='var(--green)';
+        status.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';
+      } else {
+        status.style.background='rgba(200,37,29,.06)';
+        status.style.color='var(--red)';
+        status.innerHTML='Errore invio: '+(d.error||r.status);
+      }
+    }
+    btns.forEach(b=>{b.disabled=false;b.textContent='Invia →';});
+  } catch(e) {
+    if(status){status.style.display='block';status.style.color='var(--red)';status.innerHTML='Errore: '+e.message;}
+    btns.forEach(b=>{b.disabled=false;b.textContent='Invia →';});
   }
 }
 
