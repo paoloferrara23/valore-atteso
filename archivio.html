@@ -72,6 +72,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--cream);border-bottom:1px 
 .kpi-table td:last-child{text-align:right;color:var(--ink2)}
 .art-verdict{font-family:var(--mn);font-size:10px;color:var(--red);letter-spacing:.04em;display:flex;align-items:center;gap:8px;margin-top:16px}
 .art-verdict::before{content:'→'}
+.art-sources{font-family:var(--mn);font-size:9px;color:#1B4332;letter-spacing:.04em;line-height:1.7;padding:10px 14px;background:#E4EDE7;border-left:2px solid #1B4332;margin-top:8px}
 
 /* FOOTER */
 footer{border-top:1px solid var(--rule);padding:28px 24px;margin-top:60px}
@@ -115,7 +116,15 @@ footer{border-top:1px solid var(--rule);padding:28px 24px;margin-top:60px}
 
   <!-- ARTICOLO SINGOLO -->
   <div class="article" id="article-wrap">
-    <a class="art-back" onclick="backToList()">Torna all'archivio</a>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;flex-wrap:wrap;gap:12px">
+      <a class="art-back" onclick="backToList()">Torna all'archivio</a>
+      <div id="art-edit-bar" style="display:none;gap:8px;align-items:center">
+        <button onclick="toggleEdit()" id="btn-edit" style="padding:6px 16px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">✎ Modifica</button>
+        <button onclick="saveEdit()" id="btn-save" style="display:none;padding:6px 16px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Salva modifiche</button>
+        <button onclick="cancelEdit()" id="btn-cancel" style="display:none;padding:6px 16px;border:1px solid var(--rule);background:#fff;font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:3px">Annulla</button>
+        <span id="edit-status" style="font-family:var(--mn);font-size:9px;color:var(--ink3)"></span>
+      </div>
+    </div>
     <div id="art-content"></div>
   </div>
 
@@ -135,6 +144,110 @@ footer{border-top:1px solid var(--rule);padding:28px 24px;margin-top:60px}
 <script>
 const SURL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
+
+const CR_PWD = 'valopro2025';
+let isAdmin = false;
+let currentEditionId = null;
+let currentEditionNum = null;
+let isEditing = false;
+
+function checkAdmin(){
+  isAdmin = localStorage.getItem('va_admin') === 'yes';
+  if(isAdmin) document.getElementById('art-edit-bar').style.display = 'flex';
+}
+
+function toggleEdit(){
+  isEditing = !isEditing;
+  document.getElementById('btn-edit').style.display = isEditing ? 'none' : 'block';
+  document.getElementById('btn-save').style.display = isEditing ? 'block' : 'none';
+  document.getElementById('btn-cancel').style.display = isEditing ? 'block' : 'none';
+
+  // Rendi editabili i campi
+  document.querySelectorAll('.edit-field').forEach(el => {
+    el.contentEditable = isEditing ? 'true' : 'false';
+    el.style.outline = isEditing ? '1px dashed var(--rule)' : 'none';
+    el.style.padding = isEditing ? '4px' : '';
+    el.style.background = isEditing ? '#fffde7' : '';
+  });
+
+  if(isEditing) document.getElementById('edit-status').textContent = 'Clicca sui testi per modificarli';
+}
+
+function cancelEdit(){
+  isEditing = false;
+  document.getElementById('btn-edit').style.display = 'block';
+  document.getElementById('btn-save').style.display = 'none';
+  document.getElementById('btn-cancel').style.display = 'none';
+  document.getElementById('edit-status').textContent = '';
+  // Ricarica originale
+  if(currentEditionNum) openArt(currentEditionNum);
+}
+
+async function saveEdit(){
+  const statusEl = document.getElementById('edit-status');
+  const btnSave = document.getElementById('btn-save');
+  btnSave.disabled = true;
+  btnSave.textContent = 'Salvataggio...';
+
+  try {
+    // Raccogli le modifiche
+    const titleEl = document.querySelector('.edit-title');
+    const subtitleEl = document.querySelector('.edit-subtitle');
+    const openerEl = document.querySelector('.edit-opener');
+    const secEls = document.querySelectorAll('.edit-sec');
+
+    const sections = Array.from(secEls).map((sec, i) => {
+      const label = sec.querySelector('.edit-label')?.innerText.trim() || '';
+      const title = sec.querySelector('.edit-sec-title')?.innerText.trim() || '';
+      const body = sec.querySelector('.edit-sec-body')?.innerText.trim() || '';
+      const verdict = sec.querySelector('.edit-verdict')?.innerText.replace(/^→\s*/,'').trim() || '';
+      const sourcesEl = sec.querySelector('.edit-sources');
+      const sources = sourcesEl ? sourcesEl.innerText.split('·').map(x=>x.replace(/^Fonti:\s*/,'').trim()).filter(Boolean) : [];
+      const kpiRows = sec.querySelectorAll('.edit-kpi-row');
+      const kpis = Array.from(kpiRows).map(row => ({
+        key: row.querySelector('.edit-kpi-key')?.innerText.trim() || '',
+        value: row.querySelector('.edit-kpi-val')?.innerText.trim() || ''
+      }));
+      return { label, title, body, verdict, sources, kpis };
+    });
+
+    const payload = {
+      title: titleEl?.innerText.trim() || '',
+      subtitle: subtitleEl?.innerText.trim() || '',
+      opener: openerEl?.innerText.trim() || '',
+      sections
+    };
+
+    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + currentEditionId, {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json', apikey:SKEY, Authorization:'Bearer '+SKEY},
+      body: JSON.stringify(payload)
+    });
+
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+
+    statusEl.textContent = '✓ Salvato';
+    statusEl.style.color = '#1B4332';
+    isEditing = false;
+    document.getElementById('btn-edit').style.display = 'block';
+    document.getElementById('btn-save').style.display = 'none';
+    document.getElementById('btn-cancel').style.display = 'none';
+    document.querySelectorAll('.edit-field').forEach(el => {
+      el.contentEditable = 'false';
+      el.style.outline = 'none';
+      el.style.padding = '';
+      el.style.background = '';
+    });
+    setTimeout(() => { statusEl.textContent = ''; }, 3000);
+
+  } catch(e) {
+    statusEl.textContent = 'Errore: ' + e.message;
+    statusEl.style.color = 'var(--red)';
+  } finally {
+    btnSave.disabled = false;
+    btnSave.textContent = 'Salva modifiche';
+  }
+}
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -169,33 +282,48 @@ async function openArt(num){
   document.getElementById('list-wrap').classList.add('hidden');
   document.getElementById('article-wrap').classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
+  currentEditionNum = num;
+  isEditing = false;
+  if(isAdmin){
+    document.getElementById('art-edit-bar').style.display = 'flex';
+    document.getElementById('btn-edit').style.display = 'block';
+    document.getElementById('btn-save').style.display = 'none';
+    document.getElementById('btn-cancel').style.display = 'none';
+    document.getElementById('edit-status').textContent = '';
+  }
   const el = document.getElementById('art-content');
   el.innerHTML = '<div class="arch-loading">Caricamento edizione...</div>';
   try {
     const eds = await sfetch('/rest/v1/editions?num=eq.'+num+'&published=eq.true&select=*');
     const e = eds&&eds[0];
     if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
+    currentEditionId = e.id;
     const secs = e.sections||[];
     el.innerHTML = `
       <div class="art-num">Edizione #${esc(e.num)}</div>
-      <h1 class="art-title">${esc(e.title)}</h1>
-      ${e.subtitle?`<p class="art-subtitle">${esc(e.subtitle)}</p>`:''}
+      <h1 class="art-title edit-field edit-title" contenteditable="false">${esc(e.title)}</h1>
+      ${e.subtitle?`<p class="art-subtitle edit-field edit-subtitle" contenteditable="false">${esc(e.subtitle)}</p>`:''}
       <div class="art-meta">
         <span>${esc(e.date)}</span>
-        ${(e.tags||[]).map(t=>`<span>${esc(t)}</span>`).join('')}
+        ${(e.tags||[]).map(t=>`<span>· ${esc(t)}</span>`).join('')}
       </div>
-      ${e.opener?`<div class="art-opener">${esc(e.opener)}</div>`:''}
+      ${e.opener?`<div class="art-opener edit-field edit-opener" contenteditable="false">${esc(e.opener)}</div>`:''}
       ${secs.map(s=>`
-        <div class="art-sec">
-          <div class="art-sec-tag">${esc(s.label)}</div>
-          <h2 class="art-sec-title">${esc(s.title)}</h2>
-          <div class="art-body">${esc(s.body||'')}</div>
+        <div class="art-sec edit-sec">
+          <div class="art-sec-tag edit-field edit-label" contenteditable="false">${esc(s.label)}</div>
+          <h2 class="art-sec-title edit-field edit-sec-title" contenteditable="false">${esc(s.title)}</h2>
+          <div class="art-body edit-field edit-sec-body" contenteditable="false" style="white-space:pre-line">${esc(s.body||'')}</div>
           ${s.kpis&&s.kpis.length?`
           <table class="kpi-table">
-            ${s.kpis.map(k=>`<tr><td>${esc(k.key)}</td><td>${esc(k.value)}</td></tr>`).join('')}
+            ${s.kpis.map(k=>`<tr class="edit-kpi-row"><td class="edit-field edit-kpi-key" contenteditable="false">${esc(k.key)}</td><td class="edit-field edit-kpi-val" contenteditable="false" style="text-align:right">${esc(k.value)}</td></tr>`).join('')}
           </table>`:''}
-          ${s.verdict?`<div class="art-verdict">${esc(s.verdict)}</div>`:''}
-        </div>`).join('')}`;
+          ${s.verdict?`<div class="art-verdict edit-field edit-verdict" contenteditable="false">${esc(s.verdict)}</div>`:''}
+          ${s.sources&&s.sources.length?`<div class="art-sources edit-field edit-sources" contenteditable="false">Fonti: ${s.sources.join(' · ')}</div>`:''}
+        </div>`).join('')}
+      <div class="art-cta">
+        <p>Ricevi ogni edizione il martedì mattina</p>
+        <a href="/" style="display:inline-block;padding:10px 24px;background:#C8251D;color:#fff;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-radius:3px">Iscriviti gratis →</a>
+      </div>`;
   } catch(e) {
     el.innerHTML = '<p>Errore nel caricamento.</p>';
   }
@@ -208,6 +336,30 @@ function backToList(){
 }
 
 loadList();
+
+// Admin login nascosto — premi Alt+A per attivare modifica
+document.addEventListener('keydown', function(e){
+  if(e.altKey && e.key === 'a'){
+    if(isAdmin){
+      isAdmin = false;
+      localStorage.removeItem('va_admin');
+      document.getElementById('art-edit-bar').style.display = 'none';
+      alert('Modalità admin disattivata.');
+    } else {
+      const pwd = prompt('Password admin:');
+      if(pwd === CR_PWD){
+        isAdmin = true;
+        localStorage.setItem('va_admin','yes');
+        document.getElementById('art-edit-bar').style.display = 'flex';
+        alert('Modalità admin attivata. Apri una newsletter per modificarla.');
+      } else if(pwd !== null) {
+        alert('Password errata.');
+      }
+    }
+  }
+});
+
+checkAdmin();
 </script>
 </body>
 </html>
