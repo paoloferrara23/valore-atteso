@@ -1564,10 +1564,6 @@ function crResetSteps(){crCurStep=0;for(let i=1;i<=5;i++){const s=document.getEl
 function crEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 async function crGenera(){
-  const apiKey=document.getElementById('cr-apikey').value.trim();
-  if(!apiKey||!apiKey.startsWith('sk-ant')){document.getElementById('cr-apikey').style.borderColor='rgba(181,34,26,.5)';document.getElementById('cr-apikey').focus();return;}
-  document.getElementById('cr-apikey').style.borderColor='';
-  localStorage.setItem('va_apikey',apiKey);
   const mode=document.querySelector('input[name="cr-mode"]:checked').value;
   const hint=document.getElementById('cr-hint-input').value.trim();
   const btn=document.getElementById('cr-gen-btn');const lbl=document.getElementById('cr-gen-label');
@@ -1577,13 +1573,31 @@ async function crGenera(){
   document.getElementById('cr-err-box').style.display='none';
   document.getElementById('cr-pub-status').style.display='none';
   crResetSteps();crSetStep(1);
+
+  // Calcola numero prossima edizione
+  let editionNum = '001';
+  let oggi = new Date().toLocaleDateString('it-IT');
+  try {
+    const edR = await fetch(SURL+'/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=num',{
+      headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}
+    });
+    const eds = await edR.json();
+    if(Array.isArray(eds)&&eds[0]) editionNum = String(parseInt(eds[0].num)+1).padStart(3,'0');
+  } catch(e){}
+
   const timers=[setTimeout(()=>crSetStep(2),4000),setTimeout(()=>crSetStep(3),9000),setTimeout(()=>crSetStep(4),15000),setTimeout(()=>crSetStep(5),22000)];
   try{
-    const res=await fetch(CR_EDGE,{method:'POST',headers:{'Content-Type':'application/json','x-anthropic-key':apiKey},body:JSON.stringify({mode,hint})});
+    const res=await fetch('/api/genera-edizione',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mode, hint, editionNum, oggi})
+    });
     timers.forEach(clearTimeout);crSetStep(6);
     const data=await res.json();
     if(!res.ok||data.error)throw new Error(data.error||'HTTP '+res.status);
-    crCurrentData=data;crRenderPreview(data);
+    crCurrentData=data.edition;
+    crCurrentData.edition_num=editionNum;
+    crRenderPreview(crCurrentData);
   }catch(err){
     timers.forEach(clearTimeout);
     document.getElementById('cr-prog-wrap').style.display='none';
@@ -1920,10 +1934,6 @@ async function crPubblica(){
           <div class="cr-side-row"><span>Lingua</span><span>Italiano</span></div>
           <div class="cr-side-row"><span>Lunghezza</span><span>~800 parole</span></div>
           <div class="cr-side-row"><span>Fact-check</span><span>Auto ✓</span></div>
-          <div class="cr-apikey-wrap">
-            <div class="cr-apikey-label"><span>Anthropic API Key</span><a href="https://console.anthropic.com/settings/keys" target="_blank">Ottieni →</a></div>
-            <input type="password" class="cr-apikey-input" id="cr-apikey" placeholder="sk-ant-api03-…" autocomplete="off">
-          </div>
           <button class="cr-btn-gen" id="cr-gen-btn" onclick="crGenera()"><span id="cr-gen-label">Genera edizione →</span></button>
         </div>
       </div>
