@@ -1853,6 +1853,27 @@ async function crPubblica(){
 }
 // ══════════════ BIBLIOTECA ══════════════
 
+let bibFileData = null;
+let bibFileName = '';
+
+function bibFileSelected(input){
+  const file = input.files[0];
+  if(!file) return;
+  bibFileName = file.name;
+  document.getElementById('bib-file-label').textContent = '📄 ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)';
+  document.getElementById('bib-file-label').style.color = 'var(--ink)';
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    bibFileData = e.target.result.split(',')[1]; // base64
+  };
+  reader.readAsDataURL(file);
+
+  // Auto-fill nome if empty
+  const nomeEl = document.getElementById('bib-nome');
+  if(!nomeEl.value) nomeEl.value = file.name.replace(/\.[^.]+$/, '');
+}
+
 async function bibLoad(){
   const el = document.getElementById('bib-list');
   if(!el) return;
@@ -1892,16 +1913,13 @@ async function bibLoad(){
 
 async function bibUpload(){
   const nome = document.getElementById('bib-nome').value.trim();
-  const testo = document.getElementById('bib-testo').value.trim();
-  if(!nome||!testo){
-    document.getElementById('bib-status').textContent='Nome e testo sono obbligatori.';
-    document.getElementById('bib-status').style.color='var(--red)';
-    return;
-  }
+  if(!nome){ document.getElementById('bib-status').textContent='Nome obbligatorio.'; document.getElementById('bib-status').style.color='var(--red)'; return; }
+  if(!bibFileData){ document.getElementById('bib-status').textContent='Seleziona un file.'; document.getElementById('bib-status').style.color='var(--red)'; return; }
+
   const btn = document.getElementById('bib-btn');
   const status = document.getElementById('bib-status');
   btn.disabled=true; btn.textContent='Analisi in corso...';
-  status.textContent='Claude sta estraendo i dati chiave...';
+  status.textContent='Claude sta leggendo il documento ed estraendo i dati CF...';
   status.style.color='var(--ink3)';
 
   try {
@@ -1914,21 +1932,25 @@ async function bibUpload(){
         soggetto: document.getElementById('bib-soggetto').value.trim(),
         stagione: document.getElementById('bib-stagione').value.trim(),
         url: document.getElementById('bib-url').value.trim(),
-        testo_base64: btoa(unescape(encodeURIComponent(testo)))
+        filename: bibFileName,
+        testo_base64: bibFileData
       })
     });
     const d = await r.json();
     if(!r.ok||d.error) throw new Error(d.error||'Errore upload');
 
-    status.textContent='✓ Documento caricato e analizzato.';
+    status.textContent='✓ Documento caricato. KPI estratti: '+(d.kpi_count||0);
     status.style.color='var(--green)';
 
-    // Reset form
+    // Reset
     document.getElementById('bib-nome').value='';
-    document.getElementById('bib-testo').value='';
     document.getElementById('bib-soggetto').value='';
     document.getElementById('bib-stagione').value='';
     document.getElementById('bib-url').value='';
+    document.getElementById('bib-file').value='';
+    document.getElementById('bib-file-label').textContent='Clicca per selezionare un PDF';
+    document.getElementById('bib-file-label').style.color='var(--ink3)';
+    bibFileData = null; bibFileName = '';
 
     await bibLoad();
   } catch(e){
@@ -2252,8 +2274,12 @@ async function bibDelete(id){
           <input type="text" id="bib-url" placeholder="https://..." style="width:100%;height:34px;border:1px solid var(--rule);background:var(--cream);padding:0 10px;font-family:var(--sf);font-size:12px;color:var(--ink);outline:none;border-radius:3px">
         </div>
         <div style="margin-bottom:14px">
-          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px">Testo / dati chiave da estrarre *</div>
-          <textarea id="bib-testo" rows="6" placeholder="Incolla qui il testo del documento o i dati chiave. Claude estrarrà automaticamente KPI finanziari, ricavi, debiti, multipli..." style="width:100%;border:1px solid var(--rule);background:var(--cream);padding:8px 10px;font-family:var(--sf);font-size:12px;color:var(--ink);outline:none;border-radius:3px;resize:vertical;line-height:1.6"></textarea>
+          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px">Carica PDF *</div>
+          <div style="border:2px dashed var(--rule);border-radius:6px;padding:20px;text-align:center;background:var(--cream);cursor:pointer" onclick="document.getElementById('bib-file').click()">
+            <div id="bib-file-label" style="font-family:var(--sf);font-size:13px;color:var(--ink3)">Clicca per selezionare un PDF</div>
+            <div style="font-family:var(--mn);font-size:9px;color:var(--ink3);margin-top:4px">Max 10MB · PDF, DOC, TXT</div>
+          </div>
+          <input type="file" id="bib-file" accept=".pdf,.txt,.doc,.docx" style="display:none" onchange="bibFileSelected(this)">
         </div>
         <div style="display:flex;gap:10px;align-items:center">
           <button onclick="bibUpload()" id="bib-btn" style="height:36px;padding:0 20px;background:var(--ink);color:#fff;border:none;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:3px">Carica e analizza →</button>
