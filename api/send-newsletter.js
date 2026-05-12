@@ -64,8 +64,7 @@ module.exports = async function handler(req, res) {
             <tr>
               <td style="padding:6px 24px 12px;background:#F5F2EB;border-bottom:1px solid #D0CBC0">
                 <h2 style="font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:-.3px;line-height:1.25;color:#1A1A1A;margin:0 0 10px">${s.title}</h2>
-                <p style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.8;margin:0">${(s.body || '').replace(/
-/g, '<br>')}</p>
+                <p style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.8;margin:0">${(s.body || '').split('\n').join('<br>')}</p>
               </td>
             </tr>
             ${s.kpis?.length ? `
