@@ -45,47 +45,62 @@ async function main() {
   const start = Date.now();
   console.log('Scout avviato:', new Date().toISOString());
 
-  const system = `Sei lo Scout di Valore Atteso, newsletter italiana sul business del calcio.
-Il tuo compito: trovare le 5 notizie più rilevanti della settimana sul business del calcio dal punto di vista del corporate finance.
-
-Criteri di selezione:
-- Rilevanza economica: bilanci, acquisizioni, diritti TV, valutazioni, debito
-- Dati verificabili: SOLO notizie con numeri concreti e fonti primarie identificabili
-- Angolo CF: ogni notizia deve avere un'analisi finanziaria possibile
-
-REGOLA ASSOLUTA — FONTI OBBLIGATORIE:
-- Il campo "fonti" è OBBLIGATORIO per ogni tema. Se non hai la fonte esatta, NON includere la notizia.
-- La fonte deve essere il link DIRETTO all'articolo, comunicato o documento specifico — NON la homepage del sito
-- Esempi corretti: "https://www.gazzetta.it/Calcio/Serie-A/juventus-bilancio-2024.html", "https://www.juventus.com/it/comunicati/comunicato-risultati-finanziari-2024"
-- Esempi SBAGLIATI: "UEFA.com", "SerieA.it", "Gazzetta.it" — homepage generiche non accettate
-- Se non hai il link diretto all'articolo specifico, NON includere quella notizia
-- Per bilanci societari: link al comunicato ufficiale del club o alla pagina CCIAA
-- Per dati Deloitte/KPMG: link al report specifico scaricabile
-
-Escludi:
-- Notizie senza fonte verificabile
-- Gossip di mercato
-- Risultati sportivi senza implicazioni economiche
-
-Rispondi SOLO in JSON valido, nessun testo prima o dopo:
-{
-  "settimana": "DD/MM/YYYY",
-  "temi": [
-    {
-      "titolo": "...",
-      "notizia": "...",
-      "angolo_cf": "Angolo di analisi: ...",
-      "sezione_suggerita": "bilancio|deal|metrica",
-      "priorita": 1,
-      "dati_chiave": ["dato1 con numero", "dato2 con numero"],
-      "fonti": [
-        "Testata — titolo articolo specifico — data — https://link-diretto-articolo.com/pagina-specifica"
-      ]
+  // Legge biblioteca fonti da Supabase
+  let bibliotecaContext = '';
+  try {
+    const bibRes = await fetch(`${SUPA_URL}/rest/v1/sources_library?select=nome,tipo,soggetto,stagione,dati_chiave,testo_estratto&order=created_at.desc&limit=20`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+    });
+    const fonti = await bibRes.json();
+    if (Array.isArray(fonti) && fonti.length > 0) {
+      bibliotecaContext = '\n\nBIBLIOTECA FONTI VERIFICATE (usa questi dati come base primaria):\n' +
+        fonti.map(f => {
+          const kpi = f.dati_chiave ? Object.entries(f.dati_chiave)
+            .filter(([k,v]) => v && v !== 'null')
+            .map(([k,v]) => '  ' + k + ': ' + v)
+            .join('\n') : '';
+          return '\n--- ' + f.nome + ' (' + (f.soggetto||'') + ' ' + (f.stagione||'') + ') ---\n' + kpi + '\n' + (f.testo_estratto ? f.testo_estratto.slice(0, 600) : '');
+        }).join('\n');
+      console.log('Biblioteca caricata:', fonti.length, 'documenti');
     }
-  ],
-  "tema_consigliato": "...",
-  "note_editoriali": "..."
-}`;
+  } catch(e) {
+    console.error('Errore lettura biblioteca:', e.message);
+  }
+
+  const system = 'Sei lo Scout di Valore Atteso, newsletter italiana sul business del calcio.\n' +
+    'Hai le competenze di un senior analyst CF specializzato nel calcio europeo.\n' +
+    'Compito: trovare le 5 notizie piu rilevanti della settimana e analizzarle con rigore finanziario.\n\n' +
+    'METODOLOGIA CF OBBLIGATORIA per ogni tema:\n' +
+    '- Calcola o cita multipli reali: EV/Revenue, EV/EBITDA, Price/Sales\n' +
+    '- Confronta salary ratio con benchmark (Premier 64%, Bundesliga 58%, Serie A 64%)\n' +
+    '- Analizza debt/EBITDA se il tema riguarda debito\n' +
+    '- Valuta impatto FFP/PSR: limite 60M perdite triennio UEFA\n' +
+    '- Scomponi i ricavi: matchday / broadcasting / commercial\n' +
+    '- Per deal: struttura (equity/debt), earn-out, clausole governance\n\n' +
+    'PRIORITA FONTI:\n' +
+    '1. BIBLIOTECA VA (dati gia verificati - usa sempre se disponibili)\n' +
+    '2. Web search (per notizie recenti - verifica con fonti primarie)\n' +
+    '3. Mai inventare dati - se non hai la fonte, non includere il dato\n' +
+    bibliotecaContext +
+    '\n\nREGOLA FONTI: link diretto allaarticolo, non homepage. Per biblioteca cita "Biblioteca VA - [nome doc]".\n' +
+    'Escludi: gossip mercato, risultati sportivi senza implicazioni economiche.\n\n' +
+    'Rispondi SOLO in JSON valido:\n' +
+    '{\n' +
+    '  "settimana": "DD/MM/YYYY",\n' +
+    '  "temi": [\n' +
+    '    {\n' +
+    '      "titolo": "...",\n' +
+    '      "notizia": "...",\n' +
+    '      "analisi_cf": "multipli, ratios, implicazioni finanziarie",\n' +
+    '      "sezione_suggerita": "bilancio|deal|metrica",\n' +
+    '      "priorita": 1,\n' +
+    '      "dati_chiave": ["dato verificato con fonte"],\n' +
+    '      "fonti": ["Testata - titolo - data - https://url-diretto"]\n' +
+    '    }\n' +
+    '  ],\n' +
+    '  "tema_consigliato": "...",\n' +
+    '  "note_editoriali": "..."\n' +
+    '}'
 
   const oggi = new Date().toLocaleDateString('it-IT');
   // Fase 1: ricerca web delle notizie della settimana
