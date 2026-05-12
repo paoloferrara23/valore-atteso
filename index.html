@@ -179,23 +179,82 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 .footer-links a{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .footer-links a:hover{color:var(--ink)}
 
+/* MOBILE */
 @media(max-width:920px){
   body{font-size:16px}
-  .nav-links{display:none}.ham{display:flex}
-  .hero{grid-template-columns:1fr;padding:42px 20px 42px;gap:28px;min-height:auto}
-  .hero h1{letter-spacing:-1.7px}
-  .hero-sub{font-size:17px}
-  .preview-card{max-width:560px}
-  .signup-row{flex-direction:column}.submit{width:100%}
-  .section{padding:64px 20px}.featured-head{display:block}.featured-head .lead{margin-top:10px}
+  .nav{height:58px;padding:0 18px}
+  .logo{font-size:1.55rem;letter-spacing:-.9px}
+  .nav-links{display:none}
+  .ham{display:flex}
+  .mobile-menu{top:58px}
+
+  .hero{display:block;padding:34px 18px 30px;min-height:auto}
+  .hero-kicker{font-size:9px;margin-bottom:12px}
+  .hero h1{font-size:clamp(2.35rem,11vw,3.45rem);line-height:1.02;letter-spacing:-1.6px;margin-bottom:14px}
+  .hero-sub{font-size:16.5px;line-height:1.55;margin-bottom:14px}
+  .signup-card{padding:14px;border-radius:18px;margin-bottom:12px;box-shadow:none}
+  .signup-row{flex-direction:column;gap:9px}
+  .email,.submit{width:100%;height:46px}
+  .check{font-size:8.5px;line-height:1.5}
+  .btn-row{margin-bottom:12px}
+  .btn{width:100%;height:42px}
+  .hero-proof{gap:8px 12px;font-size:9px;margin-top:12px}
+  .credibility{font-size:8px;line-height:1.5;margin-top:10px}
+  .preview-card{margin-top:24px;border-radius:22px;padding:18px;box-shadow:none}
+  .preview-logo{font-size:21px}
+  .preview-title{font-size:23px;line-height:1.12}
+  .preview-text{font-size:14px}
+  .mini-chart{display:none}
+
+  .strip-in{padding:14px 18px;gap:10px;justify-content:flex-start}
+  .pillar{width:calc(50% - 5px);font-size:9px}
+
+  .section{padding:54px 18px}
+  .featured-head{display:block;text-align:left;margin-bottom:28px}
+  .featured-head .lead{margin-top:10px}
+  .h2{font-size:clamp(2rem,9vw,3rem);letter-spacing:-1.1px}
+  .lead{font-size:16.5px;line-height:1.65;margin:0;max-width:none}
   .featured-grid,.who-grid,.manifesto-grid,.editorial-layout{grid-template-columns:1fr}
-  .manifesto-grid{padding:66px 20px;gap:24px}.editorial-main{padding:26px}.editorial-row{grid-template-columns:42px 1fr;gap:12px}.editorial-row em{grid-column:2}.manifesto-list{grid-template-columns:1fr}
-  .strip-in{justify-content:flex-start}.pillar{width:calc(50% - 7px)}
-  .footer{display:block}.footer-links{margin-top:14px}
+  .editorial-main{padding:24px;border-radius:20px;min-height:auto}
+  .editorial-main h3{font-size:31px}
+  .editorial-main p{font-size:16px;line-height:1.65}
+  .editorial-row{grid-template-columns:38px 1fr;gap:10px;padding:20px 0}
+  .editorial-row strong{font-size:22px}
+  .editorial-row em{grid-column:2;font-size:15px}
+
+  .manifesto-grid{padding:58px 18px;gap:24px}
+  .manifesto-quote{font-size:clamp(2rem,8vw,3rem);letter-spacing:-1.1px}
+  .manifesto-copy p{font-size:16.5px;line-height:1.65}
+  .manifesto-list{grid-template-columns:1fr}
+
+  .compact-section{padding-top:46px;padding-bottom:38px}
+  .clean-head{display:block;text-align:left;padding:28px 0 32px}
+  .why-lead{margin:0;font-size:16px;line-height:1.7;max-width:none}
+
+  .who-card{padding:22px;border-radius:20px}
+  .who-card h3{font-size:24px}
+  .who-card li{font-size:15.5px}
+
+  .final-inner{padding:62px 18px}
+  .final-inner h2{font-size:clamp(2.3rem,10vw,3.6rem);letter-spacing:-1.5px}
+  .final-inner p{font-size:17px}
+  .final-signup{padding:14px;border-radius:20px}
+
+  .footer{display:block;padding:24px 18px}
+  .footer-logo{font-size:1.45rem}
+  .footer-links{margin-top:14px;gap:14px}
 }
+
 @media(max-width:520px){
-  .hero h1{font-size:3rem}.preview-title{font-size:25px}.pillar{width:100%}
-  .btn-row{display:grid;grid-template-columns:1fr}.btn{width:100%}
+  .hero{padding-top:28px}
+  .hero h1{font-size:2.8rem}
+  .preview-card{display:none}
+  .pillar{width:100%}
+  .article-visual{height:118px}
+  .article-visual .num{font-size:42px}
+  .article-body{padding:18px}
+  .article-body h3{font-size:21px}
+  .final-signup .signup-row{flex-direction:column}
 }
 </style>
 </head>
