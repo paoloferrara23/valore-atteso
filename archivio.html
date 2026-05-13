@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archivio — Valore Atteso</title>
-<meta name="description" content="Archivio Valore Atteso — tutte le edizioni della newsletter sul business del calcio europeo.">
+<meta name="description" content="Archivio Valore Atteso — tutte le edizioni della newsletter sul business del calcio globale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -29,32 +29,32 @@
   --max:1120px;
 }
 html{scroll-behavior:smooth}
-body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.58;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 
-/* NAV */
+/* NAV — allineata homepage */
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--dp);font-size:21px;font-weight:900;letter-spacing:-.7px;color:var(--ink);text-decoration:none}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-a{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s}
+.nav-logo{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1.4px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
+.nav-links{display:flex;gap:28px;align-items:center;min-width:0}
+.nav-a{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
 .nav-a:hover,.nav-a.active{color:var(--ink)}
-.nav-cta{height:38px;padding:0 18px;border:1px solid var(--deepgold);background:var(--deepgold);color:var(--cream);font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s;text-decoration:none}
-.nav-cta:hover{background:transparent;color:var(--deepgold)}
+.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s;text-decoration:none}
+.nav-cta:hover{background:transparent;color:var(--ink)}
 
 /* LAYOUT */
-.container{max-width:var(--max);margin:0 auto;padding:76px 24px 90px}
+.container{max-width:var(--max);margin:0 auto;padding:72px 24px 88px}
 .ed-list-wrap{display:block}.ed-list-wrap.hidden{display:none}
 .article{display:none}.article.on{display:block}
 
 /* HERO ARCHIVIO */
-.archive-hero{max-width:760px;margin:0 auto 54px;padding-top:6px}
-.page-label{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:18px;font-weight:500}
+.archive-hero{max-width:760px;margin:0 auto 48px;padding-top:4px}
+.page-label{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;font-weight:600}
 .page-label::before{content:'';width:28px;height:1px;background:var(--deepgold)}
-.page-title{font-family:var(--dp);font-size:clamp(3rem,6.5vw,4.7rem);font-weight:900;letter-spacing:-2.6px;line-height:.98;margin-bottom:18px;color:var(--ink)}
+.page-title{font-family:var(--dp);font-size:clamp(2.35rem,5.2vw,3.85rem);font-weight:700;letter-spacing:-1.7px;line-height:1.02;margin-bottom:18px;color:var(--ink)}
 .page-title span{display:none}
-.page-desc{font-family:var(--sf);font-size:18px;color:var(--ink2);font-weight:300;line-height:1.72;padding:24px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);max-width:100%}
+.page-desc{font-family:var(--sf);font-size:18px;color:var(--ink2);font-weight:300;line-height:1.78;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);max-width:100%}
 .archive-side{display:none}
 .archive-side-title,.archive-side p,.archive-points,.archive-point{display:none}
 
@@ -81,7 +81,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-back::before{content:'←'}
 .art-back:hover{color:var(--ink)}
 .art-num{font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:500;margin-bottom:10px}
-.art-title{font-family:var(--dp);font-size:clamp(2.2rem,4.8vw,4.4rem);font-weight:900;letter-spacing:-1.8px;line-height:.98;margin-bottom:16px;color:var(--ink)}
+.art-title{font-family:var(--dp);font-size:clamp(2.15rem,4.4vw,3.8rem);font-weight:700;letter-spacing:-1.5px;line-height:1.02;margin-bottom:16px;color:var(--ink)}
 .art-subtitle{font-family:var(--sf);font-size:20px;color:var(--ink2);font-weight:300;line-height:1.55;margin-bottom:18px}
 .art-meta{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--rule);border-bottom:2px solid var(--ink);margin-bottom:32px;font-family:var(--mn);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-wrap:wrap}
 .art-opener{font-family:var(--sf);font-size:20px;color:var(--ink2);font-weight:300;line-height:1.7;font-style:italic;padding:24px;background:var(--cream2);border-left:3px solid var(--deepgold);border-radius:0 18px 18px 0;margin-bottom:42px}
@@ -101,7 +101,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-verdict::before{content:'→'}
 .art-sources{font-family:var(--mn);font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.65;padding:11px 13px;background:#E4EDE7;border-left:3px solid var(--green);border-radius:0 10px 10px 0;margin-top:14px}
 .art-cta{margin-top:44px;padding:28px;border:1px solid var(--rule);background:rgba(255,253,248,.45);border-radius:24px;text-align:center}
-.art-cta p{font-family:var(--dp);font-size:28px;font-weight:900;letter-spacing:-.8px;margin-bottom:16px;color:var(--ink)}
+.art-cta p{font-family:var(--dp);font-size:28px;font-weight:700;letter-spacing:-.8px;margin-bottom:16px;color:var(--ink)}
 .art-cta a{display:inline-flex!important;align-items:center;justify-content:center;height:44px;padding:0 22px!important;background:var(--ink)!important;color:var(--cream)!important;border-radius:999px!important;font-family:var(--mn)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important}
 
 /* ADMIN BAR */
@@ -117,19 +117,28 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 .footer-links a:hover{color:var(--ink)}
 
 @media(max-width:920px){
-  .nav-links .nav-a:not(.active){display:none}
-  .container{padding:58px 20px 70px}
-  .archive-hero{max-width:760px;margin-bottom:44px}
-  .page-title{font-size:clamp(2.8rem,11vw,4.3rem);letter-spacing:-2.4px}
+  .nav{height:64px;padding:0 20px;gap:14px}
+  .nav-logo{font-size:1.55rem;letter-spacing:-.9px;max-width:none;white-space:nowrap}
+  .nav-links{gap:14px}
+  .nav-links .nav-a{display:none}
+  .nav-cta{height:36px;padding:0 14px;font-size:9px;letter-spacing:.1em;background:var(--ink);border-color:var(--ink);color:var(--cream)}
+  .container{padding:52px 20px 70px}
+  .archive-hero{max-width:760px;margin-bottom:42px}
+  .page-title{font-size:clamp(2.35rem,9.5vw,3.35rem);letter-spacing:-1.4px;line-height:1.04;font-weight:700}
+  .page-desc{font-size:17px;line-height:1.7;padding:20px 0}
   .ed-list{max-width:760px}
-  .ed-row{grid-template-columns:70px 1fr 120px;gap:18px}
+  .ed-row{grid-template-columns:70px 1fr 110px;gap:18px}
 }
 @media(max-width:620px){
   body{font-size:16px}
-  .nav{padding:0 20px}
+  .nav{padding:0 18px}
+  .nav-logo{font-size:1.45rem;letter-spacing:-.8px}
+  .nav-cta{height:34px;padding:0 12px;font-size:8.5px;letter-spacing:.08em}
+  .page-label{font-size:8px;margin-bottom:14px}
+  .page-title{font-size:clamp(2.25rem,10vw,3rem);letter-spacing:-1.2px;margin-bottom:14px}
   .ed-row{grid-template-columns:1fr;gap:8px;padding:26px 0}
   .ed-date{text-align:left;padding-top:0}
-  .art-title{letter-spacing:-1.3px}
+  .art-title{letter-spacing:-1.1px;font-size:clamp(2rem,9vw,3rem)}
   .art-body{font-size:17px}
   .article-top{align-items:flex-start}
   .footer-inner{display:block}
@@ -159,7 +168,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
       <div>
         <div class="page-label">Tutte le edizioni</div>
         <h1 class="page-title">Archivio.</h1>
-        <p class="page-desc">Ogni martedì un bilancio, un deal e una metrica del business del calcio europeo. Dati verificati, nessun filler.</p>
+        <p class="page-desc">Ogni martedì un bilancio, un deal e una metrica del business del calcio globale. Dati verificati, nessun filler.</p>
       </div>
     </div>
     <div class="ed-list" id="arch-list">
@@ -188,7 +197,10 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
     <div class="footer-links">
       <a href="/">Home</a>
       <a href="/glossario.html">Glossario</a>
+      <a href="/about.html">Chi siamo</a>
       <a href="/privacy.html">Privacy</a>
+      <a href="/cookie-policy.html">Cookie</a>
+      <a href="/disclaimer.html">Disclaimer</a>
       <a href="mailto:info@valoreatteso.com">Contatti</a>
     </div>
   </div>
