@@ -571,8 +571,8 @@ async function openArt(num){
         bodyCol.appendChild(vEl);
       }
 
-      // sources
-      const srcData = s.sources || (s.fonte ? [s.fonte] : []);
+      // sources + fonte
+      const srcData = s.sources?.length ? s.sources : (s.fonte ? [s.fonte] : []);
       if(srcData.length){
         const srcEl = document.createElement('div');
         srcEl.className = 'art-sources edit-field edit-sources';
@@ -681,14 +681,6 @@ async function openArt(num){
           insText.textContent = txt(s.insight.text || '');
           insEl.appendChild(insLabel); insEl.appendChild(insText);
           rightCol.appendChild(insEl);
-        }
-
-        // Fonte box (se non già in sources)
-        if(s.fonte && !srcData.length){
-          const fonteEl = document.createElement('div');
-          fonteEl.className = 'art-fonte-box';
-          fonteEl.textContent = txt(s.fonte);
-          rightCol.appendChild(fonteEl);
         }
 
         grid.appendChild(rightCol);
