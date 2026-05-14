@@ -331,8 +331,8 @@ async function loadList(){
       <div class="ed-row" onclick="openArt('${esc(e.num)}')">
         <div class="ed-num">#${esc(e.num)}</div>
         <div>
-          <div class="ed-title">${esc(decodeHtml(e.title))}</div>
-          <div class="ed-tags">${(e.tags||[]).map(t=>'<span class="ed-tag">'+esc(decodeHtml(t))+'</span>').join('')}</div>
+          <div class="ed-title">${decodeHtml(e.title)}</div>
+          <div class="ed-tags">${(e.tags||[]).map(t=>'<span class="ed-tag">'+decodeHtml(t)+'</span>').join('')}</div>
         </div>
         <div class="ed-date">${esc(e.date)}</div>
       </div>`).join('');
@@ -364,24 +364,24 @@ async function openArt(num){
     const secs = e.sections||[];
     el.innerHTML = `
       <div class="art-num">Edizione #${esc(e.num)}</div>
-      <h1 class="art-title edit-field edit-title" contenteditable="false">${esc(decodeHtml(e.title))}</h1>
-      ${e.subtitle?`<p class="art-subtitle edit-field edit-subtitle" contenteditable="false">${esc(decodeHtml(e.subtitle))}</p>`:''}
+      <h1 class="art-title edit-field edit-title" contenteditable="false">${decodeHtml(e.title)}</h1>
+      ${e.subtitle?`<p class="art-subtitle edit-field edit-subtitle" contenteditable="false">${decodeHtml(e.subtitle)}</p>`:''}
       <div class="art-meta">
         <span>${esc(e.date)}</span>
-        ${(e.tags||[]).map(t=>`<span>· ${esc(decodeHtml(t))}</span>`).join('')}
+        ${(e.tags||[]).map(t=>`<span>· ${decodeHtml(t)}</span>`).join('')}
       </div>
-      ${e.opener?`<div class="art-opener edit-field edit-opener" contenteditable="false">${esc(decodeHtml(e.opener))}</div>`:''}
+      ${e.opener?`<div class="art-opener edit-field edit-opener" contenteditable="false">${decodeHtml(e.opener)}</div>`:''}
       ${secs.map(s=>`
         <div class="art-sec edit-sec">
-          <div class="art-sec-tag edit-field edit-label" contenteditable="false">${esc(decodeHtml(s.label))}</div>
-          <h2 class="art-sec-title edit-field edit-sec-title" contenteditable="false">${esc(decodeHtml(s.title))}</h2>
-          <div class="art-body edit-field edit-sec-body" contenteditable="false" style="white-space:pre-line">${esc(decodeHtml(s.body||''))}</div>
+          <div class="art-sec-tag edit-field edit-label" contenteditable="false">${decodeHtml(s.label)}</div>
+          <h2 class="art-sec-title edit-field edit-sec-title" contenteditable="false">${decodeHtml(s.title)}</h2>
+          <div class="art-body edit-field edit-sec-body" contenteditable="false" style="white-space:pre-line">${decodeHtml(s.body||'')}</div>
           ${s.kpis&&s.kpis.length?`
           <table class="kpi-table">
-            ${s.kpis.map(k=>`<tr class="edit-kpi-row"><td class="edit-field edit-kpi-key" contenteditable="false">${esc(decodeHtml(k.key))}</td><td class="edit-field edit-kpi-val" contenteditable="false" style="text-align:right">${esc(decodeHtml(k.value))}</td></tr>`).join('')}
+            ${s.kpis.map(k=>`<tr class="edit-kpi-row"><td class="edit-field edit-kpi-key" contenteditable="false">${decodeHtml(k.key)}</td><td class="edit-field edit-kpi-val" contenteditable="false" style="text-align:right">${decodeHtml(k.value)}</td></tr>`).join('')}
           </table>`:''}
-          ${s.verdict?`<div class="art-verdict edit-field edit-verdict" contenteditable="false">${esc(decodeHtml(s.verdict))}</div>`:''}
-          ${s.sources&&s.sources.length?`<div class="art-sources edit-field edit-sources" contenteditable="false">Fonti: ${s.sources.map(src=>esc(decodeHtml(src))).join(' · ')}</div>`:''}
+          ${s.verdict?`<div class="art-verdict edit-field edit-verdict" contenteditable="false">${decodeHtml(s.verdict)}</div>`:''}
+          ${s.sources&&s.sources.length?`<div class="art-sources edit-field edit-sources" contenteditable="false">Fonti: ${s.sources.map(src=>decodeHtml(src)).join(' · ')}</div>`:''}
         </div>`).join('')}
       <div class="art-cta">
         <p>Ricevi ogni edizione il martedì mattina</p>
