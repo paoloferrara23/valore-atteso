@@ -311,7 +311,8 @@ async function saveEdit(){
   }
 }
 
-function decodeHtml(s){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
+function decodeHtml(s){const t=document.createElement('textarea');t.innerHTML=String(s||'');return t.value}
+function txt(s){return decodeHtml(String(s||''))}
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 async function sfetch(url){
@@ -327,15 +328,40 @@ async function loadList(){
       el.innerHTML = '<div class="arch-empty">Prima edizione in arrivo martedì.<br>Iscriviti per non perderla.</div>';
       return;
     }
-    el.innerHTML = eds.map(e => `
-      <div class="ed-row" onclick="openArt('${esc(e.num)}')">
-        <div class="ed-num">#${esc(e.num)}</div>
-        <div>
-          <div class="ed-title">${decodeHtml(e.title)}</div>
-          <div class="ed-tags">${(e.tags||[]).map(t=>'<span class="ed-tag">'+decodeHtml(t)+'</span>').join('')}</div>
-        </div>
-        <div class="ed-date">${esc(e.date)}</div>
-      </div>`).join('');
+    el.innerHTML = '';
+    eds.forEach(e => {
+      const row = document.createElement('div');
+      row.className = 'ed-row';
+      row.onclick = () => openArt(e.num);
+
+      const numEl = document.createElement('div');
+      numEl.className = 'ed-num';
+      numEl.textContent = '#' + e.num;
+
+      const mid = document.createElement('div');
+      const titleEl = document.createElement('div');
+      titleEl.className = 'ed-title';
+      titleEl.textContent = txt(e.title);
+      const tagsEl = document.createElement('div');
+      tagsEl.className = 'ed-tags';
+      (e.tags||[]).forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'ed-tag';
+        span.textContent = txt(t);
+        tagsEl.appendChild(span);
+      });
+      mid.appendChild(titleEl);
+      mid.appendChild(tagsEl);
+
+      const dateEl = document.createElement('div');
+      dateEl.className = 'ed-date';
+      dateEl.textContent = e.date;
+
+      row.appendChild(numEl);
+      row.appendChild(mid);
+      row.appendChild(dateEl);
+      el.appendChild(row);
+    });
   } catch(e) {
     el.innerHTML = '<div class="arch-empty">Errore nel caricamento. Riprova.</div>';
   }
@@ -362,31 +388,127 @@ async function openArt(num){
     if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
     currentEditionId = e.id;
     const secs = e.sections||[];
-    el.innerHTML = `
-      <div class="art-num">Edizione #${esc(e.num)}</div>
-      <h1 class="art-title edit-field edit-title" contenteditable="false">${decodeHtml(e.title)}</h1>
-      ${e.subtitle?`<p class="art-subtitle edit-field edit-subtitle" contenteditable="false">${decodeHtml(e.subtitle)}</p>`:''}
-      <div class="art-meta">
-        <span>${esc(e.date)}</span>
-        ${(e.tags||[]).map(t=>`<span>· ${decodeHtml(t)}</span>`).join('')}
-      </div>
-      ${e.opener?`<div class="art-opener edit-field edit-opener" contenteditable="false">${decodeHtml(e.opener)}</div>`:''}
-      ${secs.map(s=>`
-        <div class="art-sec edit-sec">
-          <div class="art-sec-tag edit-field edit-label" contenteditable="false">${decodeHtml(s.label)}</div>
-          <h2 class="art-sec-title edit-field edit-sec-title" contenteditable="false">${decodeHtml(s.title)}</h2>
-          <div class="art-body edit-field edit-sec-body" contenteditable="false" style="white-space:pre-line">${decodeHtml(s.body||'')}</div>
-          ${s.kpis&&s.kpis.length?`
-          <table class="kpi-table">
-            ${s.kpis.map(k=>`<tr class="edit-kpi-row"><td class="edit-field edit-kpi-key" contenteditable="false">${decodeHtml(k.key)}</td><td class="edit-field edit-kpi-val" contenteditable="false" style="text-align:right">${decodeHtml(k.value)}</td></tr>`).join('')}
-          </table>`:''}
-          ${s.verdict?`<div class="art-verdict edit-field edit-verdict" contenteditable="false">${decodeHtml(s.verdict)}</div>`:''}
-          ${s.sources&&s.sources.length?`<div class="art-sources edit-field edit-sources" contenteditable="false">Fonti: ${s.sources.map(src=>decodeHtml(src)).join(' · ')}</div>`:''}
-        </div>`).join('')}
-      <div class="art-cta">
-        <p>Ricevi ogni edizione il martedì mattina</p>
-        <a href="/">Iscriviti gratis →</a>
-      </div>`;
+    el.innerHTML = '';
+
+    // num
+    const numEl = document.createElement('div');
+    numEl.className = 'art-num';
+    numEl.textContent = 'Edizione #' + e.num;
+    el.appendChild(numEl);
+
+    // title
+    const titleEl = document.createElement('h1');
+    titleEl.className = 'art-title edit-field edit-title';
+    titleEl.contentEditable = 'false';
+    titleEl.textContent = txt(e.title);
+    el.appendChild(titleEl);
+
+    // subtitle
+    if(e.subtitle){
+      const subEl = document.createElement('p');
+      subEl.className = 'art-subtitle edit-field edit-subtitle';
+      subEl.contentEditable = 'false';
+      subEl.textContent = txt(e.subtitle);
+      el.appendChild(subEl);
+    }
+
+    // meta
+    const metaEl = document.createElement('div');
+    metaEl.className = 'art-meta';
+    const dateSpan = document.createElement('span');
+    dateSpan.textContent = e.date;
+    metaEl.appendChild(dateSpan);
+    (e.tags||[]).forEach(t => {
+      const s = document.createElement('span');
+      s.textContent = '· ' + txt(t);
+      metaEl.appendChild(s);
+    });
+    el.appendChild(metaEl);
+
+    // opener
+    if(e.opener){
+      const opEl = document.createElement('div');
+      opEl.className = 'art-opener edit-field edit-opener';
+      opEl.contentEditable = 'false';
+      opEl.textContent = txt(e.opener);
+      el.appendChild(opEl);
+    }
+
+    // sections
+    secs.forEach(s => {
+      const sec = document.createElement('div');
+      sec.className = 'art-sec edit-sec';
+
+      const tagEl = document.createElement('div');
+      tagEl.className = 'art-sec-tag edit-field edit-label';
+      tagEl.contentEditable = 'false';
+      tagEl.textContent = txt(s.label);
+      sec.appendChild(tagEl);
+
+      const secTitle = document.createElement('h2');
+      secTitle.className = 'art-sec-title edit-field edit-sec-title';
+      secTitle.contentEditable = 'false';
+      secTitle.textContent = txt(s.title);
+      sec.appendChild(secTitle);
+
+      const bodyEl = document.createElement('div');
+      bodyEl.className = 'art-body edit-field edit-sec-body';
+      bodyEl.contentEditable = 'false';
+      bodyEl.style.whiteSpace = 'pre-line';
+      bodyEl.textContent = txt(s.body||'');
+      sec.appendChild(bodyEl);
+
+      if(s.kpis&&s.kpis.length){
+        const table = document.createElement('table');
+        table.className = 'kpi-table';
+        s.kpis.forEach(k => {
+          const tr = document.createElement('tr');
+          tr.className = 'edit-kpi-row';
+          const td1 = document.createElement('td');
+          td1.className = 'edit-field edit-kpi-key';
+          td1.contentEditable = 'false';
+          td1.textContent = txt(k.key);
+          const td2 = document.createElement('td');
+          td2.className = 'edit-field edit-kpi-val';
+          td2.contentEditable = 'false';
+          td2.style.textAlign = 'right';
+          td2.textContent = txt(k.value);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          table.appendChild(tr);
+        });
+        sec.appendChild(table);
+      }
+
+      if(s.verdict){
+        const vEl = document.createElement('div');
+        vEl.className = 'art-verdict edit-field edit-verdict';
+        vEl.contentEditable = 'false';
+        vEl.textContent = txt(s.verdict);
+        sec.appendChild(vEl);
+      }
+
+      if(s.sources&&s.sources.length){
+        const srcEl = document.createElement('div');
+        srcEl.className = 'art-sources edit-field edit-sources';
+        srcEl.contentEditable = 'false';
+        srcEl.textContent = 'Fonti: ' + s.sources.map(src=>txt(src)).join(' · ');
+        sec.appendChild(srcEl);
+      }
+
+      el.appendChild(sec);
+    });
+
+    // CTA
+    const ctaEl = document.createElement('div');
+    ctaEl.className = 'art-cta';
+    ctaEl.innerHTML = '<p>Ricevi ogni edizione il martedì mattina</p><a href="/">Iscriviti gratis →</a>';
+    el.appendChild(ctaEl);
+
+  } catch(e) {
+    el.innerHTML = '<p>Errore nel caricamento.</p>';
+  }
+}
   } catch(e) {
     el.innerHTML = '<p>Errore nel caricamento.</p>';
   }
