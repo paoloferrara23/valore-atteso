@@ -275,6 +275,7 @@ const AGENT_SCHEDULE=[
   {key:'security',name:'Security',day:'Ogni giorno',time:'10:00',desc:'Controlla sicurezza, endpoint, chiavi e configurazioni critiche.'}
 ];
 
+function decodeHtml(s){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
 function toggleMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
 function closeMenu(){document.getElementById('mobile-menu').classList.remove('open')}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -289,8 +290,8 @@ async function loadLatestPreview(){
     const sections=e.sections||[];
     const text=e.subtitle||e.opener||(sections[0]&&sections[0].body)||'Leggi l\'ultima analisi pubblicata nell\'archivio.';
     document.getElementById('preview-badge').textContent='Edizione #'+(e.num||'');
-    document.getElementById('preview-title').innerHTML=esc(e.title||'Ultima edizione');
-    document.getElementById('preview-text').innerHTML=esc(firstSentence(text));
+    document.getElementById('preview-title').innerHTML=esc(decodeHtml(e.title||'Ultima edizione'));
+    document.getElementById('preview-text').innerHTML=esc(firstSentence(decodeHtml(text)));
     document.getElementById('preview-focus').textContent='Finance';
     const previewLink=document.getElementById('preview-link');
     if(previewLink&&e.num)previewLink.href='/archivio.html?edition='+e.num;
