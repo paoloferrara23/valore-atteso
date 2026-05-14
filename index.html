@@ -290,8 +290,8 @@ async function loadLatestPreview(){
     const sections=e.sections||[];
     const text=e.subtitle||e.opener||(sections[0]&&sections[0].body)||'Leggi l\'ultima analisi pubblicata nell\'archivio.';
     document.getElementById('preview-badge').textContent='Edizione #'+(e.num||'');
-    document.getElementById('preview-title').innerHTML=esc(decodeHtml(e.title||'Ultima edizione'));
-    document.getElementById('preview-text').innerHTML=esc(firstSentence(decodeHtml(text)));
+    document.getElementById('preview-title').textContent=decodeHtml(e.title||'Ultima edizione');
+    document.getElementById('preview-text').textContent=firstSentence(decodeHtml(text));
     document.getElementById('preview-focus').textContent='Finance';
     const previewLink=document.getElementById('preview-link');
     if(previewLink&&e.num)previewLink.href='/archivio.html?edition='+e.num;
