@@ -74,61 +74,73 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .arch-empty,.arch-loading{text-align:center;padding:80px 0;font-family:var(--mn);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 .arch-empty{font-family:var(--sf);font-size:16px;text-transform:none;letter-spacing:0;font-style:italic;color:var(--muted)}
 
-/* ARTICOLO */
-.article{max-width:840px;margin:0 auto;padding:0}
-.article-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;flex-wrap:wrap;gap:12px}
+/* ARTICOLO BASE */
+.article{max-width:900px;margin:0 auto;padding:0}
+.article-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px}
 .art-back{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:.15s}
 .art-back::before{content:'←'}
 .art-back:hover{color:var(--ink)}
-.art-num{font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:500;margin-bottom:10px}
-.art-title{font-family:var(--sf);font-size:clamp(2.15rem,4.4vw,3.8rem);font-weight:600;letter-spacing:-.8px;line-height:1.02;margin-bottom:16px;color:var(--ink)}
-.art-subtitle{font-family:var(--sf);font-size:20px;color:var(--ink2);font-weight:300;line-height:1.55;margin-bottom:18px}
-.art-meta{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--rule);border-bottom:2px solid var(--ink);margin-bottom:32px;font-family:var(--mn);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-wrap:wrap}
-.art-opener{font-family:var(--sf);font-size:20px;color:var(--ink2);font-weight:300;line-height:1.7;font-style:italic;padding:24px;background:var(--cream2);border-left:3px solid var(--deepgold);border-radius:0 18px 18px 0;margin-bottom:42px}
-.art-sec{margin-bottom:46px;padding-bottom:46px;border-bottom:1px solid var(--rule)}
-.art-sec:last-child{border-bottom:none}
-.art-sec-tag{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.art-sec-tag::before{content:'';width:20px;height:1px;background:var(--deepgold)}
-.art-sec-title{font-family:var(--sf);font-size:30px;font-weight:600;line-height:1.14;letter-spacing:-.3px;margin-bottom:16px;color:var(--ink)}
-.art-body{font-family:var(--sf);font-size:18px;color:var(--ink2);font-weight:300;line-height:1.82;margin-bottom:22px;white-space:pre-line}
-.kpi-table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:12px;margin:18px 0;background:rgba(255,253,248,.45);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
-.kpi-table tr{border-bottom:1px solid var(--rule)}
-.kpi-table tr:last-child{border-bottom:none}
-.kpi-table td{padding:11px 14px}
-.kpi-table td:first-child{color:var(--ink);font-weight:600}
-.kpi-table td:last-child{text-align:right;color:var(--ink2);font-weight:600}
-.art-verdict{font-family:var(--mn);font-size:11px;color:var(--deepgold);letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:8px;margin-top:16px}
-.art-verdict::before{content:'→'}
-.art-sources{font-family:var(--mn);font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.65;padding:11px 13px;background:#E4EDE7;border-left:3px solid var(--green);border-radius:0 10px 10px 0;margin-top:14px}
-.art-cta{margin-top:44px;padding:28px;border:1px solid var(--rule);background:rgba(255,253,248,.45);border-radius:24px;text-align:center}
-.art-cta p{font-family:var(--sf);font-size:28px;font-weight:600;letter-spacing:-.4px;margin-bottom:16px;color:var(--ink)}
-.art-cta a{display:inline-flex!important;align-items:center;justify-content:center;height:44px;padding:0 22px!important;background:var(--ink)!important;color:var(--cream)!important;border-radius:999px!important;font-family:var(--mn)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important}
 
-/* ARTICOLO ENHANCED */
-.art-kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);border-radius:16px;overflow:hidden;margin-bottom:42px;background:rgba(255,253,248,.42)}
-.art-kpi-cell{padding:18px 20px;border-right:1px solid var(--rule)}
+/* MASTHEAD — ispirato all'email */
+.art-masthead{background:var(--ink);color:var(--cream);padding:28px 32px;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:0}
+.art-masthead-left{}
+.art-masthead-kicker{font-family:var(--mn);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.art-masthead-kicker::before{content:'—';color:var(--gold)}
+.art-title{font-family:var(--sf);font-size:clamp(1.6rem,3.2vw,2.6rem);font-weight:600;letter-spacing:-.4px;line-height:1.08;margin-bottom:8px;color:var(--cream)}
+.art-subtitle{font-family:var(--sf);font-size:17px;color:var(--gold);font-weight:400;line-height:1.4;font-style:italic;margin-bottom:0}
+.art-masthead-right{text-align:right;flex-shrink:0}
+.art-num{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.art-num-big{font-family:var(--sf);font-size:32px;font-weight:600;color:var(--gold);letter-spacing:-.8px;line-height:1}
+.art-date{font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:4px}
+
+/* META */
+.art-meta{display:flex;gap:12px;align-items:center;padding:10px 32px;background:rgba(28,25,20,.06);border-bottom:1px solid var(--rule);font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;flex-wrap:wrap}
+
+/* OPENER */
+.art-opener{font-family:var(--sf);font-size:17px;color:var(--ink2);font-weight:300;line-height:1.75;font-style:italic;padding:24px 32px;background:var(--cream2);border-left:3px solid var(--deepgold);margin-bottom:0}
+
+/* KPI BAR */
+.art-kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream2);border-bottom:2px solid var(--ink);margin-bottom:0}
+.art-kpi-cell{padding:20px 24px;border-right:1px solid var(--rule);position:relative}
 .art-kpi-cell:last-child{border-right:none}
-.art-kpi-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.art-kpi-val{font-family:var(--sf);font-size:26px;font-weight:600;letter-spacing:-.5px;color:var(--ink);line-height:1;margin-bottom:3px}
+.art-kpi-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.art-kpi-label::before{content:'';width:10px;height:1px;background:var(--muted)}
+.art-kpi-val{font-family:var(--sf);font-size:28px;font-weight:600;letter-spacing:-.5px;color:var(--ink);line-height:1;margin-bottom:4px}
 .art-kpi-sub{font-family:var(--mn);font-size:9px;color:var(--deepgold);letter-spacing:.04em}
 .art-kpi-fonte{font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:3px}
-.art-sec-grid{display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:start}
-.art-sec-right{display:flex;flex-direction:column;gap:12px}
-.art-data-box{background:var(--cream2);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
-.art-data-box-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:8px}
+
+/* SEZIONI */
+.art-sec{border-bottom:1px solid var(--rule);background:var(--cream)}
+.art-sec:last-of-type{border-bottom:none}
+.art-sec-header{padding:24px 32px 0;display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.art-sec-num{width:28px;height:28px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0}
+.art-sec-tag{font-family:var(--mn);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.art-sec-divider{flex:1;height:1px;background:var(--rule)}
+.art-sec-title{font-family:var(--sf);font-size:22px;font-weight:600;line-height:1.18;letter-spacing:-.3px;color:var(--ink);padding:0 32px;margin-bottom:6px}
+.art-sec-subtitle{font-family:var(--sf);font-size:14px;color:var(--deepgold);font-style:italic;padding:0 32px;margin-bottom:20px}
+.art-sec-grid{display:grid;grid-template-columns:1fr 260px;gap:0;padding:0 32px 28px}
+.art-sec-body-col{padding-right:28px;border-right:1px solid var(--rule)}
+.art-body{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.82;white-space:pre-line}
+.art-verdict{font-family:var(--mn);font-size:10px;color:var(--deepgold);letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}
+.art-verdict::before{content:'→'}
+.art-sources{font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.03em;line-height:1.65;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+
+/* RIGHT COL */
+.art-sec-right{padding-left:24px;display:flex;flex-direction:column;gap:14px}
+.art-data-box{background:var(--cream2);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.art-data-box-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:7px}
 .art-data-box-label::before{content:'';width:8px;height:1px;background:var(--muted)}
-.art-data-table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:11px}
+.art-data-table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:10px}
 .art-data-table tr{border-bottom:1px solid var(--rule)}
 .art-data-table tr:last-child{border-bottom:none}
-.art-data-table td{padding:9px 14px}
+.art-data-table td{padding:8px 12px}
 .art-data-table td:first-child{color:var(--muted)}
 .art-data-table td:last-child{text-align:right;font-weight:600;color:var(--ink)}
-.art-fonte-box{font-family:var(--mn);font-size:9px;color:var(--muted);line-height:1.65;padding:10px 14px;background:rgba(255,253,248,.55);border:1px solid var(--rule);border-radius:10px;border-left:3px solid var(--green)}
-.art-insight-box{background:var(--ink);border-radius:12px;padding:16px}
+.art-insight-box{background:var(--ink);border-radius:8px;padding:14px}
 .art-insight-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.art-insight-text{font-family:var(--sf);font-size:14px;color:rgba(240,235,225,.7);font-weight:300;line-height:1.7;font-style:italic}
-.art-bars-box{background:var(--cream2);border:1px solid var(--rule);border-radius:12px;padding:14px}
-.art-bars-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.art-insight-text{font-family:var(--sf);font-size:13px;color:rgba(240,235,225,.7);font-weight:300;line-height:1.7;font-style:italic}
+.art-bars-box{background:var(--cream2);border:1px solid var(--rule);border-radius:8px;padding:12px}
+.art-bars-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:7px}
 .art-bars-label::before{content:'';width:8px;height:1px;background:var(--muted)}
 .art-bar-row{margin-bottom:10px}
 .art-bar-row:last-child{margin-bottom:0}
@@ -138,29 +150,57 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-bar-track{height:4px;background:var(--rule);border-radius:2px}
 .art-bar-fill{height:100%;border-radius:2px;background:var(--ink)}
 .art-bar-fill.primary{background:var(--deepgold)}
-.art-tesi{background:var(--ink);color:var(--cream);border-radius:20px;padding:32px;margin-top:48px}
+
+/* TESI */
+.art-tesi{background:var(--ink);color:var(--cream);padding:32px;margin:0}
 .art-tesi-label{font-family:var(--mn);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .art-tesi-label::before{content:'';width:14px;height:1px;background:var(--gold)}
-.art-tesi-headline{font-family:var(--sf);font-size:22px;font-weight:600;letter-spacing:-.3px;color:var(--cream);margin-bottom:8px;line-height:1.2}
-.art-tesi-intro{font-family:var(--sf);font-size:15px;color:rgba(240,235,225,.5);font-weight:300;font-style:italic;line-height:1.7;margin-bottom:24px}
-.art-tesi-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.art-tesi-headline{font-family:var(--sf);font-size:20px;font-weight:600;letter-spacing:-.3px;color:var(--cream);margin-bottom:8px;line-height:1.2}
+.art-tesi-intro{font-family:var(--sf);font-size:14px;color:rgba(240,235,225,.5);font-weight:300;font-style:italic;line-height:1.7;margin-bottom:24px}
+.art-tesi-grid{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-bottom:24px}
+.art-tesi-col{padding:0 24px}
+.art-tesi-col:first-child{padding-left:0}
+.art-tesi-col:last-child{padding-right:0}
+.art-tesi-divider{background:rgba(255,255,255,.07)}
 .art-tesi-col-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
 .art-tesi-col-label.mid{color:var(--muted)}
 .art-tesi-item{display:flex;gap:10px;margin-bottom:10px;font-family:var(--sf);font-size:14px;color:rgba(240,235,225,.65);font-weight:300;line-height:1.55}
 .art-tesi-item::before{content:'→';color:var(--gold);flex-shrink:0;font-family:var(--mn);font-size:11px;margin-top:2px}
 .art-tesi-item.mid::before{color:var(--muted)}
-.art-monitoring{border-top:1px solid rgba(240,235,225,.1);padding-top:20px;margin-top:20px}
+.art-monitoring{border-top:1px solid rgba(255,255,255,.07);padding-top:20px}
 .art-monitoring-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .art-monitoring-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .art-monitoring-item{font-family:var(--sf);font-size:13px;color:rgba(240,235,225,.4);font-weight:300;line-height:1.5;display:flex;gap:8px}
 .art-monitoring-item::before{content:'·';color:rgba(240,235,225,.2);flex-shrink:0}
-@media(max-width:720px){
-  .art-sec-grid{grid-template-columns:1fr}
+
+/* CTA */
+.art-cta{padding:32px;background:var(--cream2);border-top:1px solid var(--rule);text-align:center;border-radius:0 0 16px 16px}
+.art-cta p{font-family:var(--sf);font-size:22px;font-weight:600;letter-spacing:-.3px;margin-bottom:16px;color:var(--ink)}
+.art-cta a{display:inline-flex!important;align-items:center;justify-content:center;height:44px;padding:0 24px!important;background:var(--ink)!important;color:var(--cream)!important;border-radius:999px!important;font-family:var(--mn)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important}
+
+/* WRAPPER per raggruppare tutti gli elementi dell'articolo in un'unica card */
+.art-card{border:1px solid var(--rule);border-radius:16px;overflow:hidden;margin-top:0}
+
+@media(max-width:800px){
+  .art-masthead{padding:22px 20px;border-radius:12px 12px 0 0}
+  .art-title{font-size:clamp(1.5rem,7vw,2rem)}
+  .art-meta{padding:10px 20px}
+  .art-opener{padding:20px}
   .art-kpi-bar{grid-template-columns:1fr}
   .art-kpi-cell{border-right:none;border-bottom:1px solid var(--rule)}
   .art-kpi-cell:last-child{border-bottom:none}
+  .art-sec-header{padding:20px 20px 0}
+  .art-sec-title,.art-sec-subtitle{padding:0 20px}
+  .art-sec-grid{grid-template-columns:1fr;padding:0 20px 24px}
+  .art-sec-body-col{padding-right:0;border-right:none;border-bottom:1px solid var(--rule);padding-bottom:20px;margin-bottom:20px}
+  .art-sec-right{padding-left:0}
+  .art-tesi{padding:24px 20px}
   .art-tesi-grid{grid-template-columns:1fr}
+  .art-tesi-divider{display:none}
+  .art-tesi-col{padding:0;margin-bottom:20px}
   .art-monitoring-grid{grid-template-columns:1fr}
+  .art-cta{padding:24px 20px}
+  .art-masthead-right{display:none}
 }
 #art-edit-bar button{border-radius:999px!important;font-family:var(--mn)!important;font-size:9px!important;letter-spacing:.1em!important;text-transform:uppercase!important;height:32px!important;padding:0 14px!important}
 #btn-edit,#btn-cancel{background:rgba(255,253,248,.65)!important;border:1px solid var(--rule)!important;color:var(--ink)!important}
@@ -451,40 +491,59 @@ async function openArt(num){
 
     el.innerHTML = '';
 
-    // NUM
-    const numEl = document.createElement('div');
-    numEl.className = 'art-num';
-    numEl.textContent = 'Edizione #' + e.num;
-    el.appendChild(numEl);
+    // CARD WRAPPER
+    const card = document.createElement('div');
+    card.className = 'art-card';
 
-    // TITLE
+    // MASTHEAD
+    const masthead = document.createElement('div');
+    masthead.className = 'art-masthead';
+    const mastheadLeft = document.createElement('div');
+    mastheadLeft.className = 'art-masthead-left';
+    const kicker = document.createElement('div');
+    kicker.className = 'art-masthead-kicker';
+    kicker.textContent = 'Questa settimana';
+    mastheadLeft.appendChild(kicker);
     const titleEl = document.createElement('h1');
     titleEl.className = 'art-title edit-field edit-title';
     titleEl.contentEditable = 'false';
     titleEl.textContent = txt(e.title);
-    el.appendChild(titleEl);
-
-    // SUBTITLE
+    mastheadLeft.appendChild(titleEl);
     if(e.subtitle){
-      const subEl = document.createElement('p');
+      const subEl = document.createElement('div');
       subEl.className = 'art-subtitle edit-field edit-subtitle';
       subEl.contentEditable = 'false';
       subEl.textContent = txt(e.subtitle);
-      el.appendChild(subEl);
+      mastheadLeft.appendChild(subEl);
     }
+    masthead.appendChild(mastheadLeft);
+    const mastheadRight = document.createElement('div');
+    mastheadRight.className = 'art-masthead-right';
+    const numLabel = document.createElement('div');
+    numLabel.className = 'art-num';
+    numLabel.textContent = 'Edizione';
+    const numBig = document.createElement('div');
+    numBig.className = 'art-num-big';
+    numBig.textContent = '#' + e.num;
+    const dateEl = document.createElement('div');
+    dateEl.className = 'art-date';
+    dateEl.textContent = e.date;
+    mastheadRight.appendChild(numLabel);
+    mastheadRight.appendChild(numBig);
+    mastheadRight.appendChild(dateEl);
+    masthead.appendChild(mastheadRight);
+    card.appendChild(masthead);
 
     // META
     const metaEl = document.createElement('div');
     metaEl.className = 'art-meta';
-    const dateSpan = document.createElement('span');
-    dateSpan.textContent = e.date;
-    metaEl.appendChild(dateSpan);
-    (e.tags||[]).forEach(t => {
+    (e.tags||[]).forEach((t,i) => {
+      if(i > 0){ const dot = document.createElement('span'); dot.textContent = '·'; metaEl.appendChild(dot); }
       const s = document.createElement('span');
-      s.textContent = '· ' + txt(t);
+      s.textContent = txt(t);
       metaEl.appendChild(s);
     });
-    el.appendChild(metaEl);
+    card.appendChild(metaEl);
 
     // OPENER
     if(e.opener){
@@ -492,17 +551,16 @@ async function openArt(num){
       opEl.className = 'art-opener edit-field edit-opener';
       opEl.contentEditable = 'false';
       opEl.textContent = txt(e.opener);
-      el.appendChild(opEl);
+      card.appendChild(opEl);
     }
 
-    // KPI BAR (se presenti dati kpis o estraibili dalle sezioni)
+    // KPI BAR
     const kpiData = kpis.length ? kpis : secs.slice(0,3).map((s,i) => ({
       label: s.label || s.section_label || ['Il Bilancio','Il Deal','La Metrica'][i] || '',
       value: s.kpi_rows?.[0]?.value || s.kpis?.[0]?.value || '',
       sub: s.kpi_rows?.[0]?.key || s.kpis?.[0]?.sub || '',
       fonte: ''
     }));
-
     if(kpiData.some(k => k.value)){
       const kpiBar = document.createElement('div');
       kpiBar.className = 'art-kpi-bar';
@@ -510,14 +568,14 @@ async function openArt(num){
         if(!k.value && !k.label) return;
         const cell = document.createElement('div');
         cell.className = 'art-kpi-cell';
-        cell.innerHTML = `
-          <div class="art-kpi-label">${txt(k.label)}</div>
-          <div class="art-kpi-val">${txt(k.value)}</div>
-          ${k.sub ? `<div class="art-kpi-sub">${txt(k.sub)}</div>` : ''}
-          ${k.fonte ? `<div class="art-kpi-fonte">${txt(k.fonte)}</div>` : ''}`;
+        const lbl = document.createElement('div'); lbl.className = 'art-kpi-label'; lbl.textContent = txt(k.label);
+        const val = document.createElement('div'); val.className = 'art-kpi-val'; val.textContent = (k.stimato?'~':'') + txt(k.value);
+        cell.appendChild(lbl); cell.appendChild(val);
+        if(k.sub){ const sub = document.createElement('div'); sub.className = 'art-kpi-sub'; sub.textContent = txt(k.sub); cell.appendChild(sub); }
+        if(k.fonte){ const fn = document.createElement('div'); fn.className = 'art-kpi-fonte'; fn.textContent = txt(k.fonte); cell.appendChild(fn); }
         kpiBar.appendChild(cell);
       });
-      el.appendChild(kpiBar);
+      card.appendChild(kpiBar);
     }
 
     // SEZIONI
@@ -525,35 +583,45 @@ async function openArt(num){
       const sec = document.createElement('div');
       sec.className = 'art-sec edit-sec';
 
-      // label
-      const tagEl = document.createElement('div');
-      tagEl.className = 'art-sec-tag edit-field edit-label';
-      tagEl.contentEditable = 'false';
-      tagEl.textContent = txt(s.label || s.section_label || '');
-      sec.appendChild(tagEl);
+      // Header sezione
+      const secHeader = document.createElement('div');
+      secHeader.className = 'art-sec-header';
+      const secNum = document.createElement('div');
+      secNum.className = 'art-sec-num';
+      secNum.textContent = i + 1;
+      const secTag = document.createElement('div');
+      secTag.className = 'art-sec-tag edit-field edit-label';
+      secTag.contentEditable = 'false';
+      secTag.textContent = txt(s.label || s.section_label || '');
+      const secDivider = document.createElement('div');
+      secDivider.className = 'art-sec-divider';
+      secHeader.appendChild(secNum); secHeader.appendChild(secTag); secHeader.appendChild(secDivider);
+      sec.appendChild(secHeader);
 
-      // titolo sezione
+      // Titolo
       const secTitle = document.createElement('h2');
       secTitle.className = 'art-sec-title edit-field edit-sec-title';
       secTitle.contentEditable = 'false';
       secTitle.textContent = txt(s.title);
       sec.appendChild(secTitle);
 
-      // sottotitolo sezione
+      // Sottotitolo
       if(s.subtitle){
         const stEl = document.createElement('div');
-        stEl.style.cssText = 'font-family:var(--sf);font-size:16px;font-style:italic;color:var(--deepgold);margin-bottom:18px;font-weight:400';
+        stEl.className = 'art-sec-subtitle';
         stEl.textContent = txt(s.subtitle);
         sec.appendChild(stEl);
       }
 
-      // layout grid: body + right col
+      // Grid body + right
+      const kpiRows = s.kpi_rows || s.kpis || [];
+      const hasRight = kpiRows.length || s.bars?.length || s.insight || s.note_box;
       const grid = document.createElement('div');
-      const hasRightCol = (s.kpi_rows?.length || s.kpis?.length || s.bars?.length || s.insight || s.note_box);
-      grid.className = hasRightCol ? 'art-sec-grid' : '';
+      grid.className = 'art-sec-grid';
 
-      // LEFT: body
+      // Body col
       const bodyCol = document.createElement('div');
+      bodyCol.className = hasRight ? 'art-sec-body-col' : '';
       const bodyText = Array.isArray(s.body) ? s.body.join('\n\n') : (s.body || '');
       const bodyEl = document.createElement('div');
       bodyEl.className = 'art-body edit-field edit-sec-body';
@@ -562,7 +630,6 @@ async function openArt(num){
       bodyEl.textContent = txt(bodyText);
       bodyCol.appendChild(bodyEl);
 
-      // verdict
       if(s.verdict){
         const vEl = document.createElement('div');
         vEl.className = 'art-verdict edit-field edit-verdict';
@@ -571,7 +638,6 @@ async function openArt(num){
         bodyCol.appendChild(vEl);
       }
 
-      // sources + fonte
       const srcData = s.sources?.length ? s.sources : (s.fonte ? [s.fonte] : []);
       if(srcData.length){
         const srcEl = document.createElement('div');
@@ -583,13 +649,11 @@ async function openArt(num){
 
       grid.appendChild(bodyCol);
 
-      // RIGHT COL
-      if(hasRightCol){
+      // Right col
+      if(hasRight){
         const rightCol = document.createElement('div');
         rightCol.className = 'art-sec-right';
 
-        // KPI table
-        const kpiRows = s.kpi_rows || s.kpis || [];
         if(kpiRows.length){
           const dataBox = document.createElement('div');
           dataBox.className = 'art-data-box';
@@ -601,84 +665,48 @@ async function openArt(num){
           table.className = 'art-data-table';
           kpiRows.forEach(k => {
             const tr = document.createElement('tr');
-            const td1 = document.createElement('td');
-            td1.className = 'edit-field edit-kpi-key';
-            td1.contentEditable = 'false';
-            td1.textContent = txt(k.key || k.label || '');
-            const td2 = document.createElement('td');
-            td2.className = 'edit-field edit-kpi-val';
-            td2.contentEditable = 'false';
-            td2.textContent = (k.stimato ? '~' : '') + txt(k.value || '');
+            const td1 = document.createElement('td'); td1.className = 'edit-field edit-kpi-key'; td1.contentEditable = 'false'; td1.textContent = txt(k.key || k.label || '');
+            const td2 = document.createElement('td'); td2.className = 'edit-field edit-kpi-val'; td2.contentEditable = 'false'; td2.textContent = (k.stimato?'~':'') + txt(k.value||'');
             if(k.color) td2.style.color = k.color;
-            tr.appendChild(td1); tr.appendChild(td2);
-            table.appendChild(tr);
+            tr.appendChild(td1); tr.appendChild(td2); table.appendChild(tr);
           });
           dataBox.appendChild(table);
           rightCol.appendChild(dataBox);
         }
 
-        // Bars
         if(s.bars?.length){
           const barsBox = document.createElement('div');
           barsBox.className = 'art-bars-box';
-          const barsLabel = document.createElement('div');
-          barsLabel.className = 'art-bars-label';
-          barsLabel.textContent = txt(s.bars_label || 'Comparazione');
+          const barsLabel = document.createElement('div'); barsLabel.className = 'art-bars-label'; barsLabel.textContent = txt(s.bars_label || 'Comparazione');
           barsBox.appendChild(barsLabel);
           s.bars.forEach((b, bi) => {
-            const row = document.createElement('div');
-            row.className = 'art-bar-row';
-            const meta = document.createElement('div');
-            meta.className = 'art-bar-meta';
-            const name = document.createElement('span');
-            name.className = 'art-bar-name';
-            name.textContent = txt(b.label);
-            const val = document.createElement('span');
-            val.className = 'art-bar-val';
-            val.textContent = (b.stimato ? '~' : '') + txt(b.value);
+            const row = document.createElement('div'); row.className = 'art-bar-row';
+            const meta = document.createElement('div'); meta.className = 'art-bar-meta';
+            const name = document.createElement('span'); name.className = 'art-bar-name'; name.textContent = txt(b.label);
+            const val = document.createElement('span'); val.className = 'art-bar-val'; val.textContent = (b.stimato?'~':'') + txt(b.value);
             meta.appendChild(name); meta.appendChild(val);
-            const track = document.createElement('div');
-            track.className = 'art-bar-track';
-            const fill = document.createElement('div');
-            fill.className = 'art-bar-fill' + (bi === 0 ? ' primary' : '');
-            fill.style.width = (b.pct || 0) + '%';
+            const track = document.createElement('div'); track.className = 'art-bar-track';
+            const fill = document.createElement('div'); fill.className = 'art-bar-fill' + (bi===0?' primary':''); fill.style.width = (b.pct||0)+'%';
             track.appendChild(fill);
             row.appendChild(meta); row.appendChild(track);
             barsBox.appendChild(row);
           });
-          if(s.bars_note){
-            const note = document.createElement('div');
-            note.style.cssText = 'font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:10px;padding-top:8px;border-top:1px solid var(--rule);line-height:1.55';
-            note.textContent = txt(s.bars_note);
-            barsBox.appendChild(note);
-          }
           rightCol.appendChild(barsBox);
         }
 
-        // Note box
         if(s.note_box){
           const noteEl = document.createElement('div');
-          noteEl.style.cssText = 'background:var(--cream2);border-left:3px solid var(--deepgold);border-radius:0 10px 10px 0;padding:12px 14px';
-          const noteLabel = document.createElement('div');
-          noteLabel.style.cssText = 'font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px';
-          noteLabel.textContent = txt(s.note_box.label || '');
-          const noteText = document.createElement('p');
-          noteText.style.cssText = 'font-family:var(--sf);font-size:14px;color:var(--ink2);font-weight:300;line-height:1.7;margin:0';
-          noteText.textContent = txt(s.note_box.text || '');
+          noteEl.style.cssText = 'background:var(--cream2);border-left:3px solid var(--deepgold);border-radius:0 8px 8px 0;padding:12px 14px';
+          const noteLabel = document.createElement('div'); noteLabel.style.cssText = 'font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px'; noteLabel.textContent = txt(s.note_box.label||'');
+          const noteText = document.createElement('p'); noteText.style.cssText = 'font-family:var(--sf);font-size:13px;color:var(--ink2);font-weight:300;line-height:1.7;margin:0'; noteText.textContent = txt(s.note_box.text||'');
           noteEl.appendChild(noteLabel); noteEl.appendChild(noteText);
           rightCol.appendChild(noteEl);
         }
 
-        // Insight box
         if(s.insight){
-          const insEl = document.createElement('div');
-          insEl.className = 'art-insight-box';
-          const insLabel = document.createElement('div');
-          insLabel.className = 'art-insight-label';
-          insLabel.textContent = txt(s.insight.label || 'La lettura');
-          const insText = document.createElement('p');
-          insText.className = 'art-insight-text';
-          insText.textContent = txt(s.insight.text || '');
+          const insEl = document.createElement('div'); insEl.className = 'art-insight-box';
+          const insLabel = document.createElement('div'); insLabel.className = 'art-insight-label'; insLabel.textContent = txt(s.insight.label||'La lettura');
+          const insText = document.createElement('p'); insText.className = 'art-insight-text'; insText.textContent = txt(s.insight.text||'');
           insEl.appendChild(insLabel); insEl.appendChild(insText);
           rightCol.appendChild(insEl);
         }
@@ -687,81 +715,49 @@ async function openArt(num){
       }
 
       sec.appendChild(grid);
-      el.appendChild(sec);
+      card.appendChild(sec);
     });
 
     // TESI
     if(tesi && (tesi.headline || tesi.top?.length)){
       const tesiEl = document.createElement('div');
       tesiEl.className = 'art-tesi';
-
-      const tesiLabel = document.createElement('div');
-      tesiLabel.className = 'art-tesi-label';
-      tesiLabel.textContent = 'La tesi di Valore Atteso';
+      const tesiLabel = document.createElement('div'); tesiLabel.className = 'art-tesi-label'; tesiLabel.textContent = 'La tesi di Valore Atteso';
       tesiEl.appendChild(tesiLabel);
-
-      if(tesi.headline){
-        const hl = document.createElement('p');
-        hl.className = 'art-tesi-headline';
-        hl.textContent = txt(tesi.headline);
-        tesiEl.appendChild(hl);
-      }
-      if(tesi.intro){
-        const intro = document.createElement('p');
-        intro.className = 'art-tesi-intro';
-        intro.textContent = txt(tesi.intro);
-        tesiEl.appendChild(intro);
-      }
-
+      if(tesi.headline){ const hl = document.createElement('p'); hl.className = 'art-tesi-headline'; hl.textContent = txt(tesi.headline); tesiEl.appendChild(hl); }
+      if(tesi.intro){ const intro = document.createElement('p'); intro.className = 'art-tesi-intro'; intro.textContent = txt(tesi.intro); tesiEl.appendChild(intro); }
       if(tesi.top?.length || tesi.mid?.length){
-        const tesiGrid = document.createElement('div');
-        tesiGrid.className = 'art-tesi-grid';
-
-        ['top','mid'].forEach(col => {
+        const tesiGrid = document.createElement('div'); tesiGrid.className = 'art-tesi-grid';
+        ['top','mid'].forEach((col,ci) => {
           if(!tesi[col]?.length) return;
-          const colEl = document.createElement('div');
-          const colLabel = document.createElement('div');
-          colLabel.className = 'art-tesi-col-label' + (col === 'mid' ? ' mid' : '');
-          colLabel.textContent = col === 'top' ? 'Top club' : 'Fascia media';
+          const colEl = document.createElement('div'); colEl.className = 'art-tesi-col';
+          const colLabel = document.createElement('div'); colLabel.className = 'art-tesi-col-label'+(col==='mid'?' mid':''); colLabel.textContent = col==='top'?'Top club':'Fascia media';
           colEl.appendChild(colLabel);
-          tesi[col].forEach(t => {
-            const item = document.createElement('div');
-            item.className = 'art-tesi-item' + (col === 'mid' ? ' mid' : '');
-            item.textContent = txt(t);
-            colEl.appendChild(item);
-          });
+          tesi[col].forEach(t => { const item = document.createElement('div'); item.className = 'art-tesi-item'+(col==='mid'?' mid':''); item.textContent = txt(t); colEl.appendChild(item); });
           tesiGrid.appendChild(colEl);
+          if(ci===0 && tesi.mid?.length){ const div = document.createElement('div'); div.className = 'art-tesi-divider'; tesiGrid.appendChild(div); }
         });
         tesiEl.appendChild(tesiGrid);
       }
-
       if(monitoring.length){
-        const monEl = document.createElement('div');
-        monEl.className = 'art-monitoring';
-        const monLabel = document.createElement('div');
-        monLabel.className = 'art-monitoring-label';
-        monLabel.textContent = 'Cosa monitoreremo nelle prossime settimane';
+        const monEl = document.createElement('div'); monEl.className = 'art-monitoring';
+        const monLabel = document.createElement('div'); monLabel.className = 'art-monitoring-label'; monLabel.textContent = 'Cosa monitoreremo nelle prossime settimane';
         monEl.appendChild(monLabel);
-        const monGrid = document.createElement('div');
-        monGrid.className = 'art-monitoring-grid';
-        monitoring.forEach(m => {
-          const item = document.createElement('div');
-          item.className = 'art-monitoring-item';
-          item.textContent = txt(m);
-          monGrid.appendChild(item);
-        });
+        const monGrid = document.createElement('div'); monGrid.className = 'art-monitoring-grid';
+        monitoring.forEach(m => { const item = document.createElement('div'); item.className = 'art-monitoring-item'; item.textContent = txt(m); monGrid.appendChild(item); });
         monEl.appendChild(monGrid);
         tesiEl.appendChild(monEl);
       }
-
-      el.appendChild(tesiEl);
+      card.appendChild(tesiEl);
     }
 
     // CTA
     const ctaEl = document.createElement('div');
     ctaEl.className = 'art-cta';
     ctaEl.innerHTML = '<p>Ricevi ogni edizione il martedì mattina</p><a href="/">Iscriviti gratis →</a>';
-    el.appendChild(ctaEl);
+    card.appendChild(ctaEl);
+
+    el.appendChild(card);
 
   } catch(e) {
     el.innerHTML = '<p>Errore nel caricamento.</p>';
