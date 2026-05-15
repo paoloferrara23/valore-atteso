@@ -722,19 +722,26 @@ async function crLoadIgPosts(){
     if(!Array.isArray(posts)||!posts.length){el.innerHTML='<div class="cr-box">Nessun post in archivio.</div>';return}
     el.innerHTML='<div class="cr-ig-list">'+posts.map(p=>{
       const stato=p.stato||'bozza';
-      const btnApprova=stato!=='approvato'?'<button class="cr-run-btn" onclick="igSetStato('+p.id+',\'approvato\',this)">Approva</button>':'';
-      const btnPubblicato=stato!=='pubblicato'?'<button class="cr-run-btn" onclick="igSetStato('+p.id+',\'pubblicato\',this)">Pubblicato</button>':'';
+      const btnApprova=stato!=='approvato'?'<button class="cr-run-btn cr-ig-btn" data-id="'+p.id+'" data-stato="approvato">Approva</button>':'';
+      const btnPubblicato=stato!=='pubblicato'?'<button class="cr-run-btn cr-ig-btn" data-id="'+p.id+'" data-stato="pubblicato">Pubblicato</button>':'';
       return '<div class="cr-ig-post"><div class="cr-ig-post-head"><div><div class="cr-ig-tipo">#'+p.post_num+' · '+esc(p.tipo||'')+'</div><div style="font-family:var(--sf);font-size:1rem;font-weight:600;margin-top:3px">'+esc((p.argomento||'').slice(0,80))+'</div>'+(p.dato_principale?'<div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);margin-top:3px">'+esc(p.dato_principale)+'</div>':'')+'</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="cr-ig-stato '+stato+'">'+stato+'</span><div style="display:flex;gap:5px">'+btnApprova+btnPubblicato+'</div></div></div><div style="font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:4px">'+(p.pubblicato_il||'')+'</div></div>';
     }).join('')+'</div>';
   }catch(e){el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>'}
 }
 async function igSetStato(id,stato,btn){
-  btn.disabled=true;btn.textContent='...';
+  if(btn){btn.disabled=true;btn.textContent='...';}
   try{
     await fetch(SURL+'/rest/v1/instagram_posts?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'},body:JSON.stringify({stato})});
     crLoadIgPosts();
-  }catch(e){btn.disabled=false;btn.textContent='Err'}
+  }catch(e){if(btn){btn.disabled=false;btn.textContent='Err';}}
 }
+document.addEventListener('click',function(e){
+  const btn=e.target.closest('.cr-ig-btn');
+  if(!btn)return;
+  const id=btn.dataset.id;
+  const stato=btn.dataset.stato;
+  if(id&&stato)igSetStato(id,stato,btn);
+});
 
 /* ── ISCRITTI ── */
 let allSubs=[];
@@ -773,7 +780,7 @@ function subsFilter(){
 
 /* ── ESEGUI AGENTE ── */
 async function crRunAgent(key){
-  if(!confirm('Eseguire manualmente l'agente '+key+'?'))return;
+  if(!confirm('Eseguire manualmente l\'agente '+key+'?'))return;
   const st=document.createElement('div');
   st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
   document.getElementById('cr-agents-list').appendChild(st);
