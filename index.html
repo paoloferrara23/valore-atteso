@@ -233,6 +233,32 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 @media(max-width:520px){
   .hero{padding:42px 18px 36px}.hero h1{font-size:clamp(2.5rem,10.7vw,3.25rem);letter-spacing:-1.15px;line-height:1.06}.hero-sub{font-size:18px}.signup-card{padding:14px;border-radius:22px}.email{height:52px;font-size:18px}.email::placeholder{font-size:18px}.submit{height:52px;min-width:132px}.preview-inline{min-height:60px}.hero-microcopy{grid-template-columns:1fr}.hero-microcopy div{padding:12px 14px}.hero-microcopy div strong{font-size:18px}.pillar{width:auto}.final-signup .signup-row{flex-direction:row}
 }
+
+.cr-composer-wrap{display:flex;flex-direction:column;gap:14px}
+.cr-composer-label{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cr-composer-input{width:100%;border:1px solid var(--rule);background:var(--cream);border-radius:14px;padding:10px 14px;font-family:var(--sf);font-size:14px;color:var(--ink);outline:none;resize:vertical}
+.cr-subs-table{width:100%;border-collapse:collapse;font-size:13px}
+.cr-subs-table th{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule)}
+.cr-subs-table td{padding:8px 12px;border-bottom:1px solid rgba(206,195,178,.4);font-family:var(--mn);font-size:10px;color:var(--ink2)}
+.cr-subs-table tr:last-child td{border-bottom:none}
+.cr-source-badge{display:inline-block;padding:2px 7px;border-radius:999px;font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;background:var(--cream2);color:var(--muted);border:1px solid var(--rule)}
+.cr-growth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.cr-run-btn{height:26px;border:1px solid var(--rule);border-radius:999px;background:transparent;color:var(--muted);font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:0 10px;cursor:pointer;white-space:nowrap;transition:.15s}
+.cr-run-btn:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.cr-agent-actions{display:flex;gap:6px;margin-top:6px}
+.cr-ig-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.cr-ig-post{background:var(--white);border:1px solid var(--rule);border-radius:14px;padding:14px}
+.cr-ig-post-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.cr-ig-tipo{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold)}
+.cr-ig-stato{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--rule)}
+.cr-ig-stato.bozza{color:var(--muted)}
+.cr-ig-stato.approvato{color:var(--green);border-color:rgba(27,67,50,.3);background:rgba(27,67,50,.06)}
+.cr-ig-stato.pubblicato{color:var(--deepgold);border-color:rgba(142,107,51,.3);background:rgba(142,107,51,.06)}
+.cr-ed-status-box{background:var(--white);border:1px solid var(--rule);border-radius:18px;padding:18px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cr-ed-item{padding:8px 0;border-bottom:1px solid var(--rule)}
+.cr-ed-item:last-child{border-bottom:none}
+.cr-ed-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cr-ed-val{font-family:var(--sf);font-size:1.05rem;font-weight:600;letter-spacing:-.2px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -378,7 +404,7 @@ function crRenderAgents(runs){
   el.innerHTML=AGENT_SCHEDULE.filter(a=>a.key!=='approval').map(a=>{
     const r=latest[a.key];
     const ok=r&&r.status!=='error';
-    return `<div class="cr-agent"><span class="cr-dot ${ok?'ok':(r?'err':'')}"></span><div><div class="cr-agent-name">${a.name}</div><div class="cr-agent-desc"><strong>${a.day} · ${a.time}</strong><br>${r?('Ultimo run: '+new Date(r.created_at).toLocaleDateString('it-IT')+' · '+r.status):'Nessun run recente'}<br>${r&&r.summary?esc(r.summary).slice(0,110):a.desc}</div></div></div>`;
+    return `<div class="cr-agent"><span class="cr-dot ${ok?'ok':(r?'err':'')}"></span><div style="flex:1"><div class="cr-agent-name">${a.name}</div><div class="cr-agent-desc"><strong>${a.day} · ${a.time}</strong><br>${r?('Ultimo run: '+new Date(r.created_at).toLocaleDateString('it-IT')+' · '+r.status):'Nessun run recente'}<br>${r&&r.summary?esc(r.summary).slice(0,110):a.desc}</div><div class="cr-agent-actions"><button class="cr-run-btn" onclick="crRunAgent('${a.key}')">▶ Esegui ora</button></div></div></div>`;
   }).join('');
   crRenderSchedule();
   crRenderOrg();
@@ -643,6 +669,127 @@ async function bibLoad(){
 }
 
 function openCookieSettings(){alert('Cookie manager in configurazione. Collega qui iubenda, Cookiebot o CookieYes.')}
+
+/* ── COMUNICAZIONI ── */
+function commPreview(){
+  const obj=document.getElementById('comm-oggetto').value.trim();
+  const body=document.getElementById('comm-body').value.trim();
+  const prev=document.getElementById('comm-preview');
+  if(!obj||!body){prev.style.display='none';return}
+  prev.style.display='block';
+  prev.innerHTML='<strong style="font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">OGGETTO</strong><br>'+esc(obj)+'<br><br><strong style="font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">MESSAGGIO</strong><br>'+esc(body).replace(/\n/g,'<br>');
+}
+async function commInvia(){
+  const obj=document.getElementById('comm-oggetto').value.trim();
+  const body=document.getElementById('comm-body').value.trim();
+  const tipo=document.getElementById('comm-tipo').value;
+  const segmento=document.getElementById('comm-segmento').value;
+  const st=document.getElementById('comm-status');
+  if(!obj||!body){st.className='cr-status err';st.style.display='block';st.textContent='Compila oggetto e messaggio.';return}
+  if(!confirm('Inviare questa comunicazione agli iscritti?'))return;
+  st.className='cr-status';st.style.display='block';st.textContent='Invio in corso...';
+  try{
+    const r=await fetch('/api/send-communication',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:obj,body,tipo,segmento})});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Comunicazione inviata a <strong>'+d.sent+'</strong> iscritti.';document.getElementById('comm-oggetto').value='';document.getElementById('comm-body').value='';document.getElementById('comm-preview').style.display='none';}
+    else throw new Error(d.error||'Errore invio');
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+async function crLoadEditionStatus(){
+  try{
+    const [pubR,bozR]=await Promise.all([
+      fetch(SURL+'/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=num,title,date',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch(SURL+'/rest/v1/editions?published=eq.false&select=id',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+    ]);
+    const pub=await pubR.json();const boz=await bozR.json();
+    const last=pub&&pub[0];
+    if(last){
+      document.getElementById('cr-ed-ultima').textContent='#'+last.num+' · '+(last.title||'').slice(0,40);
+      document.getElementById('cr-ed-prossima').textContent='#'+String(parseInt(last.num,10)+1).padStart(3,'0');
+    }
+    document.getElementById('cr-ed-bozze').textContent=(boz&&boz.length)||0;
+    document.getElementById('cr-ed-subs2').textContent=crCtx.subs||'—';
+  }catch(e){console.error(e)}
+}
+async function crLoadIgPosts(){
+  const el=document.getElementById('cr-ig-posts-list');
+  if(!el)return;
+  try{
+    const r=await fetch(SURL+'/rest/v1/instagram_posts?order=post_num.desc&limit=15&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const posts=await r.json();
+    if(!Array.isArray(posts)||!posts.length){el.innerHTML='<div class="cr-box">Nessun post in archivio.</div>';return}
+    el.innerHTML='<div class="cr-ig-list">'+posts.map(p=>{
+      const stato=p.stato||'bozza';
+      return '<div class="cr-ig-post"><div class="cr-ig-post-head"><div><div class="cr-ig-tipo">#'+p.post_num+' · '+esc(p.tipo||'')+'</div><div style="font-family:var(--sf);font-size:1rem;font-weight:600;margin-top:3px">'+esc((p.argomento||'').slice(0,80))+'</div>'+(p.dato_principale?'<div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);margin-top:3px">'+esc(p.dato_principale)+'</div>':'')+'</div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="cr-ig-stato '+stato+'">'+stato+'</span><div style="display:flex;gap:5px">'+(stato!=='approvato'?'<button class="cr-run-btn" onclick="igSetStato('+p.id+','approvato',this)">Approva</button>':'')+(stato!=='pubblicato'?'<button class="cr-run-btn" onclick="igSetStato('+p.id+','pubblicato',this)">Pubblicato</button>':'')+'</div></div></div><div style="font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:4px">'+(p.pubblicato_il||'')+'</div></div>';
+    }).join('')+'</div>';
+  }catch(e){el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>'}
+}
+async function igSetStato(id,stato,btn){
+  btn.disabled=true;btn.textContent='...';
+  try{
+    await fetch(SURL+'/rest/v1/instagram_posts?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'},body:JSON.stringify({stato})});
+    crLoadIgPosts();
+  }catch(e){btn.disabled=false;btn.textContent='Err'}
+}
+
+/* ── ISCRITTI ── */
+let allSubs=[];
+async function crLoadIscritti(){
+  try{
+    const r=await fetch(SURL+'/rest/v1/subscribers?select=email,source,created_at,confirmed&order=created_at.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    allSubs=await r.json()||[];
+    const confirmed=allSubs.filter(s=>s.confirmed);
+    const now=Date.now();
+    const d7=confirmed.filter(s=>now-new Date(s.created_at).getTime()<7*864e5).length;
+    const d30=confirmed.filter(s=>now-new Date(s.created_at).getTime()<30*864e5).length;
+    document.getElementById('cr-g-total').textContent=confirmed.length;
+    document.getElementById('cr-g-7d').textContent='+'+d7;
+    document.getElementById('cr-g-30d').textContent='+'+d30;
+    const sources={};
+    confirmed.forEach(s=>{const k=s.source||'diretto';sources[k]=(sources[k]||0)+1});
+    const srcEl=document.getElementById('cr-sources-chart');
+    srcEl.innerHTML=Object.entries(sources).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{
+      const pct=Math.round(v/confirmed.length*100);
+      return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:90px">'+esc(k)+'</div><div style="flex:1;height:8px;background:var(--cream2);border-radius:999px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--deepgold);border-radius:999px"></div></div><div style="font-family:var(--mn);font-size:9px;color:var(--ink);min-width:50px;text-align:right">'+v+' · '+pct+'%</div></div>';
+    }).join('');
+    subsRender(confirmed);
+  }catch(e){console.error('iscritti',e)}
+}
+function subsRender(subs){
+  const tbody=document.getElementById('cr-subs-tbody');
+  if(!tbody)return;
+  document.getElementById('subs-count').textContent=subs.length+' iscritti';
+  tbody.innerHTML=subs.map(s=>'<tr><td>'+esc(s.email)+'</td><td><span class="cr-source-badge">'+esc(s.source||'diretto')+'</span></td><td>'+(s.created_at?new Date(s.created_at).toLocaleDateString('it-IT'):'-')+'</td><td style="color:'+(s.confirmed?'var(--green)':'var(--muted)')+'>'+(s.confirmed?'confermato':'in attesa')+'</td></tr>').join('');
+}
+function subsFilter(){
+  const q=(document.getElementById('subs-search').value||'').toLowerCase().trim();
+  const confirmed=allSubs.filter(s=>s.confirmed);
+  subsRender(q?confirmed.filter(s=>s.email.toLowerCase().includes(q)||(s.source||'').toLowerCase().includes(q)):confirmed);
+}
+
+/* ── ESEGUI AGENTE ── */
+async function crRunAgent(key){
+  if(!confirm('Eseguire manualmente l'agente '+key+'?'))return;
+  const st=document.createElement('div');
+  st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
+  document.getElementById('cr-agents-list').appendChild(st);
+  try{
+    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:key})});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Agente '+key+' avviato.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+  setTimeout(()=>{if(st.parentNode)st.remove()},8000);
+}
+
+/* ── OVERRIDE crTab ── */
+const _origCrTab=crTab;
+function crTab(name,btn){
+  _origCrTab(name,btn);
+  if(name==='comunicazioni'){crLoadEditionStatus();crLoadIgPosts()}
+  if(name==='iscritti'){crLoadIscritti()}
+}
+
 function runSelfTests(){
   console.assert(esc('<x&y>')==='&lt;x&amp;y&gt;','esc should HTML-escape');
   console.assert(firstSentence('a  b').includes('a b'),'firstSentence should normalize whitespace');
@@ -675,6 +822,8 @@ runSelfTests();
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('biblioteca',this)">Biblioteca</button>
+        <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
+        <button class="cr-tab" onclick="crTab('iscritti',this)">Iscritti</button>
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
     </div>
@@ -730,6 +879,53 @@ runSelfTests();
         <div id="bib-status" class="cr-status"></div>
       </div>
       <div id="bib-list"></div>
+
+    <div class="cr-panel" id="cr-comunicazioni">
+      <div class="cr-sec-title">Stato edizione corrente</div>
+      <div class="cr-ed-status-box">
+        <div>
+          <div class="cr-ed-item"><div class="cr-ed-label">Ultima pubblicata</div><div class="cr-ed-val" id="cr-ed-ultima">—</div></div>
+          <div class="cr-ed-item"><div class="cr-ed-label">Bozze in attesa</div><div class="cr-ed-val" id="cr-ed-bozze">—</div></div>
+        </div>
+        <div>
+          <div class="cr-ed-item"><div class="cr-ed-label">Prossima edizione</div><div class="cr-ed-val" id="cr-ed-prossima">—</div></div>
+          <div class="cr-ed-item"><div class="cr-ed-label">Iscritti attivi</div><div class="cr-ed-val" id="cr-ed-subs2">—</div></div>
+        </div>
+      </div>
+      <div class="cr-sec-title">Invia comunicazione agli iscritti</div>
+      <div class="cr-box">
+        <div class="cr-composer-wrap">
+          <div><div class="cr-composer-label">Tipo</div><select class="cr-input" id="comm-tipo" style="width:220px"><option value="annuncio">Annuncio</option><option value="ritardo">Avviso ritardo</option><option value="speciale">Contenuto speciale</option><option value="sondaggio">Sondaggio</option><option value="altro">Altro</option></select></div>
+          <div><div class="cr-composer-label">Oggetto email</div><input class="cr-input" id="comm-oggetto" placeholder="es. Un aggiornamento da Valore Atteso" style="width:100%;height:38px;border-radius:999px;padding:0 16px"></div>
+          <div><div class="cr-composer-label">Messaggio</div><textarea class="cr-composer-input" id="comm-body" rows="6" placeholder="Scrivi il messaggio agli iscritti..."></textarea></div>
+          <div><div class="cr-composer-label">Segmento</div><select class="cr-input" id="comm-segmento" style="width:220px"><option value="tutti">Tutti gli iscritti confermati</option><option value="ultimi30">Iscritti ultimi 30 giorni</option></select></div>
+          <div style="display:flex;gap:10px"><button class="cr-btn light" onclick="commPreview()">Anteprima</button><button class="cr-btn gold" onclick="commInvia()">Invia comunicazione</button></div>
+          <div id="comm-preview" style="display:none;background:var(--cream2);border:1px solid var(--rule);border-radius:14px;padding:14px;font-size:14px;line-height:1.7;color:var(--ink2)"></div>
+          <div id="comm-status" class="cr-status"></div>
+        </div>
+      </div>
+      <div class="cr-sec-title">Post Instagram — approvazione</div>
+      <div id="cr-ig-posts-list"><div class="cr-box" style="color:var(--muted);font-family:var(--mn);font-size:10px">Apri il pannello per caricare i post.</div></div>
+    </div>
+
+    <div class="cr-panel" id="cr-iscritti">
+      <div class="cr-sec-title">Crescita iscritti</div>
+      <div class="cr-growth-grid">
+        <div class="cr-card"><div class="cr-card-label">Totale confermati</div><div class="cr-card-val" id="cr-g-total">—</div></div>
+        <div class="cr-card"><div class="cr-card-label">Ultimi 7 giorni</div><div class="cr-card-val" id="cr-g-7d">—</div></div>
+        <div class="cr-card"><div class="cr-card-label">Ultimi 30 giorni</div><div class="cr-card-val" id="cr-g-30d">—</div></div>
+      </div>
+      <div class="cr-sec-title">Fonti di acquisizione</div>
+      <div class="cr-box" id="cr-sources-chart" style="min-height:60px"></div>
+      <div class="cr-sec-title">Lista iscritti</div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;align-items:center">
+        <input class="cr-input" id="subs-search" placeholder="Cerca email..." style="max-width:280px" oninput="subsFilter()">
+        <span id="subs-count" style="font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.08em"></span>
+      </div>
+      <div style="overflow:auto;max-height:460px;border:1px solid var(--rule);border-radius:14px;background:var(--white)">
+        <table class="cr-subs-table"><thead><tr><th>Email</th><th>Source</th><th>Iscritto il</th><th>Stato</th></tr></thead><tbody id="cr-subs-tbody"></tbody></table>
+      </div>
+    </div>
     </div>
   </div>
 </div>
