@@ -266,7 +266,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 <div class="nav-wrap"><nav class="nav"><a class="logo" href="/">Valore Atteso</a><div class="nav-links"><a class="nav-link" href="#newsletter">Newsletter</a><a class="nav-link" href="/archivio.html">Archivio</a><a class="nav-link" href="/glossario.html">Glossario</a><a class="nav-link" href="#about">About</a><a class="nav-cta" href="#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button></nav></div>
 <div class="mobile-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio.html" onclick="closeMenu()">Archivio</a><a href="/glossario.html" onclick="closeMenu()">Glossario</a><a class="mob-cta" href="#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
 
-<section class="hero"><div><div class="hero-kicker">Finance</div><h1>Il calcio dei numeri,<br><span>non dei goal.</span></h1><p class="hero-sub">Bilanci, M&A e strategie di crescita<br>nel business dello sport.</p><div class="signup-card" id="signup-top"><div class="success" id="form-ok">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="form-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit" id="form-btn" onclick="doSignup('form-email','form-btn','form-ok','form-check')" disabled>Iscriviti →</button></div><div class="audience-note">Per advisor, investitori, manager e operatori del settore sportivo.</div><label class="check"><input type="checkbox" id="form-check" onchange="toggleBtn('form-btn','form-check')"><span>Accetto la <a href="/privacy.html" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label></div><div class="btn-row"><a class="preview-inline" id="preview-link" href="/archivio.html"><span>Ultima edizione</span> Leggi preview →</a></div><div class="hero-microcopy"><div><strong>1 email</strong><span>ogni martedì</span></div><div><strong>8 minuti</strong><span>lettura essenziale</span></div><div><strong>Gratuita</strong><span>accesso libero</span></div></div><div class="credibility">Corporate Finance · Sport Business · Analisi indipendente</div></div><aside class="preview-card" aria-label="Ultima edizione newsletter"><div class="preview-top"><div class="preview-logo">Valore Atteso</div><div class="preview-badge" id="preview-badge">Ultima edizione</div></div><div class="preview-title" id="preview-title">Caricamento ultima edizione...</div><p class="preview-text" id="preview-text">Stiamo recuperando l'ultima analisi pubblicata dall'archivio.</p><div class="kpi-box"><div class="kpi-row"><span>Framework</span><span id="preview-focus">Finance</span></div><div class="kpi-row"><span>Lettura</span><span>~8 min</span></div><div class="kpi-row"><span>Frequenza</span><span>Martedì</span></div></div><div class="mini-chart"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span></div><div class="preview-foot">Bilanci · Deal · Metriche</div></aside></section>
+<section class="hero"><div><div class="hero-kicker">Finance</div><h1>Il calcio dei numeri,<br><span>non dei goal.</span></h1><p class="hero-sub">Bilanci, M&A e strategie di crescita<br>nel business dello sport.</p><div class="signup-card" id="signup-top"><div class="success" id="form-ok">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="form-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit" id="form-btn" onclick="doSignup('form-email','form-btn','form-ok','form-check')" disabled>Iscriviti →</button></div><div class="audience-note">Per advisor, investitori, manager e operatori del settore sportivo.</div><label class="check"><input type="checkbox" id="form-check" onchange="toggleBtn('form-btn','form-check')"><span>Accetto la <a href="/privacy.html" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label></div><div class="btn-row"><a class="preview-inline" id="preview-link" href="/archivio.html"><span>Ultima edizione</span> Leggi preview →</a></div><div class="hero-microcopy"><div><strong>1 email</strong><span>ogni martedì</span></div><div><strong>8 minuti</strong><span>lettura essenziale</span></div><div><strong>Gratuita</strong><span>accesso libero</span></div></div><div class="credibility">Corporate Finance · Sport Business · Analisi indipendente</div></div><aside class="preview-card" aria-label="Ultima edizione newsletter"><div class="preview-top"><div class="preview-logo">Valore Atteso</div><div class="preview-badge" id="preview-badge">Ultima edizione</div></div><div class="preview-title" id="preview-title">Ultima edizione</div><p class="preview-text" id="preview-text">Ogni martedì: bilancio, deal e metrica del business del calcio europeo.</p><div class="kpi-box"><div class="kpi-row"><span>Framework</span><span id="preview-focus">Finance</span></div><div class="kpi-row"><span>Lettura</span><span>~8 min</span></div><div class="kpi-row"><span>Frequenza</span><span>Martedì</span></div></div><div class="mini-chart"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span></div><div class="preview-foot">Bilanci · Deal · Metriche</div></aside></section>
 
 <section class="strip"><div class="strip-in"><div class="pillar"><span>01</span>Club finance</div><div class="pillar"><span>02</span>UEFA & FFP</div><div class="pillar"><span>03</span>Private equity</div><div class="pillar"><span>04</span>M&A</div><div class="pillar"><span>05</span>Debito</div><div class="pillar"><span>06</span>Strategy</div></div></section>
 
@@ -321,7 +321,7 @@ async function loadLatestPreview(){
     document.getElementById('preview-focus').textContent='Finance';
     const previewLink=document.getElementById('preview-link');
     if(previewLink&&e.num)previewLink.href='/archivio.html?edition='+e.num;
-  }catch(err){console.error('Errore preview ultima edizione',err)}
+  }catch(err){console.error('Errore preview ultima edizione',err);}
 }
 
 function toggleBtn(btnId,checkId){
@@ -373,6 +373,8 @@ function crTab(name,btn){
   if(name==='redazione')crLoadBozze();
   if(name==='biblioteca')bibLoad();
   if(name==='dashboard')crLoadCtx();
+  if(name==='comunicazioni'){crLoadEditionStatus();crLoadIgPosts();}
+  if(name==='iscritti')crLoadIscritti();
 }
 async function crInit(){
   await crLoadCtx();
@@ -780,14 +782,6 @@ async function crRunAgent(key){
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
   setTimeout(()=>{if(st.parentNode)st.remove()},8000);
-}
-
-/* ── OVERRIDE crTab ── */
-const _origCrTab=crTab;
-function crTab(name,btn){
-  _origCrTab(name,btn);
-  if(name==='comunicazioni'){crLoadEditionStatus();crLoadIgPosts()}
-  if(name==='iscritti'){crLoadIscritti()}
 }
 
 function runSelfTests(){
