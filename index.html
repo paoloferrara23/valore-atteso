@@ -699,17 +699,15 @@ async function commInvia(){
 }
 async function crLoadEditionStatus(){
   try{
-    const [pubR,bozR]=await Promise.all([
-      fetch(SURL+'/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=num,title,date',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/editions?published=eq.false&select=id',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
-    ]);
-    const pub=await pubR.json();const boz=await bozR.json();
-    const last=pub&&pub[0];
+    const edR=await fetch('/api/cr-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:CR_PWD,type:'edition_status'})});
+    const edD=await edR.json();
+    const last=edD.pub;
+    const boz={length:edD.bozze||0};
     if(last){
       document.getElementById('cr-ed-ultima').textContent='#'+last.num+' · '+(last.title||'').slice(0,40);
       document.getElementById('cr-ed-prossima').textContent='#'+String(parseInt(last.num,10)+1).padStart(3,'0');
     }
-    document.getElementById('cr-ed-bozze').textContent=(boz&&boz.length)||0;
+    document.getElementById('cr-ed-bozze').textContent=edD.bozze||0;
     document.getElementById('cr-ed-subs2').textContent=crCtx.subs||'—';
   }catch(e){console.error(e)}
 }
@@ -717,8 +715,9 @@ async function crLoadIgPosts(){
   const el=document.getElementById('cr-ig-posts-list');
   if(!el)return;
   try{
-    const r=await fetch(SURL+'/rest/v1/instagram_posts?order=post_num.desc&limit=15&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    const posts=await r.json();
+    const r=await fetch('/api/cr-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:CR_PWD,type:'instagram_posts'})});
+    const d2=await r.json();
+    const posts=d2.data||[];
     if(!Array.isArray(posts)||!posts.length){el.innerHTML='<div class="cr-box">Nessun post in archivio.</div>';return}
     el.innerHTML='<div class="cr-ig-list">'+posts.map(p=>{
       const stato=p.stato||'bozza';
@@ -747,8 +746,9 @@ document.addEventListener('click',function(e){
 let allSubs=[];
 async function crLoadIscritti(){
   try{
-    const r=await fetch(SURL+'/rest/v1/subscribers?select=email,source,created_at,confirmed&order=created_at.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    allSubs=await r.json()||[];
+    const r=await fetch('/api/cr-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pwd:CR_PWD,type:'subscribers'})});
+    const d=await r.json();
+    allSubs=d.data||[];
     const confirmed=allSubs.filter(s=>s.confirmed);
     const now=Date.now();
     const d7=confirmed.filter(s=>now-new Date(s.created_at).getTime()<7*864e5).length;
