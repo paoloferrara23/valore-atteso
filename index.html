@@ -396,7 +396,11 @@ async function crLoadCtx(){
     document.getElementById('cr-d-eds').textContent=crCtx.eds;
     document.getElementById('cr-d-last').textContent=crCtx.last?'#'+crCtx.last.num+' · '+crCtx.last.date:'—';
     crRenderAgents(runs||[]);
-  }catch(e){console.error(e)}
+  }catch(e){
+    console.error('edition status',e);
+    const el=document.getElementById('cr-ed-ultima');
+    if(el)el.textContent='ERR: '+e.message;
+  }
 }
 function crRenderAgents(runs){
   const el=document.getElementById('cr-agents-list');
@@ -764,7 +768,11 @@ async function crLoadIscritti(){
       return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:90px">'+esc(k)+'</div><div style="flex:1;height:8px;background:var(--cream2);border-radius:999px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--deepgold);border-radius:999px"></div></div><div style="font-family:var(--mn);font-size:9px;color:var(--ink);min-width:50px;text-align:right">'+v+' · '+pct+'%</div></div>';
     }).join('');
     subsRender(confirmed);
-  }catch(e){console.error('iscritti',e)}
+  }catch(e){
+    console.error('iscritti',e);
+    const el=document.getElementById('cr-g-total');
+    if(el)el.textContent='ERR: '+e.message;
+  }
 }
 function subsRender(subs){
   const tbody=document.getElementById('cr-subs-tbody');
