@@ -768,9 +768,19 @@ async function crLoadIscritti(){
 }
 function subsRender(subs){
   const tbody=document.getElementById('cr-subs-tbody');
-  if(!tbody)return;
+  if(!tbody){console.warn('tbody non trovato');return;}
   document.getElementById('subs-count').textContent=subs.length+' iscritti';
-  tbody.innerHTML=subs.map(s=>'<tr><td>'+esc(s.email)+'</td><td><span class="cr-source-badge">'+esc(s.source||'diretto')+'</span></td><td>'+(s.created_at?new Date(s.created_at).toLocaleDateString('it-IT'):'-')+'</td><td style="color:'+(s.confirmed?'var(--green)':'var(--muted)')+'>'+(s.confirmed?'confermato':'in attesa')+'</td></tr>').join('');
+  const rows=subs.map(s=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td>'+esc(s.email)+'</td><td><span class="cr-source-badge">'+esc(s.source||'diretto')+'</span></td><td>'+(s.created_at?new Date(s.created_at).toLocaleDateString('it-IT'):'-')+'</td>';
+    const td=document.createElement('td');
+    td.style.color=s.confirmed?'var(--green)':'var(--muted)';
+    td.textContent=s.confirmed?'confermato':'in attesa';
+    tr.appendChild(td);
+    return tr;
+  });
+  tbody.innerHTML='';
+  rows.forEach(r=>tbody.appendChild(r));
 }
 function subsFilter(){
   const q=(document.getElementById('subs-search').value||'').toLowerCase().trim();
