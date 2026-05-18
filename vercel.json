@@ -9,5 +9,13 @@
         { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.valoreatteso.com" }],
+      "destination": "https://valoreatteso.com/:path*",
+      "permanent": true
+    }
   ]
 }
