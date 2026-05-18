@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /rest/
+Disallow: /scripts/
+
+Sitemap: https://valoreatteso.com/sitemap.xml
