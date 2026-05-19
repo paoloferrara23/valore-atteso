@@ -235,7 +235,7 @@ function buildHtml(edition) {
         <td width="33%" align="center" style="border-right:1px solid #CEC3B2;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;">Seguici</div>
 <table cellpadding="0" cellspacing="0" border="0" align="center"><tr><td align="center">
-            <a href="https://instagram.com/valoreatteso" style="display:inline-block;width:36px;height:36px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;text-decoration:none;border-radius:8px;">
+            <a href="https://instagram.com/valoreatteso" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid #CEC3B2;background:#F0EBE1;text-decoration:none;border-radius:8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:10px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
           </td></tr></table>
@@ -252,8 +252,7 @@ function buildHtml(edition) {
       <tr><td style="border-top:1px solid #CEC3B2;padding:14px 0 18px;text-align:center;">
         <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;line-height:1.9;margin:0;">
           Hai ricevuto questa email perché sei iscritto a Valore Atteso.<br>
-          Per cancellarti rispondi a questa email con oggetto "cancellami" o
-          <a href="https://valoreatteso.com/api/unsubscribe?email={{EMAIL}}" style="color:#777066;text-decoration:underline;">clicca qui</a>.
+          Per cancellarti <a href="https://valoreatteso.com/cancella.html?email={{EMAIL}}" style="color:#777066;text-decoration:underline;">clicca qui</a>.
         </p>
       </td></tr>
     </table>
