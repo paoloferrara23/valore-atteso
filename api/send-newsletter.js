@@ -171,7 +171,7 @@ function buildHtml(edition) {
       <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:.06em;">
         Problemi di visualizzazione? <a href="https://valoreatteso.com/archivio.html" style="color:#C8A97A;text-decoration:underline;">Leggi online</a>
       </td>
-      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.3);">valoreatteso.com</td>
+      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:.08em;text-transform:uppercase;">Valore Atteso</td>
     </tr></table>
   </td></tr>
 
@@ -235,9 +235,11 @@ function buildHtml(edition) {
         </td>
         <td width="33%" align="center" style="border-right:1px solid #CEC3B2;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;">Seguici</div>
-          <a href="https://instagram.com/valoreatteso" style="display:inline-block;width:32px;height:32px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;line-height:32px;text-decoration:none;border-radius:6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:9px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
+<table cellpadding="0" cellspacing="0" border="0" align="center"><tr><td align="center">
+            <a href="https://instagram.com/valoreatteso" style="display:inline-block;width:36px;height:36px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;text-decoration:none;border-radius:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:10px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          </td></tr></table>
         </td>
         <td width="33%" style="padding-left:20px;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
