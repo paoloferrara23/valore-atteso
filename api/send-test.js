@@ -26,25 +26,7 @@ function buildHtml(edition) {
   const s2 = sections[1] || {};
   const s3 = sections[2] || {};
 
-  // KPI bar top — prende primo kpi da ogni sezione
-  const kpiBar = [
-    { label: '— ' + (s1.label || 'Il Bilancio'), value: s1.kpis?.[0]?.value || '', sub: s1.kpis?.[0]?.sub || '' },
-    { label: '— ' + (s2.label || 'Il Deal'),     value: s2.kpis?.[0]?.value || '', sub: s2.kpis?.[0]?.sub || '' },
-    { label: '— ' + (s3.label || 'La Metrica'),  value: s3.kpis?.[0]?.value || '', sub: s3.kpis?.[0]?.sub || '' },
-  ];
-
-  function renderKpiBar(items) {
-    return items.map((k, i) => {
-      const border = i < 2 ? 'border-right:1px solid #CEC3B2;' : '';
-      return `<td style="padding:20px 24px;${border}vertical-align:top;">
-        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.14em;color:#777066;text-transform:uppercase;margin-bottom:10px;">${esc(k.label)}</div>
-        <div style="font-family:Georgia,serif;font-size:30px;font-weight:900;color:#1C1914;letter-spacing:-1px;line-height:1;margin-bottom:5px;">${esc(k.value)}</div>
-        <div style="font-family:Georgia,serif;font-size:12px;color:#8E6B33;font-style:italic;">${esc(k.sub)}</div>
-      </td>`;
-    }).join('');
-  }
-
-  function renderKpiRow(kpis) {
+    function renderKpiRow(kpis) {
     if (!kpis || !kpis.length) return '';
     const rows = kpis.slice(0, 3).map((k, i) => {
       const border = i < Math.min(kpis.length, 3) - 1 ? 'border-right:1px solid #CEC3B2;' : '';
@@ -204,12 +186,7 @@ function buildHtml(edition) {
     </div>` : ''}
   </td></tr>
 
-  <!-- KPI BAR -->
-  <tr><td style="background:#E7DFD2;border-bottom:1px solid #CEC3B2;">
-    <table class="kpi-top" width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr>${renderKpiBar(kpiBar)}</tr>
-    </table>
-  </td></tr>
+
 
   <!-- SEZIONI -->
   <tr><td>${sectionsHtml}</td></tr>
@@ -230,15 +207,13 @@ function buildHtml(edition) {
       <tr>
         <td width="33%" style="border-right:1px solid #CEC3B2;padding-right:20px;vertical-align:top;">
           <div style="font-family:Georgia,serif;font-size:15px;font-weight:900;color:#1C1914;letter-spacing:-.5px;margin-bottom:3px;">Valore Atteso</div>
-          <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;letter-spacing:.06em;line-height:1.6;">Il calcio dei numeri,<br>non dei goal.</div>
+          <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;letter-spacing:.06em;white-space:nowrap;">Il calcio dei numeri, non dei goal.</div>
         </td>
         <td width="33%" align="center" style="border-right:1px solid #CEC3B2;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;">Seguici</div>
-<table cellpadding="0" cellspacing="0" border="0" align="center"><tr><td align="center">
-            <a href="https://instagram.com/valoreatteso" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid #CEC3B2;background:#F0EBE1;text-decoration:none;border-radius:8px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:10px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </a>
-          </td></tr></table>
+<a href="https://instagram.com/valoreatteso" style="display:inline-block;text-decoration:none;line-height:1;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
         </td>
         <td width="33%" style="padding-left:20px;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
