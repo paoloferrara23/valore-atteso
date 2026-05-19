@@ -144,7 +144,8 @@ function buildHtml(edition) {
 <style>
 @media only screen and (max-width:600px){
   table[width="640"]{width:100%!important;}
-  .kpi-top td,.kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;}
+  .kpi-top td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
+  .kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
   h1{font-size:20px!important;letter-spacing:-.5px!important;}
   h2.subtitle{font-size:14px!important;}
   h2.section-title{font-size:17px!important;}
@@ -160,15 +161,17 @@ function buildHtml(edition) {
   ${esc(subtitle || opener || '')} · valoreatteso.com
 </div>
 
-<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;margin:0 auto;background:#F0EBE1;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
+<tr><td align="center" style="padding:0;">
+<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
 
   <!-- PREHEADER -->
   <tr><td style="background:#1C1914;padding:7px 28px;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.06em;">
-        Se non visualizzi correttamente — <a href="{{WEBVIEW_URL}}" style="color:#C8A97A;text-decoration:none;">clicca qui</a>
+      <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:.06em;">
+        Problemi di visualizzazione? <a href="https://valoreatteso.com/archivio.html" style="color:#C8A97A;text-decoration:underline;">Leggi online</a>
       </td>
-      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.2);">valoreatteso.com</td>
+      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.3);">valoreatteso.com</td>
     </tr></table>
   </td></tr>
 
@@ -217,7 +220,7 @@ function buildHtml(edition) {
 
   <!-- CTA -->
   <tr><td style="background:#1C1914;padding:32px 28px;text-align:center;">
-    <div style="font-family:'Courier New',monospace;font-size:7px;letter-spacing:.16em;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:12px;">Valore Atteso · Edizione #${esc(num)}</div>
+    <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:12px;">Edizione #${esc(num)}</div>
     <p style="font-family:Georgia,serif;font-size:14px;color:rgba(255,255,255,0.55);font-weight:300;line-height:1.6;margin:0 0 20px;">Leggi l'analisi completa con tutti i dati nell'archivio.</p>
     <a href="${process.env.SITE_URL || 'https://valoreatteso.com'}/archivio.html" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;">Leggi nell'archivio →</a>
   </td></tr>
@@ -232,18 +235,9 @@ function buildHtml(edition) {
         </td>
         <td width="33%" align="center" style="border-right:1px solid #CEC3B2;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;">Seguici</div>
-          <table cellpadding="0" cellspacing="0" border="0" align="center"><tr>
-            <td style="padding-right:8px;">
-              <a href="https://instagram.com/valoreatteso" style="display:block;width:28px;height:28px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;line-height:28px;text-decoration:none;">
-                <img src="https://valoreatteso.com/icons/ig.png" width="12" height="12" alt="Instagram" style="vertical-align:middle;">
-              </a>
-            </td>
-            <td>
-              <a href="https://linkedin.com/company/valoreatteso" style="display:block;width:28px;height:28px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;line-height:28px;text-decoration:none;">
-                <img src="https://valoreatteso.com/icons/li.png" width="12" height="12" alt="LinkedIn" style="vertical-align:middle;">
-              </a>
-            </td>
-          </tr></table>
+          <a href="https://instagram.com/valoreatteso" style="display:inline-block;width:32px;height:32px;border:1px solid #CEC3B2;background:#F0EBE1;text-align:center;line-height:32px;text-decoration:none;border-radius:6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-top:9px;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
         </td>
         <td width="33%" style="padding-left:20px;vertical-align:middle;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
@@ -257,13 +251,15 @@ function buildHtml(edition) {
       <tr><td style="border-top:1px solid #CEC3B2;padding:14px 0 18px;text-align:center;">
         <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;line-height:1.9;margin:0;">
           Hai ricevuto questa email perché sei iscritto a Valore Atteso.<br>
-          Puoi aggiornare le tue <a href="{{PREFS_URL}}" style="color:#777066;text-decoration:underline;">preferenze</a> o
-          <a href="{{UNSUB_URL}}" style="color:#777066;text-decoration:underline;">disiscriverti</a> in qualsiasi momento.
+          Per cancellarti rispondi a questa email con oggetto "cancellami" o
+          <a href="https://valoreatteso.com/api/unsubscribe?email={{EMAIL}}" style="color:#777066;text-decoration:underline;">clicca qui</a>.
         </p>
       </td></tr>
     </table>
   </td></tr>
 
+</table>
+</td></tr>
 </table>
 </body>
 </html>`;
@@ -304,9 +300,8 @@ module.exports = async function handler(req, res) {
     for (let i = 0; i < subs.length; i += BATCH) {
       const batch = subs.slice(i, i + BATCH);
       const personalizedHtml = (email) => html
-        .replace('{{UNSUB_URL}}', `${process.env.SITE_URL}/api/unsubscribe?email=${encodeURIComponent(email)}`)
-        .replace('{{PREFS_URL}}', `${process.env.SITE_URL}/preferenze?email=${encodeURIComponent(email)}`)
-        .replace('{{WEBVIEW_URL}}', `${process.env.SITE_URL}/archivio#${edition.num}`);
+        .replace('{{EMAIL}}', encodeURIComponent(email))
+        .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
 
       const results = await Promise.allSettled(
         batch.map(sub =>
