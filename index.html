@@ -425,6 +425,18 @@ function crRenderOrg(){
   if(!el)return;
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
+async function crSendTest(){
+  const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
+  const st=document.getElementById('cr-send-status');
+  if(!num){document.getElementById('cr-send-num').focus();return}
+  st.className='cr-status';st.style.display='block';st.textContent='Invio test in corso...';
+  try{
+    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato a '+d.sent_to;}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
 async function crSendExisting(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
   const st=document.getElementById('cr-send-status');
@@ -736,7 +748,14 @@ runSelfTests();
         <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
-      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-box">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+          <input class="cr-input" id="cr-send-num" placeholder="es. 003">
+          <button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button>
+          <button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button>
+        </div>
+        <div id="cr-send-status" class="cr-status"></div>
+      </div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
