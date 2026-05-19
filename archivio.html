@@ -36,7 +36,7 @@ button,input{font:inherit}
 /* NAV */
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--sf);font-size:2rem;font-weight:600;letter-spacing:-.8px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
+.nav-logo{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1.4px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
 .nav-links{display:flex;gap:28px;align-items:center;min-width:0}
 .nav-a{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
 .nav-a:hover,.nav-a.active{color:var(--ink)}
@@ -614,7 +614,8 @@ async function openArt(num){
       }
 
       // Grid body + right
-      const kpiRows = s.kpi_rows || s.kpis || [];
+      const rawKpis = s.kpis?.length ? s.kpis : (s.kpi_rows || []);
+          const kpiRows = rawKpis.map(k => ({...k, key: k.key || k.label || ''}));
       const hasRight = kpiRows.length || s.bars?.length || s.insight || s.note_box;
       const grid = document.createElement('div');
       grid.className = 'art-sec-grid';
@@ -665,7 +666,9 @@ async function openArt(num){
           table.className = 'art-data-table';
           kpiRows.forEach(k => {
             const tr = document.createElement('tr');
-            const td1 = document.createElement('td'); td1.className = 'edit-field edit-kpi-key'; td1.contentEditable = 'false'; td1.textContent = txt(k.key || k.label || '');
+            const td1 = document.createElement('td'); td1.className = 'edit-field edit-kpi-key'; td1.contentEditable = 'false';
+            td1.textContent = txt(k.key || k.label || '');
+            if(k.sub){ const sub = document.createElement('div'); sub.style.cssText = 'font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:2px;font-weight:400'; sub.textContent = txt(k.sub); td1.appendChild(sub); }
             const td2 = document.createElement('td'); td2.className = 'edit-field edit-kpi-val'; td2.contentEditable = 'false'; td2.textContent = (k.stimato?'~':'') + txt(k.value||'');
             if(k.color) td2.style.color = k.color;
             tr.appendChild(td1); tr.appendChild(td2); table.appendChild(tr);
