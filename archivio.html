@@ -36,7 +36,7 @@ button,input{font:inherit}
 /* NAV */
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1.4px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
+.nav-logo{font-family:var(--sf);font-size:2rem;font-weight:600;letter-spacing:-.8px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
 .nav-links{display:flex;gap:28px;align-items:center;min-width:0}
 .nav-a{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
 .nav-a:hover,.nav-a.active{color:var(--ink)}
@@ -121,9 +121,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-sec-grid{display:grid;grid-template-columns:1fr 260px;gap:0;padding:0 32px 28px}
 .art-sec-body-col{padding-right:28px;border-right:1px solid var(--rule)}
 .art-body{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.82;white-space:pre-line}
-.art-verdict{margin-top:20px;background:var(--ink);padding:18px 20px;border-left:3px solid var(--gold)}
-.art-verdict-label{font-family:var(--mn);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.art-verdict-text{font-family:var(--sf);font-size:15px;color:var(--white);line-height:1.65;font-weight:400}
+.art-verdict{font-family:var(--mn);font-size:10px;color:var(--deepgold);letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}
+.art-verdict::before{content:'→'}
 .art-sources{font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.03em;line-height:1.65;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
 
 /* RIGHT COL */
@@ -633,17 +632,9 @@ async function openArt(num){
 
       if(s.verdict){
         const vEl = document.createElement('div');
-        vEl.className = 'art-verdict';
-        const vLabel = document.createElement('div');
-        vLabel.className = 'art-verdict-label';
-        vLabel.textContent = '— La nostra lettura';
-        const vText = document.createElement('div');
-        vText.className = 'art-verdict-text edit-field edit-verdict';
-        vText.contentEditable = 'false';
-        const rawV = txt(s.verdict);
-        vText.textContent = rawV === rawV.toUpperCase() ? rawV[0] + rawV.slice(1).toLowerCase() : rawV;
-        vEl.appendChild(vLabel);
-        vEl.appendChild(vText);
+        vEl.className = 'art-verdict edit-field edit-verdict';
+        vEl.contentEditable = 'false';
+        vEl.textContent = txt(s.verdict);
         bodyCol.appendChild(vEl);
       }
 
