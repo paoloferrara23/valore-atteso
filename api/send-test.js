@@ -1,11 +1,7 @@
-// api/send-test.js — Invia email di test a un singolo indirizzo
+// api/send-test.js
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const resend = new Resend(process.env.RESEND_KEY);
 
 function esc(s) {
@@ -202,27 +198,37 @@ function buildHtml(edition) {
   </td></tr>
 
   <!-- FOOTER -->
-  <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:22px 28px 0;">
+  <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:24px 28px 0;">
+
+    <!-- Logo + tagline -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td width="33%" style="border-right:1px solid #CEC3B2;padding-right:20px;vertical-align:top;">
+        <td style="padding-bottom:16px;">
           <div style="font-family:Georgia,serif;font-size:15px;font-weight:900;color:#1C1914;letter-spacing:-.5px;margin-bottom:3px;">Valore Atteso</div>
-          <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;letter-spacing:.06em;white-space:nowrap;">Il calcio dei numeri, non dei goal.</div>
+          <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;letter-spacing:.06em;">Il calcio dei numeri, non dei goal.</div>
         </td>
-        <td width="33%" align="center" style="border-right:1px solid #CEC3B2;vertical-align:middle;">
-          <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px;">Seguici</div>
-<a href="https://instagram.com/valoreatteso" style="display:inline-block;text-decoration:none;line-height:1;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777066" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </tr>
+    </table>
+
+    <!-- Instagram + Contatti -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #CEC3B2;padding-top:14px;">
+      <tr>
+        <td style="vertical-align:top;padding-bottom:16px;">
+          <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;">Seguici</div>
+          <a href="https://instagram.com/valoreatteso" style="text-decoration:none;">
+            <img src="https://valoreatteso.com/icons/instagram.png" width="24" height="24" alt="@valoreatteso" style="display:block;border:0;">
           </a>
         </td>
-        <td width="33%" style="padding-left:20px;vertical-align:middle;">
+        <td align="right" style="vertical-align:top;padding-bottom:16px;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
-          <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:8px;">valoreatteso.com</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:10px;">valoreatteso.com</div>
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Contatti</div>
           <div style="font-family:'Courier New',monospace;font-size:9px;color:#4C453D;">info@valoreatteso.com</div>
         </td>
       </tr>
     </table>
+
+    <!-- Legal -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr><td style="border-top:1px solid #CEC3B2;padding:14px 0 18px;text-align:center;">
         <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;line-height:1.9;margin:0;">
@@ -231,6 +237,7 @@ function buildHtml(edition) {
         </p>
       </td></tr>
     </table>
+
   </td></tr>
 
 </table>
@@ -242,37 +249,18 @@ function buildHtml(edition) {
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
   try {
     const { edition_num, test_email } = req.body;
     if (!edition_num) return res.status(400).json({ error: 'edition_num obbligatorio' });
-
     const to = test_email || process.env.APPROVAL_EMAIL || 'info@valoreatteso.com';
-
-    const { data: editions, error } = await supabase
-      .from('editions')
-      .select('*')
-      .eq('num', String(edition_num).padStart(3, '0'))
-      .limit(1);
-
+    const { data: editions, error } = await supabase.from('editions').select('*').eq('num', String(edition_num).padStart(3, '0')).limit(1);
     if (error) throw new Error(error.message);
     if (!editions?.length) throw new Error('Edizione non trovata');
     const edition = editions[0];
-
-    const html = buildHtml(edition)
-      .replace('{{EMAIL}}', encodeURIComponent(to))
-      .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
-
-    await resend.emails.send({
-      from: 'Valore Atteso <info@valoreatteso.com>',
-      to,
-      subject: `[TEST] #${edition.num} — ${edition.title}`,
-      html,
-    });
-
+    const html = buildHtml(edition).replace('{{EMAIL}}', encodeURIComponent(to)).replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
+    await resend.emails.send({ from: 'Valore Atteso <info@valoreatteso.com>', to, subject: `[TEST] #${edition.num} — ${edition.title}`, html });
     return res.status(200).json({ ok: true, sent_to: to });
   } catch (e) {
-    console.error('[send-test]', e);
     return res.status(500).json({ error: e.message });
   }
 };
