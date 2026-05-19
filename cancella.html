@@ -5,132 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cancella iscrizione — Valore Atteso</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --cream:#F5F2EB;--ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
-  --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;--gpal:#E4EDE7;
-  --dp:'Playfair Display',Georgia,serif;
-  --sf:'Source Serif 4',Georgia,serif;
-  --mn:'JetBrains Mono',monospace;
-}
-body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
-nav{border-bottom:1px solid var(--rule);padding:0 24px;height:50px;display:flex;align-items:center}
-.nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
-.wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
-.box{max-width:480px;width:100%;text-align:center}
-
-/* STATO: in attesa */
-.state{display:none}
-.state.on{display:block}
-
-.icon{font-size:40px;margin-bottom:20px}
-.title{font-family:var(--dp);font-size:2rem;font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px}
-.desc{font-family:var(--sf);font-size:16px;color:var(--ink2);font-weight:300;line-height:1.7;margin-bottom:28px}
-.email-display{font-family:var(--mn);font-size:12px;color:var(--ink3);background:white;border:1px solid var(--rule);padding:10px 16px;border-radius:4px;margin-bottom:24px;letter-spacing:.04em}
-
-.btn-cancel{width:100%;height:50px;background:var(--red);color:#fff;border:none;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:opacity .15s;margin-bottom:12px}
-.btn-cancel:hover{opacity:.88}
-.btn-cancel:disabled{opacity:.4;cursor:not-allowed}
-.btn-back{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:inline-block;margin-top:8px;transition:color .15s}
-.btn-back:hover{color:var(--ink)}
-
-/* STATO: successo */
-.success-icon{font-size:40px;margin-bottom:20px}
-.note{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.04em;line-height:1.7;margin-top:20px}
-.note a{color:var(--red);text-decoration:none}
-.note a:hover{text-decoration:underline}
-
-/* STATO: errore */
-.err-box{background:#fef2f2;border:1px solid #fecaca;padding:16px;border-radius:4px;font-family:var(--mn);font-size:11px;color:var(--red);letter-spacing:.04em;margin-bottom:20px}
-
-footer{border-top:1px solid var(--rule);padding:20px 24px;text-align:center;font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.06em}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--green:#1B4332;--red:#B93A2F;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.card{background:#FFFDF8;border:1px solid var(--rule);border-radius:24px;padding:40px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(28,25,20,.06)}
+.logo{font-family:var(--sf);font-size:1.4rem;font-weight:600;letter-spacing:-.4px;color:var(--ink);margin-bottom:28px}
+.icon{font-size:36px;margin-bottom:16px}
+h1{font-family:var(--sf);font-size:1.6rem;font-weight:600;letter-spacing:-.4px;margin-bottom:10px}
+p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom:24px}
+.email-display{font-family:var(--mn);font-size:12px;color:var(--muted);background:var(--cream);border:1px solid var(--rule);border-radius:999px;padding:8px 16px;display:inline-block;margin-bottom:24px}
+.btn{height:48px;padding:0 28px;border:none;border-radius:999px;font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.15s;display:inline-block;line-height:48px;text-decoration:none}
+.btn-primary{background:var(--ink);color:var(--cream)}
+.btn-primary:hover{background:var(--deepgold)}
+.btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--rule);margin-left:10px}
+.btn-secondary:hover{color:var(--ink)}
+.status{display:none;margin-top:20px;padding:12px 16px;border-radius:12px;font-family:var(--mn);font-size:10px;letter-spacing:.04em}
+.status.ok{display:block;background:#E4EDE7;color:var(--green)}
+.status.err{display:block;background:rgba(185,58,47,.08);color:var(--red)}
+.back{margin-top:24px;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="/">Valore Atteso</a>
-</nav>
-
-<div class="wrap">
-  <div class="box">
-
-    <!-- STATO: conferma -->
-    <div class="state on" id="state-confirm">
-      <div class="icon">👋</div>
-      <h1 class="title">Ci dispiace vederti andare.</h1>
-      <p class="desc">Stai per cancellare la tua iscrizione a Valore Atteso. Non riceverai più la newsletter del martedì.</p>
-      <div class="email-display" id="email-display">—</div>
-      <button class="btn-cancel" id="btn-cancel" onclick="doUnsubscribe()">Sì, cancella la mia iscrizione</button>
-      <br>
-      <a class="btn-back" href="/">← No, voglio restare iscritto</a>
-    </div>
-
-    <!-- STATO: successo -->
-    <div class="state" id="state-ok">
-      <div class="success-icon">✓</div>
-      <h1 class="title">Iscrizione cancellata.</h1>
-      <p class="desc">Sei stato rimosso dalla lista. Non riceverai più email da Valore Atteso.</p>
-      <p class="note">Hai cambiato idea? <a href="/">Puoi riscriverti in qualsiasi momento →</a></p>
-    </div>
-
-    <!-- STATO: errore -->
-    <div class="state" id="state-err">
-      <div class="icon">⚠️</div>
-      <h1 class="title">Qualcosa è andato storto.</h1>
-      <p class="desc">Non siamo riusciti a cancellare la tua iscrizione. Riprova o scrivici a <a href="mailto:hello@valoreatteso.it" style="color:var(--red)">hello@valoreatteso.it</a>.</p>
-      <a class="btn-back" href="/">← Torna alla home</a>
-    </div>
-
-    <!-- STATO: email mancante -->
-    <div class="state" id="state-missing">
-      <div class="icon">🔗</div>
-      <h1 class="title">Link non valido.</h1>
-      <p class="desc">Il link di cancellazione non è valido o è scaduto. Usa il link presente nell'email che hai ricevuto.</p>
-      <a class="btn-back" href="/">← Torna alla home</a>
-    </div>
-
-  </div>
+<div class="card" id="card-confirm">
+  <div class="logo">Valore Atteso</div>
+  <div class="icon">👋</div>
+  <h1>Vuoi cancellarti?</h1>
+  <p>Stai per rimuovere il tuo indirizzo dalla lista di Valore Atteso. Non riceverai più le nostre analisi settimanali.</p>
+  <div class="email-display" id="email-display">—</div>
+  <br>
+  <button class="btn btn-primary" onclick="doUnsub()">Sì, cancellami</button>
+  <a href="/" class="btn btn-secondary">No, torna al sito</a>
+  <div class="status" id="status"></div>
 </div>
 
-<footer> · valore-atteso.vercel.app</footer>
+<div class="card" id="card-done" style="display:none">
+  <div class="logo">Valore Atteso</div>
+  <div class="icon">✓</div>
+  <h1>Iscrizione cancellata</h1>
+  <p>Il tuo indirizzo è stato rimosso dalla lista. Non riceverai più email da Valore Atteso.</p>
+  <a href="/" class="back">← Torna alla home</a>
+</div>
 
 <script>
-function show(id) {
-  document.querySelectorAll('.state').forEach(s => s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-}
+const SURL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
 
+// Leggi email dai params
 const params = new URLSearchParams(window.location.search);
-const email = params.get('email');
-
-if (!email || !email.includes('@')) {
-  show('state-missing');
-} else {
+const email = decodeURIComponent(params.get('email') || '');
+if (email) {
   document.getElementById('email-display').textContent = email;
+} else {
+  document.getElementById('email-display').textContent = 'indirizzo non trovato';
 }
 
-async function doUnsubscribe() {
-  const btn = document.getElementById('btn-cancel');
-  btn.disabled = true;
-  btn.textContent = 'Cancellazione in corso…';
-
+async function doUnsub() {
+  const st = document.getElementById('status');
+  if (!email) {
+    st.className = 'status err';
+    st.textContent = 'Indirizzo email non trovato. Contatta info@valoreatteso.com';
+    return;
+  }
   try {
     const r = await fetch('/api/unsubscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
     });
-    const d = await r.json();
+    const d = await r.json().catch(() => ({}));
     if (r.ok && d.ok) {
-      show('state-ok');
+      document.getElementById('card-confirm').style.display = 'none';
+      document.getElementById('card-done').style.display = 'block';
     } else {
-      throw new Error(d.error || 'Errore');
+      st.className = 'status err';
+      st.textContent = 'Errore: ' + (d.error || 'riprova o scrivi a info@valoreatteso.com');
     }
-  } catch(e) {
-    show('state-err');
+  } catch (e) {
+    st.className = 'status err';
+    st.textContent = 'Errore di connessione. Scrivi a info@valoreatteso.com';
   }
 }
 </script>
