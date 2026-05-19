@@ -267,8 +267,6 @@ function buildHtml(edition) {
 </html>`;
 }
 
-// Esporta buildHtml per send-test.js
-module.exports.buildHtml = buildHtml;
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
