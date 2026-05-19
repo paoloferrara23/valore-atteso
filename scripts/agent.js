@@ -44,7 +44,6 @@ async function main() {
   const start = Date.now();
   console.log('Editoriale Agent avviato:', new Date().toISOString());
 
-  // Legge memoria condivisa
   const scoutBrief = await memGet('scout_brief');
   const seoKeywords = await memGet('seo_keywords');
 
@@ -82,6 +81,14 @@ REGOLA ASSOLUTA — USA SOLO I DATI DELLO SCOUT:
 - Se non hai abbastanza dati verificati per una sezione, semplifica il testo piuttosto che inventare numeri
 - Il campo "sources" deve contenere SOLO le fonti reali citate nei temi Scout, con nome testata + data
 
+FORMATO KPI OBBLIGATORIO:
+- Ogni sezione DEVE avere esattamente 3 KPI nel campo "kpis"
+- Formato: {"label": "nome breve max 4 parole", "value": "numero con unità (es. €450M, 85%, £10.75M)", "sub": "contesto 3-4 parole"}
+- I KPI devono essere i 3 numeri più rilevanti dell'articolo, coerenti con il testo
+- Esempio Il Bilancio: [{"label":"Multa PL","value":"£10.75M","sub":"Pagamenti occulti 2011-2018"},{"label":"Multa UEFA","value":"€31M","sub":"Settlement 2025"},{"label":"Target perdita","value":"€5M","sub":"Limite 2026/27"}]
+- Esempio Il Deal: [{"label":"Equity deal","value":"€450M","sub":"Acquisizione 80%"},{"label":"EV implicito","value":"€562M","sub":"Enterprise value 100%"},{"label":"Multiplo","value":"3.1x-3.7x","sub":"EV/Revenue normalizzato"}]
+- Esempio La Metrica: [{"label":"Soglia verde","value":"85%","sub":"Limite costi rosa"},{"label":"Breach","value":"115%","sub":"Penalizzazione -6 pt"},{"label":"Limite UEFA","value":"70%","sub":"Club europei"}]
+
 CONSEGUENZE DELL'INVENZIONE DI DATI:
 - Dati sbagliati pubblicati a professionisti M&A e PE distruggono la credibilità di Valore Atteso
 - È preferibile un'analisi più breve con 3 dati certi che un'analisi lunga con 10 dati inventati
@@ -100,12 +107,12 @@ Rispondi SOLO in JSON valido:
       "label": "Il Bilancio",
       "title": "titolo sezione",
       "body": "corpo testo 150-200 parole con SOLO dati dallo Scout",
-      "kpis": [{"key": "metrica", "value": "valore verificato dallo Scout"}],
+      "kpis": [{"label": "nome breve", "value": "valore verificato dallo Scout", "sub": "contesto 3-4 parole"}],
       "verdict": "verdetto finale",
       "sources": ["fonte esatta dallo Scout — testata — data"]
     },
-    { "label": "Il Deal", ... },
-    { "label": "La Metrica", ... }
+    { "label": "Il Deal", "title": "...", "body": "...", "kpis": [...], "verdict": "...", "sources": [...] },
+    { "label": "La Metrica", "title": "...", "body": "...", "kpis": [...], "verdict": "...", "sources": [...] }
   ]
 }`;
 
@@ -116,7 +123,8 @@ Rispondi SOLO in JSON valido:
 IMPORTANTE: usa ESCLUSIVAMENTE i dati e le fonti presenti nei temi dello Scout qui sopra.
 Non aggiungere dati dalla tua memoria. Non inventare fonti.
 Se un dato non è nei temi Scout, non includerlo.
-Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.`
+Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.
+Ogni sezione deve avere esattamente 3 KPI nel formato specificato.`
   }], system);
 
   let edition;
@@ -127,7 +135,6 @@ Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.`
     throw new Error('JSON edizione non valido');
   }
 
-  // Salva bozza su Supabase (non pubblicata)
   const saveRes = await fetch(`${SUPA_URL}/rest/v1/editions`, {
     method: 'POST',
     headers: {
@@ -141,10 +148,8 @@ Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.`
   const saved = await saveRes.json();
   const editionId = saved[0]?.id;
 
-  // Salva in memoria condivisa
   await memSet('last_draft', { id: editionId, num: editionNum, title: edition.title, date: oggi }, 'editoriale');
 
-  // Email di approvazione
   const secsHTML = edition.sections.map((s, i) => `
     <div style="padding:16px 24px;border-bottom:1px solid #D0CBC0">
       <div style="font-family:'Courier New',monospace;font-size:8px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">0${i+1} · ${s.label}</div>
@@ -152,7 +157,7 @@ Le fonti nel campo "sources" devono essere SOLO quelle citate nei temi Scout.`
       <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;font-weight:300;line-height:1.7">${s.body}</div>
       ${s.kpis?.length ? `<table style="width:100%;margin-top:10px;font-family:'Courier New',monospace;font-size:10px;border-collapse:collapse">
         <tr style="background:#1A1A1A"><td colspan="2" style="padding:7px 10px;font-size:9px;color:#fff;letter-spacing:.1em;text-transform:uppercase;font-weight:600">Dati chiave</td></tr>
-        ${s.kpis.map((k,i) => `<tr style="background:${i%2===0?'#F5F2EB':'#EDE9E0'}"><td style="padding:7px 10px;color:#4A4845;font-size:11px">${k.key}</td><td style="padding:7px 10px;text-align:right;color:#111;font-weight:900;font-size:12px">${k.value}</td></tr>`).join('')}
+        ${s.kpis.map((k,i) => `<tr style="background:${i%2===0?'#F5F2EB':'#EDE9E0'}"><td style="padding:7px 10px;color:#4A4845;font-size:11px">${k.label||k.key}${k.sub ? ' — '+k.sub : ''}</td><td style="padding:7px 10px;text-align:right;color:#111;font-weight:900;font-size:12px">${k.value}</td></tr>`).join('')}
       </table>` : ''}
       <div style="margin-top:10px">
         <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Il verdetto</div>
