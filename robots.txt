@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /rest/
-Disallow: /scripts/
+Disallow: /cancella.html
+Disallow: /conferma.html
 
 Sitemap: https://valoreatteso.com/sitemap.xml
