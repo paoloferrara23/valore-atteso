@@ -1,8 +1,23 @@
-// api/send-missing.js — Reinvia #003 solo agli iscritti che non l'hanno ricevuta
+// api/send-missing.js — Reinvia #003 ai 18 iscritti che non l'hanno ricevuta
 const { createClient } = require('@supabase/supabase-js');
-const { Resend } = require('resend');
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-const resend = new Resend(process.env.RESEND_KEY);
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
+const RESEND_KEY = process.env.RESEND_KEY;
+
+const MISSING = [
+  'fferrax@gmail.com','ciroferr2@gmail.com','alessandromerolla@icloud.com',
+  'vincenzo.damiani@it.andersen.com','alessandro.merolla@it.andersen.com',
+  'dott.crisanovincenzo@gmail.com','lorenzo.nappi@yahoo.com','gabrielemola@yahoo.it',
+  'caro.rulli2494@gmail.com','gioferrara11@gmail.com','marco.lombardo@assimox.com',
+  'edograbbi@gmail.com','giammariabellato@gmail.com','davide.fazio@tifosy.com',
+  'federico.moggi@gmail.com','corradofranchi@gmail.com','paola.pallonetto@gmail.com',
+  'a@bettarelli.it'
+];
+
 
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -247,8 +262,6 @@ function buildHtml(edition) {
 </html>`;
 }
 
-const MISSING = ['fferrax@gmail.com', 'ciroferr2@gmail.com', 'alessandromerolla@icloud.com', 'vincenzo.damiani@it.andersen.com', 'alessandro.merolla@it.andersen.com', 'dott.crisanovincenzo@gmail.com', 'lorenzo.nappi@yahoo.com', 'gabrielemola@yahoo.it', 'caro.rulli2494@gmail.com', 'gioferrara11@gmail.com', 'marco.lombardo@assimox.com', 'edograbbi@gmail.com', 'giammariabellato@gmail.com', 'davide.fazio@tifosy.com', 'federico.moggi@gmail.com', 'corradofranchi@gmail.com', 'paola.pallonetto@gmail.com', 'a@bettarelli.it'];
-
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
@@ -256,31 +269,41 @@ module.exports = async function handler(req, res) {
     if (error) throw new Error(error.message);
     if (!editions?.length) throw new Error('Edizione non trovata');
     const edition = editions[0];
-    const html = buildHtml(edition);
+    const baseHtml = buildHtml(edition);
     const subject = `#${edition.num} — ${edition.title}`;
 
-    // Usa Resend batch API — una sola chiamata HTTP per tutte le email
+    // Resend batch API — una sola chiamata HTTP
     const batch = MISSING.map(email => ({
       from: 'Valore Atteso <info@valoreatteso.com>',
       to: email,
       subject,
-      html: html
+      html: baseHtml
         .replace('{{EMAIL}}', encodeURIComponent(email))
         .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
     }));
 
-    const batchResult = await resend.batch.send(batch);
-    const sent = batchResult?.data?.length || MISSING.length;
-    const errors = batchResult?.error ? MISSING.length : 0;
+    const r = await fetch('https://api.resend.com/emails/batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_KEY}`,
+      },
+      body: JSON.stringify(batch),
+    });
+
+    const result = await r.json();
+    if (!r.ok) throw new Error(JSON.stringify(result));
+
+    const sent = Array.isArray(result.data) ? result.data.length : MISSING.length;
 
     await supabase.from('agent_runs').insert({
       agent: 'send-newsletter',
-      status: errors === 0 ? 'success' : 'partial',
-      summary: `Edizione #003 reinviata a ${sent} iscritti mancanti. Errori: ${errors}.`,
-      data: { sent, errors },
+      status: 'success',
+      summary: `Edizione #003 reinviata (batch) a ${sent} iscritti mancanti.`,
+      data: { sent },
     });
 
-    return res.status(200).json({ ok: true, sent, errors });
+    return res.status(200).json({ ok: true, sent });
   } catch (e) {
     console.error('[send-missing]', e);
     return res.status(500).json({ error: e.message });
