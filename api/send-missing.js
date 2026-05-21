@@ -259,22 +259,19 @@ module.exports = async function handler(req, res) {
     const html = buildHtml(edition);
     const subject = `#${edition.num} — ${edition.title}`;
 
-    const results = await Promise.allSettled(
-      MISSING.map(email => {
-        const personalizedHtml = html
-          .replace('{{EMAIL}}', encodeURIComponent(email))
-          .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
-        return resend.emails.send({
-          from: 'Valore Atteso <info@valoreatteso.com>',
-          to: email,
-          subject,
-          html: personalizedHtml,
-        });
-      })
-    );
+    // Usa Resend batch API — una sola chiamata HTTP per tutte le email
+    const batch = MISSING.map(email => ({
+      from: 'Valore Atteso <info@valoreatteso.com>',
+      to: email,
+      subject,
+      html: html
+        .replace('{{EMAIL}}', encodeURIComponent(email))
+        .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
+    }));
 
-    const sent = results.filter(r => r.status === 'fulfilled').length;
-    const errors = results.filter(r => r.status === 'rejected').length;
+    const batchResult = await resend.batch.send(batch);
+    const sent = batchResult?.data?.length || MISSING.length;
+    const errors = batchResult?.error ? MISSING.length : 0;
 
     await supabase.from('agent_runs').insert({
       agent: 'send-newsletter',
