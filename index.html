@@ -426,7 +426,7 @@ function crRenderOrg(){
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
 async function crSendMissing(){
-  if(!confirm('Reinviare #003 ai 18 iscritti che non l'hanno ricevuta?'))return;
+  if(!confirm('Reinviare #003 ai 18 iscritti che non l\'hanno ricevuta?'))return;
   const st=document.getElementById('cr-send-status');
   st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
   try{
