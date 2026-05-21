@@ -281,32 +281,29 @@ module.exports = async function handler(req, res) {
     const html = buildHtml(edition);
     const subject = `#${edition.num} — ${edition.title}`;
 
-    const BATCH = 50;
     let sent = 0;
     let errors = 0;
 
-    for (let i = 0; i < subs.length; i += BATCH) {
-      const batch = subs.slice(i, i + BATCH);
-      const personalizedHtml = (email) => html
-        .replace('{{EMAIL}}', encodeURIComponent(email))
-        .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
+    // Invia tutte in parallelo per evitare timeout Vercel
+    const personalizedHtml = (email) => html
+      .replace('{{EMAIL}}', encodeURIComponent(email))
+      .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
 
-      const results = await Promise.allSettled(
-        batch.map(sub =>
-          resend.emails.send({
-            from: 'Valore Atteso <info@valoreatteso.com>',
-            to: sub.email,
-            subject,
-            html: personalizedHtml(sub.email),
-          })
-        )
-      );
+    const results = await Promise.allSettled(
+      subs.map(sub =>
+        resend.emails.send({
+          from: 'Valore Atteso <info@valoreatteso.com>',
+          to: sub.email,
+          subject,
+          html: personalizedHtml(sub.email),
+        })
+      )
+    );
 
-      results.forEach(r => {
-        if (r.status === 'fulfilled') sent++;
-        else errors++;
-      });
-    }
+    results.forEach(r => {
+      if (r.status === 'fulfilled') sent++;
+      else { errors++; console.error('[send-newsletter] errore:', r.reason?.message); }
+    });
 
     await supabase
       .from('editions')
