@@ -426,17 +426,7 @@ function crRenderOrg(){
   if(!el)return;
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
-async function crSendMissing(){
-  if(!confirm('Reinviare #003 ai 18 iscritti che non l'hanno ricevuta?'))return;
-  const st=document.getElementById('cr-send-status');
-  st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
-  try{
-    const r=await fetch('/api/send-missing',{method:'POST',headers:{'Content-Type':'application/json'}});
-    const d=await r.json();
-    if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Reinviata a <strong>'+d.sent+'</strong> iscritti.';}
-    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
-  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
-}
+
 async function crCheckDelivery(num){
   const el=document.getElementById('cr-delivery-status');
   if(!el)return;
@@ -452,9 +442,9 @@ async function crCheckDelivery(num){
     const allEmails=(subs||[]).map(s=>s.email);
     const missing=allEmails.filter(e=>!sentTo.includes(e));
     if(!missing.length){
-      el.innerHTML=`<div class="cr-status ok" style="display:block;margin-bottom:12px">✓ Edizione #${String(num).padStart(3,'0')} consegnata a tutti i ${allEmails.length} iscritti.</div>`;
+      el.innerHTML=`<div class="cr-status ok" style="display:block;margin-bottom:12px">&#10003; Edizione #${String(num).padStart(3,'0')} consegnata a tutti i ${allEmails.length} iscritti.</div>`;
     } else {
-      el.innerHTML=`<div class="cr-status err" style="display:block;margin-bottom:12px">⚠️ Edizione #${String(num).padStart(3,'0')}: ${sentTo.length}/${allEmails.length} iscritti raggiunti. <button class="cr-btn" style="margin-left:10px;height:28px;font-size:8px" onclick="crReinviaAMancanti('${String(num).padStart(3,'0')}')">↺ Reinvia ai ${missing.length} mancanti</button></div>`;
+      el.innerHTML=`<div class="cr-status err" style="display:block;margin-bottom:12px">&#9888; Edizione #${String(num).padStart(3,'0')}: ${sentTo.length}/${allEmails.length} iscritti raggiunti. <button class="cr-btn" style="margin-left:10px;height:28px;font-size:8px" onclick="crReinviaAMancanti('${String(num).padStart(3,'0')}')">&#8634; Reinvia ai ${missing.length} mancanti</button></div>`;
     }
   }catch(e){console.error('delivery check',e)}
 }
@@ -466,7 +456,7 @@ async function crReinviaAMancanti(num){
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
-      st.innerHTML=d.sent?'✓ Reinviata a <strong>'+d.sent+'</strong> iscritti mancanti.':d.message;
+      st.innerHTML=d.sent?'&#10003; Reinviata a <strong>'+d.sent+'</strong> iscritti mancanti.':d.message;
       crCheckDelivery(num);
     } else {st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -496,7 +486,6 @@ async function crSendExisting(){
     if(r.ok&&d.ok){
       st.className='cr-status ok';
       st.innerHTML='✓ Edizione '+(d.edition||num)+' inviata a <strong>'+d.sent+'</strong> iscritti.';
-      setTimeout(()=>crCheckDelivery(num),3000);
     }else{
       st.className='cr-status err';
       st.textContent='Errore invio: '+(d.error||r.status);
@@ -800,7 +789,6 @@ runSelfTests();
         </div>
         <div id="cr-send-status" class="cr-status"></div>
       </div>
-      <div id="cr-delivery-status"></div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
