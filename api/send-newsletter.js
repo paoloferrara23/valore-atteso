@@ -306,9 +306,11 @@ module.exports = async function handler(req, res) {
     if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
     sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
 
+    // Salva chi ha ricevuto
+    const sentEmails = subs.map(s => s.email);
     await supabase
       .from('editions')
-      .update({ sent_at: new Date().toISOString(), sent_count: sent })
+      .update({ sent_at: new Date().toISOString(), sent_count: sent, sent_to: sentEmails })
       .eq('id', edition.id);
 
     await supabase.from('agent_runs').insert({
