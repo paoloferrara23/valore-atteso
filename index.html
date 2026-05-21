@@ -372,7 +372,6 @@ function crTab(name,btn){
   document.getElementById('cr-'+name).classList.add('on');
   btn.classList.add('on');
   if(name==='redazione')crLoadBozze();
-  if(name==='biblioteca')bibLoad();
   if(name==='dashboard')crLoadCtx();
 
 }
@@ -432,22 +431,21 @@ async function crCheckDelivery(num){
   if(!el)return;
   try{
     const padded=String(num).padStart(3,'0');
-    const [edR,subR]=await Promise.all([
-      fetch(SURL+'/rest/v1/editions?num=eq.'+padded+'&select=num,title,sent_count,sent_to',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
-    ]);
-    const [eds,subs]=await Promise.all([edR.json(),subR.json()]);
+    const edR=await fetch(SURL+'/rest/v1/editions?num=eq.'+padded+'&select=num,title,sent_count,sent_to',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const subR=await fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const eds=await edR.json();
+    const subs=await subR.json();
     const ed=eds&&eds[0];
     if(!ed){el.innerHTML='';return;}
     const sentTo=ed.sent_to||[];
-    const allEmails=(subs||[]).map(s=>s.email);
-    const missing=allEmails.filter(e=>!sentTo.includes(e));
+    const allEmails=(subs||[]).map(function(s){return s.email;});
+    const missing=allEmails.filter(function(e){return !sentTo.includes(e);});
     if(!missing.length){
       el.innerHTML='<div class="cr-status ok" style="display:block;margin-bottom:12px">&#10003; Edizione #'+padded+' consegnata a tutti i '+allEmails.length+' iscritti.</div>';
     }else{
-      el.innerHTML='<div class="cr-status err" style="display:block;margin-bottom:12px">&#9888; Edizione #'+padded+': '+sentTo.length+'/'+allEmails.length+' iscritti raggiunti. <button class="cr-btn" style="margin-left:10px;height:28px;font-size:8px" onclick="crReinviaAMancanti(''+padded+'')">&#8634; Reinvia ai '+missing.length+' mancanti</button></div>';
+      el.innerHTML='<div class="cr-status err" style="display:block;margin-bottom:12px">&#9888; Edizione #'+padded+': '+sentTo.length+'/'+allEmails.length+' iscritti raggiunti. <button class="cr-btn" data-num="'+padded+'" style="margin-left:10px;height:28px;font-size:8px" onclick="crReinviaAMancanti(this.dataset.num)">&#8634; Reinvia ai '+missing.length+' mancanti</button></div>';
     }
-  }catch(e){console.error('delivery check',e)}
+  }catch(ex){console.error('delivery check',ex);}
 }
 async function crReinviaAMancanti(num){
   const st=document.getElementById('cr-send-status');
@@ -460,7 +458,7 @@ async function crReinviaAMancanti(num){
       st.innerHTML=d.sent?'&#10003; Reinviata a <strong>'+d.sent+'</strong> iscritti mancanti.':d.message;
       crCheckDelivery(num);
     }else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
-  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+  }catch(ex){st.className='cr-status err';st.textContent='Errore: '+ex.message;}
 }
 async function crSendTest(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
@@ -767,7 +765,6 @@ runSelfTests();
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
-        <button class="cr-tab" onclick="crTab('biblioteca',this)">Biblioteca</button>
 
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
@@ -786,7 +783,7 @@ runSelfTests();
           <input class="cr-input" id="cr-send-num" placeholder="es. 003">
           <button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button>
           <button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button>
-          </div>
+        </div>
         <div id="cr-send-status" class="cr-status"></div>
       </div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
@@ -805,34 +802,7 @@ runSelfTests();
       <div id="cr-bozze-list"></div>
     </div>
 
-    <div class="cr-panel" id="cr-biblioteca">
-      <div class="cr-sec-title">Biblioteca fonti</div>
-      <div class="cr-box">
-        <div style="font-family:var(--sf);font-size:15px;line-height:1.7;color:var(--ink2);margin-bottom:16px">
-          La biblioteca viene utilizzata dallo Scout come base dati prioritaria prima della web search. I documenti caricati possono essere usati per confermare fonti, estrarre KPI e costruire sezioni editoriali delle newsletter.
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr .8fr .8fr .5fr .7fr;gap:10px;margin-bottom:12px">
-          <input class="cr-input" id="bib-nome" placeholder="Nome documento">
-          <select class="cr-input" id="bib-tipo">
-            <option value="report">Report</option>
-            <option value="bilancio">Bilancio club</option>
-            <option value="regolamento">Regolamento</option>
-            <option value="dataset">Dataset</option>
-            <option value="altro">Altro</option>
-          </select>
-          <input class="cr-input" id="bib-soggetto" placeholder="Soggetto / club">
-          <input class="cr-input" id="bib-anno" placeholder="Anno">
-          <input class="cr-input" id="bib-stagione" placeholder="Stagione">
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-          <input type="file" id="bib-file" accept=".pdf,.doc,.docx,.txt" onchange="bibAutoName()">
-          <button class="cr-btn" onclick="bibUpload()">Carica documento</button>
-        </div>
-        <div id="bib-status" class="cr-status"></div>
-      </div>
-      <div id="bib-list"></div>
 
-    </div>
   </div>
 </div>
 
