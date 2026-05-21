@@ -425,6 +425,17 @@ function crRenderOrg(){
   if(!el)return;
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
+async function crSendMissing(){
+  if(!confirm('Reinviare #003 ai 18 iscritti che non l'hanno ricevuta?'))return;
+  const st=document.getElementById('cr-send-status');
+  st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
+  try{
+    const r=await fetch('/api/send-missing',{method:'POST',headers:{'Content-Type':'application/json'}});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Reinviata a <strong>'+d.sent+'</strong> iscritti.';}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
 async function crSendTest(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
   const st=document.getElementById('cr-send-status');
@@ -663,16 +674,12 @@ async function bibLoad(){
                 </div>
                 <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
                   <div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap">${bibTipoLabel(k)}</div>
-                  ${f.url?`<a href="${esc(f.url)}" target="_blank" rel="noopener" class="cr-btn light" style="height:30px;font-size:8px;padding:0 10px;display:inline-flex;align-items:center">Apri file</a>`:''}
+                  ${f.testo_estratto?`<span style="font-family:var(--mn);font-size:8px;color:var(--green);letter-spacing:.06em;">✓ Testo estratto</span>`:`<span style="font-family:var(--mn);font-size:8px;color:var(--muted);">Nessun testo</span>`}
                 </div>
               </div>
-              ${f.dati_chiave?`
-                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
-                  ${Object.entries(f.dati_chiave).slice(0,4).map(([a,b])=>`
-                    <span style="border:1px solid var(--rule);border-radius:999px;padding:5px 9px;font-family:var(--mn);font-size:8px;color:var(--muted)">
-                      ${esc(a)}: <strong style="color:var(--ink)">${esc(b)}</strong>
-                    </span>
-                  `).join('')}
+              ${f.testo_estratto?`
+                <div style="margin-top:10px;padding:10px 12px;background:var(--cream);border-radius:8px;font-family:var(--mn);font-size:9px;color:var(--muted);line-height:1.6;max-height:60px;overflow:hidden;">
+                  ${esc(f.testo_estratto.slice(0,200))}...
                 </div>
               `:''}
             </div>
@@ -753,6 +760,7 @@ runSelfTests();
           <input class="cr-input" id="cr-send-num" placeholder="es. 003">
           <button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button>
           <button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button>
+          <button class="cr-btn" style="background:#8E6B33;" onclick="crSendMissing()">↺ Reinvia #003 a 18 mancanti</button>
         </div>
         <div id="cr-send-status" class="cr-status"></div>
       </div>
