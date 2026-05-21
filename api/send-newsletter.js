@@ -294,13 +294,17 @@ module.exports = async function handler(req, res) {
         .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
     }));
 
-    const batchResult = await resend.batch.send(batch);
-    if (batchResult?.error) {
-      console.error('[send-newsletter] batch error:', batchResult.error);
-      errors = subs.length;
-    } else {
-      sent = batchResult?.data?.length || subs.length;
-    }
+    const batchRes = await fetch('https://api.resend.com/emails/batch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.RESEND_KEY}`,
+      },
+      body: JSON.stringify(batch),
+    });
+    const batchResult = await batchRes.json();
+    if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
+    sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
 
     await supabase
       .from('editions')
