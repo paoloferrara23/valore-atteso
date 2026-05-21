@@ -284,26 +284,23 @@ module.exports = async function handler(req, res) {
     let sent = 0;
     let errors = 0;
 
-    // Invia tutte in parallelo per evitare timeout Vercel
-    const personalizedHtml = (email) => html
-      .replace('{{EMAIL}}', encodeURIComponent(email))
-      .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
+    // Resend batch API — una sola chiamata HTTP per tutti gli iscritti
+    const batch = subs.map(sub => ({
+      from: 'Valore Atteso <info@valoreatteso.com>',
+      to: sub.email,
+      subject,
+      html: html
+        .replace('{{EMAIL}}', encodeURIComponent(sub.email))
+        .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
+    }));
 
-    const results = await Promise.allSettled(
-      subs.map(sub =>
-        resend.emails.send({
-          from: 'Valore Atteso <info@valoreatteso.com>',
-          to: sub.email,
-          subject,
-          html: personalizedHtml(sub.email),
-        })
-      )
-    );
-
-    results.forEach(r => {
-      if (r.status === 'fulfilled') sent++;
-      else { errors++; console.error('[send-newsletter] errore:', r.reason?.message); }
-    });
+    const batchResult = await resend.batch.send(batch);
+    if (batchResult?.error) {
+      console.error('[send-newsletter] batch error:', batchResult.error);
+      errors = subs.length;
+    } else {
+      sent = batchResult?.data?.length || subs.length;
+    }
 
     await supabase
       .from('editions')
