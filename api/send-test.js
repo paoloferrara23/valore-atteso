@@ -215,9 +215,7 @@ function buildHtml(edition) {
       <tr>
         <td style="vertical-align:top;padding-bottom:16px;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;">Seguici</div>
-          <a href="https://instagram.com/valoreatteso" style="text-decoration:none;">
-            <img src="https://valoreatteso.com/icons/instagram.png" width="24" height="24" alt="@valoreatteso" style="display:block;border:0;">
-          </a>
+          <a href="https://instagram.com/valoreatteso" style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;text-decoration:none;letter-spacing:.06em;font-weight:600;">@valoreatteso</a>
         </td>
         <td align="right" style="vertical-align:top;padding-bottom:16px;">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
