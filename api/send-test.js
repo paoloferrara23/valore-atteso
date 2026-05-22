@@ -10,7 +10,7 @@ function esc(s) {
 
 function toSentenceCase(s) {
   if (!s) return '';
-  const str = String(s);
+  const str = String(s); 
   if (str === str.toUpperCase()) return str[0] + str.slice(1).toLowerCase();
   return str;
 }
