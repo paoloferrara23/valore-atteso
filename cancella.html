@@ -24,19 +24,18 @@ p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom
 .status{display:none;margin-top:20px;padding:12px 16px;border-radius:12px;font-family:var(--mn);font-size:10px;letter-spacing:.04em}
 .status.ok{display:block;background:#E4EDE7;color:var(--green)}
 .status.err{display:block;background:rgba(185,58,47,.08);color:var(--red)}
-.back{margin-top:24px;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.back{margin-top:24px;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:inline-block}
 .back:hover{color:var(--ink)}
 </style>
 </head>
 <body>
-
 <div class="card" id="card-confirm">
   <div class="logo">Valore Atteso</div>
   <div class="icon">👋</div>
   <h1>Vuoi cancellarti?</h1>
   <p>Stai per rimuovere il tuo indirizzo dalla lista di Valore Atteso. Non riceverai più le nostre analisi settimanali.</p>
   <div class="email-display" id="email-display">—</div>
-  <br>
+  <br><br>
   <button class="btn btn-primary" onclick="doUnsub()">Sì, cancellami</button>
   <a href="/" class="btn btn-secondary">No, torna al sito</a>
   <div class="status" id="status"></div>
@@ -51,42 +50,35 @@ p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom
 </div>
 
 <script>
-const SURL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
-const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-
-// Leggi email dai params
 const params = new URLSearchParams(window.location.search);
 const email = decodeURIComponent(params.get('email') || '');
-if (email) {
-  document.getElementById('email-display').textContent = email;
-} else {
-  document.getElementById('email-display').textContent = 'indirizzo non trovato';
+const done = params.get('done') === '1';
+document.getElementById('email-display').textContent = email || 'indirizzo non specificato';
+if(done){
+  document.getElementById('card-confirm').style.display='none';
+  document.getElementById('card-done').style.display='block';
 }
 
-async function doUnsub() {
+async function doUnsub(){
   const st = document.getElementById('status');
-  if (!email) {
-    st.className = 'status err';
-    st.textContent = 'Indirizzo email non trovato. Contatta info@valoreatteso.com';
-    return;
-  }
-  try {
+  if(!email){ st.className='status err'; st.textContent='Indirizzo email non trovato. Contatta info@valoreatteso.com'; return; }
+  try{
     const r = await fetch('/api/unsubscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email})
     });
-    const d = await r.json().catch(() => ({}));
-    if (r.ok && d.ok) {
-      document.getElementById('card-confirm').style.display = 'none';
-      document.getElementById('card-done').style.display = 'block';
+    const d = await r.json().catch(()=>({}));
+    if(r.ok && d.ok){
+      document.getElementById('card-confirm').style.display='none';
+      document.getElementById('card-done').style.display='block';
     } else {
-      st.className = 'status err';
-      st.textContent = 'Errore: ' + (d.error || 'riprova o scrivi a info@valoreatteso.com');
+      st.className='status err';
+      st.textContent='Errore: ' + (d.error||'riprova o scrivi a info@valoreatteso.com');
     }
-  } catch (e) {
-    st.className = 'status err';
-    st.textContent = 'Errore di connessione. Scrivi a info@valoreatteso.com';
+  } catch(e){
+    st.className='status err';
+    st.textContent='Errore di connessione. Scrivi a info@valoreatteso.com';
   }
 }
 </script>
