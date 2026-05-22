@@ -5,4 +5,4 @@ Disallow: /rest/
 Disallow: /cancella.html
 Disallow: /conferma.html
 
-Sitemap: https://valoreatteso.com/sitemap.xml
+Sitemap: https://valoreatteso.com/sitemap.xml 
