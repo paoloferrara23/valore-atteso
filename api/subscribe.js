@@ -360,22 +360,29 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Email non valida' });
   }
 
-  const tok = crypto.randomUUID();
-
-  const saveRes = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?on_conflict=email`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': process.env.SUPABASE_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
-      'Prefer': 'resolution=merge-duplicates,return=minimal'
-    },
-    body: JSON.stringify({ email, token: tok, confirmed: false })
-  });
-
-  if (!saveRes.ok) {
-    const err = await saveRes.text();
-    return res.status(500).json({ error: 'Errore salvataggio: ' + err });
+  // Controlla se email esiste già
+  const { createClient: _createClient } = require('@supabase/supabase-js');
+  const _sb = _createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+  
+  const { data: existing } = await _sb.from('subscribers').select('email,confirmed,token').eq('email', email).single();
+  
+  // Se già confermato, non fare nulla
+  if (existing?.confirmed) {
+    return res.status(200).json({ ok: true, already: true });
+  }
+  
+  // Se ha già un token attivo, rispedisci lo stesso token
+  let tok = existing?.token || crypto.randomUUID();
+  
+  if (existing) {
+    // Aggiorna solo il token se non ne ha uno
+    if (!existing.token) {
+      await _sb.from('subscribers').update({ token: tok }).eq('email', email);
+    }
+  } else {
+    // Inserisci nuovo iscritto
+    const { error: insertErr } = await _sb.from('subscribers').insert({ email, token: tok, confirmed: false });
+    if (insertErr) return res.status(500).json({ error: insertErr.message });
   }
 
   const SITE_URL = process.env.SITE_URL || SITE;
