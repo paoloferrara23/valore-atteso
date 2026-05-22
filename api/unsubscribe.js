@@ -1,12 +1,18 @@
+// api/unsubscribe.js
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const SUPA_URL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-
+  // Supporta sia GET (link diretto) che POST (da cancella.html)
   const email = req.method === 'GET'
     ? req.query?.email
     : req.body?.email;
@@ -15,17 +21,29 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Email non valida' });
   }
 
-  const r = await fetch(`${SUPA_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`, {
-    method: 'DELETE',
-    headers: {
-      'apikey': SUPA_KEY,
-      'Authorization': `Bearer ${SUPA_KEY}`
+  try {
+    const { error } = await supabase
+      .from('subscribers')
+      .update({ confirmed: false })
+      .eq('email', email);
+
+    if (error) throw new Error(error.message);
+
+    await supabase.from('agent_runs').insert({
+      agent: 'unsubscribe',
+      status: 'success',
+      summary: `Iscritto cancellato: ${email}`,
+      data: { email },
+    }).catch(() => {});
+
+    // Se GET, reindirizza a cancella.html con conferma
+    if (req.method === 'GET') {
+      return res.redirect(302, `/cancella.html?email=${encodeURIComponent(email)}&done=1`);
     }
-  });
 
-  if (!r.ok) {
-    return res.status(500).json({ error: 'Errore cancellazione' });
+    return res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error('[unsubscribe]', e);
+    return res.status(500).json({ error: e.message });
   }
-
-  return res.status(200).json({ ok: true });
-}
+};
