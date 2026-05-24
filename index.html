@@ -260,6 +260,20 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 .cr-ed-item:last-child{border-bottom:none}
 .cr-ed-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .cr-ed-val{font-family:var(--sf);font-size:1.05rem;font-weight:600;letter-spacing:-.2px;color:var(--ink)}
+.cr-section-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.cr-section-col{background:var(--white);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
+.cr-section-header{background:var(--ink);color:var(--cream);padding:10px 14px;font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase}
+.cr-option{padding:12px 14px;border-bottom:1px solid var(--rule);cursor:pointer;transition:.15s;position:relative}
+.cr-option:last-of-type{border-bottom:none}
+.cr-option:hover{background:var(--cream)}
+.cr-option.selected{background:rgba(200,169,122,0.12);border-left:3px solid var(--gold)}
+.cr-option-title{font-family:var(--sf);font-size:13px;font-weight:600;letter-spacing:-.2px;color:var(--ink);margin-bottom:3px}
+.cr-option-summary{font-family:var(--sf);font-size:11px;color:var(--ink2);line-height:1.5;margin-bottom:4px}
+.cr-option-kpi{font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.04em}
+.cr-option-custom{padding:10px 14px;border-top:1px solid var(--rule)}
+.cr-option-custom input{width:100%;height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 10px;font-family:var(--sf);font-size:12px;color:var(--ink);outline:none}
+.cr-option-custom input:focus{border-color:var(--gold)}
+@media(max-width:920px){.cr-section-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -372,6 +386,7 @@ function crTab(name,btn){
   document.getElementById('cr-'+name).classList.add('on');
   btn.classList.add('on');
   if(name==='redazione')crLoadBozze();
+  if(name==='biblioteca')bibLoad();
   if(name==='dashboard')crLoadCtx();
 
 }
@@ -425,7 +440,17 @@ function crRenderOrg(){
   if(!el)return;
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
-
+async function crSendMissing(){
+  if(!confirm('Reinviare #003 ai 18 iscritti che non l\'hanno ricevuta?'))return;
+  const st=document.getElementById('cr-send-status');
+  st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
+  try{
+    const r=await fetch('/api/send-missing',{method:'POST',headers:{'Content-Type':'application/json'}});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Reinviata a <strong>'+d.sent+'</strong> iscritti.';}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
 async function crCheckDelivery(num){
   const el=document.getElementById('cr-delivery-status');
   if(!el)return;
@@ -433,10 +458,8 @@ async function crCheckDelivery(num){
     const padded=String(num).padStart(3,'0');
     const edR=await fetch(SURL+'/rest/v1/editions?num=eq.'+padded+'&select=num,title,sent_count,sent_to',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const subR=await fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    const eds=await edR.json();
-    const subs=await subR.json();
-    const ed=eds&&eds[0];
-    if(!ed){el.innerHTML='';return;}
+    const eds=await edR.json();const subs=await subR.json();
+    const ed=eds&&eds[0];if(!ed){el.innerHTML='';return;}
     const sentTo=ed.sent_to||[];
     const allEmails=(subs||[]).map(function(s){return s.email;});
     const missing=allEmails.filter(function(e){return !sentTo.includes(e);});
@@ -453,11 +476,8 @@ async function crReinviaAMancanti(num){
   try{
     const r=await fetch('/api/send-missing-dynamic',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
-    if(r.ok&&d.ok){
-      st.className='cr-status ok';
-      st.innerHTML=d.sent?'&#10003; Reinviata a <strong>'+d.sent+'</strong> iscritti mancanti.':d.message;
-      crCheckDelivery(num);
-    }else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+    if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML=d.sent?'&#10003; Reinviata a <strong>'+d.sent+'</strong> iscritti mancanti.':d.message;crCheckDelivery(num);}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
   }catch(ex){st.className='cr-status err';st.textContent='Errore: '+ex.message;}
 }
 async function crSendTest(){
@@ -515,15 +535,189 @@ async function crAdSendInput(){
   }catch(e){crAdAdd('ad','Errore connessione AD: '+e.message)}
 }
 
+// Selezioni correnti per ogni bozza
+const crSelections = {};
+
 async function crLoadBozze(){
   const el=document.getElementById('cr-bozze-list');
   el.innerHTML='<div class="cr-box">Caricamento bozze...</div>';
   try{
     const r=await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const bozze=await r.json();
-    if(!Array.isArray(bozze)||!bozze.length){el.innerHTML='<div class="cr-box">Nessuna bozza in attesa.</div>';return}
-    el.innerHTML=bozze.map(e=>`<div class="cr-bozza" id="bozza-${e.id}"><div class="cr-bozza-head"><div><div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #${esc(e.num)}</div><div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-${e.id}">${esc(e.title||'')}</div></div><div class="cr-bozza-actions"><button class="cr-btn light" onclick="crToggleBozza('${e.id}')">Preview</button><button class="cr-btn gold" onclick="crApproveBozza('${e.id}','${e.num}')">Approva</button><button class="cr-btn" onclick="crInviaBozza('${e.num}','${e.id}')">Invia</button></div></div><div class="cr-bozza-body" id="bb-${e.id}">${(e.sections||[]).map((s,i)=>`<div style="padding:14px 0;border-bottom:1px solid var(--rule)"><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);letter-spacing:.12em;text-transform:uppercase">${esc(s.label||'Sezione')}</div><h3 class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-title" style="font-family:var(--sf);font-size:1.3rem;letter-spacing:-.4px;margin:6px 0">${esc(s.title||'')}</h3><div class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-body" style="font-size:15px;line-height:1.7;color:var(--ink2)">${esc(s.body||'')}</div></div>`).join('')}<div class="cr-status" id="bst-${e.id}"></div></div></div>`).join('');
+    if(!Array.isArray(bozze)||!bozze.length){
+      el.innerHTML='<div class="cr-box" style="color:var(--muted);font-family:var(--mn);font-size:10px;">Nessuna bozza in attesa.</div>';
+      return;
+    }
+    el.innerHTML = bozze.map(e => {
+      const opts = e.section_options || {};
+      const hasSections = e.sections && e.sections.length > 0;
+      const hasOptions = opts.bilancio && opts.bilancio.length > 0;
+
+      if(!crSelections[e.id]) crSelections[e.id] = {bilancio:null,deal:null,metrica:null,customBilancio:'',customDeal:'',customMetrica:'',date:e.date||''};
+
+      if(hasOptions && !hasSections){
+        // Mostra griglia selezione opzioni
+        return `<div class="cr-bozza" id="bozza-${e.id}">
+          <div class="cr-bozza-head">
+            <div>
+              <div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #${esc(e.num)} — Seleziona le sezioni</div>
+              <div style="font-family:var(--sf);font-size:1rem;font-weight:600;color:var(--ink);margin-top:4px">Scegli un tema per ogni sezione</div>
+            </div>
+            <div class="cr-bozza-actions">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Data:</span>
+                <input type="date" id="date-${e.id}" value="${e.date||''}" style="height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 8px;font-family:var(--mn);font-size:10px;color:var(--ink);outline:none" onchange="crSelections['${e.id}'].date=this.value">
+              </div>
+              <input class="cr-input" id="hint-${e.id}" placeholder="Nota editoriale opzionale..." style="width:200px">
+              <button class="cr-btn gold" onclick="crGeneraBozza('${e.id}')">Genera bozza →</button>
+            </div>
+          </div>
+          <div style="padding:16px">
+            <div class="cr-section-grid">
+              ${crRenderSectionOptions(e.id,'bilancio',opts.bilancio||[],'01 · Il Bilancio')}
+              ${crRenderSectionOptions(e.id,'deal',opts.deal||[],'02 · Il Deal')}
+              ${crRenderSectionOptions(e.id,'metrica',opts.metrica||[],'03 · La Metrica')}
+            </div>
+            <div class="cr-status" id="bst-${e.id}"></div>
+          </div>
+        </div>`;
+      } else if(hasSections) {
+        // Mostra bozza generata con preview e azioni
+        return `<div class="cr-bozza" id="bozza-${e.id}">
+          <div class="cr-bozza-head">
+            <div>
+              <div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #${esc(e.num)}</div>
+              <div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-${e.id}">${esc(e.title||'')}</div>
+            </div>
+            <div class="cr-bozza-actions">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Data:</span>
+                <input type="date" id="date2-${e.id}" value="${e.date||''}" style="height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 8px;font-family:var(--mn);font-size:10px;color:var(--ink);outline:none">
+              </div>
+              <button class="cr-btn light" onclick="crToggleBozza('${e.id}')">Preview</button>
+              <button class="cr-btn gold" onclick="crApprovaBozzaConData('${e.id}','${e.num}')">Approva</button>
+              <button class="cr-btn" onclick="crInviaBozza('${e.num}','${e.id}')">Invia</button>
+            </div>
+          </div>
+          <div class="cr-bozza-body" id="bb-${e.id}">
+            ${(e.sections||[]).map((s,i)=>`
+              <div style="padding:14px 0;border-bottom:1px solid var(--rule)">
+                <div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);letter-spacing:.12em;text-transform:uppercase">${esc(s.label||'Sezione')}</div>
+                <h3 class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-title" style="font-family:var(--sf);font-size:1.3rem;letter-spacing:-.4px;margin:6px 0">${esc(s.title||'')}</h3>
+                <div class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-body" style="font-size:15px;line-height:1.7;color:var(--ink2)">${esc(s.body||'')}</div>
+              </div>`).join('')}
+            <div class="cr-status" id="bst-${e.id}"></div>
+          </div>
+        </div>`;
+      } else {
+        return `<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Bozza #${esc(e.num)} — in elaborazione...</div>`;
+      }
+    }).join('');
   }catch(e){el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>'}
+}
+
+function crRenderSectionOptions(edId, sezione, opzioni, label){
+  return `<div class="cr-section-col">
+    <div class="cr-section-header">${label}</div>
+    ${opzioni.map((o,i)=>`
+      <div class="cr-option" id="opt-${edId}-${sezione}-${i}" onclick="crSelectOption('${edId}','${sezione}',${i})">
+        <div class="cr-option-title">${esc(o.title)}</div>
+        <div class="cr-option-summary">${esc(o.summary)}</div>
+        <div class="cr-option-kpi">${(o.kpi_preview||[]).join(' · ')}</div>
+      </div>`).join('')}
+    <div class="cr-option-custom">
+      <input placeholder="✏️ Scrivi tema personalizzato..." id="custom-${edId}-${sezione}"
+        oninput="crSelections['${edId}']['custom${sezione.charAt(0).toUpperCase()+sezione.slice(1)}']=this.value;if(this.value){crDeselect('${edId}','${sezione}')}">
+    </div>
+  </div>`;
+}
+
+function crSelectOption(edId, sezione, idx){
+  crSelections[edId][sezione] = idx;
+  // Deseleziona custom
+  const customEl = document.getElementById('custom-'+edId+'-'+sezione);
+  if(customEl) customEl.value = '';
+  crSelections[edId]['custom'+sezione.charAt(0).toUpperCase()+sezione.slice(1)] = '';
+  // Aggiorna UI
+  const cols = ['bilancio','deal','metrica'];
+  const opts = document.querySelectorAll(`[id^="opt-${edId}-${sezione}-"]`);
+  opts.forEach(el => el.classList.remove('selected'));
+  const sel = document.getElementById(`opt-${edId}-${sezione}-${idx}`);
+  if(sel) sel.classList.add('selected');
+}
+
+function crDeselect(edId, sezione){
+  crSelections[edId][sezione] = null;
+  const opts = document.querySelectorAll(`[id^="opt-${edId}-${sezione}-"]`);
+  opts.forEach(el => el.classList.remove('selected'));
+}
+
+async function crGeneraBozza(edId){
+  const st=document.getElementById('bst-'+edId);
+  st.className='cr-status';st.style.display='block';st.textContent='Generazione bozza in corso...';
+
+  const sel = crSelections[edId];
+
+  // Recupera le opzioni della bozza
+  const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+edId+'&select=section_options,num',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+  const rows=await r.json();
+  const sectionOptions = rows[0]?.section_options || {};
+
+  const buildSezione = (sezione) => {
+    const custom = sel['custom'+sezione.charAt(0).toUpperCase()+sezione.slice(1)];
+    if(custom) return { custom };
+    const idx = sel[sezione];
+    if(idx !== null && idx !== undefined) return sectionOptions[sezione][idx];
+    return null;
+  };
+
+  const bilancio = buildSezione('bilancio');
+  const deal = buildSezione('deal');
+  const metrica = buildSezione('metrica');
+
+  if(!bilancio||!deal||!metrica){
+    st.className='cr-status err';st.textContent='Seleziona un tema per ogni sezione o scrivi il tuo.';return;
+  }
+
+  const dateEl = document.getElementById('date-'+edId);
+  const hintEl = document.getElementById('hint-'+edId);
+
+  try{
+    const resp=await fetch('/api/genera-edizione',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({editionId:edId,bilancio,deal,metrica,date:dateEl?.value||'',hint:hintEl?.value||''})
+    });
+    const d=await resp.json();
+    if(resp.ok&&d.ok){
+      st.className='cr-status ok';st.textContent='✓ Bozza generata: '+d.title;
+      setTimeout(()=>crLoadBozze(),1500);
+    }else{st.className='cr-status err';st.textContent='Errore: '+(d.error||resp.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+
+async function crApprovaBozzaConData(id,num){
+  const dateEl=document.getElementById('date2-'+id);
+  const st=document.getElementById('bst-'+id);
+  st.className='cr-status';st.style.display='block';st.textContent='Approvazione...';
+  try{
+    const ed=await crFetchEdition(id);
+    const sections=(ed.sections||[]).map((s,i)=>({...s,
+      title:(document.getElementById('bs-'+id+'-'+i+'-title')?.innerText||s.title).trim(),
+      body:(document.getElementById('bs-'+id+'-'+i+'-body')?.innerText||s.body).trim()
+    }));
+    const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
+    const date=dateEl?.value||ed.date;
+    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+      body:JSON.stringify({title,sections,date,published:true})
+    });
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.className='cr-status ok';st.textContent='✓ Edizione #'+num+' approvata e pubblicata.';
+    crLoadCtx();loadLatestPreview();
+    setTimeout(()=>crLoadBozze(),1000);
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
 function crToggleBozza(id){document.getElementById('bb-'+id).classList.toggle('open')}
 async function crApproveBozza(id,num){
@@ -566,20 +760,17 @@ async function crInviaBozza(num,id){
     }
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
-async function crGenera(){
+async function crGeneraOpzioni(){
   const st=document.getElementById('cr-gen-status');
-  st.className='cr-status';
-  st.style.display='block';
-  st.textContent='Generazione in corso...';
+  st.className='cr-status';st.style.display='block';st.textContent='Generazione opzioni in corso...';
   const hint=document.getElementById('cr-hint').value.trim();
   try{
     const last=crCtx.last?parseInt(crCtx.last.num,10):0;
     const editionNum=String(last+1).padStart(3,'0');
-    const r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:hint?'hint':'auto',hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    const r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
     const d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore generazione');
-    st.className='cr-status ok';
-    st.textContent='✓ Bozza generata. Vai su Bozze in attesa.';
+    st.className='cr-status ok';st.textContent='✓ Opzioni generate. Scegli le sezioni qui sopra.';
     crLoadBozze();
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
@@ -765,6 +956,7 @@ runSelfTests();
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
+        <button class="cr-tab" onclick="crTab('biblioteca',this)">Biblioteca</button>
 
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
@@ -783,6 +975,7 @@ runSelfTests();
           <input class="cr-input" id="cr-send-num" placeholder="es. 003">
           <button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button>
           <button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button>
+          <button class="cr-btn" style="background:#8E6B33;" onclick="crSendMissing()">↺ Reinvia #003 a 18 mancanti</button>
         </div>
         <div id="cr-send-status" class="cr-status"></div>
       </div>
@@ -796,13 +989,53 @@ runSelfTests();
     </div>
 
     <div class="cr-panel" id="cr-redazione">
-      <div class="cr-sec-title">Genera nuova edizione</div>
-      <div class="cr-box"><input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,520px)"> <button class="cr-btn" onclick="crGenera()">Genera</button><div id="cr-gen-status" class="cr-status"></div></div>
+
+      <!-- STEP 1: Bozze in attesa con selezione sezioni -->
       <div class="cr-sec-title">Bozze in attesa</div>
       <div id="cr-bozze-list"></div>
+
+      <!-- STEP 2: Genera nuova (solo se nessuna bozza) -->
+      <div id="cr-genera-box">
+        <div class="cr-sec-title">Genera nuova edizione</div>
+        <div class="cr-box">
+          <div style="font-family:var(--sf);font-size:13px;color:var(--ink2);margin-bottom:12px">
+            L'agente Editoriale gira ogni lunedì alle 8:00 e prepara 3 opzioni per sezione. Puoi anche generare manualmente con un hint.
+          </div>
+          <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,420px);margin-right:8px">
+          <button class="cr-btn" onclick="crGeneraOpzioni()">Genera opzioni</button>
+          <div id="cr-gen-status" class="cr-status"></div>
+        </div>
+      </div>
     </div>
 
+    <div class="cr-panel" id="cr-biblioteca">
+      <div class="cr-sec-title">Biblioteca fonti</div>
+      <div class="cr-box">
+        <div style="font-family:var(--sf);font-size:15px;line-height:1.7;color:var(--ink2);margin-bottom:16px">
+          La biblioteca viene utilizzata dallo Scout come base dati prioritaria prima della web search. I documenti caricati possono essere usati per confermare fonti, estrarre KPI e costruire sezioni editoriali delle newsletter.
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr .8fr .8fr .5fr .7fr;gap:10px;margin-bottom:12px">
+          <input class="cr-input" id="bib-nome" placeholder="Nome documento">
+          <select class="cr-input" id="bib-tipo">
+            <option value="report">Report</option>
+            <option value="bilancio">Bilancio club</option>
+            <option value="regolamento">Regolamento</option>
+            <option value="dataset">Dataset</option>
+            <option value="altro">Altro</option>
+          </select>
+          <input class="cr-input" id="bib-soggetto" placeholder="Soggetto / club">
+          <input class="cr-input" id="bib-anno" placeholder="Anno">
+          <input class="cr-input" id="bib-stagione" placeholder="Stagione">
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input type="file" id="bib-file" accept=".pdf,.doc,.docx,.txt" onchange="bibAutoName()">
+          <button class="cr-btn" onclick="bibUpload()">Carica documento</button>
+        </div>
+        <div id="bib-status" class="cr-status"></div>
+      </div>
+      <div id="bib-list"></div>
 
+    </div>
   </div>
 </div>
 
