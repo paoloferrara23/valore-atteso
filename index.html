@@ -383,13 +383,13 @@ async function crInit(){
 async function crLoadCtx(){
   try{
     const [sr, er, ar] = await Promise.all([
-      fetch(SURL + '/rest/v1/subscribers?select=email&confirmed=eq.true', {
+      fetch(SURL + '/rest/v1/subscribers?select=*&confirmed=eq.true', {
         headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
       }),
-      fetch(SURL + '/rest/v1/editions?select=num,title,date,published,sent_count&order=num.desc', {
+      fetch(SURL + '/rest/v1/editions?select=*&order=num.desc', {
         headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
       }),
-      fetch(SURL + '/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40', {
+      fetch(SURL + '/rest/v1/agent_runs?select=*&order=created_at.desc&limit=40', {
         headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
       })
     ]);
@@ -398,26 +398,27 @@ async function crLoadCtx(){
     const eds = await er.json();
     const runs = await ar.json().catch(() => []);
 
-    if(!Array.isArray(subs)) throw new Error('Errore lettura subscribers');
-    if(!Array.isArray(eds)) throw new Error('Errore lettura editions');
+    const safeSubs = Array.isArray(subs) ? subs : [];
+    const safeEds = Array.isArray(eds) ? eds : [];
+    const safeRuns = Array.isArray(runs) ? runs : [];
 
-    const published = eds.filter(e => e.published);
+    const published = safeEds.filter(e => e.published);
     const lastSent = published[0] || null;
 
-    const totalSubs = subs.length;
+    const totalSubs = safeSubs.length;
     const sentCount = lastSent?.sent_count || 0;
 
     crCtx = {
       subs: totalSubs,
       eds: published.length,
       last: lastSent,
-      runs: Array.isArray(runs) ? runs : []
+      runs: safeRuns
     };
 
     document.getElementById('cr-d-subs').textContent = totalSubs;
     document.getElementById('cr-d-eds').textContent = published.length;
     document.getElementById('cr-d-last').textContent = lastSent
-      ? '#' + lastSent.num + ' · ' + lastSent.date
+      ? '#' + lastSent.num + ' · ' + (lastSent.date || '')
       : '—';
 
     const sentEl = document.getElementById('cr-d-sent');
@@ -434,11 +435,10 @@ async function crLoadCtx(){
         : 'email consegnate';
     }
 
-    crRenderAgents(crCtx.runs);
+    crRenderAgents(safeRuns);
 
   }catch(e){
     console.error('Control Room error:', e);
-    alert('Errore Control Room: ' + e.message);
   }
 }
 function crRenderAgents(runs){
