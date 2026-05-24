@@ -1,141 +1,120 @@
-// api/genera-edizione.js — Genera edizione newsletter via Vercel (usa ANTHROPIC_KEY dal server)
+// api/genera-edizione.js — Genera la bozza completa dalle sezioni scelte
+const { createClient } = require('@supabase/supabase-js');
 
-module.exports.config = { maxDuration: 60 };
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
+const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+
+async function callClaude(messages, system) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 5000, system, messages })
+  });
+  if (!r.ok) throw new Error(`Anthropic: ${r.status}`);
+  const data = await r.json();
+  return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+}
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-  const SUPA_URL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-
-  if (!ANTHROPIC_KEY) {
-    return res.status(500).json({ error: 'ANTHROPIC_KEY non configurata su Vercel' });
-  }
-
-  const { hint, mode, editionNum, oggi } = req.body || {};
-
-  // Legge temi Scout e SEO da Supabase
-  let temiContext = '';
-  let seoContext = '';
   try {
-    const memR = await fetch(`${SUPA_URL}/rest/v1/agent_memory?key=in.(scout_brief,seo_keywords)&select=key,value,updated_at`, {
-      headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
-    });
-    const mem = await memR.json();
-    if (Array.isArray(mem)) {
-      const scout = mem.find(m => m.key === 'scout_brief');
-      const seo = mem.find(m => m.key === 'seo_keywords');
-      if (scout) {
-        temiContext = `\n\nTEMI TROVATI DALLO SCOUT (aggiornati ${scout.updated_at}):\n` + JSON.stringify(scout.value, null, 2);
-      }
-      if (seo) {
-        seoContext = `\n\nKEYWORD SEO:\n` + JSON.stringify(seo.value, null, 2);
-      }
-    }
-  } catch(e) {
-    console.error('Errore lettura memoria Scout:', e.message);
-  }
+    const { editionId, bilancio, deal, metrica, date, hint } = req.body;
 
-  const hintText = hint ? `\n\nHINT EDITORIALE: ${hint}` : '';
+    if (!editionId) return res.status(400).json({ error: 'editionId obbligatorio' });
 
-  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.
-Ogni edizione ha 3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.
-Tono: analitico, diretto, dati verificabili, nessun gossip.
-Pubblico: professionisti M&A, PE, consulenza, finanza.
+    // Carica la bozza esistente con le opzioni
+    const { data: editions, error } = await supabase
+      .from('editions')
+      .select('*')
+      .eq('id', editionId)
+      .limit(1);
 
-REGOLA ASSOLUTA — USA SOLO I DATI DELLO SCOUT:
-- Ogni numero, dato finanziario, statistica DEVE provenire dai temi che lo Scout ha trovato con web search
-- Se lo Scout non ha trovato un dato specifico, NON inventarlo
-- VIETATO usare dati dalla memoria di Claude: il training data è spesso obsoleto
-- VIETATO inventare fonti: ogni fonte nel campo "sources" deve essere una di quelle trovate dallo Scout
-- Se non hai abbastanza dati verificati per una sezione, semplifica il testo piuttosto che inventare numeri
-- Il campo "sources" deve contenere SOLO le fonti reali citate nei temi Scout, con nome testata + data
-${temiContext}
-${seoContext}
-${hintText}
+    if (error) throw new Error(error.message);
+    if (!editions?.length) throw new Error('Bozza non trovata');
+    const draft = editions[0];
+
+    // Costruisce il prompt con le sezioni scelte
+    const sezionePrompt = (label, scelta, custom) => {
+      if (custom) return `${label}: ${custom} (tema inserito manualmente dall'editore)`;
+      return `${label}: "${scelta.title}" — ${scelta.summary}`;
+    };
+
+    const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.
+Scrivi le 3 sezioni dell'edizione usando SOLO i temi e dati forniti.
+Tono: analitico, diretto, professionale. Pubblico: M&A, PE, consulenza.
+
+FORMATO KPI OBBLIGATORIO per ogni sezione (esattamente 3):
+[{"label":"nome breve max 4 parole","value":"numero con unità","sub":"contesto 3-4 parole"}]
 
 Rispondi SOLO in JSON valido:
 {
-  "num": "${editionNum}",
   "title": "titolo principale edizione",
   "subtitle": "sottotitolo",
-  "date": "${oggi}",
-  "opener": "frase di apertura 2-3 righe",
+  "opener": "2-3 righe di apertura",
   "sections": [
     {
       "label": "Il Bilancio",
       "title": "titolo sezione",
-      "body": "corpo testo 150-200 parole con SOLO dati dallo Scout",
-      "kpis": [{"key": "metrica", "value": "valore verificato dallo Scout"}],
+      "body": "testo 150-200 parole",
+      "kpis": [{"label":"...","value":"...","sub":"..."}],
       "verdict": "verdetto finale",
-      "sources": ["fonte esatta dallo Scout — testata — data"]
+      "sources": ["fonte — testata — data"]
     },
-    {
-      "label": "Il Deal",
-      "title": "titolo sezione",
-      "body": "corpo testo 150-200 parole",
-      "kpis": [{"key": "metrica", "value": "valore"}],
-      "verdict": "verdetto finale",
-      "sources": ["fonte esatta dallo Scout — testata — data"]
-    },
-    {
-      "label": "La Metrica",
-      "title": "titolo sezione",
-      "body": "corpo testo 150-200 parole",
-      "kpis": [{"key": "metrica", "value": "valore"}],
-      "verdict": "verdetto finale",
-      "sources": ["fonte esatta dallo Scout — testata — data"]
-    }
-  ],
-  "tags": ["tag1", "tag2", "tag3"]
+    { "label": "Il Deal", ... },
+    { "label": "La Metrica", ... }
+  ]
 }`;
 
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-opus-4-5',
-        max_tokens: 3000,
-        system,
-        messages: [{
-          role: 'user',
-          content: `Genera l'edizione #${editionNum} di Valore Atteso per ${oggi}. Usa ESCLUSIVAMENTE i dati e le fonti presenti nei temi dello Scout. Non aggiungere dati dalla tua memoria. Non inventare fonti.`
-        }]
-      })
-    });
+    const userMsg = `Genera l'edizione #${draft.num} di Valore Atteso.
 
-    if (!r.ok) {
-      const err = await r.text();
-      return res.status(500).json({ error: `Anthropic error: ${r.status}`, detail: err });
+SEZIONI DA SVILUPPARE:
+${sezionePrompt('Il Bilancio', bilancio, bilancio?.custom)}
+${sezionePrompt('Il Deal', deal, deal?.custom)}
+${sezionePrompt('La Metrica', metrica, metrica?.custom)}
+
+${hint ? `NOTA EDITORIALE: ${hint}` : ''}
+
+Scrivi testi completi per ognuna. KPI verificati dai temi forniti.`;
+
+    const testo = await callClaude([{ role: 'user', content: userMsg }], system);
+
+    let generated;
+    try {
+      const match = testo.match(/\{[\s\S]*\}/);
+      generated = JSON.parse(match[0]);
+    } catch {
+      throw new Error('JSON generato non valido');
     }
 
-    const data = await r.json();
-    const testo = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    // Aggiorna la bozza con il contenuto generato
+    const updateData = {
+      title: generated.title,
+      subtitle: generated.subtitle || '',
+      opener: generated.opener || '',
+      sections: generated.sections,
+      date: date || draft.date,
+    };
 
-    // Pulisce e parsea JSON
-    let raw = testo.replace(/```json|```/g, '').trim();
-    const match = raw.match(/\{[\s\S]*\}/);
-    if (!match) return res.status(500).json({ error: 'JSON non valido dalla risposta' });
+    const { error: updateErr } = await supabase
+      .from('editions')
+      .update(updateData)
+      .eq('id', editionId);
 
-    let json = match[0];
-    json = json.replace(/[\x00-\x1F\x7F]/g, ' ');
-    json = json.replace(/,(\s*[}\]])/g, '$1');
+    if (updateErr) throw new Error(updateErr.message);
 
-    const edition = JSON.parse(json);
-    return res.status(200).json({ ok: true, edition });
+    return res.status(200).json({ ok: true, id: editionId, title: generated.title });
 
-  } catch(e) {
-    console.error('Errore genera-edizione:', e.message);
+  } catch (e) {
+    console.error('[genera-edizione]', e);
     return res.status(500).json({ error: e.message });
   }
-}
+};
