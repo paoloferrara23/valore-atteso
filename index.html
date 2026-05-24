@@ -382,35 +382,63 @@ async function crInit(){
 }
 async function crLoadCtx(){
   try{
-    const [sr,er,ar]=await Promise.all([
-      fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/editions?select=num,title,date,published,sent_count,sent_to&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+    const [sr, er, ar] = await Promise.all([
+      fetch(SURL + '/rest/v1/subscribers?select=email&confirmed=eq.true', {
+        headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
+      }),
+      fetch(SURL + '/rest/v1/editions?select=num,title,date,published,sent_count&order=num.desc', {
+        headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
+      }),
+      fetch(SURL + '/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40', {
+        headers:{apikey:SKEY, Authorization:'Bearer ' + SKEY}
+      })
     ]);
-    const subs=await sr.json();
-    const eds=await er.json();
-    const runs=await ar.json().catch(()=>[]);
-    const published=(eds||[]).filter(e=>e.published);
-    const lastSent=published[0];
-    const sentCount=lastSent?.sent_count||0;
-    const totalSubs=subs.length;
-    crCtx={subs:totalSubs,eds:published.length,last:published[0]||null,runs:runs||[]};
-    document.getElementById('cr-d-subs').textContent=totalSubs;
-    document.getElementById('cr-d-eds').textContent=crCtx.eds;
-    document.getElementById('cr-d-last').textContent=crCtx.last?'#'+crCtx.last.num+' · '+crCtx.last.date:'—';
-    const sentEl=document.getElementById('cr-d-sent');
-    const sentSubEl=document.getElementById('cr-d-sent-sub');
+
+    const subs = await sr.json();
+    const eds = await er.json();
+    const runs = await ar.json().catch(() => []);
+
+    if(!Array.isArray(subs)) throw new Error('Errore lettura subscribers');
+    if(!Array.isArray(eds)) throw new Error('Errore lettura editions');
+
+    const published = eds.filter(e => e.published);
+    const lastSent = published[0] || null;
+
+    const totalSubs = subs.length;
+    const sentCount = lastSent?.sent_count || 0;
+
+    crCtx = {
+      subs: totalSubs,
+      eds: published.length,
+      last: lastSent,
+      runs: Array.isArray(runs) ? runs : []
+    };
+
+    document.getElementById('cr-d-subs').textContent = totalSubs;
+    document.getElementById('cr-d-eds').textContent = published.length;
+    document.getElementById('cr-d-last').textContent = lastSent
+      ? '#' + lastSent.num + ' · ' + lastSent.date
+      : '—';
+
+    const sentEl = document.getElementById('cr-d-sent');
+    const sentSubEl = document.getElementById('cr-d-sent-sub');
+
     if(sentEl){
-      sentEl.textContent=sentCount+'/'+totalSubs;
-      sentEl.style.color=sentCount>=totalSubs?'var(--green)':'var(--red)';
-      if(sentSubEl)sentSubEl.textContent='#'+(lastSent?.num||'—')+' · email consegnate';
+      sentEl.textContent = sentCount ? sentCount + '/' + totalSubs : '—';
+      sentEl.style.color = sentCount >= totalSubs && totalSubs > 0 ? 'var(--green)' : 'var(--ink)';
     }
-    crRenderAgents(runs||[]);
-    if(crCtx.last)crCheckDelivery(crCtx.last.num);
+
+    if(sentSubEl){
+      sentSubEl.textContent = lastSent
+        ? '#' + lastSent.num + ' · email inviate'
+        : 'email consegnate';
+    }
+
+    crRenderAgents(crCtx.runs);
+
   }catch(e){
-    console.error('edition status',e);
-    const el=document.getElementById('cr-ed-ultima');
-    if(el)el.textContent='ERR: '+e.message;
+    console.error('Control Room error:', e);
+    alert('Errore Control Room: ' + e.message);
   }
 }
 function crRenderAgents(runs){
