@@ -8,7 +8,7 @@ const SUPA_URL = process.env.SUPABASE_URL;
 const SUPA_KEY = process.env.SUPABASE_KEY;
 const SITE = 'https://valoreatteso.com';
 const FROM = 'Valore Atteso <info@valoreatteso.com>';
-
+ 
 async function httpRequest(url, opts = {}) {
   const r = await fetch(url, opts);
   const text = await r.text();
