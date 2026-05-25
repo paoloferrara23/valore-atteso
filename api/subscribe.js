@@ -1,434 +1,179 @@
-const { createClient } = require('@supabase/supabase-js');
+// ─────────────────────────────────────────────
+// CONFERMA iscrizione
+// ─────────────────────────────────────────────
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+if (action === 'conferma' && token) {
 
-function esc(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+  const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': process.env.SUPABASE_KEY,
+      'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify({
+      confirmed: true,
+      token: null
+    })
+  });
 
-function toSentenceCase(s) {
-  if (!s) return '';
-  const str = String(s);
-  if (str === str.toUpperCase()) return str[0] + str.slice(1).toLowerCase();
-  return str;
-}
+  const rows = await r.json();
 
-function buildHtml(edition) {
-  const { num, title, subtitle, date, opener, sections = [], tesi, monitoring = [] } = edition;
-
-  const s1 = sections[0] || {};
-  const s2 = sections[1] || {};
-  const s3 = sections[2] || {};
-
-    function renderKpiRow(kpis) {
-    if (!kpis || !kpis.length) return '';
-    const rows = kpis.slice(0, 3).map((k, i) => {
-      const border = i < Math.min(kpis.length, 3) - 1 ? 'border-right:1px solid #CEC3B2;' : '';
-      const sub = k.sub ? `<div style="font-family:'Courier New',monospace;font-size:7px;color:#9A9690;margin-top:3px;">${esc(k.sub)}</div>` : '';
-      return `<td style="padding:16px 18px;${border}vertical-align:top;width:33%;">
-        <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#1C1914;letter-spacing:-.5px;line-height:1;margin-bottom:5px;">${esc(k.value)}</div>
-        <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.04em;text-transform:uppercase;line-height:1.4;">${esc(k.label)}</div>
-        ${sub}
-      </td>`;
-    }).join('');
-    return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E7DFD2;border:1px solid #CEC3B2;margin-bottom:18px;">
-      <tr>${rows}</tr>
-    </table>`;
+  if (!r.ok || !rows?.length) {
+    return res.status(400).json({ error: 'Token non valido' });
   }
 
-  function renderSection(sec, idx) {
-    if (!sec || !sec.title) return '';
-    const sectionLabels = ['Il Bilancio', 'Il Deal', 'La Metrica'];
-    const label = sec.label || sectionLabels[idx] || `0${idx + 1}`;
-    const bg = idx % 2 === 0 ? '#F0EBE1' : '#F7F4EF';
+  const userEmail = rows[0].email;
 
-    // Supporta sia kpis che kpi_rows
-    const kpisData = sec.kpis?.length
-      ? sec.kpis
-      : (sec.kpi_rows?.length ? sec.kpi_rows.map(k => ({ label: k.key, value: k.value, sub: k.sub })) : []);
+  // ─────────────────────────────────────────────
+  // EMAIL DI BENVENUTO
+  // ─────────────────────────────────────────────
 
-    const kpiRow = renderKpiRow(kpisData);
-
-    const verdict = toSentenceCase(sec.verdict || '');
-    const verdictHtml = verdict ? `
-      <div style="margin-top:18px;background:#1C1914;padding:18px 20px;border-left:3px solid #C8A97A;">
-        <div style="font-family:'Courier New',monospace;font-size:7px;letter-spacing:.16em;color:#C8A97A;text-transform:uppercase;margin-bottom:10px;">— La nostra lettura</div>
-        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFDF8;line-height:1.65;margin:0;font-weight:400;">${esc(verdict)}</p>
-      </div>` : '';
-
-    const bodyParas = Array.isArray(sec.body)
-      ? sec.body
-      : String(sec.body || '').split('\n\n').filter(p => p.trim());
-
-    const bodyHtml = bodyParas.map(p =>
-      `<p style="font-family:Georgia,serif;font-size:14px;color:#4C453D;font-weight:300;line-height:1.85;margin:0 0 14px;">${esc(p)}</p>`
-    ).join('');
-
-    return `
-    <div style="background:${bg};padding:28px 28px 26px;border-bottom:2px solid #CEC3B2;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-        <div style="width:26px;height:26px;background:#1C1914;border-radius:50%;text-align:center;line-height:26px;font-family:'Courier New',monospace;font-size:9px;font-weight:700;color:#C8A97A;">${idx + 1}</div>
-        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;">${esc(label)}</div>
-        <div style="flex:1;height:1px;background:#CEC3B2;"></div>
-      </div>
-      <h2 style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:#1C1914;letter-spacing:-.4px;line-height:1.2;margin:0 0 18px;">${esc(sec.title)}</h2>
-      ${kpiRow}
-      ${bodyHtml}
-      ${verdictHtml}
-    </div>`;
-  }
-
-  function renderTesi(tesi = {}) {
-    if (!tesi || (!tesi.headline && !tesi.top?.length && !tesi.mid?.length)) return '';
-    const topItems = (tesi.top || []).map(t => `
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;">
-        <span style="font-family:'Courier New',monospace;font-size:10px;color:#C8A97A;flex-shrink:0;margin-top:2px;">→</span>
-        <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.6);font-weight:300;line-height:1.5;">${esc(t)}</span>
-      </div>`).join('');
-    const midItems = (tesi.mid || []).map(t => `
-      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;">
-        <span style="font-family:'Courier New',monospace;font-size:10px;color:#777066;flex-shrink:0;margin-top:2px;">→</span>
-        <span style="font-family:Georgia,serif;font-size:13px;color:rgba(255,255,255,0.35);font-weight:300;line-height:1.5;">${esc(t)}</span>
-      </div>`).join('');
-
-    if (!topItems && !midItems) return '';
-
-    return `
-    <div style="background:#1C1914;padding:30px 28px 28px;">
-      <div style="font-family:'Courier New',monospace;font-size:7px;letter-spacing:.18em;color:#C8A97A;text-transform:uppercase;margin-bottom:16px;">— La tesi di Valore Atteso</div>
-      <p style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#fff;line-height:1.35;margin:0 0 6px;letter-spacing:-.3px;">${esc(tesi.headline || '')}</p>
-      <p style="font-family:Georgia,serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.75;margin:0 0 22px;font-style:italic;">${esc(tesi.intro || '')}</p>
-      <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-bottom:24px;">
-        <div style="padding-right:24px;">${topItems}</div>
-        <div style="background:rgba(255,255,255,0.07);"></div>
-        <div style="padding-left:24px;">${midItems}</div>
-      </div>
-    </div>`;
-  }
-
-  const sectionsHtml = sections.map((sec, i) => renderSection(sec, i)).join('');
-  const tesiHtml = renderTesi(tesi);
-
-  return `<!DOCTYPE html>
+  const welcomeHtml = `
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="x-apple-disable-message-reformatting">
-<title>${esc(title)} — Valore Atteso #${esc(num)}</title>
-<style>
-@media only screen and (max-width:600px){
-  table[width="640"]{width:100%!important;}
-  .kpi-top td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
-  .kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
-  h1{font-size:20px!important;letter-spacing:-.5px!important;}
-  h2.subtitle{font-size:14px!important;}
-  h2.section-title{font-size:17px!important;}
-  .section-pad{padding:20px 18px 22px!important;}
-  .verdict-text{font-size:13px!important;}
-}
-</style>
-<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
 </head>
-<body style="margin:0;padding:0;background:#D8D0C4;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
 
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#F0EBE1;">
-  ${esc(subtitle || opener || '')} · valoreatteso.com
-</div>
+<body style="margin:0;padding:0;background:#D8D0C4;">
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
-<tr><td align="center" style="padding:0;">
+<tr>
+<td align="center" style="padding:0;">
+
 <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
 
-  <!-- PREHEADER -->
-  <tr><td style="background:#1C1914;padding:7px 28px;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);letter-spacing:.06em;">
-        Problemi di visualizzazione? <a href="https://valoreatteso.com/archivio.html" style="color:#C8A97A;text-decoration:underline;">Leggi online</a>
-      </td>
-      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:.08em;text-transform:uppercase;">Valore Atteso</td>
-    </tr></table>
-  </td></tr>
-
-  <!-- MASTHEAD -->
-  <tr><td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td>
-        <table cellpadding="0" cellspacing="0" border="0"><tr>
-          <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914;">VA</td>
-          <td style="padding-left:14px;">
-            <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;line-height:1;">VALORE ATTESO</div>
-            <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">Il calcio dei numeri, non dei goal.</div>
+  <!-- TOP BAR -->
+  <tr>
+    <td style="background:#1C1914;padding:7px 28px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);">
+            Benvenuto in Valore Atteso
           </td>
-        </tr></table>
-      </td>
-      <td align="right" style="vertical-align:bottom;">
-        <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.1em;text-transform:uppercase;">Edizione</div>
-        <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#8E6B33;letter-spacing:-1px;line-height:1.1;">#${esc(num)}</div>
-        <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;">${esc(date || '')}</div>
-      </td>
-    </tr></table>
-  </td></tr>
+
+          <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em;">
+            Valore Atteso
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- LOGO -->
+  <tr>
+    <td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914;">
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+
+          <td>
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+
+                <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914;">
+                  VA
+                </td>
+
+                <td style="padding-left:14px;">
+                  <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;line-height:1;">
+                    VALORE ATTESO
+                  </div>
+
+                  <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">
+                    Il calcio dei numeri, non dei goal.
+                  </div>
+                </td>
+
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+      </table>
+
+    </td>
+  </tr>
 
   <!-- HERO -->
-  <tr><td style="background:#1C1914;padding:32px 28px 28px;">
-    <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px;">— Questa settimana</div>
-    <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 8px;">${esc(title)}</h1>
-    ${subtitle ? `<h2 class="subtitle" style="font-family:Georgia,serif;font-size:16px;font-weight:400;font-style:italic;color:#C8A97A;line-height:1.3;margin:0 0 18px;">${esc(subtitle)}</h2>` : ''}
-    ${opener ? `<div style="border-left:2px solid rgba(200,169,122,0.3);padding-left:14px;">
-      <p style="font-family:Georgia,serif;font-size:13px;color:rgba(240,235,225,0.55);font-style:italic;line-height:1.8;margin:0;font-weight:300;">${esc(opener)}</p>
-    </div>` : ''}
-  </td></tr>
+  <tr>
+    <td style="background:#1C1914;padding:32px 28px 28px;">
 
+      <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px;">
+        — Benvenuto
+      </div>
 
+      <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 16px;">
+        Analisi, non rumore.
+      </h1>
 
-  <!-- SEZIONI -->
-  <tr><td>${sectionsHtml}</td></tr>
+      <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 14px;">
+        Ogni martedì mattina trovi nella tua inbox un bilancio analizzato, un deal sezionato e una metrica spiegata.
+        In 8 minuti, con il caffè, prima di una riunione.
+      </p>
 
-  <!-- TESI -->
-  ${tesiHtml ? `<tr><td>${tesiHtml}</td></tr>` : ''}
+      <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 26px;">
+        Nel frattempo puoi esplorare le analisi già pubblicate nell’archivio di Valore Atteso.
+      </p>
 
-  <!-- CTA -->
-  <tr><td style="background:#1C1914;padding:32px 28px;text-align:center;">
-    <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:12px;">Edizione #${esc(num)}</div>
-    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(255,255,255,0.55);font-weight:300;line-height:1.6;margin:0 0 20px;">Leggi l'analisi completa con tutti i dati nell'archivio.</p>
-    <a href="${process.env.SITE_URL || 'https://valoreatteso.com'}/archivio.html" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;">Leggi nell'archivio →</a>
-  </td></tr>
+      <a href="${SITE}/archivio.html"
+         style="display:inline-block;background:#C8A97A;color:#1C1914;
+         font-family:'Courier New',monospace;
+         font-size:9px;
+         font-weight:600;
+         letter-spacing:.12em;
+         text-transform:uppercase;
+         padding:12px 28px;
+         text-decoration:none;">
+
+         Vai all’archivio →
+
+      </a>
+
+    </td>
+  </tr>
 
   <!-- FOOTER -->
-  <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:24px 28px 0;">
+  <tr>
+    <td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:16px 28px;text-align:center;">
 
-    <!-- Logo + tagline -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td style="padding-bottom:16px;">
-          <div style="font-family:Georgia,serif;font-size:15px;font-weight:900;color:#1C1914;letter-spacing:-.5px;margin-bottom:3px;">Valore Atteso</div>
-          <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;letter-spacing:.06em;">Il calcio dei numeri, non dei goal.</div>
-        </td>
-      </tr>
-    </table>
+      <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;margin:0;">
+        Per cancellarti
+        <a href="${SITE}/cancella.html?email=${encodeURIComponent(userEmail)}"
+           style="color:#777066;text-decoration:underline;">
+           clicca qui
+        </a>.
+      </p>
 
-    <!-- Instagram + Contatti -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #CEC3B2;padding-top:14px;">
-      <tr>
-        <td style="vertical-align:top;padding-bottom:16px;">
-          <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;">Seguici</div>
-          <a href="https://instagram.com/valoreatteso" style="text-decoration:none;">
-            <img src="https://valoreatteso.com/icons/instagram.png" width="24" height="24" alt="@valoreatteso" style="display:block;border:0;">
-          </a>
-        </td>
-        <td align="right" style="vertical-align:top;padding-bottom:16px;">
-          <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Sito Web</div>
-          <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:10px;">valoreatteso.com</div>
-          <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;">Contatti</div>
-          <div style="font-family:'Courier New',monospace;font-size:9px;color:#4C453D;">info@valoreatteso.com</div>
-        </td>
-      </tr>
-    </table>
-
-    <!-- Legal -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-      <tr><td style="border-top:1px solid #CEC3B2;padding:14px 0 18px;text-align:center;">
-        <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;line-height:1.9;margin:0;">
-          Hai ricevuto questa email perché sei iscritto a Valore Atteso.<br>
-          Per cancellarti <a href="https://valoreatteso.com/cancella.html?email={{EMAIL}}" style="color:#777066;text-decoration:underline;">clicca qui</a>.
-        </p>
-      </td></tr>
-    </table>
-
-  </td></tr>
+    </td>
+  </tr>
 
 </table>
-</td></tr>
+
+</td>
+</tr>
 </table>
+
 </body>
-</html>`;
-}
+</html>
+`;
 
-module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  const RESEND_KEY = process.env.RESEND_KEY;
-  const SITE = 'https://valoreatteso.com';
-  const FROM = 'Valore Atteso <info@valoreatteso.com>';
-
-  const { email, action, token } = req.body || {};
-
-  // CONFERMA iscrizione
-  if (action === 'conferma' && token) {
-    const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': process.env.SUPABASE_KEY,
-        'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify({ confirmed: true, token: null })
-    });
-    const rows = await r.json();
-    if (!r.ok || !rows?.length) return res.status(400).json({ error: 'Token non valido' });
-
-    const userEmail = rows[0].email;
-
-    // 1. Email di benvenuto — nuovo template
-    const welcomeHtml = `<!DOCTYPE html>
-<html lang="it">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#D8D0C4;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
-<tr><td align="center" style="padding:0;">
-<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
-  <tr><td style="background:#1C1914;padding:7px 28px;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);">Benvenuto in Valore Atteso</td>
-      <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em;">Valore Atteso</td>
-    </tr></table>
-  </td></tr>
-  <tr><td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td>
-        <table cellpadding="0" cellspacing="0" border="0"><tr>
-          <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914;">VA</td>
-          <td style="padding-left:14px;">
-            <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;line-height:1;">VALORE ATTESO</div>
-            <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">Il calcio dei numeri, non dei goal.</div>
-          </td>
-        </tr></table>
-      </td>
-    </tr></table>
-  </td></tr>
-  <tr><td style="background:#1C1914;padding:32px 28px 28px;">
-    <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px;">— Benvenuto</div>
-    <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 16px;">Analisi, non rumore.</h1>
-    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 12px;">Ogni martedì mattina trovi nella tua inbox un bilancio analizzato, un deal sezionato, una metrica spiegata. In 8 minuti, con il caffè, prima di una riunione.</p>
-    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0;">Ti invio subito l'ultima edizione pubblicata, così capisci subito di cosa parliamo.</p>
-  </td></tr>
-  <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:16px 28px;text-align:center;">
-    <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;letter-spacing:.04em;margin:0;">
-      Per cancellarti <a href="${SITE}/cancella.html?email=${encodeURIComponent(userEmail)}" style="color:#777066;text-decoration:underline;">clicca qui</a>.
-    </p>
-  </td></tr>
-</table>
-</td></tr>
-</table>
-</body></html>`;
-
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({ from: FROM, to: userEmail, subject: 'Benvenuto in Valore Atteso', html: welcomeHtml })
-    }).catch(e => console.error('Welcome email error:', e));
-
-    // 2. Ultima edizione pubblicata — usa buildHtml del template newsletter
-    try {
-      const edRes = await supabase.from('editions').select('*').eq('published', true).order('num', { ascending: false }).limit(1);
-      const edition = edRes.data?.[0];
-
-      if (edition) {
-        const edHtml = buildHtml(edition)
-          .replace('{{EMAIL}}', encodeURIComponent(userEmail))
-          .replace('{{WEBVIEW_URL}}', `${SITE}/archivio#${edition.num}`);
-
-        await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-          body: JSON.stringify({
-            from: FROM,
-            to: userEmail,
-            subject: `Valore Atteso #${edition.num} — ${edition.title}`,
-            html: edHtml
-          })
-        }).catch(e => console.error('Edition email error:', e));
-      }
-    } catch(e) {
-      console.error('Edition fetch error:', e);
-    }
-
-    return res.status(200).json({ ok: true });
-  }
-
-  // NUOVA ISCRIZIONE
-  if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Email non valida' });
-  }
-
-  // Controlla se email esiste già
-  const { createClient: _createClient } = require('@supabase/supabase-js');
-  const _sb = _createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-  
-  const { data: existing } = await _sb.from('subscribers').select('email,confirmed,token').eq('email', email).single();
-  
-  // Se già confermato, non fare nulla
-  if (existing?.confirmed) {
-    return res.status(200).json({ ok: true, already: true });
-  }
-  
-  // Se ha già un token attivo, rispedisci lo stesso token
-  let tok = existing?.token || crypto.randomUUID();
-  
-  if (existing) {
-    // Aggiorna solo il token se non ne ha uno
-    if (!existing.token) {
-      await _sb.from('subscribers').update({ token: tok }).eq('email', email);
-    }
-  } else {
-    // Inserisci nuovo iscritto
-    const { error: insertErr } = await _sb.from('subscribers').insert({ email, token: tok, confirmed: false });
-    if (insertErr) return res.status(500).json({ error: insertErr.message });
-  }
-
-  const SITE_URL = process.env.SITE_URL || SITE;
-  const mailRes = await fetch('https://api.resend.com/emails', {
+  await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${RESEND_KEY}`
+    },
     body: JSON.stringify({
       from: FROM,
-      to: email,
-      subject: 'Conferma la tua iscrizione a Valore Atteso',
-      html: `<!DOCTYPE html>
-<html lang="it">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#D8D0C4;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
-<tr><td align="center">
-<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
-  <tr><td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914;">
-    <table cellpadding="0" cellspacing="0" border="0"><tr>
-      <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914;">VA</td>
-      <td style="padding-left:14px;">
-        <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;">VALORE ATTESO</div>
-        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">Il calcio dei numeri, non dei goal.</div>
-      </td>
-    </tr></table>
-  </td></tr>
-  <tr><td style="background:#1C1914;padding:32px 28px;">
-    <h1 style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#FFFDF8;margin:0 0 16px;">Conferma la tua iscrizione</h1>
-    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 24px;">Clicca il pulsante qui sotto per completare l'iscrizione a Valore Atteso.</p>
-    <a href="${SITE_URL}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;">Conferma iscrizione →</a>
-    <p style="font-family:Georgia,serif;font-size:12px;color:rgba(240,235,225,0.35);margin:20px 0 0;">Il link scade fra 7 giorni. Se non sei stato tu, ignora questa email.</p>
-  </td></tr>
-  <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:16px 28px;text-align:center;">
-    <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;margin:0;">valoreatteso.com</p>
-  </td></tr>
-</table>
-</td></tr>
-</table>
-</body></html>`
+      to: userEmail,
+      subject: 'Benvenuto in Valore Atteso',
+      html: welcomeHtml
     })
-  });
-
-  if (!mailRes.ok) {
-    const mailErr = await mailRes.json();
-    return res.status(502).json({ error: 'Errore email: ' + (mailErr.message || mailRes.status) });
-  }
+  }).catch(e => console.error('Welcome email error:', e));
 
   return res.status(200).json({ ok: true });
-};
+}
