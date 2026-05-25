@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Valore Atteso — Conferma iscrizione</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
-  padding:0
+  padding:0;
 }
 
 :root{
@@ -21,12 +24,11 @@
   --ink3:#9A9690;
   --rule:#D0CBC0;
   --green:#1B4332;
-  --gpal:#E4EDE7;
   --red:#C8251D;
 
   --dp:'Playfair Display',Georgia,serif;
   --sf:'Source Serif 4',Georgia,serif;
-  --mn:'JetBrains Mono',monospace
+  --mn:'JetBrains Mono',monospace;
 }
 
 body{
@@ -35,25 +37,24 @@ body{
   font-family:var(--sf);
   min-height:100vh;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   padding:40px 24px;
-  -webkit-font-smoothing:antialiased
+  -webkit-font-smoothing:antialiased;
 }
 
 .box{
-  max-width:480px;
+  max-width:520px;
   width:100%;
-  text-align:center
+  text-align:center;
 }
 
 .logo{
   font-family:var(--dp);
-  font-size:2rem;
+  font-size:2.4rem;
   font-weight:900;
   letter-spacing:-1px;
-  margin-bottom:8px
+  margin-bottom:10px;
 }
 
 .tag{
@@ -62,95 +63,106 @@ body{
   letter-spacing:.18em;
   text-transform:uppercase;
   color:var(--ink3);
-  margin-bottom:40px;
+  margin-bottom:42px;
   padding-bottom:24px;
-  border-bottom:1px solid var(--rule)
-}
-
-.icon{
-  font-size:48px;
-  margin-bottom:20px
-}
-
-.title{
-  font-family:var(--dp);
-  font-size:1.8rem;
-  font-weight:700;
-  letter-spacing:-.5px;
-  line-height:1.15;
-  margin-bottom:14px
-}
-
-.desc{
-  font-family:var(--sf);
-  font-size:16px;
-  color:var(--ink2);
-  font-weight:300;
-  line-height:1.75;
-  margin-bottom:32px
-}
-
-.btn{
-  display:inline-block;
-  background:var(--red);
-  color:#fff;
-  padding:14px 28px;
-  font-family:var(--mn);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  text-decoration:none;
-  border-radius:3px;
-  transition:opacity .15s
-}
-
-.btn:hover{
-  opacity:.88
+  border-bottom:1px solid var(--rule);
 }
 
 .loading{
   font-family:var(--mn);
   font-size:10px;
   color:var(--ink3);
-  letter-spacing:.1em;
-  text-transform:uppercase
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+.icon{
+  font-size:54px;
+  margin-bottom:20px;
+}
+
+.title{
+  font-family:var(--dp);
+  font-size:2rem;
+  font-weight:700;
+  letter-spacing:-.6px;
+  line-height:1.1;
+  margin-bottom:16px;
+}
+
+.desc{
+  font-size:18px;
+  color:var(--ink2);
+  font-weight:300;
+  line-height:1.8;
+  margin-bottom:26px;
+}
+
+.micro{
+  font-size:14px;
+  margin-bottom:34px;
+}
+
+.btn{
+  display:inline-block;
+  background:var(--red);
+  color:#fff;
+  padding:14px 30px;
+  font-family:var(--mn);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  text-decoration:none;
+  border-radius:4px;
+  transition:opacity .15s;
+}
+
+.btn:hover{
+  opacity:.88;
 }
 
 .err{
+  display:none;
+  margin-top:18px;
   background:rgba(200,37,29,.08);
   border-left:3px solid var(--red);
-  padding:14px 18px;
+  padding:14px 16px;
+  text-align:left;
   font-family:var(--mn);
   font-size:10px;
   color:var(--red);
-  letter-spacing:.04em;
   line-height:1.6;
-  text-align:left;
-  margin-bottom:20px;
-  display:none
 }
+
 </style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-  <div class="logo">Valore Atteso</div>
+  <div class="logo">
+    Valore Atteso
+  </div>
 
   <div class="tag">
     Il calcio dei numeri, non dei goal
   </div>
 
   <div id="loading">
+
     <div class="loading">
       Conferma in corso…
     </div>
+
   </div>
 
   <div id="success" style="display:none">
 
-    <div class="icon">✓</div>
+    <div class="icon">
+      ✓
+    </div>
 
     <h1 class="title">
       Iscrizione confermata.
@@ -158,12 +170,13 @@ body{
 
     <p class="desc">
       Benvenuto in Valore Atteso.
-      Ogni martedì mattina riceverai nella tua inbox un bilancio,
-      un deal e una metrica del business dello sport.
+      Ogni martedì mattina riceverai nella tua inbox
+      un bilancio, un deal e una metrica
+      del business dello sport.
       In 8 minuti.
     </p>
 
-    <p class="desc" style="font-size:14px;margin-bottom:28px">
+    <p class="desc micro">
       Ti abbiamo inviato un’email di benvenuto.
       Se non la vedi, controlla la cartella spam.
     </p>
@@ -176,15 +189,17 @@ body{
 
   <div id="error" style="display:none">
 
-    <div class="icon">✕</div>
+    <div class="icon">
+      ✕
+    </div>
 
     <h1 class="title">
       Link non valido.
     </h1>
 
     <p class="desc">
-      Il link di conferma è scaduto o non è corretto.
-      Prova a iscriverti di nuovo.
+      Il link di conferma è scaduto oppure non è corretto.
+      Prova a iscriverti nuovamente.
     </p>
 
     <div class="err" id="err-msg"></div>
@@ -207,53 +222,64 @@ async function conferma(){
   const email = params.get('email');
 
   if(!token){
-    showError('Nessun token trovato nell\\'URL.');
+
+    showError("Nessun token trovato nell'URL.");
+
     return;
   }
 
   try{
 
-    const r = await fetch('/api/subscribe',{
+    const response = await fetch('/api/subscribe',{
+
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+
+      headers:{
+        'Content-Type':'application/json'
+      },
+
       body:JSON.stringify({
         action:'conferma',
-        token,
-        email
+        token:token,
+        email:email
       })
+
     });
 
-    const d = await r.json();
+    const data = await response.json();
 
-    if(r.ok && d.ok){
+    if(response.ok && data.ok){
 
       document.getElementById('loading').style.display='none';
+
       document.getElementById('success').style.display='block';
 
     } else {
 
-      showError(d.error || 'Errore nella conferma.');
+      showError(data.error || 'Errore nella conferma.');
 
     }
 
-  }catch(e){
+  } catch(error){
 
-    showError(String(e));
+    showError(error.message || 'Errore sconosciuto');
 
   }
+
 }
 
-function showError(msg){
+function showError(message){
 
   document.getElementById('loading').style.display='none';
 
   document.getElementById('error').style.display='block';
 
-  const em = document.getElementById('err-msg');
+  const errBox = document.getElementById('err-msg');
 
-  em.style.display='block';
+  errBox.style.display='block';
 
-  em.textContent = msg;
+  errBox.textContent = message;
+
 }
 
 conferma();
