@@ -1,36 +1,85 @@
-// ─────────────────────────────────────────────
-// CONFERMA iscrizione
-// ─────────────────────────────────────────────
+// api/subscribe.js
+// CommonJS — Vercel Serverless Function
 
-if (action === 'conferma' && token) {
+const { createClient } = require('@supabase/supabase-js');
 
-  const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': process.env.SUPABASE_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify({
-      confirmed: true,
-      token: null
-    })
-  });
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
-  const rows = await r.json();
+function esc(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
-  if (!r.ok || !rows?.length) {
-    return res.status(400).json({ error: 'Token non valido' });
+module.exports = async function handler(req, res) {
+
+  // ─────────────────────────────────────────────
+  // CORS
+  // ─────────────────────────────────────────────
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  const userEmail = rows[0].email;
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      error: 'Method not allowed'
+    });
+  }
+
+  const RESEND_KEY = process.env.RESEND_KEY;
+  const SITE = process.env.SITE_URL || 'https://valoreatteso.com';
+
+  const FROM = 'Valore Atteso <info@valoreatteso.com>';
+
+  const { email, action, token } = req.body || {};
 
   // ─────────────────────────────────────────────
-  // EMAIL DI BENVENUTO
+  // CONFERMA ISCRIZIONE
   // ─────────────────────────────────────────────
 
-  const welcomeHtml = `
+  if (action === 'conferma' && token) {
+
+    const r = await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': process.env.SUPABASE_KEY,
+          'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({
+          confirmed: true,
+          token: null
+        })
+      }
+    );
+
+    const rows = await r.json();
+
+    if (!r.ok || !rows?.length) {
+      return res.status(400).json({
+        error: 'Token non valido'
+      });
+    }
+
+    const userEmail = rows[0].email;
+
+    // ─────────────────────────────────────────────
+    // WELCOME EMAIL
+    // ─────────────────────────────────────────────
+
+    const welcomeHtml = `
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -46,11 +95,13 @@ if (action === 'conferma' && token) {
 
 <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
 
-  <!-- TOP BAR -->
+  <!-- TOP -->
   <tr>
     <td style="background:#1C1914;padding:7px 28px;">
+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+
           <td style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.45);">
             Benvenuto in Valore Atteso
           </td>
@@ -58,8 +109,10 @@ if (action === 'conferma' && token) {
           <td align="right" style="font-family:'Courier New',monospace;font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.08em;">
             Valore Atteso
           </td>
+
         </tr>
       </table>
+
     </td>
   </tr>
 
@@ -71,6 +124,7 @@ if (action === 'conferma' && token) {
         <tr>
 
           <td>
+
             <table cellpadding="0" cellspacing="0" border="0">
               <tr>
 
@@ -79,6 +133,7 @@ if (action === 'conferma' && token) {
                 </td>
 
                 <td style="padding-left:14px;">
+
                   <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;line-height:1;">
                     VALORE ATTESO
                   </div>
@@ -86,10 +141,12 @@ if (action === 'conferma' && token) {
                   <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">
                     Il calcio dei numeri, non dei goal.
                   </div>
+
                 </td>
 
               </tr>
             </table>
+
           </td>
 
         </tr>
@@ -120,14 +177,7 @@ if (action === 'conferma' && token) {
       </p>
 
       <a href="${SITE}/archivio.html"
-         style="display:inline-block;background:#C8A97A;color:#1C1914;
-         font-family:'Courier New',monospace;
-         font-size:9px;
-         font-weight:600;
-         letter-spacing:.12em;
-         text-transform:uppercase;
-         padding:12px 28px;
-         text-decoration:none;">
+         style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;">
 
          Vai all’archivio →
 
@@ -161,7 +211,164 @@ if (action === 'conferma' && token) {
 </html>
 `;
 
-  await fetch('https://api.resend.com/emails', {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_KEY}`
+      },
+      body: JSON.stringify({
+        from: FROM,
+        to: userEmail,
+        subject: 'Benvenuto in Valore Atteso',
+        html: welcomeHtml
+      })
+    });
+
+    return res.status(200).json({
+      ok: true
+    });
+  }
+
+  // ─────────────────────────────────────────────
+  // NUOVA ISCRIZIONE
+  // ─────────────────────────────────────────────
+
+  if (!email || !email.includes('@')) {
+    return res.status(400).json({
+      error: 'Email non valida'
+    });
+  }
+
+  const existing = await supabase
+    .from('subscribers')
+    .select('email,confirmed,token')
+    .eq('email', email)
+    .single();
+
+  if (existing.data?.confirmed) {
+    return res.status(200).json({
+      ok: true,
+      already: true
+    });
+  }
+
+  const tok =
+    existing.data?.token ||
+    crypto.randomUUID();
+
+  if (existing.data) {
+
+    if (!existing.data.token) {
+
+      await supabase
+        .from('subscribers')
+        .update({ token: tok })
+        .eq('email', email);
+
+    }
+
+  } else {
+
+    const ins = await supabase
+      .from('subscribers')
+      .insert({
+        email,
+        token: tok,
+        confirmed: false
+      });
+
+    if (ins.error) {
+      return res.status(500).json({
+        error: ins.error.message
+      });
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // EMAIL CONFERMA
+  // ─────────────────────────────────────────────
+
+  const confirmHtml = `
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+
+<body style="margin:0;padding:0;background:#D8D0C4;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
+<tr>
+<td align="center">
+
+<table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
+
+  <tr>
+    <td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914;">
+
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+
+          <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914;">
+            VA
+          </td>
+
+          <td style="padding-left:14px;">
+
+            <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914;">
+              VALORE ATTESO
+            </div>
+
+            <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px;">
+              Il calcio dei numeri, non dei goal.
+            </div>
+
+          </td>
+
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td style="background:#1C1914;padding:32px 28px;">
+
+      <h1 style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#FFFDF8;margin:0 0 16px;">
+        Conferma la tua iscrizione
+      </h1>
+
+      <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 24px;">
+        Clicca il pulsante qui sotto per completare l'iscrizione a Valore Atteso.
+      </p>
+
+      <a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}"
+         style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;">
+
+         Conferma iscrizione →
+
+      </a>
+
+      <p style="font-family:Georgia,serif;font-size:12px;color:rgba(240,235,225,0.35);margin:20px 0 0;">
+        Il link scade fra 7 giorni.
+      </p>
+
+    </td>
+  </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+`;
+
+  const mailRes = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -169,11 +376,22 @@ if (action === 'conferma' && token) {
     },
     body: JSON.stringify({
       from: FROM,
-      to: userEmail,
-      subject: 'Benvenuto in Valore Atteso',
-      html: welcomeHtml
+      to: email,
+      subject: 'Conferma la tua iscrizione a Valore Atteso',
+      html: confirmHtml
     })
-  }).catch(e => console.error('Welcome email error:', e));
+  });
 
-  return res.status(200).json({ ok: true });
-}
+  if (!mailRes.ok) {
+
+    const mailErr = await mailRes.json();
+
+    return res.status(502).json({
+      error: 'Errore email: ' + (mailErr.message || mailRes.status)
+    });
+  }
+
+  return res.status(200).json({
+    ok: true
+  });
+};
