@@ -265,7 +265,6 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 .cr-section-col{background:var(--white);border:1px solid var(--rule);border-radius:16px;overflow:hidden}
 .cr-section-header{background:var(--ink);color:var(--cream);padding:10px 14px;font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase}
 .cr-option{padding:12px 14px;border-bottom:1px solid var(--rule);cursor:pointer;transition:.15s}
-.cr-option:last-of-type{border-bottom:none}
 .cr-option:hover{background:var(--cream)}
 .cr-option.selected{background:rgba(200,169,122,0.14);border-left:3px solid var(--gold)}
 .cr-option-title{font-family:var(--sf);font-size:13px;font-weight:600;color:var(--ink);margin-bottom:3px}
@@ -286,7 +285,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 
 <section class="strip"><div class="strip-in"><div class="pillar"><span>01</span>Club finance</div><div class="pillar"><span>02</span>UEFA & FFP</div><div class="pillar"><span>03</span>Private equity</div><div class="pillar"><span>04</span>M&A</div><div class="pillar"><span>05</span>Debito</div><div class="pillar"><span>06</span>Strategy</div></div></section>
 
-<section class="section" id="newsletter"><div class="featured-head editorial-head"><div><div class="eyebrow">Formato editoriale</div><h2 class="h2">Ogni martedì,<br>una lettura finanziaria dello sport.</h2></div><p class="lead">Ogni martedì analizziamo club, leghe e investimenti con strumenti da corporate finance: bilanci, deal, debito, governance e sostenibilità economica.</p></div><div class="editorial-layout"><div class="editorial-main"><div class="editorial-kicker">Dentro ogni edizione</div><h3>Dietro ogni numero, una strategia.</h3><p>Non pubblichiamo una rassegna di notizie. Ogni numero parte da fonti verificabili e arriva a una lettura: cosa dice quel dato sul valore, sul rischio o sulla sostenibilità economica di un club, una lega o un deal.</p><a href="/archivio.html" class="text-link">Leggi l\'archivio →</a></div><div class="editorial-side"><div class="editorial-row"><span>01</span><strong>Il bilancio</strong><em>Conti, ricavi, costi, player trading, debito.</em></div><div class="editorial-row"><span>02</span><strong>Il deal</strong><em>M&A, fondi, multipli, razionale industriale.</em></div><div class="editorial-row"><span>03</span><strong>La metrica</strong><em>Un KPI spiegato e messo a benchmark.</em></div></div></div></section>
+<section class="section" id="newsletter"><div class="featured-head editorial-head"><div><div class="eyebrow">Formato editoriale</div><h2 class="h2">Ogni martedì,<br>una lettura finanziaria dello sport.</h2></div><p class="lead">Ogni martedì analizziamo club, leghe e investimenti con strumenti da corporate finance: bilanci, deal, debito, governance e sostenibilità economica.</p></div><div class="editorial-layout"><div class="editorial-main"><div class="editorial-kicker">Dentro ogni edizione</div><h3>Dietro ogni numero, una strategia.</h3><p>Non pubblichiamo una rassegna di notizie. Ogni numero parte da fonti verificabili e arriva a una lettura: cosa dice quel dato sul valore, sul rischio o sulla sostenibilità economica di un club, una lega o un deal.</p><a href="/archivio.html" class="text-link">Leggi l'archivio →</a></div><div class="editorial-side"><div class="editorial-row"><span>01</span><strong>Il bilancio</strong><em>Conti, ricavi, costi, player trading, debito.</em></div><div class="editorial-row"><span>02</span><strong>Il deal</strong><em>M&A, fondi, multipli, razionale industriale.</em></div><div class="editorial-row"><span>03</span><strong>La metrica</strong><em>Un KPI spiegato e messo a benchmark.</em></div></div></div></section>
 
 <section class="manifesto" id="about"><div class="manifesto-grid"><div class="manifesto-quote">Dove lo sport incontra il capitale.</div><div class="manifesto-copy"><p>Valore Atteso è una newsletter indipendente che applica strumenti di corporate finance e analisi strategica allo sport business globale.</p><p>Analizziamo club, leghe, investimenti, governance e sostenibilità economica attraverso dati pubblici, bilanci, report di settore e operazioni di mercato.</p><p>Nessun rumor, nessuna narrativa da social. Solo interpretazione finanziaria applicata allo sport.</p><div class="manifesto-list"><div class="manifesto-item">Bilanci depositati</div><div class="manifesto-item">Report di settore</div><div class="manifesto-item">Comunicati ufficiali</div><div class="manifesto-item">Analisi indipendente</div></div></div></div></section>
 
@@ -398,22 +397,22 @@ async function crLoadCtx(){
   try{
     const [sr,er,ar]=await Promise.all([
       fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/editions?select=num,title,date,published,sent_count,sent_to&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch(SURL+'/rest/v1/editions?select=num,title,date,published&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
       fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
     ]);
     const subs=await sr.json();
     const eds=await er.json();
     const runs=await ar.json().catch(()=>[]);
     const published=(eds||[]).filter(e=>e.published);
-    const lastSent=published[0]||null;
-    const totalSubs=(subs||[]).length;
-    crCtx={subs:totalSubs,eds:published.length,last:lastSent,runs:runs||[]};
-    document.getElementById('cr-d-subs').textContent=totalSubs;
+    crCtx={subs:subs.length,eds:published.length,last:published[0]||null,runs:runs||[]};
+    document.getElementById('cr-d-subs').textContent=crCtx.subs;
     document.getElementById('cr-d-eds').textContent=crCtx.eds;
-    document.getElementById('cr-d-last').textContent=lastSent?'#'+lastSent.num+' · '+(lastSent.date||''):'—';
+    document.getElementById('cr-d-last').textContent=crCtx.last?'#'+crCtx.last.num+' · '+crCtx.last.date:'—';
     crRenderAgents(runs||[]);
   }catch(e){
-    console.error('crLoadCtx error',e);
+    console.error('edition status',e);
+    const el=document.getElementById('cr-ed-ultima');
+    if(el)el.textContent='ERR: '+e.message;
   }
 }
 function crRenderAgents(runs){
@@ -481,7 +480,7 @@ STATO ATTUALE:
 - Edizioni pubblicate: ${crCtx.eds||0}
 - Ultima edizione: ${crCtx.last?('#'+crCtx.last.num+' — '+crCtx.last.title):'nessuna'}
 - Ultimi agenti: ${ultAgenti||'nessuno'}
-Rispondi in italiano, diretto, concreto. Max 150 parole. Usa i dati reali qui sopra.`;
+Rispondi in italiano, diretto, concreto. Max 150 parole.`;
   try{
     const r=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:sys,messages:crAdHistory.slice(-10)})});
     const d=await r.json();
@@ -490,23 +489,22 @@ Rispondi in italiano, diretto, concreto. Max 150 parole. Usa i dati reali qui so
 }
 
 async function crLoadBozze(){
-  const el=document.getElementById('cr-bozze-list');
-  el.innerHTML='<div class="cr-box">Caricamento bozze...</div>';
+  var el=document.getElementById('cr-bozze-list');
+  el.innerHTML='<div class="cr-box">Caricamento...</div>';
   try{
-    const r=await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    const bozze=await r.json();
+    var r=await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    var bozze=await r.json();
     if(!Array.isArray(bozze)||!bozze.length){
-      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessuna bozza in attesa. L\'agente genera la prossima lunedi alle 08:00.</div>';
+      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessuna bozza. L\'agente genera lunedi alle 08:00.</div>';
       return;
     }
     el.innerHTML=bozze.map(function(e){
-      const opts=e.section_options||{};
-      const hasSections=e.sections&&e.sections.length>0;
-      const hasOptions=opts.bilancio&&opts.bilancio.length>0;
+      var opts=e.section_options||{};
+      var hasSections=e.sections&&e.sections.length>0;
+      var hasOptions=opts.bilancio&&opts.bilancio.length>0;
       if(!crSelections[e.id])crSelections[e.id]={bilancio:null,deal:null,metrica:null,customBilancio:'',customDeal:'',customMetrica:'',date:e.date||''};
 
       if(hasOptions&&!hasSections){
-        // STEP 1: Selezione opzioni
         return '<div class="cr-bozza" id="bozza-'+e.id+'">'+
           '<div class="cr-bozza-head">'+
             '<div>'+
@@ -516,10 +514,10 @@ async function crLoadBozze(){
             '<div class="cr-bozza-actions">'+
               '<div style="display:flex;align-items:center;gap:8px">'+
                 '<span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Data uscita:</span>'+
-                '<input type="date" id="date-'+e.id+'" value="'+(e.date||'')+'" data-eid="'+e.id+'" style="height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 8px;font-family:var(--mn);font-size:10px;color:var(--ink);outline:none" onchange="(function(t){if(crSelections[t.dataset.eid])crSelections[t.dataset.eid].date=t.value})(this)">'+
+                '<input type="date" id="date-'+e.id+'" value="'+(e.date||'')+'" data-eid="'+e.id+'" style="height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 8px;font-family:var(--mn);font-size:10px;color:var(--ink);outline:none" onchange="(function(t){if(crSelections[t.dataset.eid])crSelections[t.dataset.eid].date=t.value;})(this)">'+
               '</div>'+
               '<input class="cr-input" id="hint-'+e.id+'" placeholder="Nota editoriale..." style="width:180px">'+
-              '<button class="cr-btn" data-eid="'+e.id+'" onclick="crEliminaBozza(this.dataset.eid)">🗑 Elimina</button>'+
+              '<button class="cr-btn light" data-eid="'+e.id+'" onclick="crEliminaBozza(this.dataset.eid)">Elimina</button>'+
               '<button class="cr-btn gold" data-eid="'+e.id+'" onclick="crGeneraBozza(this.dataset.eid)">Genera bozza →</button>'+
             '</div>'+
           '</div>'+
@@ -532,58 +530,395 @@ async function crLoadBozze(){
             '<div class="cr-status" id="bst-'+e.id+'"></div>'+
           '</div>'+
         '</div>';
-
       }else if(hasSections){
-        // STEP 2: Preview bozza generata — identica all'archivio
-        const secs=e.sections||[];
-        const previewSecs=secs.map(function(s){
-          const kpis=(s.kpis||[]).map(function(k){
-            return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(28,25,20,.08);font-family:var(--mn);font-size:10px">'+
+        var secs=e.sections||[];
+        var previewSecs=secs.map(function(s,i){
+          var kpis=(s.kpis||[]).map(function(k){
+            return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(28,25,20,.08);font-family:var(--mn);font-size:10px">'+
               '<span style="color:var(--muted)">'+esc(k.label||'')+'</span>'+
-              '<div style="text-align:right"><span style="font-weight:700;color:var(--ink);font-size:13px">'+esc(k.value||'')+'</span>'+
+              '<div style="text-align:right"><span style="font-weight:700;color:var(--ink)">'+esc(k.value||'')+'</span>'+
               (k.sub?'<br><span style="color:var(--muted);font-size:9px">'+esc(k.sub)+'</span>':'')+
               '</div></div>';
           }).join('');
-          const sources=(s.sources||[]).map(function(src){
-            return '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(28,25,20,.05)">'+esc(src)+'</div>';
-          }).join('');
-          return '<div style="margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid var(--rule)">'+
+          return '<div style="margin-bottom:24px;padding-bottom:24px;border-bottom:2px solid var(--rule)">'+
             '<div style="font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px">'+esc(s.label||'')+'</div>'+
-            '<div class="cr-edit" contenteditable="true" id="bs-'+e.id+'-'+secs.indexOf(s)+'-title" style="font-family:var(--sf);font-size:1.5rem;font-weight:700;letter-spacing:-.4px;margin-bottom:12px;outline:none">'+esc(s.title||'')+'</div>'+
-            '<div class="cr-edit" contenteditable="true" id="bs-'+e.id+'-'+secs.indexOf(s)+'-body" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:16px;outline:none">'+esc(s.body||'')+'</div>'+
-            (kpis?'<div style="background:var(--cream2);border:1px solid var(--rule);border-radius:14px;padding:12px 16px;margin-bottom:14px">'+kpis+'</div>':'')+
-            (s.verdict?'<div style="background:var(--ink);color:var(--cream);border-radius:12px;padding:12px 16px;font-family:var(--sf);font-size:14px;font-weight:600;margin-bottom:12px">'+esc(s.verdict)+'</div>':'')+
-            (sources?'<div style="margin-top:10px">'+sources+'</div>':'')+
+            '<div class="cr-edit" contenteditable="true" id="bs-'+e.id+'-'+i+'-title" style="font-family:var(--sf);font-size:1.5rem;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;outline:none">'+esc(s.title||'')+'</div>'+
+            '<div class="cr-edit" contenteditable="true" id="bs-'+e.id+'-'+i+'-body" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:14px;outline:none">'+esc(s.body||'')+'</div>'+
+            (kpis?'<div style="background:var(--cream2);border:1px solid var(--rule);border-radius:14px;padding:12px 16px;margin-bottom:12px">'+kpis+'</div>':'')+
+            (s.verdict?'<div style="background:var(--ink);color:var(--cream);border-radius:12px;padding:12px 16px;font-family:var(--sf);font-size:14px;font-weight:600;margin-bottom:10px">'+esc(s.verdict)+'</div>':'')+
           '</div>';
         }).join('');
-
         return '<div class="cr-bozza" id="bozza-'+e.id+'">'+
           '<div class="cr-bozza-head">'+
             '<div>'+
               '<div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #'+esc(e.num)+'</div>'+
-              '<div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-'+e.id+'" style="font-family:var(--sf);font-size:1.1rem;font-weight:600;letter-spacing:-.2px;outline:none">'+esc(e.title||'')+'</div>'+
+              '<div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-'+e.id+'">'+esc(e.title||'')+'</div>'+
             '</div>'+
             '<div class="cr-bozza-actions">'+
               '<div style="display:flex;align-items:center;gap:8px">'+
-                '<span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Data uscita:</span>'+
+                '<span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Data:</span>'+
                 '<input type="date" id="date2-'+e.id+'" value="'+(e.date||'')+'" style="height:32px;border:1px solid var(--rule);background:var(--cream);border-radius:8px;padding:0 8px;font-family:var(--mn);font-size:10px;color:var(--ink);outline:none">'+
               '</div>'+
               '<button class="cr-btn light" data-eid="'+e.id+'" onclick="crRigeneraBozza(this.dataset.eid)">↺ Rigenera</button>'+
-              '<button class="cr-btn" data-eid="'+e.id+'" onclick="crEliminaBozza(this.dataset.eid)">🗑 Elimina</button>'+
+              '<button class="cr-btn light" data-eid="'+e.id+'" onclick="crEliminaBozza(this.dataset.eid)">Elimina</button>'+
               '<button class="cr-btn gold" data-eid="'+e.id+'" data-num="'+e.num+'" onclick="crApprovaBozzaConData(this.dataset.eid,this.dataset.num)">✓ Approva</button>'+
             '</div>'+
           '</div>'+
           '<div style="padding:24px;border-top:1px solid var(--rule)">'+
-            '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">PREVIEW — identica all\'archivio</div>'+
-            '<div class="cr-edit" contenteditable="true" id="bsub-'+e.id+'" style="font-family:var(--sf);font-size:14px;color:var(--ink2);margin-bottom:20px;outline:none">'+esc(e.subtitle||e.opener||'')+'</div>'+
+            '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">PREVIEW</div>'+
             previewSecs+
             '<div class="cr-status" id="bst-'+e.id+'"></div>'+
           '</div>'+
         '</div>';
-
       }else{
         return '<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Bozza #'+esc(e.num)+' in elaborazione...</div>';
       }
     }).join('');
   }catch(ex){el.innerHTML='<div class="cr-status err">Errore: '+esc(ex.message)+'</div>';}
 }
+
+function crToggleBozza(id){document.getElementById('bb-'+id).classList.toggle('open')}
+async function crApproveBozza(id,num){
+  const st=document.getElementById('bst-'+id);
+  st.className='cr-status';
+  st.style.display='block';
+  st.textContent='Approvazione...';
+  try{
+    const ed=await crFetchEdition(id);
+    const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(document.getElementById(`bs-${id}-${i}-body`)?.innerText||s.body).trim()}));
+    const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
+    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.className='cr-status ok';
+    st.textContent='✓ Edizione #'+num+' approvata e pubblicata.';
+    crLoadCtx();
+    loadLatestPreview();
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+async function crFetchEdition(id){
+  const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id+'&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+  const rows=await r.json();
+  if(!rows||!rows[0])throw new Error('Edizione non trovata');
+  return rows[0];
+}
+async function crInviaBozza(num,id){
+  const st=document.getElementById('bst-'+id);
+  st.className='cr-status';
+  st.style.display='block';
+  st.textContent='Invio...';
+  try{
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
+    const d=await r.json();
+    if(r.ok&&d.ok){
+      st.className='cr-status ok';
+      st.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';
+    }else{
+      st.className='cr-status err';
+      st.textContent='Errore invio: '+(d.error||r.status);
+    }
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+const crSelections={};
+
+async function crGeneraOpzioni(){
+  const st=document.getElementById('cr-gen-status');
+  st.className='cr-status';st.style.display='block';st.textContent='Generazione opzioni in corso...';
+  const hint=document.getElementById('cr-hint').value.trim();
+  try{
+    const last=crCtx.last?parseInt(crCtx.last.num,10):0;
+    const editionNum=String(last+1).padStart(3,'0');
+    const r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    const d=await r.json();
+    if(!r.ok||d.error)throw new Error(d.error||'Errore generazione');
+    st.className='cr-status ok';st.textContent='Opzioni generate. Scegli le sezioni sopra.';
+    crLoadBozze();
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
+
+function crRenderSectionOptions(edId,sezione,opzioni,label){
+  var html='<div class="cr-section-col">'+
+    '<div class="cr-section-header">'+label+'</div>';
+  opzioni.forEach(function(o,i){
+    html+='<div class="cr-option" data-edid="'+edId+'" data-sez="'+sezione+'" data-idx="'+i+'" onclick="crSelectOption(this.dataset.edid,this.dataset.sez,parseInt(this.dataset.idx))">'+
+      '<div class="cr-option-title">'+esc(o.title)+'</div>'+
+      '<div class="cr-option-summary">'+esc(o.summary)+'</div>'+
+      '<div class="cr-option-kpi">'+((o.kpi_preview||[]).join(' · '))+'</div>'+
+    '</div>';
+  });
+  html+='<div class="cr-option-custom">'+
+    '<input placeholder="✏️ Scrivi tema personalizzato..." id="custom-'+edId+'-'+sezione+'" '+
+    'data-edid="'+edId+'" data-sez="'+sezione+'" '+
+    'oninput="(function(el){var ed=el.dataset.edid,s=el.dataset.sez,cap=s.charAt(0).toUpperCase()+s.slice(1);if(!crSelections[ed])crSelections[ed]={};crSelections[ed]["custom"+cap]=el.value;if(el.value)crDeselect(ed,s);})(this)">'+
+  '</div></div>';
+  return html;
+}
+
+function crSelectOption(edId,sezione,idx){
+  if(!crSelections[edId])crSelections[edId]={bilancio:null,deal:null,metrica:null,customBilancio:'',customDeal:'',customMetrica:'',date:''};
+  crSelections[edId][sezione]=idx;
+  var customEl=document.getElementById('custom-'+edId+'-'+sezione);
+  if(customEl){customEl.value='';crSelections[edId]['custom'+sezione.charAt(0).toUpperCase()+sezione.slice(1)]='';}
+  document.querySelectorAll('[data-edid="'+edId+'"][data-sez="'+sezione+'"].cr-option').forEach(function(el){el.classList.remove('selected');});
+  var opts=document.querySelectorAll('[data-edid="'+edId+'"][data-sez="'+sezione+'"][data-idx="'+idx+'"]');
+  opts.forEach(function(el){el.classList.add('selected');});
+}
+
+function crDeselect(edId,sezione){
+  if(!crSelections[edId])crSelections[edId]={bilancio:null,deal:null,metrica:null,customBilancio:'',customDeal:'',customMetrica:'',date:''};
+  crSelections[edId][sezione]=null;
+  document.querySelectorAll('[data-edid="'+edId+'"][data-sez="'+sezione+'"].cr-option').forEach(function(el){el.classList.remove('selected');});
+}
+
+async function crGeneraBozza(edId){
+  var st=document.getElementById('bst-'+edId);
+  st.className='cr-status';st.style.display='block';st.textContent='Generazione bozza in corso...';
+  var sel=crSelections[edId]||{};
+  try{
+    var r2=await fetch(SURL+'/rest/v1/editions?id=eq.'+edId+'&select=section_options,num',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    var rows=await r2.json();
+    var sectionOptions=(rows[0]&&rows[0].section_options)||{};
+    function buildSez(s){
+      var cap=s.charAt(0).toUpperCase()+s.slice(1);
+      var custom=sel['custom'+cap];
+      if(custom)return {custom:custom};
+      var idx=sel[s];
+      if(idx!==null&&idx!==undefined&&sectionOptions[s])return sectionOptions[s][idx];
+      return null;
+    }
+    var bilancio=buildSez('bilancio');
+    var deal=buildSez('deal');
+    var metrica=buildSez('metrica');
+    if(!bilancio||!deal||!metrica){
+      st.className='cr-status err';st.textContent='Seleziona un tema per ogni sezione o scrivi il tuo.';return;
+    }
+    var dateEl=document.getElementById('date-'+edId);
+    var hintEl=document.getElementById('hint-'+edId);
+    var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({editionId:edId,bilancio:bilancio,deal:deal,metrica:metrica,
+        date:dateEl?dateEl.value:'',hint:hintEl?hintEl.value:''})});
+    var d=await resp.json();
+    if(resp.ok&&d.ok){st.className='cr-status ok';st.textContent='Bozza generata: '+d.title;setTimeout(function(){crLoadBozze();},1500);}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||resp.status);}
+  }catch(ex){st.className='cr-status err';st.textContent='Errore: '+ex.message;}
+}
+
+async function crEliminaBozza(edId){
+  if(!confirm('Eliminare questa bozza?'))return;
+  try{
+    await fetch(SURL+'/rest/v1/editions?id=eq.'+edId,{method:'DELETE',headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    crLoadBozze();
+  }catch(ex){alert('Errore: '+ex.message);}
+}
+
+async function crRigeneraBozza(edId){
+  if(!confirm('Rigenerare? Le modifiche manuali andranno perse.'))return;
+  try{
+    await fetch(SURL+'/rest/v1/editions?id=eq.'+edId,{method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+      body:JSON.stringify({sections:[],title:'Bozza — seleziona le sezioni'})});
+    crLoadBozze();
+  }catch(ex){alert('Errore: '+ex.message);}
+}
+
+async function crApprovaBozzaConData(id,num){
+  var st=document.getElementById('bst-'+id);
+  st.className='cr-status';st.style.display='block';st.textContent='Approvazione...';
+  var dateEl=document.getElementById('date2-'+id);
+  try{
+    var ed=await crFetchEdition(id);
+    var sections=(ed.sections||[]).map(function(s,i){
+      return Object.assign({},s,{
+        title:(document.getElementById('bs-'+id+'-'+i+'-title')||{}).innerText||s.title,
+        body:(document.getElementById('bs-'+id+'-'+i+'-body')||{}).innerText||s.body
+      });
+    });
+    var title=(document.getElementById('bt-'+id)||{}).innerText||ed.title;
+    var date=dateEl?dateEl.value:ed.date;
+    var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',
+      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
+      body:JSON.stringify({title:title.trim(),sections:sections,date:date,published:true})});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.className='cr-status ok';st.textContent='Edizione #'+num+' approvata e pubblicata.';
+    crLoadCtx();loadLatestPreview();
+    setTimeout(function(){crLoadBozze();},1000);
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
+
+
+
+
+
+
+
+
+
+function openCookieSettings(){alert('Cookie manager in configurazione. Collega qui iubenda, Cookiebot o CookieYes.')}
+
+/* ── ESEGUI AGENTE ── */
+async function crRunAgent(key){
+  if(!confirm('Eseguire manualmente l\'agente '+key+'?'))return;
+  const st=document.createElement('div');
+  st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
+  document.getElementById('cr-agents-list').appendChild(st);
+  try{
+    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:key})});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Agente '+key+' avviato.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+  setTimeout(()=>{if(st.parentNode)st.remove()},8000);
+}
+
+function runSelfTests(){
+  console.assert(esc('<x&y>')==='&lt;x&amp;y&gt;','esc should HTML-escape');
+  console.assert(firstSentence('a  b').includes('a b'),'firstSentence should normalize whitespace');
+  console.assert(typeof crAdAdd==='function','Control Room AD function exists');
+}
+
+loadLatestPreview();
+runSelfTests();
+</script>
+
+<button class="cr-trigger" onclick="crOpen()" title="Control Room">⚙</button>
+
+<div class="cr-overlay" id="cr-overlay">
+  <div class="cr-login-screen" id="cr-login-screen">
+    <div class="cr-login-box">
+      <div class="cr-login-logo">Valore Atteso</div>
+      <div class="cr-login-sub">Control Room · Accesso riservato</div>
+      <label class="cr-login-lbl">Password</label>
+      <input type="password" class="cr-login-inp" id="cr-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')crLogin()">
+      <button class="cr-login-btn" onclick="crLogin()">Entra →</button>
+      <div class="cr-login-err" id="cr-login-err">Password errata.</div>
+    </div>
+  </div>
+
+  <div class="cr-app" id="cr-app">
+    <div class="cr-nav">
+      <div class="cr-logo">Control Room</div>
+      <div class="cr-tabs">
+        <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
+        <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
+        <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
+
+      </div>
+      <button class="cr-close" onclick="crClose()">Chiudi</button>
+    </div>
+
+    <div class="cr-panel on" id="cr-dashboard">
+      <div class="cr-grid">
+        <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase</div></div>
+        <div class="cr-card"><div class="cr-card-label">Edizioni pubblicate</div><div class="cr-card-val" id="cr-d-eds">—</div><div class="cr-card-sub" id="cr-d-last">—</div></div>
+        <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val">Live</div><div class="cr-card-sub">valoreatteso.com</div></div>
+        <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
+      </div>
+      <div class="cr-sec-title">Invia edizione esistente</div>
+      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
+      <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
+      <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
+    </div>
+
+    <div class="cr-panel" id="cr-ad">
+      <div class="cr-chat-wrap"><div class="cr-msgs" id="cr-msgs"></div><div class="cr-chat-input"><textarea id="cr-ad-input" placeholder="Scrivi all'AD..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();crAdSendInput()}"></textarea><button class="cr-btn" onclick="crAdSendInput()">Invia</button></div></div>
+    </div>
+
+    <div class="cr-panel" id="cr-redazione">
+      <div class="cr-sec-title">Bozze in attesa</div>
+      <div id="cr-bozze-list"></div>
+      <div class="cr-sec-title" style="margin-top:32px">Genera manualmente</div>
+      <div class="cr-box">
+        <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,420px);margin-right:8px">
+        <button class="cr-btn" onclick="crGeneraOpzioni()">Genera opzioni</button>
+        <div id="cr-gen-status" class="cr-status"></div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
+</html>
+/* ── ESEGUI AGENTE ── */
+async function crRunAgent(key){
+  if(!confirm('Eseguire manualmente l\'agente '+key+'?'))return;
+  const st=document.createElement('div');
+  st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
+  document.getElementById('cr-agents-list').appendChild(st);
+  try{
+    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:key})});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Agente '+key+' avviato.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+  setTimeout(()=>{if(st.parentNode)st.remove()},8000);
+}
+
+function runSelfTests(){
+  console.assert(esc('<x&y>')==='&lt;x&amp;y&gt;','esc should HTML-escape');
+  console.assert(firstSentence('a  b').includes('a b'),'firstSentence should normalize whitespace');
+  console.assert(typeof crAdAdd==='function','Control Room AD function exists');
+}
+
+loadLatestPreview();
+runSelfTests();
+</script>
+
+<button class="cr-trigger" onclick="crOpen()" title="Control Room">⚙</button>
+
+<div class="cr-overlay" id="cr-overlay">
+  <div class="cr-login-screen" id="cr-login-screen">
+    <div class="cr-login-box">
+      <div class="cr-login-logo">Valore Atteso</div>
+      <div class="cr-login-sub">Control Room · Accesso riservato</div>
+      <label class="cr-login-lbl">Password</label>
+      <input type="password" class="cr-login-inp" id="cr-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')crLogin()">
+      <button class="cr-login-btn" onclick="crLogin()">Entra →</button>
+      <div class="cr-login-err" id="cr-login-err">Password errata.</div>
+    </div>
+  </div>
+
+  <div class="cr-app" id="cr-app">
+    <div class="cr-nav">
+      <div class="cr-logo">Control Room</div>
+      <div class="cr-tabs">
+        <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
+        <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
+        <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
+
+      </div>
+      <button class="cr-close" onclick="crClose()">Chiudi</button>
+    </div>
+
+    <div class="cr-panel on" id="cr-dashboard">
+      <div class="cr-grid">
+        <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase</div></div>
+        <div class="cr-card"><div class="cr-card-label">Edizioni pubblicate</div><div class="cr-card-val" id="cr-d-eds">—</div><div class="cr-card-sub" id="cr-d-last">—</div></div>
+        <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val">Live</div><div class="cr-card-sub">valoreatteso.com</div></div>
+        <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
+      </div>
+      <div class="cr-sec-title">Invia edizione esistente</div>
+      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
+      <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
+      <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
+    </div>
+
+    <div class="cr-panel" id="cr-ad">
+      <div class="cr-chat-wrap"><div class="cr-msgs" id="cr-msgs"></div><div class="cr-chat-input"><textarea id="cr-ad-input" placeholder="Scrivi all'AD..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();crAdSendInput()}"></textarea><button class="cr-btn" onclick="crAdSendInput()">Invia</button></div></div>
+    </div>
+
+    <div class="cr-panel" id="cr-redazione">
+      <div class="cr-sec-title">Genera nuova edizione</div>
+      <div class="cr-box"><input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,520px)"> <button class="cr-btn" onclick="crGenera()">Genera</button><div id="cr-gen-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Bozze in attesa</div>
+      <div id="cr-bozze-list"></div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
+</html>
