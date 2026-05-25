@@ -456,7 +456,72 @@ async function crSendExisting(){
     }
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
+async function crSendTest(){
 
+  const num=document
+    .getElementById('cr-send-num')
+    .value
+    .trim()
+    .padStart(3,'0');
+
+  const st=document.getElementById('cr-send-status');
+
+  if(!num){
+    document.getElementById('cr-send-num').focus();
+    return;
+  }
+
+  st.className='cr-status';
+  st.style.display='block';
+  st.textContent='Invio test in corso...';
+
+  try{
+
+    const r=await fetch('/api/send-test',{
+
+      method:'POST',
+
+      headers:{
+        'Content-Type':'application/json'
+      },
+
+      body:JSON.stringify({
+        edition_num:num,
+        test_email:'info@valoreatteso.com'
+      })
+
+    });
+
+    const d=await r.json();
+
+    if(r.ok && d.ok){
+
+      st.className='cr-status ok';
+
+      st.innerHTML=
+        '✓ Test inviato a <strong>'+
+        d.sent_to+
+        '</strong>';
+
+    }else{
+
+      st.className='cr-status err';
+
+      st.textContent=
+        'Errore test: '+
+        (d.error || r.status);
+
+    }
+
+  }catch(e){
+
+    st.className='cr-status err';
+
+    st.textContent='Errore: '+e.message;
+
+  }
+
+}
 function crAdAdd(role,text){
   const el=document.getElementById('cr-msgs');
   const div=document.createElement('div');
@@ -946,7 +1011,7 @@ loadLatestPreview();
         <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
-      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-box">    <div style="display:flex;gap:10px;flex-wrap:wrap">      <input       class="cr-input"       id="cr-send-num"       placeholder="es. 002"     >      <button       class="cr-btn light"       onclick="crSendTest()"     >       Invia test a me     </button>      <button       class="cr-btn"       onclick="crSendExisting()"     >       Invia ora     </button>    </div>    <div id="cr-send-status" class="cr-status"></div>  </div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
