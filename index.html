@@ -406,21 +406,12 @@ async function crLoadCtx(){
     const runs=await ar.json().catch(()=>[]);
     const published=(eds||[]).filter(e=>e.published);
     const lastSent=published[0]||null;
-    const sentCount=lastSent?.sent_count||0;
     const totalSubs=(subs||[]).length;
     crCtx={subs:totalSubs,eds:published.length,last:lastSent,runs:runs||[]};
     document.getElementById('cr-d-subs').textContent=totalSubs;
     document.getElementById('cr-d-eds').textContent=crCtx.eds;
     document.getElementById('cr-d-last').textContent=lastSent?'#'+lastSent.num+' · '+(lastSent.date||''):'—';
-    const sentEl=document.getElementById('cr-d-sent');
-    const sentSubEl=document.getElementById('cr-d-sent-sub');
-    if(sentEl){
-      sentEl.textContent=sentCount?sentCount+'/'+totalSubs:'—';
-      sentEl.style.color=sentCount>=totalSubs&&totalSubs>0?'var(--green)':'var(--ink)';
-    }
-    if(sentSubEl)sentSubEl.textContent=lastSent?'#'+lastSent.num+' · email inviate':'email consegnate';
     crRenderAgents(runs||[]);
-    if(lastSent)crCheckDelivery(lastSent.num);
   }catch(e){
     console.error('crLoadCtx error',e);
   }
@@ -775,7 +766,6 @@ loadLatestPreview();
       <div class="cr-grid">
         <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase</div></div>
         <div class="cr-card"><div class="cr-card-label">Edizioni pubblicate</div><div class="cr-card-val" id="cr-d-eds">—</div><div class="cr-card-sub" id="cr-d-last">—</div></div>
-        <div class="cr-card"><div class="cr-card-label">Ultimo invio</div><div class="cr-card-val" id="cr-d-sent" style="font-size:1.4rem">—</div><div class="cr-card-sub" id="cr-d-sent-sub">email consegnate</div></div>
         <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val">Live</div><div class="cr-card-sub">valoreatteso.com</div></div>
         <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
       </div>
