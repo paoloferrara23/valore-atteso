@@ -307,8 +307,8 @@ module.exports = async function handler(req, res) {
   </td></tr>
   <tr><td style="background:#1C1914;padding:32px 28px 28px;">
     <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px;">— Benvenuto</div>
-    <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 16px;">Sei dentro.</h1>
-    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 12px;">Ogni martedì mattina riceverai un'analisi del business del calcio: un bilancio, un deal, una metrica. In 8 minuti.</p>
+    <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 16px;">Analisi, non rumore.</h1>
+    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 12px;">Ogni martedì mattina trovi nella tua inbox un bilancio analizzato, un deal sezionato, una metrica spiegata. In 8 minuti, con il caffè, prima di una riunione.</p>
     <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0;">Ti invio subito l'ultima edizione pubblicata, così capisci subito di cosa parliamo.</p>
   </td></tr>
   <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:16px 28px;text-align:center;">
