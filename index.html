@@ -456,72 +456,7 @@ async function crSendExisting(){
     }
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
-async function crSendTest(){
 
-  const num=document
-    .getElementById('cr-send-num')
-    .value
-    .trim()
-    .padStart(3,'0');
-
-  const st=document.getElementById('cr-send-status');
-
-  if(!num){
-    document.getElementById('cr-send-num').focus();
-    return;
-  }
-
-  st.className='cr-status';
-  st.style.display='block';
-  st.textContent='Invio test in corso...';
-
-  try{
-
-    const r=await fetch('/api/send-test',{
-
-      method:'POST',
-
-      headers:{
-        'Content-Type':'application/json'
-      },
-
-      body:JSON.stringify({
-        edition_num:num,
-        test_email:'info@valoreatteso.com'
-      })
-
-    });
-
-    const d=await r.json();
-
-    if(r.ok && d.ok){
-
-      st.className='cr-status ok';
-
-      st.innerHTML=
-        '✓ Test inviato a <strong>'+
-        d.sent_to+
-        '</strong>';
-
-    }else{
-
-      st.className='cr-status err';
-
-      st.textContent=
-        'Errore test: '+
-        (d.error || r.status);
-
-    }
-
-  }catch(e){
-
-    st.className='cr-status err';
-
-    st.textContent='Errore: '+e.message;
-
-  }
-
-}
 function crAdAdd(role,text){
   const el=document.getElementById('cr-msgs');
   const div=document.createElement('div');
@@ -612,11 +547,27 @@ function crLeggiSezioniDom(edId,sections){
     var title=(document.getElementById('bs-'+sid+'-title')||{innerText:s.title}).innerText.trim();
     var body=(document.getElementById('bs-'+sid+'-body')||{innerText:s.body}).innerText.trim();
     var verdict=(document.getElementById('bs-'+sid+'-verdict')||{innerText:s.verdict||''}).innerText.trim();
-    var kpis=(s.kpis||[]).map(function(k,ki){
+    // Leggi KPI dal DOM se disponibili, altrimenti da Supabase
+    var kpisBase=s.kpis||[];
+    // Prova a trovare KPI dal DOM anche se non erano in Supabase
+    var kpisFromDom=[];
+    for(var ki=0;ki<Math.max(kpisBase.length,3);ki++){
+      var lEl=document.getElementById('kpi-'+sid+'-'+ki+'-label');
+      var vEl=document.getElementById('kpi-'+sid+'-'+ki+'-value');
+      var sEl=document.getElementById('kpi-'+sid+'-'+ki+'-sub');
+      if(lEl&&vEl&&(lEl.innerText.trim()||vEl.innerText.trim())){
+        kpisFromDom.push({
+          label:lEl.innerText.trim(),
+          value:vEl.innerText.trim(),
+          sub:sEl?sEl.innerText.trim():''
+        });
+      }
+    }
+    var kpis=kpisFromDom.length>0?kpisFromDom:kpisBase.map(function(k,ki){
       return {
-        label:(document.getElementById('kpi-'+sid+'-'+ki+'-label')||{innerText:k.label}).innerText.trim(),
-        value:(document.getElementById('kpi-'+sid+'-'+ki+'-value')||{innerText:k.value}).innerText.trim(),
-        sub:(document.getElementById('kpi-'+sid+'-'+ki+'-sub')||{innerText:k.sub}).innerText.trim()
+        label:(document.getElementById('kpi-'+sid+'-'+ki+'-label')||{innerText:k.label}).innerText.trim()||k.label,
+        value:(document.getElementById('kpi-'+sid+'-'+ki+'-value')||{innerText:k.value}).innerText.trim()||k.value,
+        sub:(document.getElementById('kpi-'+sid+'-'+ki+'-sub')||{innerText:k.sub}).innerText.trim()||k.sub
       };
     });
     var sources=(s.sources||[]).map(function(src,si){
@@ -1011,7 +962,84 @@ loadLatestPreview();
         <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
-      <div class="cr-box">    <div style="display:flex;gap:10px;flex-wrap:wrap">      <input       class="cr-input"       id="cr-send-num"       placeholder="es. 002"     >      <button       class="cr-btn light"       onclick="crSendTest()"     >       Invia test a me     </button>      <button       class="cr-btn"       onclick="crSendExisting()"     >       Invia ora     </button>    </div>    <div id="cr-send-status" class="cr-status"></div>  </div>
+      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
+      <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
+      <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
+    </div>
+
+    <div class="cr-panel" id="cr-ad">
+      <div class="cr-chat-wrap"><div class="cr-msgs" id="cr-msgs"></div><div class="cr-chat-input"><textarea id="cr-ad-input" placeholder="Scrivi all'AD..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();crAdSendInput()}"></textarea><button class="cr-btn" onclick="crAdSendInput()">Invia</button></div></div>
+    </div>
+
+    <div class="cr-panel" id="cr-redazione">
+      <div class="cr-sec-title">Genera nuova edizione</div>
+      <div class="cr-box"><input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,520px)"> <button class="cr-btn" onclick="crGenera()">Genera</button><div id="cr-gen-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Bozze in attesa</div>
+      <div id="cr-bozze-list"></div>
+    </div>
+
+
+  </div>
+</div>
+
+</body>
+</html>
+/* ── ESEGUI AGENTE ── */
+async function crRunAgent(key){
+  if(!confirm('Eseguire manualmente l\'agente '+key+'?'))return;
+  const st=document.createElement('div');
+  st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
+  document.getElementById('cr-agents-list').appendChild(st);
+  try{
+    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:key})});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Agente '+key+' avviato.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+  setTimeout(()=>{if(st.parentNode)st.remove()},8000);
+}
+
+
+loadLatestPreview();
+runSelfTests();
+</script>
+
+<button class="cr-trigger" onclick="crOpen()" title="Control Room">⚙</button>
+
+<div class="cr-overlay" id="cr-overlay">
+  <div class="cr-login-screen" id="cr-login-screen">
+    <div class="cr-login-box">
+      <div class="cr-login-logo">Valore Atteso</div>
+      <div class="cr-login-sub">Control Room · Accesso riservato</div>
+      <label class="cr-login-lbl">Password</label>
+      <input type="password" class="cr-login-inp" id="cr-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter')crLogin()">
+      <button class="cr-login-btn" onclick="crLogin()">Entra →</button>
+      <div class="cr-login-err" id="cr-login-err">Password errata.</div>
+    </div>
+  </div>
+
+  <div class="cr-app" id="cr-app">
+    <div class="cr-nav">
+      <div class="cr-logo">Control Room</div>
+      <div class="cr-tabs">
+        <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
+        <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
+        <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
+
+      </div>
+      <button class="cr-close" onclick="crClose()">Chiudi</button>
+    </div>
+
+    <div class="cr-panel on" id="cr-dashboard">
+      <div class="cr-grid">
+        <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase</div></div>
+        <div class="cr-card"><div class="cr-card-label">Edizioni pubblicate</div><div class="cr-card-val" id="cr-d-eds">—</div><div class="cr-card-sub" id="cr-d-last">—</div></div>
+        <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val">Live</div><div class="cr-card-sub">valoreatteso.com</div></div>
+        <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
+      </div>
+      <div class="cr-sec-title">Invia edizione esistente</div>
+      <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia ora</button></div><div id="cr-send-status" class="cr-status"></div></div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
