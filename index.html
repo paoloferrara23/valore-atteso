@@ -444,7 +444,7 @@ async function crSendTest(){
   if(!num){document.getElementById('cr-send-num').focus();return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test in corso...';
   try{
-    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
+    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
@@ -458,7 +458,7 @@ async function crSendExisting(){
   st.style.display='block';
   st.textContent='Invio in corso...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -570,7 +570,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   st.textContent='Invio...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -627,7 +627,7 @@ async function crGeneraOpzioni(){
   try{
     var last=crCtx.last?parseInt(crCtx.last.num,10):0;
     var editionNum=String(last+1).padStart(3,'0');
-    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
     var d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore');
     st.className='cr-status ok';st.textContent='Opzioni generate.';
@@ -675,7 +675,7 @@ async function crGeneraBozza(edId){
     if(!b||!dd||!m){st.className='cr-status err';st.textContent='Seleziona un tema per ogni sezione.';return;}
     var de=document.getElementById('date-'+edId);
     var he=document.getElementById('hint-'+edId);
-    var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json'},
+    var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},
       body:JSON.stringify({editionId:edId,bilancio:b,deal:dd,metrica:m,date:de?de.value:'',hint:he?he.value:''})});
     var ddd=await resp.json();
     if(resp.ok&&ddd.ok){st.className='cr-status ok';st.textContent='Bozza generata.';setTimeout(function(){crLoadBozze();},1500);}
@@ -913,7 +913,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   st.textContent='Invio...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -933,7 +933,7 @@ async function crGenera(){
   try{
     const last=crCtx.last?parseInt(crCtx.last.num,10):0;
     const editionNum=String(last+1).padStart(3,'0');
-    const r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:hint?'hint':'auto',hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    const r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({mode:hint?'hint':'auto',hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
     const d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore generazione');
     st.className='cr-status ok';
@@ -979,7 +979,7 @@ async function crCommInvia(){
   if(!confirm('Inviare questa comunicazione a '+label+'?'))return;
   st.className='cr-status';st.style.display='block';st.textContent='Invio in corso...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Inviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -994,7 +994,7 @@ async function crCommTest(){
   if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato a info@valoreatteso.com'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -1007,7 +1007,7 @@ async function crReinvia(){
   if(!num){st.className='cr-status err';st.style.display='block';st.textContent='Inserisci numero edizione.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'missing',edition_num:num})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'missing',edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent=d.sent===0?(d.message||'Nessun iscritto mancante.'):'✓ Reinviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
