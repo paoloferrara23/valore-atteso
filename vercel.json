@@ -2,12 +2,26 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.valoreatteso.com" }],
+      "has": [
+        { "type": "host", "value": "www.valoreatteso.com" },
+        { "type": "header", "key": "x-skip-api", "missing": true }
+      ],
+      "missing": [
+        { "type": "header", "key": "content-type", "value": "application/json" }
+      ],
       "destination": "https://valoreatteso.com/:path*",
       "permanent": true
     }
   ],
   "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    },
     {
       "source": "/sitemap.xml",
       "headers": [
