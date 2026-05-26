@@ -936,6 +936,53 @@ async function crRunAgent(key){
   setTimeout(()=>{if(st.parentNode)st.remove()},8000);
 }
 
+/* ── COMUNICAZIONI ── */
+async function crCommInvia(){
+  const subject=document.getElementById('cr-comm-subject').value.trim();
+  const body=document.getElementById('cr-comm-body').value.trim();
+  const tipo=document.getElementById('cr-comm-tipo').value;
+  const segmento=document.getElementById('cr-comm-segmento').value;
+  const st=document.getElementById('cr-comm-status');
+  if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
+  const label=segmento==='ultimi30'?'iscritti ultimi 30 giorni':'tutti gli iscritti';
+  if(!confirm('Inviare questa comunicazione a '+label+'?'))return;
+  st.className='cr-status';st.style.display='block';st.textContent='Invio in corso...';
+  try{
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Inviato a '+d.sent+' iscritti.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+
+async function crCommTest(){
+  const subject=document.getElementById('cr-comm-subject').value.trim();
+  const body=document.getElementById('cr-comm-body').value.trim();
+  const tipo=document.getElementById('cr-comm-tipo').value;
+  const st=document.getElementById('cr-comm-status');
+  if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
+  st.className='cr-status';st.style.display='block';st.textContent='Invio test...';
+  try{
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,segmento:'ultimi30'})});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+
+async function crReinvia(){
+  const num=document.getElementById('cr-missing-num').value.trim();
+  const st=document.getElementById('cr-missing-status');
+  if(!num){st.className='cr-status err';st.style.display='block';st.textContent='Inserisci numero edizione.';return;}
+  st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
+  try{
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'missing',edition_num:num})});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent=d.sent===0?(d.message||'Nessun iscritto mancante.'):'✓ Reinviato a '+d.sent+' iscritti.'}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
+}
+
 
 loadLatestPreview();
 </script>
@@ -961,6 +1008,7 @@ loadLatestPreview();
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
+        <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
 
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
@@ -991,6 +1039,42 @@ loadLatestPreview();
       <div id="cr-bozze-list"></div>
     </div>
 
+
+    <div class="cr-panel" id="cr-comunicazioni">
+      <div class="cr-sec-title">Nuova comunicazione</div>
+      <div class="cr-box">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:600px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <select class="cr-input" id="cr-comm-tipo" style="width:180px">
+              <option value="annuncio">📢 Annuncio</option>
+              <option value="ritardo">⚠️ Avviso ritardo</option>
+              <option value="speciale">⭐ Contenuto speciale</option>
+              <option value="sondaggio">📊 Sondaggio</option>
+              <option value="altro">✉️ Altro</option>
+            </select>
+            <select class="cr-input" id="cr-comm-segmento" style="width:180px">
+              <option value="tutti">Tutti gli iscritti</option>
+              <option value="ultimi30">Iscritti ultimi 30 giorni</option>
+            </select>
+          </div>
+          <input class="cr-input" id="cr-comm-subject" placeholder="Oggetto email" style="width:100%;box-sizing:border-box">
+          <textarea class="cr-input" id="cr-comm-body" placeholder="Testo della comunicazione..." style="width:100%;box-sizing:border-box;height:160px;resize:vertical;font-family:inherit;font-size:13px;line-height:1.6"></textarea>
+          <div style="display:flex;gap:10px">
+            <button class="cr-btn" onclick="crCommInvia()">Invia a iscritti</button>
+            <button class="cr-btn light" onclick="crCommTest()">▶ Test a me</button>
+          </div>
+          <div id="cr-comm-status" class="cr-status"></div>
+        </div>
+      </div>
+      <div class="cr-sec-title" style="margin-top:28px">Reinvia edizione a iscritti mancanti</div>
+      <div class="cr-box">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input class="cr-input" id="cr-missing-num" placeholder="es. 004" style="width:120px">
+          <button class="cr-btn" onclick="crReinvia()">Reinvia mancanti</button>
+        </div>
+        <div id="cr-missing-status" class="cr-status" style="margin-top:10px"></div>
+      </div>
+    </div>
 
   </div>
 </div>
