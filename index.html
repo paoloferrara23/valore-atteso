@@ -979,7 +979,7 @@ async function crCommInvia(){
   if(!confirm('Inviare questa comunicazione a '+label+'?'))return;
   st.className='cr-status';st.style.display='block';st.textContent='Invio in corso...';
   try{
-    const r=await fetch('https://valoreatteso.com/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Inviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -994,7 +994,7 @@ async function crCommTest(){
   if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test...';
   try{
-    const r=await fetch('https://valoreatteso.com/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato a info@valoreatteso.com'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -1007,7 +1007,7 @@ async function crReinvia(){
   if(!num){st.className='cr-status err';st.style.display='block';st.textContent='Inserisci numero edizione.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
   try{
-    const r=await fetch('https://valoreatteso.com/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'missing',edition_num:num})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'missing',edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent=d.sent===0?(d.message||'Nessun iscritto mancante.'):'✓ Reinviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
