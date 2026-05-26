@@ -437,6 +437,18 @@ function crRenderOrg(){
   if(!el)return;
   el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
 }
+async function crSendTest(){
+  const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
+  const st=document.getElementById('cr-send-status');
+  if(!num){document.getElementById('cr-send-num').focus();return;}
+  st.className='cr-status';st.style.display='block';st.textContent='Invio test in corso...';
+  try{
+    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
+    const d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
 async function crSendExisting(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
   const st=document.getElementById('cr-send-status');
