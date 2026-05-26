@@ -994,9 +994,9 @@ async function crCommTest(){
   if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,segmento:'ultimi30'})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
     const d=await r.json();
-    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato.'}
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato a info@valoreatteso.com'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
