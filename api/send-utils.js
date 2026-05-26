@@ -153,6 +153,12 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // ── AUTH ──────────────────────────────────────────────────────────────────
+  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
+  const token = req.headers['x-cr-token'];
+  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  // ──────────────────────────────────────────────────────────────────────────
+
   const { action } = req.body || {};
 
   // ── Azione 1: comunicazione one-shot ──────────────────────────────────────
