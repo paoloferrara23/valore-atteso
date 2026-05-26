@@ -26,6 +26,12 @@ async function callClaude(messages, system) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // ── AUTH ──────────────────────────────────────────────────────────────────
+  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
+  const token = req.headers['x-cr-token'];
+  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  // ──────────────────────────────────────────────────────────────────────────
+
   try {
     const { editionId, bilancio, deal, metrica, date, hint } = req.body;
 
@@ -118,3 +124,4 @@ Scrivi testi completi per ognuna. KPI verificati dai temi forniti.`;
     return res.status(500).json({ error: e.message });
   }
 };
+
