@@ -153,10 +153,31 @@ module.exports = async function handler(req, res) {
 
   // ── Azione 1: comunicazione one-shot ──────────────────────────────────────
   if (action === 'communication') {
-    const { subject, body, tipo, segmento } = req.body;
+    const { subject, body, tipo, segmento, test_email } = req.body;
     if (!subject || !body) return res.status(400).json({ error: 'subject e body obbligatori' });
 
     try {
+      // Modalità test: manda solo a test_email
+      if (test_email) {
+        const oggi = new Date().toLocaleDateString('it-IT');
+        const tipoLabel = { annuncio: 'Annuncio', ritardo: 'Avviso', speciale: 'Contenuto speciale', sondaggio: 'Sondaggio', altro: 'Comunicazione' }[tipo] || 'Comunicazione';
+        const html = `<table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">
+          <tr><td style="padding:24px 28px;background:#1A1A1A">
+            <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#fff">Valore Atteso</div>
+            <div style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">${tipoLabel} · ${oggi}</div>
+          </td></tr>
+          <tr><td style="padding:28px 28px 20px">
+            <h2 style="font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1A1A1A;margin:0 0 18px">${esc(subject)}</h2>
+            <div style="font-family:Georgia,serif;font-size:16px;color:#4A4845;line-height:1.75;white-space:pre-wrap">${esc(body)}</div>
+          </td></tr>
+          <tr><td style="padding:16px 28px;border-top:1px solid #D0CBC0;background:#EDE9E0">
+            <p style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;margin:0">TEST EMAIL — non inviata agli iscritti</p>
+          </td></tr>
+        </table>`;
+        await resend.emails.send({ from: FROM, to: test_email, subject, html });
+        return res.status(200).json({ ok: true, sent: 1 });
+      }
+
       let query = supabase.from('subscribers').select('email, created_at').eq('confirmed', true);
       if (segmento === 'ultimi30') {
         const d30 = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString();
