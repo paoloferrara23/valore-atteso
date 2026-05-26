@@ -256,6 +256,12 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // ── AUTH ──────────────────────────────────────────────────────────────────
+  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
+  const token = req.headers['x-cr-token'];
+  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  // ──────────────────────────────────────────────────────────────────────────
+
   try {
     const { edition_num, edition_id } = req.body;
 
@@ -330,3 +336,4 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: err.message });
   }
 };
+
