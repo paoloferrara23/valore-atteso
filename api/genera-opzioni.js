@@ -1,81 +1,108 @@
-// api/genera-opzioni.js — Genera 3 opzioni per sezione (chiamata manuale da Control Room)
+// api/genera-opzioni.js — Genera 3 opzioni per sezione (auto da Scout o tematiche manuali)
 const { createClient } = require('@supabase/supabase-js');
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
-
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 
 async function callClaude(messages, system) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_KEY,
-      'anthropic-version': '2023-06-01'
-    },
+    headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 4000, system, messages })
   });
-  if (!r.ok) throw new Error(`Anthropic: ${r.status}`);
+  if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic: ${r.status} ${t}`); }
   const data = await r.json();
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
 module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // ── AUTH ──────────────────────────────────────────────────────────────────
   const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  const token = req.headers['x-cr-token'];
-  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
-  // ──────────────────────────────────────────────────────────────────────────
+  if (req.headers['x-cr-token'] !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
 
   try {
-    const { hint, editionNum, oggi } = req.body;
+    const { hint, editionNum, oggi, tematiche } = req.body;
 
-    // Legge i temi dello Scout dalla memoria
-    const { data: memory } = await supabase
-      .from('agent_memory')
-      .select('value')
-      .eq('key', 'scout_brief')
-      .single();
+    // Leggi Scout e SEO dalla memoria
+    const [scoutRow, seoRow] = await Promise.all([
+      supabase.from('agent_memory').select('value,updated_at').eq('key', 'scout_brief').single(),
+      supabase.from('agent_memory').select('value').eq('key', 'seo_keywords').single()
+    ]);
+    const scout = scoutRow.data?.value;
+    const seo = seoRow.data?.value;
 
-    const scoutBrief = memory?.value;
-    const temiContext = scoutBrief
-      ? `\nTEMI DELLO SCOUT:\n${JSON.stringify(scoutBrief.temi, null, 2)}\nTEMA CONSIGLIATO: ${scoutBrief.tema_consigliato}`
-      : '\nNessun brief Scout disponibile — usa le notizie più rilevanti del calcio europeo.';
+    let contextBlock = '';
+    let modeLabel = '';
 
-    const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.
-Proponi 3 opzioni per ogni sezione (Il Bilancio, Il Deal, La Metrica).
-Ogni opzione: titolo breve, sommario 2-3 righe, 2 dati chiave, fonte principale.
-USA SOLO dati verificabili dai temi Scout o notizie recenti note.
-${temiContext}
+    if (tematiche) {
+      // MODALITÀ MANUALE: tematiche libere da Paolo
+      modeLabel = 'tematiche manuali';
+      contextBlock = `
+TEMATICHE INSERITE DALL'EDITORE (obbligatorie — non cambiarle):
+- IL BILANCIO: "${tematiche.bilancio}"
+- IL DEAL: "${tematiche.deal}"
+- LA METRICA: "${tematiche.metrica}"
 
-Rispondi SOLO in JSON:
+Per ognuna genera 3 angoli diversi di analisi (non 3 temi diversi — il tema è fisso).
+Devi variare l'angolo: es. per il Bilancio puoi avere angolo "ricavi", angolo "debito", angolo "player trading".
+${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
+    } else {
+      // MODALITÀ AUTO: Scout + SEO
+      modeLabel = 'automatico da Scout';
+      if (scout) {
+        contextBlock += `\nTEMI SCOUT (aggiornati ${scoutRow.data?.updated_at?.slice(0,10)}):\n`;
+        contextBlock += JSON.stringify(scout.temi || scout, null, 2);
+        if (scout.tema_consigliato) contextBlock += `\nTEMA CONSIGLIATO: ${scout.tema_consigliato}`;
+        if (scout.note_editoriali) contextBlock += `\nNOTE: ${scout.note_editoriali}`;
+      } else {
+        contextBlock = '\nNessun brief Scout disponibile — usa notizie recenti del calcio europeo (Serie A, Premier, Liga, Bundesliga, Ligue 1).';
+      }
+      if (seo?.keywords) contextBlock += `\nKEYWORD SEO: ${seo.keywords.slice(0,5).join(', ')}`;
+      if (hint) contextBlock += `\nHINT EDITORIALE: ${hint}`;
+    }
+
+    const system = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
+Pubblico: professionisti M&A, PE, consulenza, finanza. Tono: analitico, diretto, dati verificabili.
+
+REGOLE ASSOLUTE:
+1. Ogni dato/numero DEVE avere una fonte reale (bilancio club, comunicato ufficiale, UEFA, Deloitte, calcioefinanza.it, SwissRamble, FT, Reuters)
+2. VIETATO inventare dati, multipli o statistiche
+3. Se non hai dati sufficienti per un tema, dillo nel source: "dati parziali — da verificare"
+4. Ogni opzione deve avere un angolo editoriale chiaro (cosa rende questo tema interessante per un professionista finance?)
+
+${contextBlock}
+
+Rispondi SOLO in JSON valido:
 {
   "section_options": {
-    "bilancio": [{"title":"...","summary":"...","kpi_preview":["...","..."],"source":"..."},...],
-    "deal": [...],
-    "metrica": [...]
+    "bilancio": [
+      {"title": "titolo editoriale preciso","summary": "2-3 righe: angolo di analisi, perché è rilevante ora, cosa si può misurare","kpi_preview": ["metrica1: valore","metrica2: valore"],"source": "fonte principale verificabile","angolo": "es. redditività / indebitamento / player trading"},
+      {...opzione 2...},
+      {...opzione 3...}
+    ],
+    "deal": [...3 opzioni...],
+    "metrica": [...3 opzioni...]
   }
 }`;
 
     const testo = await callClaude([{
       role: 'user',
-      content: `Genera opzioni per l'edizione #${editionNum} di ${oggi}.${hint ? ' Hint: ' + hint : ''}`
+      content: `Genera le opzioni editoriali per l'edizione #${editionNum} di Valore Atteso (${oggi}).
+Modalità: ${modeLabel}.
+Per ogni sezione proponi 3 opzioni con angoli diversi. Solo dati verificabili e fonti reali.`
     }], system);
 
     let opts;
     try {
       const match = testo.match(/\{[\s\S]*\}/);
       opts = JSON.parse(match[0]);
-    } catch {
-      throw new Error('JSON non valido');
-    }
+    } catch { throw new Error('JSON non valido dalla AI'); }
 
-    // Salva bozza con le opzioni
+    // Salva bozza su Supabase
     const { data: saved, error } = await supabase
       .from('editions')
       .insert({
@@ -91,7 +118,6 @@ Rispondi SOLO in JSON:
       .single();
 
     if (error) throw new Error(error.message);
-
     return res.status(200).json({ ok: true, id: saved.id });
 
   } catch (e) {
@@ -99,4 +125,3 @@ Rispondi SOLO in JSON:
     return res.status(500).json({ error: e.message });
   }
 };
-
