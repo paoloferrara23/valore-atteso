@@ -989,7 +989,7 @@ async function crRunAgent(key){
   st.className='cr-status';st.style.display='block';st.textContent='Avvio '+key+' in corso...';
   document.getElementById('cr-agents-list').appendChild(st);
   try{
-    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:key})});
+    const r=await fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({agent:key})});
     const d=await r.json().catch(()=>({}));
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Agente '+key+' avviato.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
