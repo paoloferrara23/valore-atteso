@@ -444,7 +444,7 @@ async function crSendTest(){
   if(!num){document.getElementById('cr-send-num').focus();return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test in corso...';
   try{
-    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:num})});
+    const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
@@ -458,7 +458,7 @@ async function crSendExisting(){
   st.style.display='block';
   st.textContent='Invio in corso...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:num})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -570,7 +570,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   st.textContent='Invio...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -620,14 +620,32 @@ function crLeggiSezioniDom(edId,sections){
   });
 }
 
+/* ── REDAZIONE MODE ── */
+let crRedazioneMode = 'auto';
+function crSetMode(m){
+  crRedazioneMode=m;
+  document.getElementById('cr-mode-auto-panel').style.display=m==='auto'?'block':'none';
+  document.getElementById('cr-mode-manual-panel').style.display=m==='manual'?'block':'none';
+  document.getElementById('cr-mode-auto').style.opacity=m==='auto'?'1':'0.5';
+  document.getElementById('cr-mode-manual').style.opacity=m==='manual'?'1':'0.5';
+}
+
 async function crGeneraOpzioni(){
   var st=document.getElementById('cr-gen-status');
   st.className='cr-status';st.style.display='block';st.textContent='Generazione opzioni...';
-  var hint=document.getElementById('cr-hint').value.trim();
+  var hint=document.getElementById('cr-hint')?document.getElementById('cr-hint').value.trim():'';
+  var tematicheLibere=null;
+  if(crRedazioneMode==='manual'){
+    var tb=document.getElementById('cr-tema-bilancio').value.trim();
+    var td=document.getElementById('cr-tema-deal').value.trim();
+    var tm=document.getElementById('cr-tema-metrica').value.trim();
+    if(!tb||!td||!tm){st.className='cr-status err';st.textContent='Inserisci tutte e 3 le tematiche.';return;}
+    tematicheLibere={bilancio:tb,deal:td,metrica:tm};
+  }
   try{
     var last=crCtx.last?parseInt(crCtx.last.num,10):0;
     var editionNum=String(last+1).padStart(3,'0');
-    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT'),tematiche:tematicheLibere})});
     var d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore');
     st.className='cr-status ok';st.textContent='Opzioni generate.';
@@ -675,12 +693,24 @@ async function crGeneraBozza(edId){
     if(!b||!dd||!m){st.className='cr-status err';st.textContent='Seleziona un tema per ogni sezione.';return;}
     var de=document.getElementById('date-'+edId);
     var he=document.getElementById('hint-'+edId);
-    var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},
+    var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},
       body:JSON.stringify({editionId:edId,bilancio:b,deal:dd,metrica:m,date:de?de.value:'',hint:he?he.value:''})});
     var ddd=await resp.json();
     if(resp.ok&&ddd.ok){st.className='cr-status ok';st.textContent='Bozza generata.';setTimeout(function(){crLoadBozze();},1500);}
     else{st.className='cr-status err';st.textContent='Errore: '+(ddd.error||resp.status);}
   }catch(ex){st.className='cr-status err';st.textContent='Errore: '+ex.message;}
+}
+
+async function crRegeneraSezione(edId, sezione){
+  var st=document.getElementById('bst-'+edId);
+  st.className='cr-status';st.style.display='block';st.textContent='Rigenerazione '+sezione+' in corso...';
+  try{
+    var r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},
+      body:JSON.stringify({editionId:edId,regenSezione:sezione})});
+    var d=await r.json();
+    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Sezione rigenerata.';setTimeout(function(){crLoadBozze();},1200);}
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
 }
 
 async function crSalvaModifiche(edId){
@@ -913,7 +943,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   st.textContent='Invio...';
   try{
-    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
+    const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:String(num).padStart(3,'0')})});
     const d=await r.json();
     if(r.ok&&d.ok){
       st.className='cr-status ok';
@@ -933,7 +963,7 @@ async function crGenera(){
   try{
     const last=crCtx.last?parseInt(crCtx.last.num,10):0;
     const editionNum=String(last+1).padStart(3,'0');
-    const r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({mode:hint?'hint':'auto',hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
+    const r=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({mode:hint?'hint':'auto',hint,editionNum,oggi:new Date().toLocaleDateString('it-IT')})});
     const d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore generazione');
     st.className='cr-status ok';
@@ -979,7 +1009,7 @@ async function crCommInvia(){
   if(!confirm('Inviare questa comunicazione a '+label+'?'))return;
   st.className='cr-status';st.style.display='block';st.textContent='Invio in corso...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'communication',subject,body,tipo,segmento})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Inviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -994,7 +1024,7 @@ async function crCommTest(){
   if(!subject||!body){st.className='cr-status err';st.style.display='block';st.textContent='Oggetto e testo obbligatori.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Invio test...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'communication',subject:'[TEST] '+subject,body,tipo,test_email:'info@valoreatteso.com'})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='✓ Test inviato a info@valoreatteso.com'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -1007,7 +1037,7 @@ async function crReinvia(){
   if(!num){st.className='cr-status err';st.style.display='block';st.textContent='Inserisci numero edizione.';return;}
   st.className='cr-status';st.style.display='block';st.textContent='Reinvio in corso...';
   try{
-    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':crPwd},body:JSON.stringify({action:'missing',edition_num:num})});
+    const r=await fetch('/api/send-utils',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'missing',edition_num:num})});
     const d=await r.json();
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent=d.sent===0?(d.message||'Nessun iscritto mancante.'):'✓ Reinviato a '+d.sent+' iscritti.'}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)}
@@ -1065,7 +1095,44 @@ loadLatestPreview();
 
     <div class="cr-panel" id="cr-redazione">
       <div class="cr-sec-title">Genera nuova edizione</div>
-      <div class="cr-box"><input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:min(100%,520px)"> <button class="cr-btn" onclick="crGenera()">Genera</button><div id="cr-gen-status" class="cr-status"></div></div>
+      <div class="cr-box">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+
+          <!-- MODALITÀ -->
+          <div style="display:flex;gap:8px;margin-bottom:4px">
+            <button class="cr-btn" id="cr-mode-auto" onclick="crSetMode('auto')" style="flex:1;opacity:1">✦ Automatico (da Scout)</button>
+            <button class="cr-btn light" id="cr-mode-manual" onclick="crSetMode('manual')" style="flex:1">✎ Tematiche libere</button>
+          </div>
+
+          <!-- MODALITÀ AUTO: hint generico -->
+          <div id="cr-mode-auto-panel">
+            <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:100%;box-sizing:border-box">
+            <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:6px">Lo Scout sceglie i temi migliori della settimana. Puoi aggiungere un hint per orientarlo.</div>
+          </div>
+
+          <!-- MODALITÀ MANUALE: 3 tematiche libere -->
+          <div id="cr-mode-manual-panel" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL BILANCIO</span>
+                <input class="cr-input" id="cr-tema-bilancio" placeholder="es. Juventus bilancio 2024, perdita netta..." style="flex:1;box-sizing:border-box">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL DEAL</span>
+                <input class="cr-input" id="cr-tema-deal" placeholder="es. Everton acquisizione, multipli EV/EBITDA..." style="flex:1;box-sizing:border-box">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">LA METRICA</span>
+                <input class="cr-input" id="cr-tema-metrica" placeholder="es. Stadium utilization rate, benchmarking EU..." style="flex:1;box-sizing:border-box">
+              </div>
+              <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:2px">Inserisci le 3 tematiche. L'agente le sviluppa con dati verificati da fonti primarie.</div>
+            </div>
+          </div>
+
+          <button class="cr-btn" onclick="crGeneraOpzioni()" style="align-self:flex-start">✦ Genera opzioni</button>
+          <div id="cr-gen-status" class="cr-status"></div>
+        </div>
+      </div>
       <div class="cr-sec-title">Bozze in attesa</div>
       <div id="cr-bozze-list"></div>
     </div>
