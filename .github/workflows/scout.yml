@@ -1,8 +1,8 @@
-name: Scout — Business del Calcio
+name: Scout Agent
 
 on:
   schedule:
-    - cron: '0 6 * * 6'  # Sabato 7:00 ora italiana
+    - cron: '0 7 * * 6'  # Sabato 08:00 IT (7 UTC)
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Cerca notizie e invia brief
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd scripts && npm init -y 2>/dev/null || true && npm install @supabase/supabase-js 2>/dev/null || true
+      - name: Esegui Scout
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
