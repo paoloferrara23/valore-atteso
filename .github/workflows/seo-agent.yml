@@ -2,7 +2,7 @@ name: SEO Agent
 
 on:
   schedule:
-    - cron: '0 7 * * 0'  # Ogni domenica alle 8:00 ora italiana
+    - cron: '0 7 * * 0'  # Domenica 08:00 IT (7 UTC)
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Analisi SEO e report
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd scripts && npm init -y 2>/dev/null || true && npm install @supabase/supabase-js 2>/dev/null || true
+      - name: Esegui SEO Agent
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
