@@ -3,12 +3,14 @@ const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const AGENT_MAP = {
-  scout:       { script: 'scout.js',        label: 'Scout' },
-  seo:         { script: 'seo-agent.js',    label: 'SEO Agent' },
-  editoriale:  { script: 'agent.js',        label: 'Editoriale Agent' },
-  growth:      { script: 'growth-agent.js', label: 'Growth Agent' },
-  content:     { script: 'content-agent.js',label: 'Content Agent' },
+  scout:      { workflow: 'scout.yml',             label: 'Scout' },
+  seo:        { workflow: 'seo-agent.yml',          label: 'SEO Agent' },
+  editoriale: { workflow: 'editoriale-agent.yml',   label: 'Editoriale Agent' },
+  growth:     { workflow: 'growth-agent.yml',       label: 'Growth Agent' },
+  content:    { workflow: 'content-agent.yml',      label: 'Content Agent' },
 };
+
+const REPO = 'paoloferrara23/valore-atteso';
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,30 +27,31 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: `Agente non valido. Disponibili: ${Object.keys(AGENT_MAP).join(', ')}` });
   }
 
-  const GITHUB_TOKEN = process.env.GH_TOKEN;
-  const REPO = 'paoloferrara23/valore-atteso';
+  // Leggi GH token da env var (aggiunta via setup-env) oppure da Supabase config
+  let ghToken = process.env.GH_TOKEN;
 
-  if (!GITHUB_TOKEN) {
-    return res.status(500).json({ error: 'GITHUB_TOKEN non configurato' });
+  if (!ghToken) {
+    try {
+      const { data } = await supabase
+        .from('agent_memory')
+        .select('value')
+        .eq('key', 'config_gh_token')
+        .single();
+      ghToken = data?.value;
+    } catch(e) { /* ignore */ }
   }
 
-  // Mappa agente → nome workflow
-  const WORKFLOW_MAP = {
-    scout:      'scout.yml',
-    seo:        'seo-agent.yml',
-    editoriale: 'editoriale-agent.yml',
-    growth:     'growth-agent.yml',
-    content:    'content-agent.yml',
-  };
+  if (!ghToken) {
+    return res.status(500).json({ error: 'GH_TOKEN non configurato. Contatta l\'amministratore.' });
+  }
 
-  const workflow = WORKFLOW_MAP[agent];
+  const { workflow, label } = AGENT_MAP[agent];
 
   try {
-    // Triggera workflow via GitHub API
     const r = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${workflow}/dispatches`, {
       method: 'POST',
       headers: {
-        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Authorization': `token ${ghToken}`,
         'Content-Type': 'application/json',
         'User-Agent': 'valore-atteso'
       },
@@ -56,22 +59,16 @@ module.exports = async function handler(req, res) {
     });
 
     if (r.status === 204) {
-      // Logga il run manuale
       await supabase.from('agent_runs').insert({
-        agent,
-        status: 'triggered',
-        summary: `${AGENT_MAP[agent].label} avviato manualmente dalla Control Room`,
+        agent, status: 'triggered',
+        summary: `${label} avviato manualmente dalla Control Room`,
         data: { triggered_by: 'control_room', workflow }
       });
-
-      return res.status(200).json({
-        ok: true,
-        message: `${AGENT_MAP[agent].label} avviato. Risultati visibili tra 1-2 minuti.`
-      });
+      return res.status(200).json({ ok: true, message: `${label} avviato. Risultati tra 1-3 minuti.` });
     }
 
     const err = await r.json();
-    throw new Error(`GitHub: ${r.status} — ${err.message || JSON.stringify(err)}`);
+    throw new Error(`GitHub ${r.status}: ${err.message || JSON.stringify(err)}`);
 
   } catch (e) {
     console.error('[run-agent]', e);
