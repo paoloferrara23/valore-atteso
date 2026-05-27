@@ -1,267 +1,268 @@
-// content-agent.js — Genera contenuti Instagram per Valore Atteso
-// Gira: giovedi 10:00 | Genera: 3 post settimanali con memoria editoriale
+// scripts/content-agent.js — LinkedIn Content Agent v2
+// Gira: giovedì 07:00 UTC (08:00 IT)
+// Output: 3 bozze post LinkedIn ottimizzate per Paolo Ferrara
 
-const { memSet, memGet, logRun, supaFetch } = require('./memory');
+const { memGet, logRun } = require('./memory');
 
-const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-const RESEND_KEY = process.env.RESEND_KEY;
+const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
+const RESEND_KEY     = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-const FROM = 'Valore Atteso <info@valoreatteso.com>';
+const SUPA_URL       = process.env.SUPABASE_URL;
+const SUPA_KEY       = process.env.SUPABASE_KEY;
+const FROM           = 'Valore Atteso <info@valoreatteso.com>';
 
-async function httpRequest(url, opts) {
-  opts = opts || {};
-  const r = await fetch(url, opts);
+async function supaFetch(path, opts = {}) {
+  const r = await fetch(`${SUPA_URL}${path}`, {
+    ...opts,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPA_KEY,
+      'Authorization': `Bearer ${SUPA_KEY}`,
+      ...(opts.headers || {})
+    }
+  });
   const text = await r.text();
-  return { status: r.status, ok: r.ok, text: text, json: function() { return JSON.parse(text); } };
+  if (!r.ok) throw new Error(`Supabase ${r.status}: ${text.slice(0, 200)}`);
+  return text ? JSON.parse(text) : null;
 }
 
 async function callClaude(messages, system) {
-  const r = await httpRequest('https://api.anthropic.com/v1/messages', {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01'
     },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1200,
-      system: system,
-      messages: messages
-    })
+    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 4000, system, messages })
   });
-  if (!r.ok) throw new Error('Anthropic: ' + r.status + ' ' + r.text);
-  const data = r.json();
-  return data.content.filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('');
+  if (!r.ok) throw new Error(`Anthropic ${r.status}`);
+  const d = await r.json();
+  return d.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
-function cleanJSON(str) {
-  str = str.replace(/```json|```/g, '').trim();
-  const match = str.match(/\{[\s\S]*\}/);
-  if (!match) return null;
-  let json = match[0];
-  json = json.replace(/[\x00-\x1F\x7F]/g, ' ');
-  json = json.replace(/,(\s*[}\]])/g, '$1');
-  return json;
-}
-
-// Legge la memoria editoriale da Supabase
-async function getPostMemory() {
+async function getPostHistory() {
   try {
-    const posts = await supaFetch('/rest/v1/instagram_posts?order=post_num.desc&select=argomento,concetti,kpi_usati,club_citati,dato_principale');
-    if (!Array.isArray(posts) || posts.length === 0) return 'Nessun post precedente.';
-
-    return posts.map(function(p) {
-      const concetti = (p.concetti || []).join(', ');
-      const kpi = (p.kpi_usati || []).join(', ');
-      const club = (p.club_citati || []).join(', ');
-      return '- ' + p.argomento +
-        (concetti ? ' | Concetti: ' + concetti : '') +
-        (kpi ? ' | KPI: ' + kpi : '') +
-        (club ? ' | Club: ' + club : '');
-    }).join('\n');
+    const posts = await supaFetch('/rest/v1/linkedin_posts?order=created_at.desc&limit=20&select=tipo,angolo,club,dato_chiave,hook');
+    if (!Array.isArray(posts) || !posts.length) return 'Nessun post precedente.';
+    return posts.map(p => `- [${p.tipo}] ${p.angolo}${p.club ? ' | Club: ' + p.club : ''}${p.dato_chiave ? ' | Dato: ' + p.dato_chiave : ''}`).join('\n');
   } catch(e) {
-    console.error('Errore lettura memoria:', e.message);
-    return 'Memoria non disponibile.';
+    console.warn('Storia post non disponibile:', e.message);
+    return 'Nessun post precedente.';
   }
 }
 
-// Salva un nuovo post nella memoria editoriale
-async function savePost(postNum, post) {
+async function savePost(post) {
   try {
-    await supaFetch('/rest/v1/instagram_posts', {
+    await supaFetch('/rest/v1/linkedin_posts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      headers: { 'Prefer': 'return=minimal' },
       body: JSON.stringify({
-        post_num: postNum,
-        formato: post.formato || 'singolo',
-        tipo: post.tipo || 'evergreen',
-        argomento: post.argomento || post.titolo_interno || 'Post ' + postNum,
-        concetti: post.concetti || [],
-        kpi_usati: post.kpi_usati || (post.dato_principale ? [post.dato_principale] : []),
-        club_citati: post.club_citati || [],
-        dato_principale: post.dato_principale || post.kpi_visivo || null,
-        pubblicato_il: new Date().toISOString().split('T')[0]
+        tipo: post.tipo,
+        angolo: post.angolo,
+        club: post.club || null,
+        dato_chiave: post.dato_chiave || null,
+        hook: post.testo?.split('\n')[0]?.slice(0, 100) || null,
+        created_at: new Date().toISOString()
       })
     });
-    console.log('Post salvato in memoria: ' + (post.argomento || post.titolo_interno));
   } catch(e) {
-    console.error('Errore salvataggio post:', e.message);
+    console.warn('Salvataggio post fallito:', e.message);
   }
-}
-
-// Genera UN singolo post — max_tokens 1200 evita troncamenti JSON
-async function generateSinglePost(system, prompt) {
-  const testo = await callClaude([{ role: 'user', content: prompt }], system);
-  const cleaned = cleanJSON(testo);
-  if (!cleaned) throw new Error('JSON non valido: ' + testo.slice(0, 300));
-  return JSON.parse(cleaned);
 }
 
 async function main() {
   const start = Date.now();
-  const oggi = new Date().toLocaleDateString('it-IT');
-  console.log('Content Agent avviato:', new Date().toISOString());
+  const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+  console.log('Content Agent v2 avviato:', new Date().toISOString());
 
-  // Legge edizione pubblicata
-  let edizione = null;
+  // Leggi ultima edizione pubblicata
+  const edizioni = await supaFetch('/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=*');
+  const edizione = edizioni?.[0];
+  if (!edizione) throw new Error('Nessuna edizione pubblicata trovata');
+  console.log(`Edizione: #${edizione.num} — ${edizione.title}`);
+
+  // Leggi storia post precedenti
+  const storia = await getPostHistory();
+
+  // Leggi scout brief per contesto settimana
+  const scoutBrief = await memGet('scout_brief');
+  const contestoScout = scoutBrief?.value?.brief_narrativo
+    ? `\nCONTESTO SETTIMANA (Scout): ${scoutBrief.value.brief_narrativo}` : '';
+
+  const sezioniEdizione = (edizione.sections || []).map(s =>
+    `${s.label}: "${s.title}" — KPI: ${(s.kpis || []).map(k => `${k.label} ${k.value}`).join(', ')} — Verdict: ${s.verdict || ''}`
+  ).join('\n');
+
+  const system = `Sei il ghostwriter LinkedIn di Paolo Ferrara, M&A Manager e fondatore di Valore Atteso.
+
+CHI È PAOLO:
+- M&A Manager con background in sport advisory
+- Fondatore di Valore Atteso, newsletter italiana sul business del calcio
+- Parla come un professionista finance, non come un giornalista sportivo
+- Tono: diretto, analitico, autorevole. Mai gossip, mai tifo.
+
+TARGET LINKEDIN: professionisti M&A, PE, consulenza, finanza 28-45 anni Italia
+
+OBIETTIVI (in ordine):
+1. Iscritti alla newsletter (CTA principale)
+2. Personal branding come esperto M&A/sport
+3. Pipeline consulenza
+
+STILE POST LINKEDIN — REGOLE:
+1. HOOK (prima riga): deve fermare lo scroll. Max 12 parole. Usa dati, paradossi, o domande provocatorie. NON iniziare mai con "Oggi", "Ho pensato", "Vi racconto".
+2. CORPO: 3-5 paragrafi brevi (max 3 righe ciascuno). Dati verificati. Framework CF applicato al calcio. Spazi bianchi tra i paragrafi.
+3. CTA FINALE: sempre presente. Varia tra: "Link newsletter in bio", "Ti aspetto ogni martedì", "Iscriviti a Valore Atteso — link in bio", "Ne parlo nell'ultima edizione — link in bio"
+4. HASHTAG: max 3, pertinenti, in fondo. Es. #calcioefinanza #mergersandacquisitions #sportsfinance
+5. LUNGHEZZA: 150-250 parole totali. Mai oltre.
+6. EMOJI: massimo 2, solo se aggiungono valore. Mai decorative.
+
+FORMATI:
+- TESTO PURO: per analisi, dati, domande retoriche
+- CAROSELLO: solo per confronti multi-club o framework in 5+ step (indica "CAROSELLO" e dai le slide)
+
+STORIA POST PRECEDENTI (NON ripetere angoli, dati o club già usati):
+${storia}
+${contestoScout}
+
+Rispondi SOLO in JSON valido.`;
+
+  const prompt = `Oggi è ${oggi}. Genera 3 bozze post LinkedIn per Paolo Ferrara.
+
+EDIZIONE SETTIMANA (#${edizione.num} — ${edizione.title}):
+${sezioniEdizione}
+
+POST 1 — DATO SORPRENDENTE (legato all'edizione):
+Usa il dato più impattante dell'edizione. Deve incuriosire chi non l'ha letta e spingerlo a iscriversi.
+Formato: testo puro. CTA: iscrizione newsletter.
+
+POST 2 — ANALISI CF EVERGREEN (indipendente dall'edizione):
+Un concetto di corporate finance applicato al calcio. Educativo, non legato alla news.
+Usa un club o campionato NON già in storia. Formato: testo puro o carosello (scegli tu).
+CTA: personal branding + newsletter.
+
+POST 3 — DOMANDA RETORICA O CONFRONTO:
+Genera curiosità e commenti. Confronto tra club/campionati/sport o domanda che divide.
+Formato: testo puro. CTA leggera, non invasiva.
+
+JSON:
+{
+  "posts": [
+    {
+      "tipo": "dato_sorprendente",
+      "angolo": "descrizione breve dell'angolo (per memoria)",
+      "club": "club citato o null",
+      "dato_chiave": "il numero/dato principale",
+      "formato": "testo_puro|carosello",
+      "quando": "giorno e orario consigliato per pubblicare",
+      "perche_ora": "motivazione editoriale (1 riga)",
+      "testo": "testo completo del post pronto da copiare",
+      "slide": ["slide1", "slide2"] // solo se carosello
+    },
+    { "tipo": "evergreen", ... },
+    { "tipo": "domanda_retorica", ... }
+  ]
+}`;
+
+  const raw = await callClaude([{ role: 'user', content: prompt }], system);
+  const match = raw.replace(/```json|```/g, '').match(/\{[\s\S]*\}/);
+  if (!match) throw new Error('JSON non valido');
+
+  let result;
   try {
-    const eds = await supaFetch('/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=*');
-    edizione = Array.isArray(eds) && eds[0] ? eds[0] : null;
-    if (edizione) console.log('Edizione: #' + edizione.num + ' - ' + edizione.title);
-    else throw new Error('Nessuna edizione pubblicata');
-  } catch(e) {
-    throw new Error('Edizione non trovata: ' + e.message);
-  }
+    result = JSON.parse(match[0].replace(/[\x00-\x1F\x7F]/g, ' ').replace(/,(\s*[}\]])/g, '$1'));
+  } catch(e) { throw new Error('Parse JSON fallito: ' + e.message); }
 
-  // Legge memoria editoriale
-  console.log('Carico memoria editoriale...');
-  const memoria = await getPostMemory();
-  console.log('Post in archivio: ' + memoria.split('\n').length);
+  const posts = result.posts || [];
+  console.log(`Post generati: ${posts.length}`);
 
-  // Conta i post esistenti per numerazione progressiva
-  let nextPostNum = 7;
-  try {
-    const count = await supaFetch('/rest/v1/instagram_posts?select=post_num&order=post_num.desc&limit=1');
-    if (Array.isArray(count) && count[0]) nextPostNum = count[0].post_num + 1;
-  } catch(e) {}
+  // Salva in memoria
+  for (const post of posts) await savePost(post);
 
-  const sezioni = JSON.stringify(
-    (edizione.sections || []).map(function(s) {
-      return { label: s.label, title: s.title, kpis: s.kpis, verdict: s.verdict };
-    }), null, 2
-  );
+  // ── Email HTML ────────────────────────────────────────────────────────────
+  const tipoColors = {
+    dato_sorprendente: ['#1B3A6B', '#E4ECF7', 'DATO SETTIMANA'],
+    evergreen:         ['#1B4332', '#E4EDE7', 'EVERGREEN CF'],
+    domanda_retorica:  ['#6B1B1B', '#F7E4E4', 'DOMANDA / CONFRONTO']
+  };
 
-  const system = 'Sei il social media manager di Valore Atteso, newsletter italiana sul business del calcio europeo.\n' +
-    'Tono: autorevole, analitico. Zero gossip. Dati e framework di corporate finance.\n' +
-    'Pubblico: professionisti M&A, PE, consulenza, finanza 25-45 anni Italia.\n\n' +
-    'ARCHIVIO POST GIA PUBBLICATI (NON ripetere questi argomenti, concetti o dati):\n' +
-    memoria + '\n\n' +
-    'REGOLA FONDAMENTALE: ogni post deve coprire un angolo o un dato NON presente in archivio.\n' +
-    'Se un concetto e gia stato trattato, trova un\'applicazione diversa o un club/campionato diverso.\n\n' +
-    'Per ogni post includi OBBLIGATORIAMENTE questi campi JSON:\n' +
-    '- tipo: "dato_settimana" | "evergreen" | "confronto"\n' +
-    '- formato: "singolo" | "carosello"\n' +
-    '- argomento: stringa breve descrittiva (usata per la memoria)\n' +
-    '- concetti: array di concetti CF trattati\n' +
-    '- kpi_usati: array di dati/numeri specifici citati\n' +
-    '- club_citati: array di club menzionati\n' +
-    '- dato_principale: il numero o fatto piu sorprendente\n' +
-    '- titolo_interno: titolo editoriale breve\n' +
-    '- quando_pubblicare: giorno suggerito\n' +
-    '- caption: testo Instagram completo con hashtag\n' +
-    '- brief_chatgpt: istruzioni visual per ChatGPT (stile Valore Atteso, 1080x1080px)\n\n' +
-    'Rispondi SOLO con JSON valido: {"post": {...}}';
+  const postsHTML = posts.map((p, i) => {
+    const [fg, bg, label] = tipoColors[p.tipo] || ['#4A4845', '#EDE9E0', 'POST'];
+    const testoEsc = (p.testo || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const slideHTML = p.slide?.length ? `
+      <div style="margin-top:12px;padding:10px 14px;background:#1A1A1A">
+        <div style="font-family:'Courier New',monospace;font-size:7px;color:#C8A97A;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Slide carosello</div>
+        ${p.slide.map((s, si) => `<div style="font-family:Georgia,serif;font-size:11px;color:#FFFDF8;margin-bottom:6px;padding-left:8px;border-left:2px solid #C8A97A"><strong>${si+1}.</strong> ${s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</div>`).join('')}
+      </div>` : '';
 
-  const posts = [];
+    return `
+    <div style="margin-bottom:20px;border:2px solid ${fg}">
+      <div style="background:${fg};padding:10px 16px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-family:'Courier New',monospace;font-size:9px;font-weight:700;color:#fff;letter-spacing:.1em">${label}</span>
+        <span style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.6)">${p.formato?.replace('_',' ').toUpperCase() || 'TESTO'} · ${p.quando || ''}</span>
+      </div>
+      <div style="background:${bg};padding:10px 16px;border-bottom:1px solid ${fg}">
+        <div style="font-family:'Courier New',monospace;font-size:9px;color:${fg}">Angolo: ${p.angolo || ''}</div>
+        ${p.dato_chiave ? `<div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:${fg};margin-top:4px">${p.dato_chiave}</div>` : ''}
+      </div>
+      <div style="padding:14px 16px;background:#F5F2EB">
+        <div style="font-family:'Courier New',monospace;font-size:7px;color:#9A9690;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Testo pronto da copiare</div>
+        <div style="font-family:Georgia,serif;font-size:13px;color:#1A1A1A;line-height:1.7;white-space:pre-wrap">${testoEsc}</div>
+        ${slideHTML}
+      </div>
+      <div style="padding:8px 16px;background:#EDE9E0;border-top:1px solid #D0CBC0">
+        <div style="font-family:'Courier New',monospace;font-size:8px;color:#777066;font-style:italic">${p.perche_ora || ''}</div>
+      </div>
+    </div>`;
+  }).join('');
 
-  // POST 1 — Dato settimana (legato alla newsletter)
-  console.log('Genero post 1/3 — dato settimana...');
-  try {
-    const prompt1 = 'Oggi: ' + oggi + '. Edizione #' + edizione.num + ' - ' + edizione.title + '\n\n' +
-      'Sezioni:\n' + sezioni + '\n\n' +
-      'Genera 1 post tipo DATO SETTIMANA: il dato piu sorprendente di questa edizione.\n' +
-      'Deve rimandare alla newsletter. Controlla archivio e usa un dato NON ancora usato.\n' +
-      'JSON: {"post": {...}}';
-    const result = await generateSinglePost(system, prompt1);
-    const post = result.post || result;
-    posts.push(post);
-    await savePost(nextPostNum, post);
-    nextPostNum++;
-  } catch(e) {
-    console.error('Errore post 1:', e.message);
-  }
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#D8D0C4">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#D8D0C4"><tr><td align="center">
+<table width="620" cellpadding="0" cellspacing="0" style="max-width:620px;width:100%;background:#F5F2EB">
 
-  // POST 2 — Evergreen (concetto CF, non legato alla newsletter)
-  console.log('Genero post 2/3 — evergreen...');
-  try {
-    const prompt2 = 'Oggi: ' + oggi + '.\n\n' +
-      'Genera 1 post tipo EVERGREEN: un concetto di corporate finance applicato al calcio.\n' +
-      'NON fare riferimento alla newsletter. Usa un concetto NON in archivio.\n' +
-      'Esempi ancora disponibili: EBITDA adjusted, salary cap implicito, EV/EBITDA calcio vs altri sport, ' +
-      'plusvalenze fittizie, fair value cartellini, covenant bancari dei club, break-even UEFA.\n' +
-      'JSON: {"post": {...}}';
-    const result = await generateSinglePost(system, prompt2);
-    const post = result.post || result;
-    posts.push(post);
-    await savePost(nextPostNum, post);
-    nextPostNum++;
-  } catch(e) {
-    console.error('Errore post 2:', e.message);
-  }
+  <tr><td style="padding:22px 28px;background:#1A1A1A">
+    <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px">Valore Atteso</div>
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin-top:4px">LinkedIn Content · ${oggi}</div>
+  </td></tr>
 
-  // POST 3 — Confronto o domanda retorica
-  console.log('Genero post 3/3 — confronto...');
-  try {
-    const prompt3 = 'Oggi: ' + oggi + '.\n\n' +
-      'Genera 1 post tipo CONFRONTO: un dato comparativo o domanda retorica che genera curiosita.\n' +
-      'Indipendente dalla newsletter. Confronta club diversi, campionati, o calcio vs altri sport.\n' +
-      'Evita club e dati gia usati in archivio.\n' +
-      'JSON: {"post": {...}}';
-    const result = await generateSinglePost(system, prompt3);
-    const post = result.post || result;
-    posts.push(post);
-    await savePost(nextPostNum, post);
-    nextPostNum++;
-  } catch(e) {
-    console.error('Errore post 3:', e.message);
-  }
+  <tr><td style="padding:16px 28px;background:#1A1A1A;border-top:1px solid rgba(255,255,255,0.08)">
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:4px">3 bozze pronte — usale quando vuoi, nell'ordine che vuoi</div>
+    <div style="font-family:Georgia,serif;font-size:14px;color:#FFFDF8">Da <strong>#${edizione.num}</strong> — ${edizione.title}</div>
+  </td></tr>
 
-  console.log('Post generati: ' + posts.length);
+  <tr><td style="padding:20px 28px">${postsHTML}</td></tr>
 
-  // Costruisce email HTML
-  let postsHTML = '';
-  for (let i = 0; i < posts.length; i++) {
-    const p = posts[i];
-    const tipo = ((p.tipo || 'POST') + '').toUpperCase();
-    const quando = p.quando_pubblicare ? ' &middot; ' + p.quando_pubblicare : '';
-    const titolo = p.titolo_interno || ('Post ' + (i + 1));
-    const kpi = p.kpi_visivo || p.dato_principale || '';
-    const caption = (p.caption || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const brief = (p.brief_chatgpt || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const fonte = (p.fonte || '').replace(/&/g, '&amp;');
+  <tr><td style="padding:12px 28px;background:#EDE9E0;border-top:1px solid #D0CBC0">
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690">Content Agent v2 · LinkedIn · ${oggi}</div>
+  </td></tr>
 
-    postsHTML += '<tr><td style="padding:0 0 16px"><table width="100%" style="border-collapse:collapse">' +
-      '<tr style="background:#1A1A1A"><td style="padding:10px 24px">' +
-      '<span style="font-family:Courier New,monospace;font-size:9px;color:#D4A017;letter-spacing:.12em;text-transform:uppercase">' + tipo + quando + '</span></td></tr>' +
-      '<tr style="background:#F5F2EB"><td style="padding:14px 24px;border-bottom:1px solid #D0CBC0">' +
-      '<h3 style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#1A1A1A;margin:0 0 8px">' + titolo + '</h3>' +
-      (kpi ? '<div style="font-family:Courier New,monospace;font-size:24px;font-weight:900;color:#C8251D;margin:0 0 8px">' + kpi + '</div>' : '') +
-      '<p style="font-family:Georgia,serif;font-size:12px;color:#4A4845;line-height:1.7;margin:0;white-space:pre-wrap">' + caption + '</p></td></tr>' +
-      (brief ? '<tr style="background:#EDE9E0"><td style="padding:10px 24px;border-bottom:1px solid #D0CBC0">' +
-        '<p style="font-family:Courier New,monospace;font-size:8px;color:#9A9690;margin:0 0 4px;text-transform:uppercase;letter-spacing:.1em">Brief ChatGPT</p>' +
-        '<p style="font-family:Georgia,serif;font-size:11px;color:#4A4845;line-height:1.6;margin:0">' + brief + '</p></td></tr>' : '') +
-      (fonte ? '<tr style="background:#F5F2EB"><td style="padding:6px 24px;border-bottom:2px solid #D0CBC0">' +
-        '<p style="font-family:Courier New,monospace;font-size:8px;color:#1B4332;margin:0">Fonte: ' + fonte + '</p></td></tr>' : '') +
-      '</table></td></tr>';
-  }
+</table></td></tr></table>
+</body></html>`;
 
-  const titolo = 'Content Agent VA — 3 post settimana ' + oggi;
-  const html = '<table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB;font-family:Georgia,serif;border:1px solid #D0CBC0">' +
-    '<tr><td style="padding:24px 28px;background:#1A1A1A">' +
-    '<h1 style="font-family:Georgia,serif;font-size:24px;font-weight:900;color:#fff;margin:0">Valore Atteso</h1>' +
-    '<p style="font-family:Courier New,monospace;font-size:9px;color:#D4A017;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Content Agent &middot; ' + oggi + '</p>' +
-    '</td></tr>' +
-    '<tr><td style="padding:14px 28px;background:#EDE9E0;border-bottom:1px solid #D0CBC0">' +
-    '<p style="font-family:Courier New,monospace;font-size:10px;color:#1A1A1A;margin:0;font-weight:600">3 POST SETTIMANA — pronti per ChatGPT</p>' +
-    '</td></tr>' +
-    '<tr><td style="padding:16px 28px 0"><table width="100%" style="border-collapse:collapse">' + postsHTML + '</table></td></tr>' +
-    '<tr><td style="padding:14px 28px;border-top:1px solid #D0CBC0;background:#EDE9E0;text-align:center">' +
-    '<p style="font-family:Courier New,monospace;font-size:8px;color:#9A9690;margin:0">Content Agent &middot; Valore Atteso</p>' +
-    '</td></tr></table>';
-
-  await httpRequest('https://api.resend.com/emails', {
+  const emailRes = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + RESEND_KEY },
-    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: titolo, html: html })
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+    body: JSON.stringify({
+      from: FROM, to: APPROVAL_EMAIL,
+      subject: `LinkedIn VA · 3 bozze pronte · ${edizione.title}`,
+      html
+    })
   });
 
-  await logRun('content-agent', 'success', posts.length + ' post generati', { posts: posts.length }, Date.now() - start);
-  console.log('Content Agent completato. ' + posts.length + ' post salvati in memoria e inviati via email.');
+  if (!emailRes.ok) throw new Error(`Resend: ${emailRes.status}`);
+
+  await logRun('content-agent', 'success',
+    `3 bozze LinkedIn generate da edizione #${edizione.num}`,
+    { posts: posts.length, edizione: edizione.num },
+    Date.now() - start
+  );
+
+  console.log(`Content Agent completato in ${Date.now()-start}ms.`);
 }
 
-main().catch(function(e) {
+main().catch(async e => {
   console.error('ERRORE Content Agent:', e.message);
-  logRun('content-agent', 'error', e.message).catch(function() {});
+  await logRun('content-agent', 'error', e.message).catch(() => {});
   process.exit(1);
 });
