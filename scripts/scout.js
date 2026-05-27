@@ -209,6 +209,23 @@ Rispondi SOLO in JSON valido:
     "angolo_editoriale": "l'angolo preciso da cui trattarlo",
     "dati_ancora": ["i 2-3 dati chiave da sviluppare nell'edizione"]
   },
+  "temi_per_sezione": {
+    "bilancio": [
+      {"titolo": "...", "sommario": "2-3 righe: angolo di analisi e perché è rilevante ora", "dati_chiave": ["dato con fonte", "dato2"], "fonte_principale": "Testata — titolo — data — url", "angolo": "es. redditività / indebitamento / player trading"},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."}
+    ],
+    "deal": [
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."}
+    ],
+    "metrica": [
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."},
+      {"titolo": "...", "sommario": "...", "dati_chiave": ["..."], "fonte_principale": "...", "angolo": "..."}
+    ]
+  },
   "brief_narrativo": "3-4 righe come se mi stessi parlando: cosa ha dominato la settimana, il fil rouge, cosa vale approfondire",
   "note_editoriali": "temi da evitare, angoli da considerare, contesto stagionale"
 }`;
@@ -249,26 +266,29 @@ Poi genera il JSON completo.`
     brief = JSON.parse(m2[0].replace(/[\x00-\x1F\x7F]/g, ' ').replace(/,(\s*[}\]])/g, '$1'));
   }
 
-  // Filtra temi senza fonti
-  brief.temi = (brief.temi || []).filter(t => t.fonti?.length && t.fonti[0]);
-  console.log(`Temi validi: ${brief.temi.length}`);
+  // Valida temi_per_sezione
+  const sezioni = ['bilancio', 'deal', 'metrica'];
+  if (!brief.temi_per_sezione) brief.temi_per_sezione = { bilancio: [], deal: [], metrica: [] };
+  sezioni.forEach(s => {
+    brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 3);
+  });
+  const totTemi = sezioni.reduce((acc, s) => acc + (brief.temi_per_sezione[s]?.length || 0), 0);
+  console.log(`Temi per sezione: bilancio=${brief.temi_per_sezione.bilancio?.length}, deal=${brief.temi_per_sezione.deal?.length}, metrica=${brief.temi_per_sezione.metrica?.length}`);
 
   // ── Fase 4: Salva pending con token approvazione ─────────────────────────
-  const approvalToken = generateToken();
-  const rejectToken   = generateToken();
+  const selectionToken = generateToken();
 
   await supaUpsert('scout_pending', {
     ...brief,
     drive_files: driveFiles,
-    approval_token: approvalToken,
-    reject_token: rejectToken
+    selection_token: selectionToken
   }, 'scout');
 
   // ── Fase 5: Email con approvazione ───────────────────────────────────────
-  const approveUrl = `${SITE_URL}/api/scout-approve?token=${approvalToken}&action=approve`;
-  const rejectUrl  = `${SITE_URL}/api/scout-approve?token=${rejectToken}&action=reject`;
+  const selectUrl = `${SITE_URL}/api/scout-select?token=${selectionToken}`;
 
-  const temasHTML = brief.temi.map((t, i) => {
+  const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
+  const temasHTML = tuttiTemi.map((t, i) => {
     const colors = { bilancio: ['#1B4332','#E4EDE7'], deal: ['#1B3A6B','#E4ECF7'], metrica: ['#6B1B1B','#F7E4E4'] };
     const [fg, bg] = colors[t.sezione_suggerita] || ['#4A4845','#EDE9E0'];
     const fontiHtml = (t.fonti||[]).map(f => {
@@ -285,11 +305,8 @@ Poi genera il JSON completo.`
         <span style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690">priorità ${t.priorita}/5</span>
       </div>
       <div style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:6px;line-height:1.3">${t.titolo}</div>
-      <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;line-height:1.65;margin-bottom:10px">${t.notizia}</div>
-      <div style="background:${bg};padding:10px 12px;border-left:3px solid ${fg};margin-bottom:8px">
-        <div style="font-family:'Courier New',monospace;font-size:7px;color:${fg};letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Lettura CF</div>
-        <div style="font-family:Georgia,serif;font-size:12px;color:#1A1A1A;line-height:1.55">${t.analisi_cf}</div>
-      </div>
+      <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;line-height:1.65;margin-bottom:10px">${t.sommario||t.notizia||t.summary||''}</div>
+      ${t.angolo ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:${fg};background:${bg};padding:6px 10px;margin-bottom:8px">Angolo: ${t.angolo}</div>` : ''}
       ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#4A4845;margin-bottom:6px">${t.dati_chiave.join(' · ')}</div>` : ''}
       ${verificaHtml}
       <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;border-top:1px solid #E2DDD4;padding-top:6px;margin-top:6px">${fontiHtml}</div>
@@ -338,11 +355,10 @@ Poi genera il JSON completo.`
   </td></tr>` : ''}
 
   <tr><td style="padding:28px;background:#1A1A1A;text-align:center">
-    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:18px">I temi NON sono ancora salvati — lo saranno solo dopo la tua approvazione</div>
-    <table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr>
-      <td style="padding-right:12px"><a href="${approveUrl}" style="display:inline-block;background:#1B6B3A;color:#fff;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;text-decoration:none">✓ Approva e salva</a></td>
-      <td><a href="${rejectUrl}" style="display:inline-block;background:transparent;color:#9A9690;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;text-decoration:none;border:1px solid #444">✗ Rifiuta</a></td>
-    </tr></table>
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:.06em">Seleziona 1 tema per ogni sezione — ci vogliono 2 minuti</div>
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.25);margin-bottom:20px">I temi vengono salvati solo dopo la tua conferma</div>
+    <a href="${selectUrl}" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 48px;text-decoration:none">Seleziona i temi →</a>
+    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.2);margin-top:16px">Funziona da mobile · Si aggiorna automaticamente</div>
   </td></tr>
 
   <tr><td style="padding:12px 28px;background:#EDE9E0">
@@ -363,8 +379,8 @@ Poi genera il JSON completo.`
   });
 
   await logRun('scout', 'pending_approval',
-    `${brief.temi.length} temi. Biblioteca Drive: ${driveFiles.length} file. In attesa approvazione.`,
-    { temi: brief.temi.length, drive: driveFiles, raccomandazione: brief.raccomandazione },
+    `9 opzioni (3 per sezione). Drive: ${driveFiles.length} file. In attesa selezione temi.`,
+    { drive: driveFiles, raccomandazione: brief.raccomandazione },
     Date.now() - start
   );
 
