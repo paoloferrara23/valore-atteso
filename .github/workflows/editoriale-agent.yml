@@ -1,8 +1,10 @@
 name: Editoriale Agent
+
 on:
   schedule:
-    - cron: '0 7 * * 1'
+    - cron: '0 7 * * 1'  # Lunedì 08:00 IT (7 UTC)
   workflow_dispatch:
+
 jobs:
   genera:
     runs-on: ubuntu-latest
@@ -12,11 +14,8 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        run: |
-          cd scripts
-          npm init -y 2>/dev/null || true
-          npm install @supabase/supabase-js
-      - name: Genera edizione
+        run: cd scripts && npm init -y 2>/dev/null || true && npm install @supabase/supabase-js 2>/dev/null || true
+      - name: Esegui Editoriale Agent
         env:
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
