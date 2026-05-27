@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: `Agente non valido. Disponibili: ${Object.keys(AGENT_MAP).join(', ')}` });
   }
 
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+  const GITHUB_TOKEN = process.env.GH_TOKEN;
   const REPO = 'paoloferrara23/valore-atteso';
 
   if (!GITHUB_TOKEN) {
