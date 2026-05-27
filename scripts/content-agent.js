@@ -3,6 +3,7 @@
 // Output: 3 bozze post LinkedIn ottimizzate per Paolo Ferrara
 
 const { memGet, logRun } = require('./memory');
+const { agentEmail } = require('./email-template');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -216,29 +217,34 @@ JSON:
     </div>`;
   }).join('');
 
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#D8D0C4">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#D8D0C4"><tr><td align="center">
-<table width="620" cellpadding="0" cellspacing="0" style="max-width:620px;width:100%;background:#F5F2EB">
+  const tipoConfig = {
+    dato_sorprendente: { label: 'DATO SETTIMANA',       labelBg: '#1B3A6B', labelFg: '#fff' },
+    evergreen:         { label: 'EVERGREEN CF',          labelBg: '#1B4332', labelFg: '#fff' },
+    domanda_retorica:  { label: 'DOMANDA / CONFRONTO',  labelBg: '#6B1B1B', labelFg: '#fff' },
+  };
 
-  <tr><td style="padding:22px 28px;background:#1A1A1A">
-    <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px">Valore Atteso</div>
-    <div style="font-family:'Courier New',monospace;font-size:8px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin-top:4px">LinkedIn Content · ${oggi}</div>
-  </td></tr>
-
-  <tr><td style="padding:16px 28px;background:#1A1A1A;border-top:1px solid rgba(255,255,255,0.08)">
-    <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.4);margin-bottom:4px">3 bozze pronte — usale quando vuoi, nell'ordine che vuoi</div>
-    <div style="font-family:Georgia,serif;font-size:14px;color:#FFFDF8">Da <strong>#${edizione.num}</strong> — ${edizione.title}</div>
-  </td></tr>
-
-  <tr><td style="padding:20px 28px">${postsHTML}</td></tr>
-
-  <tr><td style="padding:12px 28px;background:#EDE9E0;border-top:1px solid #D0CBC0">
-    <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690">Content Agent v2 · LinkedIn · ${oggi}</div>
-  </td></tr>
-
-</table></td></tr></table>
-</body></html>`;
+  const html = agentEmail({
+    agentName: 'Content Agent',
+    agentKey: 'content',
+    status: 'success',
+    date: oggi,
+    sections: [
+      { type: 'narrative', label: 'Bozze da edizione', text: `<strong>#${edizione.num}</strong> — ${edizione.title}<br><span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">3 bozze pronte · usale quando vuoi, nell'ordine che vuoi</span>`, dark: true },
+      ...posts.map(p => ({
+        type: 'post_card',
+        tipo: p.tipo,
+        label: tipoConfig[p.tipo]?.label || 'POST',
+        labelBg: tipoConfig[p.tipo]?.labelBg || '#1A1A1A',
+        labelFg: tipoConfig[p.tipo]?.labelFg || '#fff',
+        angolo: p.angolo,
+        datoPrincipale: p.dato_chiave,
+        testo: p.testo,
+        quando: p.quando,
+        perche: p.perche_ora,
+        slide: p.slide,
+      })),
+    ]
+  });
 
   const emailRes = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -266,3 +272,4 @@ main().catch(async e => {
   await logRun('content-agent', 'error', e.message).catch(() => {});
   process.exit(1);
 });
+
