@@ -2,7 +2,7 @@ name: Deliverability Agent
 
 on:
   schedule:
-    - cron: '0 7 * * 4'  # Giovedì 8:00 ora italiana
+    - cron: '0 13 * * 2'  # Martedì 14:00 IT (13 UTC) — dopo invio newsletter
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Controlla deliverability email
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd scripts && npm init -y 2>/dev/null || true && npm install @supabase/supabase-js 2>/dev/null || true
+      - name: Esegui Deliverability Agent
         env:
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
