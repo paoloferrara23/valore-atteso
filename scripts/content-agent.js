@@ -110,9 +110,15 @@ OBIETTIVI (in ordine):
 2. Personal branding come esperto M&A/sport
 3. Pipeline consulenza
 
-STILE POST LINKEDIN — REGOLE:
-1. HOOK (prima riga): deve fermare lo scroll. Max 12 parole. Usa dati, paradossi, o domande provocatorie. NON iniziare mai con "Oggi", "Ho pensato", "Vi racconto".
-2. CORPO: 3-5 paragrafi brevi (max 3 righe ciascuno). Dati verificati. Framework CF applicato al calcio. Spazi bianchi tra i paragrafi.
+REGOLE ASSOLUTE — VIOLAZIONE = POST INUTILIZZABILE:
+1. USA SOLO dati presenti nell'edizione o nel brief Scout forniti sotto. MAI inventare numeri, date, risultati sportivi, classifiche, performance storiche.
+2. Se non hai un dato verificato, usa un framework concettuale (es. "il wage ratio misura...") invece di un fatto specifico.
+3. MAI citare: finali Champions, vittorie/sconfitte specifiche, stagioni sportive, trasferimenti, risultati di partite — a meno che non siano esplicitamente nei dati forniti.
+4. Ogni numero nel post DEVE provenire dall'edizione o dal brief. Se non c'è il dato, non scriverlo.
+
+STILE POST LINKEDIN:
+1. HOOK (prima riga): deve fermare lo scroll. Max 12 parole. Usa dati dall'edizione, paradossi finanziari, o domande provocatorie. NON iniziare mai con "Oggi", "Ho pensato", "Vi racconto".
+2. CORPO: 3-5 paragrafi brevi (max 3 righe ciascuno). Solo dati dall'edizione/Scout. Framework CF applicato al calcio. Spazi bianchi tra paragrafi.
 3. CTA FINALE: sempre presente. Varia tra: "Link newsletter in bio", "Ti aspetto ogni martedì", "Iscriviti a Valore Atteso — link in bio", "Ne parlo nell'ultima edizione — link in bio"
 4. HASHTAG: max 3, pertinenti, in fondo. Es. #calcioefinanza #mergersandacquisitions #sportsfinance
 5. LUNGHEZZA: 150-250 parole totali. Mai oltre.
@@ -133,17 +139,18 @@ Rispondi SOLO in JSON valido.`;
 EDIZIONE SETTIMANA (#${edizione.num} — ${edizione.title}):
 ${sezioniEdizione}
 
-POST 1 — DATO SORPRENDENTE (legato all'edizione):
-Usa il dato più impattante dell'edizione. Deve incuriosire chi non l'ha letta e spingerlo a iscriversi.
+ATTENZIONE: usa SOLO i dati dell'edizione forniti sopra. Non aggiungere fatti storici, risultati sportivi o numeri che non siano presenti nei dati. Se un dato non è nei dati forniti, costruisci il post sul framework concettuale senza citare fatti specifici.
+
+POST 1 — DATO SORPRENDENTE (dai dati dell'edizione):
+Prendi il dato finanziario più impattante dai KPI o dal testo dell'edizione. Citalo esattamente come appare. Non aggiungere contesto storico non presente nei dati.
 Formato: testo puro. CTA: iscrizione newsletter.
 
-POST 2 — ANALISI CF EVERGREEN (indipendente dall'edizione):
-Un concetto di corporate finance applicato al calcio. Educativo, non legato alla news.
-Usa un club o campionato NON già in storia. Formato: testo puro o carosello (scegli tu).
-CTA: personal branding + newsletter.
+POST 2 — ANALISI CF EVERGREEN (framework concettuale):
+Spiega un concetto di corporate finance applicato al calcio. Se usi un club come esempio, usa SOLO dati presenti nell'edizione o nel brief Scout. Se non hai dati su un club specifico, tratta il tema in modo generico senza citare club o stagioni specifiche.
+Formato: testo puro o carosello (scegli tu). CTA: personal branding + newsletter.
 
 POST 3 — DOMANDA RETORICA O CONFRONTO:
-Genera curiosità e commenti. Confronto tra club/campionati/sport o domanda che divide.
+Una domanda che genera dibattito tra professionisti finance. Può essere astratta (es. "Quanto vale davvero un brand calcistico?") senza richiedere dati specifici.
 Formato: testo puro. CTA leggera, non invasiva.
 
 JSON:
@@ -272,4 +279,5 @@ main().catch(async e => {
   await logRun('content-agent', 'error', e.message).catch(() => {});
   process.exit(1);
 });
+
 
