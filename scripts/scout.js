@@ -49,7 +49,7 @@ async function callClaude(messages, system, useSearch = false) {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'web-search-2025-03-05'
+      'anthropic-beta': 'interleaved-thinking-2025-05-14,web-search-2025-03-05'
     },
     body: JSON.stringify(body)
   });
@@ -143,6 +143,10 @@ async function main() {
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const settimana = new Date().toLocaleDateString('it-IT');
   console.log('Scout v2.1 avviato:', new Date().toISOString());
+  console.log('Node:', process.version);
+  console.log('ANTHROPIC_KEY presente:', !!process.env.ANTHROPIC_KEY);
+  console.log('RESEND_KEY presente:', !!process.env.RESEND_KEY);
+  console.log('SUPABASE_URL presente:', !!process.env.SUPABASE_URL);
 
   // ── Fase 1: Leggi biblioteca Drive ──────────────────────────────────────
   const { files: driveFiles, context: driveContext } = await leggiDrive();
