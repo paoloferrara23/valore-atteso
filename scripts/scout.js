@@ -300,13 +300,12 @@ JSON richiesto:
   }
 
   // Valida temi_per_sezione
-  const sezioni = ['bilancio', 'deal', 'metrica'];
+  if (!brief) brief = {};
   if (!brief.temi_per_sezione) brief.temi_per_sezione = { bilancio: [], deal: [], metrica: [] };
-  sezioni.forEach(s => {
+  ['bilancio','deal','metrica'].forEach(s => {
     brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 3);
   });
-  const totTemi = sezioni.reduce((acc, s) => acc + (brief.temi_per_sezione[s]?.length || 0), 0);
-  console.log(`Temi per sezione: bilancio=${brief.temi_per_sezione.bilancio?.length}, deal=${brief.temi_per_sezione.deal?.length}, metrica=${brief.temi_per_sezione.metrica?.length}`);
+  console.log(`Temi: bilancio=${brief.temi_per_sezione.bilancio.length}, deal=${brief.temi_per_sezione.deal.length}, metrica=${brief.temi_per_sezione.metrica.length}`);
 
   // ── Fase 4: Salva pending con token approvazione ─────────────────────────
   const selectionToken = generateToken();
@@ -381,12 +380,12 @@ JSON richiesto:
   });
 
   await logRun('scout', 'pending_approval',
-    `9 opzioni (3 per sezione). Drive: ${driveFiles.length} file. In attesa selezione temi.`,
-    { drive: driveFiles, raccomandazione: brief.raccomandazione },
+    `${tuttiTemi.length} temi. Drive: ${(driveFiles||[]).length} file. In attesa selezione temi.`,
+    { drive: driveFiles||[], raccomandazione: brief.raccomandazione },
     Date.now() - start
   );
 
-  console.log(`Scout completato in ${Date.now()-start}ms. Temi: ${brief.temi.length}, Drive: ${driveFiles.length} file.`);
+  console.log(`Scout completato in ${Date.now()-start}ms. Temi: ${tuttiTemi.length}, Drive: ${(driveFiles||[]).length} file.`);
 }
 
 main().catch(async e => {
