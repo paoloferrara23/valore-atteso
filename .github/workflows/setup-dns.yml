@@ -2,9 +2,6 @@ name: Setup DNS
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - claude/expected-value-connection-b6rYo
 
 jobs:
   setup-dns:
