@@ -1,14 +1,15 @@
-// scripts/agent.js — Genera 3 opzioni per sezione invece di 1
+// scripts/agent.js — Editoriale Agent v2 con nuovo template email
 const { memGet, memSet, logRun } = require('./memory');
+const { agentEmail } = require('./email-template');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-const RESEND_KEY = process.env.RESEND_KEY;
+const RESEND_KEY    = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-const SUPA_URL = process.env.SUPABASE_URL;
-const SUPA_KEY = process.env.SUPABASE_KEY;
-const SITE = 'https://valoreatteso.com';
-const FROM = 'Valore Atteso <info@valoreatteso.com>';
- 
+const SUPA_URL      = process.env.SUPABASE_URL;
+const SUPA_KEY      = process.env.SUPABASE_KEY;
+const SITE          = 'https://valoreatteso.com';
+const FROM          = 'Valore Atteso <info@valoreatteso.com>';
+
 async function httpRequest(url, opts = {}) {
   const r = await fetch(url, opts);
   const text = await r.text();
@@ -18,11 +19,7 @@ async function httpRequest(url, opts = {}) {
 async function callClaude(messages, system) {
   const r = await httpRequest('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_KEY,
-      'anthropic-version': '2023-06-01'
-    },
+    headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 6000, system, messages })
   });
   if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
@@ -40,174 +37,91 @@ async function getNextEditionNum() {
 
 async function main() {
   const start = Date.now();
-  console.log('Editoriale Agent avviato:', new Date().toISOString());
+  const oggi = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+  console.log('Editoriale Agent v2 avviato:', new Date().toISOString());
 
-  const scoutBrief = await memGet('scout_brief');
+  const scoutBrief    = await memGet('scout_brief');
   const scoutSelezione = await memGet('scout_selezione');
-  const seoKeywords = await memGet('seo_keywords');
+  const seoKeywords   = await memGet('seo_keywords');
 
   let temiContext = '';
+  let modalita = 'opzioni'; // default
+
   if (scoutBrief) {
     const brief = scoutBrief.value;
     const selezione = scoutSelezione?.value;
 
-    // Se Paolo ha selezionato i temi → usa quelli, non generare opzioni
     if (selezione && brief.temi_per_sezione && selezione.selezionato_at) {
       const b = brief.temi_per_sezione.bilancio?.[selezione.bilancio];
       const d = brief.temi_per_sezione.deal?.[selezione.deal];
       const m = brief.temi_per_sezione.metrica?.[selezione.metrica];
-
       if (b && d && m) {
-        temiContext = `\n\nPAOLO HA GIÀ SELEZIONATO I TEMI (selezione del ${new Date(selezione.selezionato_at).toLocaleDateString('it-IT')}):` +
-          `\n\nIL BILANCIO: "${b.titolo}"\n${b.sommario || b.summary}\nAngolo: ${b.angolo || ''}\nFonte: ${b.fonte_principale || b.source || ''}` +
-          `\n\nIL DEAL: "${d.titolo}"\n${d.sommario || d.summary}\nAngolo: ${d.angolo || ''}\nFonte: ${d.fonte_principale || d.source || ''}` +
-          `\n\nLA METRICA: "${m.titolo}"\n${m.sommario || m.summary}\nAngolo: ${m.angolo || ''}\nFonte: ${m.fonte_principale || m.source || ''}` +
-          `\n\nRACCOMANDAZIONE SCOUT: ${brief.raccomandazione?.tema || brief.tema_consigliato || ''}` +
-          (brief.note_editoriali ? `\nNOTE: ${brief.note_editoriali}` : '');
-
-        console.log('Selezione Paolo trovata — genero bozza diretta senza chiedere opzioni');
+        modalita = 'diretta';
+        temiContext = `\n\nPAOLO HA SELEZIONATO I TEMI (${new Date(selezione.selezionato_at).toLocaleDateString('it-IT')}):\n\nIL BILANCIO: "${b.titolo}"\n${b.sommario || b.summary}\nAngolo: ${b.angolo || ''}\nFonte: ${b.fonte_principale || b.source || ''}\n\nIL DEAL: "${d.titolo}"\n${d.sommario || d.summary}\nAngolo: ${d.angolo || ''}\nFonte: ${d.fonte_principale || d.source || ''}\n\nLA METRICA: "${m.titolo}"\n${m.sommario || m.summary}\nAngolo: ${m.angolo || ''}\nFonte: ${m.fonte_principale || m.source || ''}\n\nRACCOMANDAZIONE SCOUT: ${brief.raccomandazione?.tema || ''}${brief.note_editoriali ? `\nNOTE: ${brief.note_editoriali}` : ''}`;
+        console.log('Modalità diretta — selezione di Paolo trovata');
       }
-    } else {
-      // Fallback: nessuna selezione → genera opzioni come prima
-      temiContext = `\n\nTEMI SCOUT (aggiornati ${scoutBrief.updated_at}):\n` +
-        JSON.stringify(brief.temi_per_sezione || brief.temi, null, 2) +
-        `\n\nTEMA CONSIGLIATO: ${brief.raccomandazione?.tema || brief.tema_consigliato || ''}` +
-        (brief.note_editoriali ? `\nNOTE: ${brief.note_editoriali}` : '');
+    }
+    if (modalita === 'opzioni') {
+      temiContext = `\n\nTEMI SCOUT:\n${JSON.stringify(brief.temi_per_sezione || brief.temi, null, 2)}\n\nCONSIGLIATO: ${brief.raccomandazione?.tema || ''}${brief.note_editoriali ? `\nNOTE: ${brief.note_editoriali}` : ''}`;
     }
   }
 
-  let seoContext = '';
-  if (seoKeywords) {
-    seoContext = `\n\nKEYWORD SEO:\n${JSON.stringify(seoKeywords.value, null, 2)}`;
-  }
+  if (seoKeywords) temiContext += `\n\nKEYWORD SEO:\n${JSON.stringify(seoKeywords.value, null, 2)}`;
 
   const editionNum = await getNextEditionNum();
-  const haSelezione = scoutSelezione?.value?.selezionato_at &&
-    scoutBrief?.value?.temi_per_sezione &&
-    scoutSelezione.value.bilancio != null;
-  const oggi = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
+  const haSelezione = scoutSelezione?.value?.selezionato_at && scoutBrief?.value?.temi_per_sezione && scoutSelezione.value.bilancio != null;
 
-  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.
-Ogni edizione ha 3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.
-Tono: analitico, diretto, dati verificabili, nessun gossip.
-Pubblico: professionisti M&A, PE, consulenza, finanza.
+  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.\n3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.\nTono: analitico, diretto, dati verificabili, nessun gossip.\nPubblico: professionisti M&A, PE, consulenza, finanza.\nREGOLA: usa SOLO dati dai temi Scout. VIETATO inventare.\nKPI FORMAT: [{"label":"max 4 parole","value":"numero+unità","sub":"max 4 parole"}]\n${temiContext}\nRispondi SOLO in JSON valido:\n{"num":"${editionNum}","section_options":{"bilancio":[{"title":"...","summary":"...","kpi_preview":["..."],"source":"..."},...],"deal":[...],"metrica":[...]}}`;
 
-REGOLA ASSOLUTA — USA SOLO I DATI DELLO SCOUT:
-- Ogni numero, dato finanziario, statistica DEVE provenire dai temi che lo Scout ha trovato
-- VIETATO inventare dati o fonti
-- Se non hai abbastanza dati, semplifica piuttosto che inventare
-
-FORMATO KPI OBBLIGATORIO per ogni sezione:
-[{"label":"nome breve","value":"numero con unità","sub":"contesto 3-4 parole"}]
-${temiContext}
-${seoContext}
-
-Rispondi SOLO in JSON valido con questa struttura:
-{
-  "num": "${editionNum}",
-  "section_options": {
-    "bilancio": [
-      {
-        "title": "titolo opzione 1",
-        "summary": "2-3 righe che spiegano l'angolo di analisi",
-        "kpi_preview": ["dato chiave 1", "dato chiave 2"],
-        "source": "fonte principale"
-      },
-      { ... opzione 2 ... },
-      { ... opzione 3 ... }
-    ],
-    "deal": [ ... 3 opzioni ... ],
-    "metrica": [ ... 3 opzioni ... ]
-  }
-}`;
-
-  const testo = await callClaude([{
-    role: 'user',
-    content: `Genera le opzioni editoriali per l'edizione #${editionNum} di Valore Atteso.
-Per ogni sezione (Il Bilancio, Il Deal, La Metrica) proponi 3 opzioni diverse basate sui temi dello Scout.
-Ogni opzione deve avere: titolo, sommario 2-3 righe, 2 dati chiave preview, fonte principale.
-USA SOLO dati dai temi Scout. Non inventare.`
-  }], system);
+  const testo = await callClaude([{ role: 'user', content: `Genera opzioni editoriali per edizione #${editionNum}. Per ogni sezione 3 opzioni con dati Scout reali.` }], system);
 
   let options;
   try {
     const match = testo.match(/\{[\s\S]*\}/);
-    options = JSON.parse(match[0]);
-  } catch {
-    throw new Error('JSON opzioni non valido');
-  }
+    options = JSON.parse(match[0].replace(/[\x00-\x1F\x7F]/g,' ').replace(/,(\s*[}\]])/g,'$1'));
+  } catch { throw new Error('JSON opzioni non valido'); }
 
-  // Se Paolo ha già selezionato i temi → chiama direttamente genera-edizione
+  // ── MODALITÀ DIRETTA: selezione già fatta ────────────────────────────────
   if (haSelezione && scoutBrief?.value?.temi_per_sezione) {
     const sel = scoutSelezione.value;
-    const ts = scoutBrief.value.temi_per_sezione;
+    const ts  = scoutBrief.value.temi_per_sezione;
     const bilancio = ts.bilancio?.[sel.bilancio];
-    const deal = ts.deal?.[sel.deal];
-    const metrica = ts.metrica?.[sel.metrica];
+    const deal     = ts.deal?.[sel.deal];
+    const metrica  = ts.metrica?.[sel.metrica];
 
     if (bilancio && deal && metrica) {
-      console.log('Modalità diretta: genero bozza con selezione di Paolo...');
-
-      // Prima salva la bozza con section_options
       const saveRes = await fetch(`${SUPA_URL}/rest/v1/editions`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${SUPA_KEY}`,
-          'Prefer': 'return=representation'
-        },
-        body: JSON.stringify({
-          num: options.num || editionNum,
-          title: `Bozza #${options.num || editionNum}`,
-          date: oggi,
-          sections: [],
-          section_options: ts,
-          published: false,
-          tags: ['Il Bilancio', 'Il Deal', 'La Metrica']
-        })
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Prefer': 'return=representation' },
+        body: JSON.stringify({ num: options.num || editionNum, title: `Bozza #${options.num || editionNum}`, date: oggi, sections: [], section_options: ts, published: false, tags: ['Il Bilancio', 'Il Deal', 'La Metrica'] })
       });
       const savedRows = await saveRes.json();
       const editionId = savedRows[0]?.id;
 
       if (editionId) {
-        // Chiama genera-edizione direttamente
         const genRes = await httpRequest(`${SITE}/api/genera-edizione`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-cr-token': process.env.CR_PASSWORD || 'valopro2025'
-          },
+          headers: { 'Content-Type': 'application/json', 'x-cr-token': process.env.CR_PASSWORD || 'valopro2025' },
           body: JSON.stringify({ editionId, bilancio, deal, metrica, date: oggi })
         });
 
         if (genRes.ok) {
-          const genData = genRes.json();
-          console.log('Bozza generata automaticamente:', genData.title);
-
-          // Email con bozza pronta (non opzioni)
-          const html = `
-            <table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB">
-              <tr><td style="padding:20px 24px;background:#1A1A1A">
-                <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#fff">Valore Atteso</div>
-                <div style="font-family:'Courier New',monospace;font-size:9px;color:#1B6B3A;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">✓ Bozza pronta — ${oggi}</div>
-              </td></tr>
-              <tr><td style="padding:16px 24px;background:#E4EDE7;border-bottom:1px solid #C8DDD0">
-                <div style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#1B4332">La bozza #${options.num || editionNum} è già pronta in Control Room</div>
-                <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;margin-top:6px">Temi selezionati sabato · Bozza generata automaticamente</div>
-              </td></tr>
-              <tr><td style="padding:16px 24px">
-                <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:4px">IL BILANCIO</div>
-                <div style="font-family:Georgia,serif;font-size:13px;font-weight:700;margin-bottom:12px">${bilancio.titolo}</div>
-                <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:4px">IL DEAL</div>
-                <div style="font-family:Georgia,serif;font-size:13px;font-weight:700;margin-bottom:12px">${deal.titolo}</div>
-                <div style="font-family:'Courier New',monospace;font-size:10px;color:#8E6B33;margin-bottom:4px">LA METRICA</div>
-                <div style="font-family:Georgia,serif;font-size:13px;font-weight:700">${metrica.titolo}</div>
-              </td></tr>
-              <tr><td style="padding:20px 24px;text-align:center;border-top:2px solid #1A1A1A">
-                <a href="${SITE}/?cr=redazione" style="background:#C8251D;color:#fff;padding:14px 32px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Apri Control Room →</a>
-              </td></tr>
-            </table>`;
+          const html = agentEmail({
+            agentName: 'Editoriale Agent',
+            agentKey: 'editoriale',
+            status: 'success',
+            date: oggi,
+            runTime: `${((Date.now()-start)/1000).toFixed(1)}s`,
+            sections: [
+              { type: 'narrative', label: 'Bozza generata automaticamente', text: `La bozza <strong>#${options.num || editionNum}</strong> è pronta in Control Room. Temi selezionati sabato — generata automaticamente lunedì.`, dark: true },
+              { type: 'table', label: 'Temi selezionati', headers: [{ label: 'Sezione' }, { label: 'Tema' }], rows: [
+                [{ value: '01 · Il Bilancio', mono: true, color: '#1B4332', bold: true }, { value: bilancio.titolo }],
+                [{ value: '02 · Il Deal',     mono: true, color: '#1B3A6B', bold: true }, { value: deal.titolo }],
+                [{ value: '03 · La Metrica',  mono: true, color: '#6B1B1B', bold: true }, { value: metrica.titolo }],
+              ]},
+              { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/?cr=redazione" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Apri Control Room →</a></td></tr></table>` },
+            ]
+          });
 
           await httpRequest('https://api.resend.com/emails', {
             method: 'POST',
@@ -215,77 +129,46 @@ USA SOLO dati dai temi Scout. Non inventare.`
             body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `✓ Bozza VA #${options.num || editionNum} pronta — revisiona e approva`, html })
           });
 
-          await logRun('editoriale', 'success',
-            `Bozza #${options.num || editionNum} generata automaticamente da selezione di Paolo.`,
-            { editionId, num: options.num || editionNum }, Date.now() - start);
-
-          console.log('Editoriale Agent completato — bozza diretta generata.');
+          await logRun('editoriale', 'success', `Bozza #${options.num || editionNum} generata automaticamente.`, { editionId, num: options.num || editionNum }, Date.now()-start);
+          console.log('Editoriale completato — modalità diretta.');
           return;
         }
       }
     }
   }
 
-  // Salva bozza su Supabase con section_options ma senza sections (ancora da scegliere)
+  // ── MODALITÀ OPZIONI: salva e manda email con scelte ────────────────────
   const saveRes = await fetch(`${SUPA_URL}/rest/v1/editions`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPA_KEY,
-      'Authorization': `Bearer ${SUPA_KEY}`,
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify({
-      num: options.num,
-      title: `Bozza #${options.num} — in attesa di selezione`,
-      subtitle: '',
-      date: oggi,
-      opener: '',
-      sections: [],
-      section_options: options.section_options,
-      published: false,
-      tags: ['Il Bilancio', 'Il Deal', 'La Metrica']
-    })
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Prefer': 'return=representation' },
+    body: JSON.stringify({ num: options.num, title: `Bozza #${options.num} — in attesa di selezione`, subtitle: '', date: oggi, opener: '', sections: [], section_options: options.section_options, published: false, tags: ['Il Bilancio', 'Il Deal', 'La Metrica'] })
   });
   const saved = await saveRes.json();
   const editionId = saved[0]?.id;
-
   await memSet('last_draft', { id: editionId, num: options.num, date: oggi }, 'editoriale');
 
-  // Email di approvazione con le opzioni
-  const makeOptionHtml = (opts, label) => `
-    <div style="margin-bottom:16px">
-      <div style="font-family:'Courier New',monospace;font-size:9px;color:#C8251D;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">${label}</div>
-      ${opts.map((o, i) => `
-        <div style="background:${i===0?'#F5F2EB':'#EDE9E0'};padding:10px 14px;border-bottom:1px solid #D0CBC0">
-          <div style="font-family:Georgia,serif;font-size:13px;font-weight:700;margin-bottom:4px">${i+1}. ${o.title}</div>
-          <div style="font-family:Georgia,serif;font-size:12px;color:#4A4845;margin-bottom:4px">${o.summary}</div>
-          <div style="font-family:'Courier New',monospace;font-size:10px;color:#888480">${o.kpi_preview?.join(' · ')} — ${o.source}</div>
-        </div>
-      `).join('')}
-    </div>`;
+  // Costruisci righe per ogni sezione
+  const makeRows = (opts) => (opts||[]).map((o, i) => [
+    { value: `${i+1}.`, mono: true, color: '#8E6B33', bold: true },
+    { value: o.title, bold: true },
+    { value: o.summary, color: '#4A4845' },
+    { value: (o.kpi_preview||[]).join(' · '), mono: true, color: '#9A9690' },
+  ]);
 
-  const approveUrl = `${SITE}/?cr=redazione`;
-  const html = `
-    <table width="600" style="max-width:600px;margin:0 auto;background:#F5F2EB">
-      <tr><td style="padding:20px 24px;background:#1A1A1A">
-        <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#fff">Valore Atteso</div>
-        <div style="font-family:'Courier New',monospace;font-size:9px;color:#D4A017;letter-spacing:.14em;text-transform:uppercase;margin-top:4px">Editoriale Agent · Seleziona i temi #${options.num}</div>
-      </td></tr>
-      <tr><td style="padding:14px 24px;background:#EDE9E0;border-bottom:1px solid #D0CBC0">
-        <div style="font-family:Georgia,serif;font-size:14px;color:#4A4845">
-          Per ogni sezione trovi 3 opzioni. Vai in Control Room → Redazione per scegliere e generare la bozza.
-        </div>
-      </td></tr>
-      <tr><td style="padding:16px 24px">
-        ${makeOptionHtml(options.section_options.bilancio, '01 · IL BILANCIO')}
-        ${makeOptionHtml(options.section_options.deal, '02 · IL DEAL')}
-        ${makeOptionHtml(options.section_options.metrica, '03 · LA METRICA')}
-      </td></tr>
-      <tr><td style="padding:20px 24px;text-align:center;border-top:2px solid #1A1A1A">
-        <a href="${approveUrl}" style="background:#C8251D;color:#fff;padding:14px 32px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-block">Vai in Control Room →</a>
-      </td></tr>
-    </table>`;
+  const html = agentEmail({
+    agentName: 'Editoriale Agent',
+    agentKey: 'editoriale',
+    status: 'pending_approval',
+    date: oggi,
+    runTime: `${((Date.now()-start)/1000).toFixed(1)}s`,
+    sections: [
+      { type: 'narrative', label: 'Scegli un tema per sezione', text: `Edizione <strong>#${options.num}</strong> — vai in Control Room → Redazione per selezionare e generare la bozza.`, dark: true },
+      { type: 'table', label: '01 · Il Bilancio', headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.bilancio) },
+      { type: 'table', label: '02 · Il Deal',     headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.deal) },
+      { type: 'table', label: '03 · La Metrica',  headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.metrica) },
+      { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/?cr=redazione" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Vai in Control Room →</a></td></tr></table>` },
+    ]
+  });
 
   await httpRequest('https://api.resend.com/emails', {
     method: 'POST',
@@ -293,8 +176,8 @@ USA SOLO dati dai temi Scout. Non inventare.`
     body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `Scegli i temi VA #${options.num}`, html })
   });
 
-  await logRun('editoriale', 'success', `Opzioni #${options.num} generate. Attende selezione in Control Room.`, { editionId, num: options.num }, Date.now() - start);
-  console.log('Editoriale Agent completato. Opzioni:', options.num);
+  await logRun('editoriale', 'success', `Opzioni #${options.num} generate. Attende selezione.`, { editionId, num: options.num }, Date.now()-start);
+  console.log('Editoriale completato — modalità opzioni.');
 }
 
 main().catch(async e => {
@@ -302,4 +185,3 @@ main().catch(async e => {
   await logRun('editoriale', 'error', e.message).catch(() => {});
   process.exit(1);
 });
-
