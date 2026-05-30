@@ -224,7 +224,7 @@ module.exports = async function handler(req, res) {
 
 <script>
 const TOKEN = '${token}';
-const API = '${siteUrl}/api/scout-select';
+const API = '/api/scout-select';
 
 // Aggiorna stato bottone
 function checkSelezione() {
@@ -314,3 +314,4 @@ function errorPage(titolo, messaggio) {
   </div>
 </body></html>`;
 }
+
