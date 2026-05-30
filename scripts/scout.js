@@ -231,27 +231,53 @@ Rispondi SOLO in JSON valido:
   "note_editoriali": "temi da evitare, angoli da considerare, contesto stagionale"
 }`;
 
+  // FASE 1: Ricerca web — output testo libero (no JSON)
   const testoRicerca = await callClaude([{
     role: 'user',
-    content: `Oggi è ${oggi}.
-
-Cerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo (Serie A, Premier League, Liga, Bundesliga, Ligue 1, deal cross-border).
-
-Priorità alla qualità sulla quantità: meglio 4 temi solidi con dati verificati che 8 superficiali.
-
-Per ogni tema trovato:
-1. Cerca il link DIRETTO all'articolo (non la homepage)
-2. Estrai i dati finanziari chiave
-3. Se hai documenti in biblioteca, usa il contesto fornito per verificare/integrare i numeri
-4. Assegna sezione suggerita e priorità
-
-Poi genera il JSON completo.`
+    content: `Oggi è ${oggi}. Cerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo (Serie A, Premier, Liga, Bundesliga, Ligue 1). Priorità qualità su quantità. Per ogni tema: titolo, fonte con URL diretto, dati finanziari chiave, sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, formato testo semplice, NON JSON.`
   }], system, true);
 
-  // ── Fase 3: Parse ────────────────────────────────────────────────────────
+  console.log('Fase 1 completata, testo:', testoRicerca.slice(0, 200));
+
+  // FASE 2: Conversione in JSON — chiamata separata senza web search
+  const testoRicercaShort = testoRicerca.slice(0, 8000); // limita per sicurezza
+  const jsonPrompt = `Converti questo brief in JSON valido. REGOLE STRINGENTI:
+- Ogni stringa MAX 120 caratteri
+- Nessun apostrofo nelle stringhe (usa virgola o riscrivi)
+- Nessuna virgoletta dentro le stringhe
+- Solo caratteri ASCII standard
+
+BRIEF:
+${testoRicercaShort}
+
+JSON richiesto:
+{
+  "settimana": "${settimana}",
+  "temi_per_sezione": {
+    "bilancio": [{"titolo":"max120char","sommario":"max120char","dati_chiave":["dato1"],"fonte_principale":"testata - titolo - url","angolo":"max60char"},{"titolo":"..."},{"titolo":"..."}],
+    "deal": [{"titolo":"..."},{"titolo":"..."},{"titolo":"..."}],
+    "metrica": [{"titolo":"..."},{"titolo":"..."},{"titolo":"..."}]
+  },
+  "brief_narrativo": "max200char",
+  "raccomandazione": {"tema":"max100char","sezione":"bilancio","perche":"max200char","angolo_editoriale":"max80char"},
+  "note_editoriali": "max100char"
+}`;
+
+  // ── Fase 2b: Genera JSON ─────────────────────────────────────────────────
+  const jsonSystemSimple = 'Sei un convertitore JSON. Rispondi SOLO con JSON valido. Nessun testo aggiuntivo.';
+  let jsonPrompt_result = '';
+  try {
+    jsonPrompt_result = await callClaude([{ role: 'user', content: jsonPrompt }], jsonSystemSimple, false);
+    console.log('JSON generato, length:', jsonPrompt_result.length);
+  } catch(e) {
+    console.error('Generazione JSON fallita:', e.message);
+    jsonPrompt_result = '{}';
+  }
+
+    // ── Fase 3: Parse ────────────────────────────────────────────────────────
   let brief;
   try {
-    const raw = testoRicerca.replace(/```json|```/g, '').trim();
+    const raw = jsonPrompt_result.replace(/```json|```/g, '').trim();
     const match = raw.match(/\{[\s\S]*\}/);
     if (!match) throw new Error('Nessun JSON');
     brief = JSON.parse(
