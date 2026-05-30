@@ -49,7 +49,7 @@ async function callClaude(messages, system, useSearch = false) {
       'Content-Type': 'application/json',
       'x-api-key': ANTHROPIC_KEY,
       'anthropic-version': '2023-06-01',
-      'anthropic-beta': 'interleaved-thinking-2025-05-14,web-search-2025-03-05'
+      'anthropic-beta': 'web-search-2025-03-05'
     },
     body: JSON.stringify(body)
   });
@@ -143,10 +143,6 @@ async function main() {
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const settimana = new Date().toLocaleDateString('it-IT');
   console.log('Scout v2.1 avviato:', new Date().toISOString());
-  console.log('Node:', process.version);
-  console.log('ANTHROPIC_KEY presente:', !!process.env.ANTHROPIC_KEY);
-  console.log('RESEND_KEY presente:', !!process.env.RESEND_KEY);
-  console.log('SUPABASE_URL presente:', !!process.env.SUPABASE_URL);
 
   // ── Fase 1: Leggi biblioteca Drive ──────────────────────────────────────
   const { files: driveFiles, context: driveContext } = await leggiDrive();
@@ -258,7 +254,13 @@ Poi genera il JSON completo.`
     const raw = testoRicerca.replace(/```json|```/g, '').trim();
     const match = raw.match(/\{[\s\S]*\}/);
     if (!match) throw new Error('Nessun JSON');
-    brief = JSON.parse(match[0].replace(/[\x00-\x1F\x7F]/g, ' ').replace(/,(\s*[}\]])/g, '$1'));
+    brief = JSON.parse(
+      match[0]
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
+        .replace(/\t/g, ' ')
+        .replace(/,(\s*[}\]])/g, '$1')
+        .replace(/"((?:[^"\\]|\\.)*)"/g, (m, s) => '"' + s.replace(/\n/g, ' ').replace(/\r/g, '') + '"')
+    );
   } catch (e) {
     console.warn('Retry JSON...', e.message);
     const retry = await callClaude([
@@ -291,12 +293,8 @@ Poi genera il JSON completo.`
 
   // ── Fase 5: Email con approvazione ───────────────────────────────────────
   const selectUrl = `${SITE_URL}/api/scout-select?token=${selectionToken}`;
-  const tuttiTemi = [
-    ...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t, sezione_suggerita:'bilancio', sezione:'bilancio'})),
-    ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t, sezione_suggerita:'deal', sezione:'deal'})),
-    ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t, sezione_suggerita:'metrica', sezione:'metrica'}))
-  ];
 
+  const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
   const temasHTML = tuttiTemi.map((t, i) => {
     const colors = { bilancio: ['#1B4332','#E4EDE7'], deal: ['#1B3A6B','#E4ECF7'], metrica: ['#6B1B1B','#F7E4E4'] };
     const [fg, bg] = colors[t.sezione_suggerita] || ['#4A4845','#EDE9E0'];
@@ -335,14 +333,14 @@ Poi genera il JSON completo.`
     sections: [
       { type: 'narrative', label: 'Brief della settimana', text: brief.brief_narrativo || '', dark: true },
       ...(brief.raccomandazione ? [
-        { type: 'dark_cards', label: 'Raccomandazione della settimana', cards: [
-          { label: (brief.raccomandazione.sezione || '') + ' · ' + (brief.raccomandazione.angolo_editoriale || ''), value: brief.raccomandazione.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690', accent: '200,169,122' }
+        { type: 'dark_cards', label: 'Raccomandazione', cards: [
+          { label: (brief.raccomandazione.sezione||'') + ' - ' + (brief.raccomandazione.angolo_editoriale||''), value: brief.raccomandazione.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690' }
         ]},
-        { type: 'narrative', label: 'Perché questa settimana', text: brief.raccomandazione.perche || '' }
+        { type: 'narrative', label: 'Perche questa settimana', text: brief.raccomandazione.perche || '' }
       ] : []),
-      { type: 'topics', label: 'Temi trovati (' + tuttiTemi.length + ')', topics: tuttiTemi },
+      ...(tuttiTemi.length > 0 ? [{ type: 'topics', label: 'Temi (' + tuttiTemi.length + ')', topics: tuttiTemi }] : []),
       ...(brief.note_editoriali ? [{ type: 'alert', text: brief.note_editoriali, type: 'info' }] : []),
-      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Seleziona i temi &#8594;</a></td></tr></table>' },
+      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Seleziona i temi</a></td></tr></table>' }
     ]
   });
 
