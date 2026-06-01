@@ -107,7 +107,13 @@ Rispondi SOLO in JSON con questa struttura:
     const sezionePrompt = (label, scelta) => {
       if (!scelta) return `${label}: (nessun tema selezionato)`;
       if (scelta.custom) return `${label}: "${scelta.custom}" (tema libero — sviluppa con dati verificati)`;
-      return `${label}: "${scelta.titolo || scelta.title}"\nAngolo: ${scelta.angolo || 'analitico'}\nSommario: ${scelta.sommario || scelta.summary}\nFonte principale: ${scelta.fonte_principale || scelta.source}\nDati preview: ${(scelta.dati_chiave || scelta.kpi_preview || []).join(', ')}`;
+      return `${label}: "${scelta.titolo || scelta.title}"
+Angolo editoriale: ${scelta.angolo || 'analitico'}
+Sommario Scout: ${scelta.sommario || scelta.summary}
+DATI VERIFICATI DALLO SCOUT (usa SOLO questi, non inventarne altri):
+${(scelta.dati_chiave || scelta.kpi_preview || []).map(d => '- ' + d).join('\n')}
+FONTE PRIMARIA VERIFICATA: ${scelta.fonte_principale || scelta.source}
+VERIFICA BIBLIOTECA: ${scelta.verifica_biblioteca || 'N/A'}`;
     };
 
     const prompt = `Genera l'edizione #${draft.num} di Valore Atteso.
@@ -121,12 +127,19 @@ ${sezionePrompt('LA METRICA', metrica)}
 
 ${hint ? `NOTA EDITORIALE DI PAOLO: ${hint}` : ''}
 
+REGOLE ASSOLUTE:
+1. Usa SOLO i dati forniti dallo Scout per ogni sezione — ZERO dati inventati
+2. I KPI devono provenire esclusivamente dai "DATI VERIFICATI DALLO SCOUT"
+3. Le fonti nella sezione devono corrispondere alla "FONTE PRIMARIA VERIFICATA" dello Scout
+4. Se un dato non è nei dati Scout, scrivi "[dato da verificare]" invece di inventarlo
+5. Il body deve sviluppare analiticamente i dati Scout, non aggiungerne di nuovi
+
 DELIVERABLE:
 - Titolo principale edizione (incisivo, max 8 parole)
 - Sottotitolo (max 12 parole, contestualizza il tema)
-- Opener (2-3 righe editoriali che introducono il filo conduttore dell'edizione)
-- 3 sezioni complete con body 200-280 parole, 3 KPI verificati, verdict incisivo, fonti
-- Ogni fonte nel formato: "Nome dato — Testata/Documento — Anno"
+- Opener (2-3 righe che introducono il filo conduttore)
+- 3 sezioni: body 200-280 parole SOLO con dati Scout, 3 KPI dai dati Scout, verdict, fonti reali
+- Fonti nel formato: "Nome dato — Testata — Anno — URL se disponibile"
 
 Rispondi SOLO in JSON valido:
 {
@@ -138,9 +151,9 @@ Rispondi SOLO in JSON valido:
       "label": "Il Bilancio",
       "title": "...",
       "body": "...",
-      "kpis": [{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."}],
-      "verdict": "...",
-      "sources": ["...","..."]
+      "kpis": [{"label":"max4parole","value":"numero+unità","sub":"max4parole"},{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."}],
+      "verdict": "2-3 righe lettura editoriale",
+      "sources": ["Fonte esatta dallo Scout — Testata — Anno"]
     },
     {"label": "Il Deal", ...},
     {"label": "La Metrica", ...}
