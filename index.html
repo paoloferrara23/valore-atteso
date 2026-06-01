@@ -782,11 +782,12 @@ async function crEliminaBozza(edId){
 }
 
 async function crRigeneraBozza(edId){
-  if(!confirm('Rigenerare? Le modifiche andranno perse.'))return;
+  if(!confirm('Rigenerare la bozza completa? Le modifiche attuali andranno perse.'))return;
   try{
+    // Cancella solo le sections, mantieni section_options per mostrare le opzioni
     await fetch(SURL+'/rest/v1/editions?id=eq.'+edId,{method:'PATCH',
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
-      body:JSON.stringify({sections:[],title:'Bozza in attesa'})});
+      body:JSON.stringify({sections:[],'title':'Bozza — seleziona sezioni'})});
     crLoadBozze();
   }catch(ex){alert('Errore: '+ex.message);}
 }
@@ -880,6 +881,7 @@ async function crLoadBozze(){
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
                 '<span style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Verdetto</span>'+
                 '<button class="cr-btn light" data-eid="'+e.id+'" data-idx="'+i+'" onclick="crRigeneraVerdetto(this.dataset.eid,parseInt(this.dataset.idx))" style="height:24px;font-size:8px;padding:0 10px">\u21ba Rigenera verdetto</button>'+
+              '<button class="cr-btn" data-eid="'+e.id+'" data-sez="'+(['bilancio','deal','metrica'][i]||'bilancio')+'" onclick="crRegeneraSezione(this.dataset.eid,this.dataset.sez)" style="height:24px;font-size:8px;padding:0 10px;background:var(--deepgold);color:var(--cream)">\u21ba Rigenera sezione</button>'+
               '</div>'+
               '<div contenteditable="true" id="bs-'+sid+'-verdict" style="background:var(--ink);color:var(--cream);border-radius:12px;padding:12px 16px;font-family:var(--sf);font-size:14px;font-weight:600;outline:none">'+esc(s.verdict||'')+'</div>'+
             '</div>'+
