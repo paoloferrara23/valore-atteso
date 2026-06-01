@@ -106,8 +106,8 @@ Rispondi SOLO in JSON con questa struttura:
     // ── MODALITÀ: genera bozza completa ─────────────────────────────────
     const sezionePrompt = (label, scelta) => {
       if (!scelta) return `${label}: (nessun tema selezionato)`;
-      if (scelta.custom) return `${label}: "${scelta.custom}" (tema libero inserito dall'editore — sviluppa con dati verificati)`;
-      return `${label}: "${scelta.title}"\nAngolo: ${scelta.angolo || 'analitico'}\nSommario: ${scelta.summary}\nFonte principale: ${scelta.source}\nDati preview: ${(scelta.kpi_preview || []).join(', ')}`;
+      if (scelta.custom) return `${label}: "${scelta.custom}" (tema libero — sviluppa con dati verificati)`;
+      return `${label}: "${scelta.titolo || scelta.title}"\nAngolo: ${scelta.angolo || 'analitico'}\nSommario: ${scelta.sommario || scelta.summary}\nFonte principale: ${scelta.fonte_principale || scelta.source}\nDati preview: ${(scelta.dati_chiave || scelta.kpi_preview || []).join(', ')}`;
     };
 
     const prompt = `Genera l'edizione #${draft.num} di Valore Atteso.
@@ -170,3 +170,4 @@ Rispondi SOLO in JSON valido:
     return res.status(500).json({ error: e.message });
   }
 };
+
