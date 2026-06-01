@@ -657,8 +657,8 @@ function crRenderSectionOptions(edId,sezione,opzioni,label){
   var out='<div class="cr-section-col"><div class="cr-section-header">'+label+'</div>';
   opzioni.forEach(function(o,i){
     out+='<div class="cr-option" data-edid="'+edId+'" data-sez="'+sezione+'" data-idx="'+i+'" onclick="crSelectOption(this.dataset.edid,this.dataset.sez,parseInt(this.dataset.idx))">'+
-      '<div class="cr-option-title">'+esc(o.title)+'</div>'+
-      '<div class="cr-option-summary">'+esc(o.summary)+'</div>'+
+      '<div class="cr-option-title">'+esc(o.title||o.titolo||'')+'</div>'+
+      '<div class="cr-option-summary">'+esc(o.summary||o.sommario||'')+'</div>'+
       '<div class="cr-option-kpi">'+((o.kpi_preview||[]).join(' \u00b7 '))+'</div></div>';
   });
   out+='<div class="cr-option-custom"><input placeholder="Scrivi tema..." id="custom-'+edId+'-'+sezione+'" data-edid="'+edId+'" data-sez="'+sezione+'" oninput="(function(el){var ed=el.dataset.edid,s=el.dataset.sez,cap=s[0].toUpperCase()+s.slice(1);if(!crSelections[ed])crSelections[ed]={};crSelections[ed][\'custom\'+cap]=el.value;if(el.value)crDeselect(ed,s);})(this)"></div></div>';
