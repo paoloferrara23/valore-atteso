@@ -283,7 +283,7 @@ module.exports = async function handler(req, res) {
     if (!subs || !subs.length) return res.status(200).json({ ok: true, sent: 0, message: 'Nessun iscritto confermato' });
 
     const html = buildHtml(edition);
-    const subject = `#${edition.num} — ${edition.title}`;
+    const subject = `#${edition.num} - ${edition.title}`;
 
     let sent = 0;
     let errors = 0;
@@ -336,4 +336,5 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: err.message });
   }
 };
+
 
