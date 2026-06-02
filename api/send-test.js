@@ -95,7 +95,7 @@ module.exports = async function handler(req, res) {
         `https://valoreatteso.com/archivio#${edition.num}`
       );
 
-    const subject = `[TEST] #${edition.num} — ${edition.title}`;
+    const subject = `[TEST] #${edition.num} - ${edition.title}`;
 
     const result = await resend.emails.send({
       from: 'Valore Atteso <info@valoreatteso.com>',
