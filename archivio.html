@@ -103,10 +103,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream2);border-bottom:2px solid var(--ink);margin-bottom:0}
 .art-kpi-cell{padding:20px 24px;border-right:1px solid var(--rule);position:relative}
 .art-kpi-cell:last-child{border-right:none}
+.art-kpi-sezione{font-family:var(--mn);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);margin-bottom:5px;font-weight:700}
 .art-kpi-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .art-kpi-label::before{content:'';width:10px;height:1px;background:var(--muted)}
 .art-kpi-val{font-family:var(--sf);font-size:28px;font-weight:600;letter-spacing:-.5px;color:var(--ink);line-height:1;margin-bottom:4px}
-.art-kpi-sub{font-family:var(--mn);font-size:9px;color:var(--deepgold);letter-spacing:.04em}
+.art-kpi-sub{font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.04em;margin-top:2px;line-height:1.4}
 .art-kpi-fonte{font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:3px}
 
 /* SEZIONI */
@@ -555,13 +556,18 @@ async function openArt(num){
       card.appendChild(opEl);
     }
 
-    // KPI BAR
-    const kpiData = kpis.length ? kpis : secs.slice(0,3).map((s,i) => ({
-      label: s.label || s.section_label || ['Il Bilancio','Il Deal','La Metrica'][i] || '',
-      value: s.kpi_rows?.[0]?.value || s.kpis?.[0]?.value || '',
-      sub: s.kpi_rows?.[0]?.key || s.kpis?.[0]?.sub || '',
-      fonte: ''
-    }));
+    // KPI BAR — prende il KPI più importante da ogni sezione
+    const kpiData = secs.slice(0,3).map((s,i) => {
+      const sezKpis = s.kpis || s.kpi_rows || [];
+      const best = sezKpis[0] || {};
+      return {
+        sezione: s.label || ['Il Bilancio','Il Deal','La Metrica'][i] || '',
+        label: best.label || best.key || '',
+        value: best.value || '',
+        sub: best.sub || '',
+        fonte: s.sources?.[0] || ''
+      };
+    });
     if(kpiData.some(k => k.value)){
       const kpiBar = document.createElement('div');
       kpiBar.className = 'art-kpi-bar';
@@ -569,11 +575,11 @@ async function openArt(num){
         if(!k.value && !k.label) return;
         const cell = document.createElement('div');
         cell.className = 'art-kpi-cell';
+        if(k.sezione){ const sezEl = document.createElement('div'); sezEl.className = 'art-kpi-sezione'; sezEl.textContent = txt(k.sezione); cell.appendChild(sezEl); }
         const lbl = document.createElement('div'); lbl.className = 'art-kpi-label'; lbl.textContent = txt(k.label);
-        const val = document.createElement('div'); val.className = 'art-kpi-val'; val.textContent = (k.stimato?'~':'') + txt(k.value);
+        const val = document.createElement('div'); val.className = 'art-kpi-val'; val.textContent = txt(k.value);
         cell.appendChild(lbl); cell.appendChild(val);
         if(k.sub){ const sub = document.createElement('div'); sub.className = 'art-kpi-sub'; sub.textContent = txt(k.sub); cell.appendChild(sub); }
-        if(k.fonte){ const fn = document.createElement('div'); fn.className = 'art-kpi-fonte'; fn.textContent = txt(k.fonte); cell.appendChild(fn); }
         kpiBar.appendChild(cell);
       });
       card.appendChild(kpiBar);
@@ -671,18 +677,28 @@ async function openArt(num){
           boxLabel.className = 'art-data-box-label';
           boxLabel.textContent = 'Dati chiave';
           dataBox.appendChild(boxLabel);
-          const table = document.createElement('table');
-          table.className = 'art-data-table';
+          const cardsWrap = document.createElement('div');
+          cardsWrap.style.cssText = 'display:flex;flex-direction:column;gap:8px';
           kpiRows.forEach(k => {
-            const tr = document.createElement('tr');
-            const td1 = document.createElement('td'); td1.className = 'edit-field edit-kpi-key'; td1.contentEditable = 'false';
-            td1.textContent = txt(k.key || k.label || '');
-            if(k.sub){ const sub = document.createElement('div'); sub.style.cssText = 'font-family:var(--mn);font-size:8px;color:var(--muted);margin-top:2px;font-weight:400'; sub.textContent = txt(k.sub); td1.appendChild(sub); }
-            const td2 = document.createElement('td'); td2.className = 'edit-field edit-kpi-val'; td2.contentEditable = 'false'; td2.textContent = (k.stimato?'~':'') + txt(k.value||'');
-            if(k.color) td2.style.color = k.color;
-            tr.appendChild(td1); tr.appendChild(td2); table.appendChild(tr);
+            const card = document.createElement('div');
+            card.style.cssText = 'background:var(--cream);border:1px solid var(--rule);border-left:3px solid var(--ink);padding:11px 14px';
+            const labelEl = document.createElement('div');
+            labelEl.style.cssText = 'font-family:var(--mn);font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px';
+            labelEl.textContent = txt(k.key || k.label || '');
+            const valueEl = document.createElement('div');
+            valueEl.style.cssText = 'font-family:var(--sf);font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-.5px;line-height:1;margin-bottom:4px';
+            valueEl.textContent = txt(k.value || '');
+            card.appendChild(labelEl);
+            card.appendChild(valueEl);
+            if(k.sub){
+              const subEl = document.createElement('div');
+              subEl.style.cssText = 'font-family:var(--mn);font-size:9px;color:var(--deepgold);line-height:1.4';
+              subEl.textContent = txt(k.sub);
+              card.appendChild(subEl);
+            }
+            cardsWrap.appendChild(card);
           });
-          dataBox.appendChild(table);
+          dataBox.appendChild(cardsWrap);
           rightCol.appendChild(dataBox);
         }
 
@@ -809,3 +825,4 @@ checkAdmin();
 </script>
 </body>
 </html>
+
