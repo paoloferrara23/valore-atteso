@@ -8,6 +8,7 @@ const ENV_VARS = [
   { key: 'GOOGLE_DRIVE_API_KEY',   value: process.env.GOOGLE_DRIVE_API_KEY,   target: ['production','preview','development'] },
   { key: 'GOOGLE_DRIVE_FOLDER_ID', value: process.env.GOOGLE_DRIVE_FOLDER_ID, target: ['production','preview','development'] },
   { key: 'GH_TOKEN',               value: process.env.GH_PAT,                 target: ['production','preview','development'] },
+  { key: 'SITE_URL',               value: 'https://valoreatteso.com',          target: ['production','preview','development'] },
 ];
 
 async function main() {
