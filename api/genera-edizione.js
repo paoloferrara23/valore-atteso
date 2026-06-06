@@ -233,7 +233,95 @@ Rispondi SOLO con il JSON corretto, stesso formato dell'input.`;
       generated = parseJSON(writerRaw);
     }
 
-    // ── Salva ────────────────────────────────────────────────────────────────
+    // ── FASE 3: SONNET ADAPTER ─────────────────────────────────────────────
+    console.log('Fase 3: Sonnet Adapter...');
+    let socialContent = null;
+    try {
+      const adapterSystem = `Sei il social media adapter di Valore Atteso, newsletter italiana sul business del calcio europeo.
+Tagline: "Il calcio dei numeri, non dei goal."
+Tono: autorevole, analitico, diretto, premium. Stile The Economist applicato al calcio.
+Zero gossip. Zero tifo. Zero emoji.
+
+REGOLE INSTAGRAM CAPTION:
+- Italiano, max 120-150 parole
+- Frasi brevi, un solo insight centrale
+- Non sembrare marketing
+- Chiudere con: "Il calcio dei numeri, non dei goal."
+- Hashtag: #valoreatteso #newsletter #footballbusiness #finanzasportiva #privateequity
+- Se tema è club specifico aggiungi 1 hashtag club (es. #PSG #Arsenal #Milan)
+- Non usare "leggi l'articolo completo"
+
+REGOLE LINKEDIN POST:
+- Italiano, 120-180 parole
+- Apertura con insight forte
+- Spiegare perché il dato è rilevante per business/finanza/M&A/governance
+- Chiusura: "Ogni martedì, con il caffè, 8 minuti sul business del calcio europeo.\nvaloreatteso.com"
+- Max 3 hashtag: #footballbusiness #sportsbusiness #corporatefinance
+- No emoji, no tono da creator, no "link nei commenti"
+
+REGOLE VISUAL INSTAGRAM (1080x1350):
+- Palette: Crema #F0EBE1, Nero #1C1914, Oro #C8A97A, Grigio caldo #6E675F
+- Logo: solo in alto a sinistra "VA" serif bold + linea verticale oro + "Valore Atteso"
+- Immagini: stadi, coppe, architetture, skyline finanziari — B&N o desaturato
+- Nessun calciatore in primo piano, nessun tifoso, nessun meme
+- Un solo dato principale, un solo messaggio, poco testo
+- Aspetto da rivista finanziaria premium
+- Layout types: black_statement | cream_black_split | magazine_cover | carousel
+
+Rispondi SOLO in JSON valido.`;
+
+      const adapterPrompt = `Adatta questa edizione per Instagram e LinkedIn.
+
+TITOLO: ${generated.title}
+SOTTOTITOLO: ${generated.subtitle}
+OPENER: ${generated.opener}
+
+SEZIONI:
+${(generated.sections || []).map(s =>
+  `${s.label}: ${s.title}\nKPI principali: ${(s.kpis||[]).map(k => k.label + ': ' + k.value).join(', ')}`
+).join('\n\n')}
+
+JSON richiesto:
+{
+  "instagram_caption": "...",
+  "linkedin_post": "...",
+  "visual": {
+    "format": "1080x1350",
+    "layout_type": "black_statement | cream_black_split | magazine_cover | carousel",
+    "label": "etichetta sezione (es. Il Bilancio)",
+    "main_number": "dato principale grande (es. €570M)",
+    "headline": "titolo breve max 6 parole",
+    "subheadline": "sottotitolo max 10 parole",
+    "microcopy": "testo piccolo contestuale",
+    "footer": "Il calcio dei numeri, non dei goal.",
+    "image_direction": "descrizione della foto da usare",
+    "avoid": ["logo in basso a destra", "calciatori", "emoji", "fonti nel visual", "troppo testo"]
+  }
+}`;
+
+      const adapterRaw = await callClaude(
+        [{ role: 'user', content: adapterPrompt }],
+        adapterSystem,
+        'claude-sonnet-4-6' // Sonnet — più veloce ed economico per adattamento
+      );
+
+      socialContent = parseJSON(adapterRaw);
+
+      // Salva in social_content
+      await supabase.from('social_content').upsert({
+        edition_id: editionId,
+        edition_num: draft.num,
+        instagram_caption: socialContent.instagram_caption,
+        linkedin_post: socialContent.linkedin_post,
+        visual: socialContent.visual,
+      }, { onConflict: 'edition_id' });
+
+      console.log('Sonnet Adapter completato.');
+    } catch(adapterErr) {
+      console.warn('Sonnet Adapter fallito (non bloccante):', adapterErr.message);
+    }
+
+    // ── Salva bozza ──────────────────────────────────────────────────────────
     await supabase.from('editions').update({
       title:    generated.title,
       subtitle: generated.subtitle || '',
@@ -243,7 +331,16 @@ Rispondi SOLO con il JSON corretto, stesso formato dell'input.`;
     }).eq('id', editionId);
 
     console.log(`Bozza #${draft.num} generata con pipeline 3 fasi.`);
-    return res.status(200).json({ ok: true, id: editionId, title: generated.title });
+    return res.status(200).json({
+      ok: true,
+      id: editionId,
+      title: generated.title,
+      social: socialContent ? {
+        instagram: socialContent.instagram_caption?.slice(0,100) + '...',
+        linkedin: socialContent.linkedin_post?.slice(0,100) + '...',
+        visual_layout: socialContent.visual?.layout_type
+      } : null
+    });
 
   } catch (e) {
     console.error('[genera-edizione]', e);
