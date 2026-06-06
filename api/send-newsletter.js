@@ -317,6 +317,28 @@ module.exports = async function handler(req, res) {
       .update({ sent_at: new Date().toISOString(), sent_count: sent, sent_to: sentEmails })
       .eq('id', edition.id);
 
+    // Auto-aggiorna Wiki editoriale dopo invio
+    try {
+      await supabase.from('editorial_wiki').upsert({
+        categoria: 'edizione',
+        chiave: `ed_${edition.num}`,
+        valore: `Edizione #${edition.num}: ${edition.title} | ${(edition.sections||[]).map(s=>s.title||s.titolo||'').join(' / ')}`,
+        fonte: 'sistema',
+        edizione_ref: edition.num,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'chiave' });
+      for (let i = 0; i < (edition.sections||[]).length; i++) {
+        const s = edition.sections[i];
+        await supabase.from('editorial_wiki').upsert({
+          categoria: 'club_analizzato',
+          chiave: `club_ed${edition.num}_${i}`,
+          valore: `Analizzato in #${edition.num}: ${s.title||s.titolo||''}`,
+          fonte: 'sistema', edizione_ref: edition.num,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'chiave' });
+      }
+    } catch(wikiErr) { console.warn('Wiki update fallito:', wikiErr.message); }
+
     await supabase.from('agent_runs').insert({
       agent: 'send-newsletter',
       status: errors === 0 ? 'success' : 'partial',
