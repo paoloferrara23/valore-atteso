@@ -680,6 +680,75 @@ function crDeselect(edId,sezione){
   document.querySelectorAll('[data-edid="'+edId+'"][data-sez="'+sezione+'"].cr-option').forEach(function(el){el.classList.remove('selected');});
 }
 
+async function crLoadSocial(edId, edNum) {
+  // Carica social content dopo generazione
+  try {
+    const r = await fetch(SURL + '/rest/v1/social_content?edition_id=eq.' + edId + '&select=*', {
+      headers: { apikey: SKEY, Authorization: 'Bearer ' + SKEY }
+    });
+    const data = await r.json();
+    const sc = data?.[0];
+    if (!sc) return;
+
+    const box = document.getElementById('cr-social-' + edId);
+    if (!box) return;
+
+    box.innerHTML = '';
+    const header = document.createElement('div'); header.className = 'cr-social-header';
+    header.innerHTML = '<span>📱 Contenuti Social — Edizione #' + edNum + '</span><span style="opacity:.5">generati automaticamente</span>';
+    box.appendChild(header);
+
+    const wrap = document.createElement('div'); wrap.style.cssText = 'padding:14px';
+
+    // Tab switcher
+    const tabDiv = document.createElement('div'); tabDiv.className = 'cr-social-tab';
+    const tabs = [['ig','Instagram'], ['li','LinkedIn'], ['vis','Visual brief']];
+    const contents = { ig: sc.instagram_caption, li: sc.linkedin_post, vis: null };
+    const contentEl = document.createElement('div'); contentEl.className = 'cr-social-content';
+
+    tabs.forEach(([key, label]) => {
+      const btn = document.createElement('button');
+      btn.textContent = label;
+      if (key === 'ig') btn.classList.add('active');
+      btn.onclick = function() {
+        tabDiv.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (key === 'vis' && sc.visual) {
+          const v = sc.visual;
+          contentEl.innerHTML = '<div class="cr-visual-card">' +
+            '<div class="cr-visual-label">' + (v.layout_type||'') + ' · ' + (v.format||'') + '</div>' +
+            '<div class="cr-visual-label" style="margin-top:8px">Dato principale</div>' +
+            '<div class="cr-visual-number">' + (v.main_number||'—') + '</div>' +
+            '<div style="font-family:var(--sf);font-size:15px;font-weight:700;margin-bottom:4px">' + (v.headline||'') + '</div>' +
+            '<div style="color:var(--muted);font-size:11px;margin-bottom:8px">' + (v.subheadline||'') + '</div>' +
+            '<div class="cr-visual-label">Direzione immagine</div>' +
+            '<div style="color:var(--ink);font-size:11px;margin-bottom:8px">' + (v.image_direction||'') + '</div>' +
+            '<div class="cr-visual-label">Evitare</div>' +
+            '<div style="color:#C8251D;font-size:10px">' + (v.avoid||[]).join(' · ') + '</div>' +
+          '</div>';
+        } else {
+          contentEl.textContent = contents[key] || '—';
+        }
+      };
+      tabDiv.appendChild(btn);
+    });
+
+    contentEl.textContent = sc.instagram_caption || '—';
+
+    // Copy button
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'cr-btn light'; copyBtn.style.cssText = 'margin-top:8px;font-size:9px;height:26px';
+    copyBtn.textContent = 'Copia testo';
+    copyBtn.onclick = function() {
+      navigator.clipboard.writeText(contentEl.textContent).then(() => { copyBtn.textContent = '✓ Copiato'; setTimeout(() => copyBtn.textContent = 'Copia testo', 2000); });
+    };
+
+    wrap.appendChild(tabDiv); wrap.appendChild(contentEl); wrap.appendChild(copyBtn);
+    box.appendChild(wrap);
+    box.style.display = 'block';
+  } catch(e) { console.warn('Social load fallito:', e.message); }
+}
+
 async function crGeneraBozza(edId){
   var st=document.getElementById('bst-'+edId);
   st.className='cr-status';st.style.display='block';st.textContent='Generazione bozza...';
