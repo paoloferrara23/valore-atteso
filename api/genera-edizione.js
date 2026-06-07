@@ -4,7 +4,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 
 // ── Chiamata Claude ───────────────────────────────────────────────────────────
-async function callClaude(messages, system, model = 'claude-opus-4-6') {
+async function callClaude(messages, system, model = 'claude-opus-4-8') {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
@@ -117,7 +117,7 @@ ISTRUZIONI: mantieni tema, migliora dati, aggiungi fonti se mancanti, rendi il v
 Rispondi SOLO JSON: {"label":"${sezLabels[sezIdx]}","title":"...","body":"...","kpis":[{"label":"...","value":"...","sub":"..."},...],"verdict":"...","sources":["..."]}`;
 
       const writerRaw = await callClaude([{ role: 'user', content: writerPrompt }],
-        `Sei il redattore senior di Valore Atteso.\n${wikiContext}`, 'claude-opus-4-6');
+        `Sei il redattore senior di Valore Atteso.\n${wikiContext}`, 'claude-opus-4-8');
 
       // FASE 2: Editor
       const editorPrompt = `Revisiona criticamente questa sezione. Trova e correggi:
@@ -133,7 +133,7 @@ Rispondi SOLO JSON migliorato con stessa struttura.`;
 
       const editorRaw = await callClaude([{ role: 'user', content: editorPrompt }],
         `Sei il direttore editoriale di Valore Atteso. Il tuo compito è trovare errori e migliorare la qualità.\n${wikiContext}`,
-        'claude-opus-4-6');
+        'claude-opus-4-8');
 
       const newSez = parseJSON(editorRaw);
       const sections = [...(draft.sections || [])];
