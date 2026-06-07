@@ -305,15 +305,16 @@ let crAdHistory=[];
 let crCtx={};
 
 const AGENT_SCHEDULE=[
-  {key:'scout',name:'Scout',day:'Sabato',time:'07:00',desc:'Web search + biblioteca fonti. Prepara il dataset editoriale della settimana.'},
-  {key:'seo',name:'SEO',day:'Domenica',time:'08:00',desc:'Ottimizza archivio, metadata, keyword e struttura contenuti.'},
-  {key:'editoriale',name:'Editoriale',day:'Lunedì',time:'08:00',desc:'Genera la bozza partendo solo dai dati prodotti dallo Scout.'},
-  {key:'approval',name:'Paolo',day:'Martedì',time:'Manuale',desc:'Revisione, approvazione in Control Room e invio newsletter.'},
-  {key:'growth',name:'Growth',day:'Mercoledì',time:'08:00',desc:'Analizza crescita, canali, conversioni e opportunità distribuzione.'},
-  {key:'deliverability',name:'Deliverability',day:'Giovedì',time:'08:00',desc:'Controlla invii, bounce, engagement e reputazione dominio.'},
-  {key:'cost-guardian',name:'Cost Guardian',day:'Venerdì',time:'09:00',desc:'Monitora costi API, Resend, Vercel e utilizzo risorse.'},
-  {key:'incident-response',name:'Incident Response',day:'Ogni giorno',time:'09:00',desc:'Verifica errori, anomalie e log operativi.'},
-  {key:'security',name:'Security',day:'Ogni giorno',time:'10:00',desc:'Controlla sicurezza, endpoint, chiavi e configurazioni critiche.'}
+  {key:'scout',name:'Scout',day:'Sabato',time:'08:00',group:'editoriale',desc:'Web search su calcioefinanza.it, Swiss Ramble, UEFA, Deloitte, FT. Genera brief temi con scoring rilevanza.'},
+  {key:'seo',name:'SEO',day:'Domenica',time:'08:00',group:'editoriale',desc:'Keyword research football finance. Salva parole chiave per ottimizzare visibilità organica dell\'edizione.'},
+  {key:'editoriale',name:'Editoriale',day:'Lunedì',time:'08:00',group:'editoriale',desc:'Opus Writer → Opus Editor → Sonnet Adapter. Genera bozza completa con soli dati Scout-verificati.'},
+  {key:'approval',name:'Paolo',day:'Martedì',time:'Manuale',group:'gate',desc:'Revisione inline, approvazione, verifica gate e invio a tutti gli iscritti.'},
+  {key:'deliverability',name:'Deliverability',day:'Martedì',time:'14:00',group:'operativo',desc:'Controlla invii, bounce, engagement e reputazione dominio dopo ogni send.'},
+  {key:'growth',name:'Growth',day:'Mercoledì',time:'08:00',group:'operativo',desc:'Analizza crescita iscritti, canali, conversioni e opportunità distribuzione settimanale.'},
+  {key:'content',name:'Content',day:'Giovedì',time:'08:00',group:'operativo',desc:'Genera idee post LinkedIn e caption Instagram da ogni edizione pubblicata.'},
+  {key:'cost-guardian',name:'Cost Guardian',day:'Venerdì',time:'08:00',group:'operativo',desc:'Monitora costi API Anthropic, Resend, Vercel. Alert se superano soglie.'},
+  {key:'security',name:'Security',day:'Ogni giorno',time:'10:00',group:'operativo',desc:'Controlla endpoint, chiavi API, configurazioni critiche e accessi anomali.'},
+  {key:'incident-response',name:'Incident Response',day:'Ogni giorno',time:'09:00',group:'operativo',desc:'Verifica errori, anomalie nei log e incidenti operativi. Notifica Paolo se critico.'}
 ];
 
 function decodeHtml(s){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
@@ -420,23 +421,95 @@ function crRenderAgents(runs){
   if(!el)return;
   const latest={};
   runs.forEach(r=>{if(!latest[r.agent])latest[r.agent]=r});
-  el.innerHTML=AGENT_SCHEDULE.filter(a=>a.key!=='approval').map(a=>{
+  const editorial=AGENT_SCHEDULE.filter(a=>a.group==='editoriale');
+  const operative=AGENT_SCHEDULE.filter(a=>a.group==='operativo');
+  function agentCard(a){
     const r=latest[a.key];
-    const ok=r&&r.status!=='error';
-    return `<div class="cr-agent"><span class="cr-dot ${ok?'ok':(r?'err':'')}"></span><div style="flex:1"><div class="cr-agent-name">${a.name}</div><div class="cr-agent-desc"><strong>${a.day} · ${a.time}</strong><br>${r?('Ultimo run: '+new Date(r.created_at).toLocaleDateString('it-IT')+' · '+r.status):'Nessun run recente'}<br>${r&&r.summary?esc(r.summary).slice(0,110):a.desc}</div><div class="cr-agent-actions"><button class="cr-run-btn" onclick="crRunAgent('${a.key}')">▶ Esegui ora</button></div></div></div>`;
-  }).join('');
+    const ok=r&&r.status==='success';
+    const err=r&&r.status==='error';
+    const dot=ok?'ok':err?'err':'';
+    const lastRun=r?new Date(r.created_at).toLocaleDateString('it-IT')+' — '+r.status:'Mai eseguito';
+    const summary=r&&r.summary?esc(r.summary).slice(0,100):a.desc;
+    return `<div class="cr-agent"><span class="cr-dot ${dot}"></span><div style="flex:1"><div class="cr-agent-name">${a.name}<span style="font-family:var(--mn);font-size:8px;color:var(--muted);font-weight:400;margin-left:8px">${a.day} · ${a.time}</span></div><div class="cr-agent-desc">${summary}<br><span style="color:var(--muted);font-size:10px">${lastRun}</span></div><div class="cr-agent-actions"><button class="cr-run-btn" onclick="crRunAgent('${a.key}')">▶ Esegui ora</button></div></div></div>`;
+  }
+  el.innerHTML=
+    '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px;grid-column:1/-1">Pipeline editoriale</div>'+
+    editorial.map(agentCard).join('')+
+    '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:16px;margin-bottom:8px;grid-column:1/-1">Agenti operativi</div>'+
+    operative.map(agentCard).join('');
   crRenderSchedule();
   crRenderOrg();
 }
 function crRenderSchedule(){
   const el=document.getElementById('cr-schedule-list');
   if(!el)return;
-  el.innerHTML=AGENT_SCHEDULE.map(a=>`<div class="cr-sched-card"><div class="cr-sched-day">${a.day}</div><div class="cr-sched-name">${a.name}</div><div class="cr-sched-time">${a.time}</div><div class="cr-sched-desc">${a.desc}</div></div>`).join('');
+  const days=['Sabato','Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì'];
+  el.innerHTML=days.map(day=>{
+    const agents=AGENT_SCHEDULE.filter(a=>a.day===day||a.day==='Ogni giorno');
+    return `<div class="cr-sched-card">
+      <div class="cr-sched-day">${day}</div>
+      ${agents.map(a=>{
+        const color=a.group==='gate'?'#C8A97A':a.group==='editoriale'?'var(--ink)':'var(--muted)';
+        return `<div style="margin-top:6px"><div class="cr-sched-name" style="color:${color}">${a.name}</div><div class="cr-sched-time">${a.time}</div></div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
 }
 function crRenderOrg(){
   const el=document.getElementById('cr-org-chart');
   if(!el)return;
-  el.innerHTML=`<div class="cr-org-row"><div class="cr-org-role">Input dati</div><div class="cr-org-box"><div class="cr-org-title">Biblioteca + Scout</div><div class="cr-org-text">La biblioteca Supabase contiene report, bilanci e fonti. Lo Scout li legge prima della web search e prepara la base dati editoriale.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Produzione</div><div class="cr-org-box"><div class="cr-org-title">Editoriale + SEO</div><div class="cr-org-text">L'Editoriale genera la bozza usando solo dati dello Scout. SEO cura struttura, titolo, metadata e archivio.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Controllo umano</div><div class="cr-org-box"><div class="cr-org-title">Paolo / Control Room</div><div class="cr-org-text">Revisione manuale, modifica, approvazione, pubblicazione in archivio e invio agli iscritti.</div></div></div><div class="cr-org-flow">↓</div><div class="cr-org-row"><div class="cr-org-role">Post-invio</div><div class="cr-org-box"><div class="cr-org-title">Growth · Deliverability · Cost · Security</div><div class="cr-org-text">Monitorano crescita, reputazione email, costi, incidenti e sicurezza operativa.</div></div></div>`;
+  el.innerHTML=`
+    <div class="cr-org-row">
+      <div class="cr-org-role">Ricerca</div>
+      <div class="cr-org-box">
+        <div class="cr-org-title">Scout · SEO</div>
+        <div class="cr-org-text">Scout: web search sabato, brief temi con scoring. SEO: keyword domenica. Entrambi salvano in <code style="font-family:var(--mn);font-size:11px">agent_memory</code>.</div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Sab 08:00</span>
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Dom 08:00</span>
+        </div>
+      </div>
+    </div>
+    <div class="cr-org-flow">↓</div>
+    <div class="cr-org-row">
+      <div class="cr-org-role" style="background:#C8A97A;color:#1C1914">Paolo</div>
+      <div class="cr-org-box" style="border-color:#C8A97A">
+        <div class="cr-org-title">Selezione temi</div>
+        <div class="cr-org-text">Unico gate umano obbligatorio. Paolo sceglie il tema per Il Bilancio, Il Deal e La Metrica dalla Control Room → Tab Redazione.</div>
+      </div>
+    </div>
+    <div class="cr-org-flow">↓</div>
+    <div class="cr-org-row">
+      <div class="cr-org-role">Produzione</div>
+      <div class="cr-org-box">
+        <div class="cr-org-title">Editoriale (Opus Writer → Editor → Sonnet)</div>
+        <div class="cr-org-text">Pipeline a 3 fasi: bozza da Wiki context, revisione critica, adattamento social. Solo dati Scout-verificati. Lunedì 08:00.</div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Lun 08:00</span>
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">→ editions + social_content</span>
+        </div>
+      </div>
+    </div>
+    <div class="cr-org-flow">↓</div>
+    <div class="cr-org-row">
+      <div class="cr-org-role" style="background:#C8A97A;color:#1C1914">Paolo</div>
+      <div class="cr-org-box" style="border-color:#C8A97A">
+        <div class="cr-org-title">Revisione · Approvazione · Invio</div>
+        <div class="cr-org-text">Revisione inline in Control Room. Publisher gate verifica KPI, fonti e dedup. Paolo decide e invia a tutti gli iscritti.</div>
+      </div>
+    </div>
+    <div class="cr-org-flow">↓</div>
+    <div class="cr-org-row">
+      <div class="cr-org-role">Post-invio</div>
+      <div class="cr-org-box">
+        <div class="cr-org-title">Deliverability · Growth · Content · Cost Guardian · Security · Incident Response</div>
+        <div class="cr-org-text">6 agenti operativi monitorano in automatico: engagement email, crescita iscritti, idee social, costi API, sicurezza e anomalie. Report settimanale via email a Paolo.</div>
+        <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Mar–Ven</span>
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Ogni giorno</span>
+        </div>
+      </div>
+    </div>`;
 }
 async function crSendTest(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
