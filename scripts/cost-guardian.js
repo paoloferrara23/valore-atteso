@@ -28,20 +28,32 @@ async function supaFetch(path) {
 }
 
 // ── Stima costo Anthropic da token usati nei run ──────────────────────────────
-// Prezzi claude-opus-4-5: $15/1M input, $75/1M output
-// Prezzi claude-haiku-4-5: $0.80/1M input, $4/1M output
+// Prezzi aggiornati giugno 2026:
+// claude-opus-4-8:   $5/1M input, $25/1M output
+// claude-sonnet-4-6: $3/1M input, $15/1M output
+// claude-haiku-4-5:  $1/1M input,  $5/1M output
 function stimaCostoRun(agent, durationMs) {
-  // Stima approssimativa basata su tipo agente e durata
   const agentiOpus   = ['scout', 'editoriale', 'genera-edizione', 'genera-opzioni'];
-  const agentiHaiku  = ['growth', 'seo', 'content-agent', 'security', 'deliverability', 'cost-guardian'];
-  const isOpus = agentiOpus.some(a => agent.includes(a));
+  const agentiSonnet = ['content', 'content-agent'];
+  const isOpus   = agentiOpus.some(a => agent.includes(a));
+  const isSonnet = agentiSonnet.some(a => agent.includes(a));
   const secs = (durationMs || 5000) / 1000;
-  // Stima token: ~500 tok/sec per Opus, ~1000 tok/sec per Haiku
-  const tokInput  = isOpus ? secs * 300 : secs * 200;
-  const tokOutput = isOpus ? secs * 200 : secs * 100;
-  const costoUSD = isOpus
-    ? (tokInput * 15 + tokOutput * 75) / 1_000_000
-    : (tokInput * 0.80 + tokOutput * 4) / 1_000_000;
+  // Stima token: ~300 tok/sec input, ~200 output per Opus; ~200/100 Sonnet; ~150/80 Haiku
+  let costoUSD;
+  if (isOpus) {
+    const tokInput  = secs * 300;
+    const tokOutput = secs * 200;
+    costoUSD = (tokInput * 5 + tokOutput * 25) / 1_000_000;
+  } else if (isSonnet) {
+    const tokInput  = secs * 200;
+    const tokOutput = secs * 100;
+    costoUSD = (tokInput * 3 + tokOutput * 15) / 1_000_000;
+  } else {
+    // Haiku — growth, seo, security, deliverability, cost-guardian, incident-response
+    const tokInput  = secs * 150;
+    const tokOutput = secs * 80;
+    costoUSD = (tokInput * 1 + tokOutput * 5) / 1_000_000;
+  }
   return costoUSD * 0.92; // USD → EUR approssimativo
 }
 
