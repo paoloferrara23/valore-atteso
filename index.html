@@ -395,19 +395,19 @@ async function crInit(){
   if(!crAdHistory.length)crAdAdd('ad','Buongiorno. Control Room ripristinata. Puoi controllare iscritti, edizioni, bozze, invio newsletter, AD e biblioteca fonti.');
 }
 async function crLoadCtx(){
+  const hdr={headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}};
+  function safeFetch(url){return fetch(url,hdr).then(r=>r.ok?r.json():[]).catch(()=>[]);}
   try{
-    const [sr,er,ar,cr]=await Promise.all([
-      fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/editions?select=num,title,date,published&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/agent_memory?key=eq.cost_report&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+    const [subs,eds,runs,costRows]=await Promise.all([
+      safeFetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true'),
+      safeFetch(SURL+'/rest/v1/editions?select=num,title,date,published&order=num.desc'),
+      safeFetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40'),
+      safeFetch(SURL+'/rest/v1/agent_memory?key=eq.cost_report&select=value')
     ]);
-    const subs=await sr.json();
-    const eds=await er.json();
-    const runs=await ar.json().catch(()=>[]);
-    const costRows=await cr.json().catch(()=>[]);
-    const published=(eds||[]).filter(e=>e.published);
-    crCtx={subs:subs.length,eds:published.length,last:published[0]||null,runs:runs||[]};
+    const published=(Array.isArray(eds)?eds:[]).filter(e=>e.published);
+    const subsArr=Array.isArray(subs)?subs:[];
+    const runsArr=Array.isArray(runs)?runs:[];
+    crCtx={subs:subsArr.length,eds:published.length,last:published[0]||null,runs:runsArr};
     document.getElementById('cr-d-subs').textContent=crCtx.subs;
     document.getElementById('cr-d-eds').textContent=crCtx.eds;
     document.getElementById('cr-d-last').textContent=crCtx.last?'#'+crCtx.last.num+' · '+crCtx.last.date:'—';
@@ -420,16 +420,14 @@ async function crLoadCtx(){
       const proj=costReport.proiezione_mese||0;
       costEl.textContent='€'+tot.toFixed(2);
       costEl.style.color=tot<5?'#1B4332':tot<15?'#8E6B33':'#C8251D';
-      if(costSubEl)costSubEl.textContent='proiezione €'+proj.toFixed(2)+' · '+( costReport.mese||'');
+      if(costSubEl)costSubEl.textContent='proiezione €'+proj.toFixed(2)+' · '+(costReport.mese||'');
     }else if(costEl){
       costEl.textContent='N/D';
       if(costSubEl)costSubEl.innerHTML='<a href="https://console.anthropic.com/settings/billing" target="_blank" style="color:var(--deepgold)">Vai alla console →</a>';
     }
-    crRenderAgents(runs||[]);
+    crRenderAgents(runsArr);
   }catch(e){
-    console.error('edition status',e);
-    const el=document.getElementById('cr-ed-ultima');
-    if(el)el.textContent='ERR: '+e.message;
+    console.error('[crLoadCtx]',e);
   }
 }
 function crRenderAgents(runs){
