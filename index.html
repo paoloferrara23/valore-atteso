@@ -396,19 +396,35 @@ async function crInit(){
 }
 async function crLoadCtx(){
   try{
-    const [sr,er,ar]=await Promise.all([
+    const [sr,er,ar,cr]=await Promise.all([
       fetch(SURL+'/rest/v1/subscribers?select=email&confirmed=eq.true',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
       fetch(SURL+'/rest/v1/editions?select=num,title,date,published&order=num.desc',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
-      fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
+      fetch(SURL+'/rest/v1/agent_runs?select=agent,status,summary,created_at&order=created_at.desc&limit=40',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch(SURL+'/rest/v1/agent_memory?key=eq.cost_report&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}})
     ]);
     const subs=await sr.json();
     const eds=await er.json();
     const runs=await ar.json().catch(()=>[]);
+    const costRows=await cr.json().catch(()=>[]);
     const published=(eds||[]).filter(e=>e.published);
     crCtx={subs:subs.length,eds:published.length,last:published[0]||null,runs:runs||[]};
     document.getElementById('cr-d-subs').textContent=crCtx.subs;
     document.getElementById('cr-d-eds').textContent=crCtx.eds;
     document.getElementById('cr-d-last').textContent=crCtx.last?'#'+crCtx.last.num+' · '+crCtx.last.date:'—';
+    // Costo stimato dal cost_report
+    const costReport=Array.isArray(costRows)&&costRows[0]?costRows[0].value:null;
+    const costEl=document.getElementById('cr-d-cost');
+    const costSubEl=document.getElementById('cr-d-cost-sub');
+    if(costReport&&costEl){
+      const tot=costReport.costo_totale_stimato||0;
+      const proj=costReport.proiezione_mese||0;
+      costEl.textContent='€'+tot.toFixed(2);
+      costEl.style.color=tot<5?'#1B4332':tot<15?'#8E6B33':'#C8251D';
+      if(costSubEl)costSubEl.textContent='proiezione €'+proj.toFixed(2)+' · '+( costReport.mese||'');
+    }else if(costEl){
+      costEl.textContent='N/D';
+      if(costSubEl)costSubEl.innerHTML='<a href="https://console.anthropic.com/settings/billing" target="_blank" style="color:var(--deepgold)">Vai alla console →</a>';
+    }
     crRenderAgents(runs||[]);
   }catch(e){
     console.error('edition status',e);
@@ -1252,10 +1268,14 @@ loadLatestPreview();
 
     <div class="cr-panel on" id="cr-dashboard">
       <div class="cr-grid">
-        <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase</div></div>
+        <div class="cr-card"><div class="cr-card-label">Iscritti confermati</div><div class="cr-card-val" id="cr-d-subs">—</div><div class="cr-card-sub">Supabase live</div></div>
         <div class="cr-card"><div class="cr-card-label">Edizioni pubblicate</div><div class="cr-card-val" id="cr-d-eds">—</div><div class="cr-card-sub" id="cr-d-last">—</div></div>
-        <div class="cr-card"><div class="cr-card-label">Sito</div><div class="cr-card-val">Live</div><div class="cr-card-sub">valoreatteso.com</div></div>
-        <div class="cr-card"><div class="cr-card-label">Stack</div><div class="cr-card-val" style="font-size:1.1rem">Vercel</div><div class="cr-card-sub">Supabase · Resend</div></div>
+        <div class="cr-card"><div class="cr-card-label">Costo Anthropic (stima)</div><div class="cr-card-val" id="cr-d-cost" style="font-size:1.4rem">—</div><div class="cr-card-sub" id="cr-d-cost-sub">dal Cost Guardian</div></div>
+        <div class="cr-card" style="cursor:pointer" onclick="window.open('https://console.anthropic.com/settings/billing','_blank')">
+          <div class="cr-card-label">Budget Anthropic</div>
+          <div class="cr-card-val" style="font-size:1.1rem">Console →</div>
+          <div class="cr-card-sub">console.anthropic.com</div>
+        </div>
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
       <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button><button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button></div><div id="cr-send-status" class="cr-status"></div></div>
