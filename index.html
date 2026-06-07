@@ -474,6 +474,13 @@ async function crRunGate(num,st){
   st.innerHTML=`<div style="color:#4a7c4e;margin-bottom:6px"><strong>✓ Gate superato</strong> — ${summary.oks} check OK</div>${rows}`;
   return true;
 }
+async function crRunGateOnly(){
+  const num=document.getElementById('cr-gate-num').value.trim().padStart(3,'0');
+  const st=document.getElementById('cr-gate-status');
+  if(!num){document.getElementById('cr-gate-num').focus();return}
+  st.style.display='block';
+  await crRunGate(num,st);
+}
 async function crConfirmSend(num,btn){
   const st=btn.closest('.cr-status');
   st.innerHTML='Invio in corso...';
@@ -1162,10 +1169,10 @@ loadLatestPreview();
       <div class="cr-logo">Control Room</div>
       <div class="cr-tabs">
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
+        <button class="cr-tab" onclick="crTab('pipeline',this)">Pipeline</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
-
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
     </div>
@@ -1179,9 +1186,178 @@ loadLatestPreview();
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
       <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button><button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Verifica pre-invio</div>
+      <div class="cr-box">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input class="cr-input" id="cr-gate-num" placeholder="es. 006" style="width:100px">
+          <button class="cr-btn" onclick="crRunGateOnly()">&#9654; Verifica edizione</button>
+        </div>
+        <div id="cr-gate-status" class="cr-status" style="margin-top:12px"></div>
+      </div>
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
+    </div>
+
+    <div class="cr-panel" id="cr-pipeline">
+      <div style="max-width:760px">
+        <div style="font-family:var(--mn);font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:20px">Processo editoriale — dalla notizia alla newsletter</div>
+
+        <!-- FASE 1 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">1</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Sabato 08:00 — Ricerca</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Scout Agent</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Web search automatico su calcioefinanza.it, Swiss Ramble, UEFA, Deloitte, FT. Genera un brief con i temi più rilevanti della settimana, con scoring di rilevanza.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">GitHub Actions</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">scripts/scout.js</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ agent_memory</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 2 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">2</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Domenica 08:00 — SEO</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">SEO Agent</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Identifica le keyword più cercate in ambito football finance. Salva le parole chiave da integrare nell'edizione per massimizzare la visibilità organica.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">GitHub Actions</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">scripts/seo-agent.js</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ agent_memory</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GATE UMANO -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:#C8A97A;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">&#9654;</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:#C8A97A;text-transform:uppercase;margin-bottom:6px">Lunedì — Gate umano</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Selezione temi — Paolo</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Revisioni delle 3 opzioni per sezione generate dall'Agente Editoriale. Paolo sceglie il tema per Il Bilancio, Il Deal e La Metrica. Unico intervento umano obbligatorio prima della generazione.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:#FFF8EC;border:1px solid #C8A97A;padding:4px 10px;color:#8E6B33">Tab Redazione →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 3 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">3</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Lunedì — Generazione</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Opus Writer</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Claude Opus scrive la bozza completa delle 3 sezioni usando il Wiki editoriale come contesto. Solo dati Scout-verificati; i dati assenti vengono marcati con [dato da verificare].</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">claude-opus-4</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">Wiki context</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ editions (draft)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 4 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">4</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Lunedì — Revisione</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Opus Editor</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Secondo passaggio critico: Claude Opus rillegge la bozza e corregge errori fattuali, dati inventati, incongruenze di tono. Riscrittura rigorosa, non cosmetics.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">claude-opus-4</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">fact-check critico</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 5 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">5</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Lunedì — Adattamento</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Sonnet Adapter</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Claude Sonnet genera caption Instagram, post LinkedIn e visual brief per ogni edizione. Output salvato in social_content e visibile in Control Room.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">claude-sonnet-4</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ social_content</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GATE UMANO 2 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:#C8A97A;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">&#9654;</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:#C8A97A;text-transform:uppercase;margin-bottom:6px">Lunedì — Gate umano</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Revisione inline — Paolo</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Paolo rivede testi, KPI e verdict direttamente in Control Room. Può rigenerare singole sezioni o l'intera bozza. Approva quando soddisfatto.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:#FFF8EC;border:1px solid #C8A97A;padding:4px 10px;color:#8E6B33">Tab Redazione → Bozze</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 6 -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">6</div>
+            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
+          </div>
+          <div style="padding:0 0 28px 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Martedì — Publisher Gate</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Verifica pre-invio</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Check automatico: KPI presenti, nessun [dato da verificare], verdict compilati, nessuna sovrapposizione tematica con edizioni precedenti. Paolo decide se inviare.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">api/publisher-gate.js</span>
+              <span style="font-family:var(--mn);font-size:9px;background:#FFF8EC;border:1px solid #C8A97A;padding:4px 10px;color:#8E6B33">Tab Dashboard → Verifica</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FASE 7 — INVIO -->
+        <div style="display:grid;grid-template-columns:32px 1fr;gap:0">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="width:32px;height:32px;background:#4a7c4e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">&#10003;</div>
+          </div>
+          <div style="padding:0 0 0 16px">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:#4a7c4e;text-transform:uppercase;margin-bottom:6px">Martedì — Invio</div>
+            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Newsletter → 105 iscritti</div>
+            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Resend batch API. Wiki editoriale auto-aggiornato dopo l'invio con titoli, club e temi trattati — alimenta il dedup delle edizioni future.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">Resend batch</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ editorial_wiki</span>
+              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">Tab Dashboard → Invia</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
     <div class="cr-panel" id="cr-ad">
