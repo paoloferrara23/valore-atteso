@@ -35,10 +35,33 @@ async function getNextEditionNum() {
   return rows[0] ? String(parseInt(rows[0].num) + 1).padStart(3, '0') : '001';
 }
 
+async function bozzaEsistente(num) {
+  // Controlla se esiste già una bozza non pubblicata per questo numero
+  const r = await fetch(`${SUPA_URL}/rest/v1/editions?num=eq.${num}&published=eq.false&select=id,num,sections`, {
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  });
+  const rows = await r.json();
+  if (!Array.isArray(rows) || !rows.length) return null;
+  const bozza = rows[0];
+  // Considera bozza "con contenuto" se ha almeno una sezione con body non vuoto
+  const hasContent = (bozza.sections || []).some(s => s.body && s.body.length > 50);
+  return hasContent ? bozza : null;
+}
+
 async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' });
   console.log('Editoriale Agent v2 avviato:', new Date().toISOString());
+
+  // ── GUARDIA: non sovrascrivere bozze con contenuto già presente ────────────
+  const editionNum = await getNextEditionNum();
+  const bozzaGiaPresente = await bozzaEsistente(editionNum);
+  if (bozzaGiaPresente) {
+    console.log(`⚠️  Bozza #${editionNum} già presente con contenuto. Agente non sovrascrive. ID: ${bozzaGiaPresente.id}`);
+    await logRun('editoriale', 'skipped', `Bozza #${editionNum} già presente — skip per non sovrascrivere contenuto esistente.`, { editionId: bozzaGiaPresente.id, num: editionNum }, Date.now()-start);
+    return;
+  }
+  console.log(`Procedo con generazione bozza #${editionNum}`);
 
   const scoutBrief    = await memGet('scout_brief');
   const scoutSelezione = await memGet('scout_selezione');
@@ -68,7 +91,7 @@ async function main() {
 
   if (seoKeywords) temiContext += `\n\nKEYWORD SEO:\n${JSON.stringify(seoKeywords.value, null, 2)}`;
 
-  const editionNum = await getNextEditionNum();
+  // editionNum già calcolato nella guardia iniziale
   const haSelezione = scoutSelezione?.value?.selezionato_at && scoutBrief?.value?.temi_per_sezione && scoutSelezione.value.bilancio != null;
 
   const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.\n3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.\nTono: analitico, diretto, dati verificabili, nessun gossip.\nPubblico: professionisti M&A, PE, consulenza, finanza.\nREGOLA: usa SOLO dati dai temi Scout. VIETATO inventare.\nKPI FORMAT: [{"label":"max 4 parole","value":"numero+unità","sub":"max 4 parole"}]\n${temiContext}\nRispondi SOLO in JSON valido:\n{"num":"${editionNum}","section_options":{"bilancio":[{"title":"...","summary":"...","kpi_preview":["..."],"source":"..."},...],"deal":[...],"metrica":[...]}}`;
