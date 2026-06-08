@@ -537,53 +537,144 @@ async function crSendTest(){
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
 }
+// Stato globale calendario
+let crCalPosts=[];
+let crCalSelected=null;
+
+function crCopyText(text,btn,label){
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent='✓ Copiato';
+    setTimeout(function(){btn.textContent=label;},2000);
+  }).catch(function(){btn.textContent='Errore';});
+}
+
+function crCalRenderDetail(idx){
+  const p=crCalPosts[idx];
+  if(!p)return;
+  crCalSelected=idx;
+  // Aggiorna selezione nel calendario
+  document.querySelectorAll('.cr-cal-day').forEach(function(d,i){
+    d.classList.toggle('selected',i===idx);
+  });
+  const det=document.getElementById('cr-cal-detail');
+  det.innerHTML='';
+
+  // Header
+  const hdr=document.createElement('div');
+  hdr.style.cssText='margin-bottom:20px';
+  const tipo=document.createElement('span');
+  const colori={TEASER:'#8E6B33',LANCIO:'#4a7c4e',APPROFONDIMENTO:'#1C4B8A',SCOUT_PREVIEW:'#6E675F'};
+  tipo.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:'+(colori[p.tipo]||'var(--ink)');
+  tipo.textContent=p.tipo;
+  const titolo=document.createElement('div');
+  titolo.style.cssText='font-family:var(--sf);font-size:1.2rem;font-weight:700;color:var(--ink);margin-top:4px;line-height:1.3';
+  titolo.textContent=p.tema||'';
+  hdr.appendChild(tipo);
+  hdr.appendChild(titolo);
+  det.appendChild(hdr);
+
+  // Sezione Instagram
+  function makeSection(label,text,btnLabel,dark){
+    const wrap=document.createElement('div');
+    wrap.style.cssText='margin-bottom:16px';
+    const lbl=document.createElement('div');
+    lbl.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px';
+    lbl.textContent=label;
+    const box=document.createElement('div');
+    box.style.cssText='font-size:12px;line-height:1.7;white-space:pre-wrap;padding:12px;border-radius:8px;max-height:180px;overflow-y:auto;'+(dark?'background:var(--ink);color:#F4EFE6;font-family:var(--mn)':'background:var(--cream2);color:var(--ink2)');
+    box.textContent=text||'—';
+    const btn=document.createElement('button');
+    btn.className='cr-btn light';
+    btn.style.cssText='margin-top:8px;font-size:9px;height:26px'+(dark?';background:var(--deepgold);color:var(--cream)':'');
+    btn.textContent=btnLabel;
+    const t=text||'';
+    btn.addEventListener('click',function(){crCopyText(t,btn,btnLabel);});
+    wrap.appendChild(lbl);
+    wrap.appendChild(box);
+    wrap.appendChild(btn);
+    return wrap;
+  }
+
+  det.appendChild(makeSection('📸 Instagram — Caption',p.instagram_caption,'Copia caption',false));
+  det.appendChild(makeSection('💼 LinkedIn',p.linkedin_post,'Copia LinkedIn',false));
+  if(p.chatgpt_prompt){
+    det.appendChild(makeSection('🎨 Prompt ChatGPT → immagine Instagram',p.chatgpt_prompt,'Copia prompt → ChatGPT',true));
+  }
+}
+
 async function crLoadCalendario(){
   const el=document.getElementById('cr-social-calendario');
-  const st=document.getElementById('cr-social-stato');
-  el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted)">Caricamento calendario...</div>';
+  el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted)">Caricamento...</div>';
   try{
     const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.social_calendario&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const data=await r.json();
     const cal=data?.[0]?.value;
     if(!cal||!cal.posts||!cal.posts.length){
-      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessun calendario disponibile. Il Content Agent gira ogni giovedì alle 08:00.</div>';
+      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessun calendario disponibile. Il Content Agent gira ogni lunedì alle 09:00.</div>';
       return;
     }
-    const posts=cal.posts;
-    // Header edizione
-    let html=`<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-bottom:20px">Edizione #${esc(cal.edition_num)} · ${esc(cal.edition_title)} · Generato ${new Date(cal.generato).toLocaleDateString('it-IT')}</div>`;
-    // Post cards
+    crCalPosts=cal.posts;
+
+    el.innerHTML='';
+
+    // Info edizione
+    const info=document.createElement('div');
+    info.style.cssText='font-family:var(--mn);font-size:9px;color:var(--muted);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--rule)';
+    info.textContent='Edizione #'+esc(cal.edition_num)+' · Generato '+new Date(cal.generato).toLocaleDateString('it-IT');
+    el.appendChild(info);
+
+    // Layout: calendario + dettaglio
+    const layout=document.createElement('div');
+    layout.style.cssText='display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start';
+
+    // Colonna sinistra — calendario stile Apple
+    const calCol=document.createElement('div');
     const colori={TEASER:'#8E6B33',LANCIO:'#4a7c4e',APPROFONDIMENTO:'#1C4B8A',SCOUT_PREVIEW:'#6E675F'};
-    posts.forEach(p=>{
+
+    crCalPosts.forEach(function(p,i){
+      const day=document.createElement('div');
+      day.className='cr-cal-day';
+      day.style.cssText='padding:10px 12px;border-radius:10px;cursor:pointer;margin-bottom:6px;border:1px solid transparent;transition:all .15s';
       const col=colori[p.tipo]||'var(--ink)';
-      html+=`<div style="border:1px solid var(--rule);border-radius:12px;margin-bottom:16px;overflow:hidden">
-        <div style="background:var(--ink);padding:12px 16px;display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <span style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;color:${col};text-transform:uppercase">${esc(p.tipo)}</span>
-            <div style="font-family:var(--sf);font-size:1rem;font-weight:700;color:#F4EFE6;margin-top:2px">${esc(p.giorno)} — ${esc(p.tema||'')}</div>
-          </div>
-          <span style="font-family:var(--mn);font-size:8px;color:var(--muted)">${esc(p.data_relativa||'')}</span>
-        </div>
-        <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div>
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">📸 Instagram — Caption</div>
-            <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.instagram_caption||'—')}</div>
-            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.instagram_caption||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia caption',2000)})">Copia caption</button>
-          </div>
-          <div>
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">💼 LinkedIn</div>
-            <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.linkedin_post||'—')}</div>
-            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.linkedin_post||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia LinkedIn',2000)})">Copia LinkedIn</button>
-          </div>
-        </div>
-        ${p.chatgpt_prompt?`<div style="padding:0 16px 16px 16px;border-top:1px solid var(--rule);margin-top:0;padding-top:14px">
-          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">🎨 Prompt ChatGPT per immagine Instagram</div>
-          <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--ink);color:#F4EFE6;padding:12px;border-radius:6px;font-family:var(--mn)">${esc(p.chatgpt_prompt)}</div>
-          <button class="cr-btn" style="margin-top:8px;font-size:9px;height:26px;background:var(--deepgold);color:var(--cream)" onclick="navigator.clipboard.writeText(${JSON.stringify(p.chatgpt_prompt||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia prompt → ChatGPT',2000)})">Copia prompt → ChatGPT</button>
-        </div>`:''}
-      </div>`;
+      const dayName=document.createElement('div');
+      dayName.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:'+col;
+      dayName.textContent=p.giorno;
+      const dayTipo=document.createElement('div');
+      dayTipo.style.cssText='font-family:var(--sf);font-size:13px;font-weight:600;color:var(--ink);margin-top:2px';
+      dayTipo.textContent=p.tipo.replace('_',' ');
+      const dayTema=document.createElement('div');
+      dayTema.style.cssText='font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4';
+      dayTema.textContent=(p.tema||'').slice(0,40)+(p.tema&&p.tema.length>40?'…':'');
+      day.appendChild(dayName);
+      day.appendChild(dayTipo);
+      day.appendChild(dayTema);
+      day.addEventListener('click',function(){crCalRenderDetail(i);});
+      day.addEventListener('mouseenter',function(){if(crCalSelected!==i)this.style.background='var(--cream2)';});
+      day.addEventListener('mouseleave',function(){if(crCalSelected!==i)this.style.background='';});
+      calCol.appendChild(day);
     });
-    el.innerHTML=html;
+
+    // CSS per .cr-cal-day.selected
+    if(!document.getElementById('cr-cal-style')){
+      const style=document.createElement('style');
+      style.id='cr-cal-style';
+      style.textContent='.cr-cal-day.selected{background:var(--ink)!important;border-color:var(--ink)!important}.cr-cal-day.selected *{color:#F4EFE6!important}';
+      document.head.appendChild(style);
+    }
+
+    // Colonna destra — dettaglio
+    const detCol=document.createElement('div');
+    detCol.id='cr-cal-detail';
+    detCol.style.cssText='min-height:200px';
+    detCol.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted);padding-top:20px">← Seleziona un giorno</div>';
+
+    layout.appendChild(calCol);
+    layout.appendChild(detCol);
+    el.appendChild(layout);
+
+    // Seleziona primo post automaticamente
+    if(crCalPosts.length)setTimeout(function(){crCalRenderDetail(0);},50);
+
   }catch(e){
     el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>';
   }
