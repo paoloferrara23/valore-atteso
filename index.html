@@ -905,7 +905,10 @@ async function crRegeneraSezione(edId, sezione){
 
 async function crSalvaModifiche(edId){
   var st=document.getElementById('bst-'+edId);
-  st.className='cr-status';st.style.display='block';st.textContent='Salvataggio...';
+  var btn=document.querySelector('[data-eid="'+edId+'"][onclick*="crSalvaModifiche"]');
+  var origTxt=btn?btn.textContent:'Salva';
+  if(btn){btn.disabled=true;btn.textContent='Salvataggio...';}
+  st.className='cr-status';st.style.display='block';st.textContent='Salvataggio in corso...';
   try{
     var ed=await crFetchEdition(edId);
     var title=(document.getElementById('bt-'+edId)||{innerText:ed.title}).innerText.trim();
@@ -915,9 +918,16 @@ async function crSalvaModifiche(edId){
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
       body:JSON.stringify({title:title,sections:sections,date:date})});
     if(!r.ok)throw new Error('HTTP '+r.status);
-    st.className='cr-status ok';st.textContent='Salvato.';
-    setTimeout(function(){st.style.display='none';},3000);
-  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+    st.className='cr-status ok';st.textContent='✓ Salvato correttamente.';
+    if(btn){btn.textContent='✓ Salvato';btn.style.background='#4a7c4e';}
+    setTimeout(function(){
+      st.style.display='none';
+      if(btn){btn.disabled=false;btn.textContent=origTxt;btn.style.background='';}
+    },3000);
+  }catch(e){
+    st.className='cr-status err';st.textContent='✗ Errore: '+e.message;
+    if(btn){btn.disabled=false;btn.textContent=origTxt;}
+  }
 }
 
 async function crRigeneraKpi(edId,secIdx){
@@ -984,14 +994,17 @@ async function crRigeneraBozza(edId){
 
 async function crApprovaBozzaConData(id,num){
   var st=document.getElementById('bst-'+id);
-  st.className='cr-status';st.style.display='block';st.textContent='Generazione sottotitolo...';
+  var btn=document.querySelector('[data-eid="'+id+'"][onclick*="crApprovaBozzaConData"]');
+  var origTxt=btn?btn.textContent:'✓ Approva';
+  if(btn){btn.disabled=true;btn.textContent='Approvazione...';}
+  st.className='cr-status';st.style.display='block';
+  st.innerHTML='<span style="color:#8E6B33">⏳ Generazione sottotitolo...</span>';
   var dateEl=document.getElementById('date2-'+id);
   try{
     var ed=await crFetchEdition(id);
     var title=(document.getElementById('bt-'+id)||{innerText:ed.title}).innerText.trim();
     var date=dateEl?dateEl.value:ed.date;
     var sections=crLeggiSezioniDom(id,ed.sections||[]);
-    // Genera sottotitolo dal contenuto modificato
     var contenuto=sections.map(function(s){return s.label+': '+s.title+'. '+s.body.slice(0,200);}).join(' ');
     var subResp=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -1000,15 +1013,20 @@ async function crApprovaBozzaConData(id,num){
       })});
     var subData=await subResp.json();
     var subtitle=(subData.text||'').trim().replace(/^["']|["']$/g,'');
-    st.textContent='Pubblicazione...';
+    st.innerHTML='<span style="color:#8E6B33">⏳ Pubblicazione in corso...</span>';
     var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
       body:JSON.stringify({title:title,sections:sections,subtitle:subtitle,date:date,published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
-    st.className='cr-status ok';st.textContent='Edizione #'+num+' approvata. Sottotitolo: '+subtitle;
+    st.className='cr-status ok';
+    st.innerHTML='✓ Edizione #'+num+' approvata e pubblicata.<br><span style="font-size:11px;opacity:.8">Sottotitolo: '+esc(subtitle)+'</span>';
+    if(btn){btn.textContent='✓ Approvata';btn.style.background='#4a7c4e';btn.style.color='#fff';}
     crLoadCtx();loadLatestPreview();
-    setTimeout(function(){crLoadBozze();},1000);
-  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+    setTimeout(function(){crLoadBozze();},1500);
+  }catch(e){
+    st.className='cr-status err';st.textContent='✗ Errore: '+e.message;
+    if(btn){btn.disabled=false;btn.textContent=origTxt;btn.style.background='';btn.style.color='';}
+  }
 }
 
 async function crLoadBozze(){
