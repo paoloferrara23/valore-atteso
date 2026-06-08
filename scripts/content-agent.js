@@ -185,6 +185,7 @@ async function main() {
     headers: { 'Prefer': 'return=minimal' },
     body: JSON.stringify({
       key: 'social_calendario',
+      written_by: 'content',
       value: {
         edition_num: edizione.num,
         edition_title: edizione.title,
