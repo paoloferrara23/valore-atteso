@@ -51,36 +51,31 @@ Tagline: "Il calcio dei numeri, non dei goal."
 Tono: autorevole, analitico, diretto, premium. Stile The Economist applicato al calcio.
 Zero gossip. Zero tifo. Zero emoji.
 
+LINKEDIN POST:
+- Italiano, 120-180 parole
+- Apertura con insight forte e dato concreto
+- Spiega perché il dato è rilevante per business, finanza, media rights, governance o M&A
+- Tono professionale, non da creator
+- Chiusura fissa: "Ogni martedì, con il caffè, 8 minuti sul business del calcio europeo.\nvaloreatteso.com"
+- Max 3 hashtag: #footballbusiness #sportsbusiness #corporatefinance
+- No emoji, no "link nei commenti"
+
 INSTAGRAM CAPTION:
-- Italiano
-- Max 120-150 parole
-- Frasi brevi
-- Un solo insight centrale
-- Non sembrare marketing
+- Italiano, max 120-150 parole, frasi brevi
+- Un solo insight centrale, non sembrare marketing
 - Chiudere con: "Il calcio dei numeri, non dei goal."
 - Hashtag fissi: #valoreatteso #newsletter #footballbusiness #finanzasportiva #privateequity
 - Se tema club specifico: aggiungi 1 hashtag club (es. #Juventus, #Inter)
-- Non usare "leggi l'articolo completo"
-- Usare "valoreatteso.com" solo se richiesto
 
-LINKEDIN POST:
-- Italiano
-- 120-180 parole
-- Più professionale della caption IG
-- Apertura con insight forte
-- Spiegare perché il dato è rilevante per business, finanza, media rights, governance o M&A
-- Chiusura: "Ogni martedì, con il caffè, 8 minuti sul business del calcio europeo.\nvaloreatteso.com"
-- Max 3 hashtag: #footballbusiness #sportsbusiness #corporatefinance
-- No emoji
-- No tono da creator
-- No "link nei commenti" salvo istruzione specifica
-
-VISUAL INSTAGRAM (1080x1350 px, 4:5):
-Palette: Crema #F0EBE1 | Nero #1C1914 | Oro #C8A97A | Grigio caldo #6E675F
-Logo: "VA" serif bold + linea verticale oro + "Valore Atteso" — solo in alto a sinistra
-Immagini: stadi, coppe, architetture, skyline finanziari — B&N o seppia desaturato
-Regole: un solo dato principale, un solo messaggio, poco testo, aspetto da rivista finanziaria premium
-No calciatori in primo piano, no tifosi, no meme, no infografiche dense
+PROMPT CHATGPT PER IMMAGINE INSTAGRAM:
+ChatGPT conosce già lo stile grafico di Valore Atteso.
+Genera un prompt in italiano che specifica:
+- Il numero/dato principale da mostrare grande e in evidenza
+- Il testo headline (max 6 parole)
+- Il sottotitolo (max 10 parole)
+- Tipo di sfondo: stadio / architettura / skyline finanziario — sempre B&N o seppia desaturato
+- Layout: sfondo scuro testo chiaro / split crema-nero / copertina rivista
+- Cosa evitare: calciatori, tifosi, emoji, testo denso, colori sgargianti
 
 Rispondi SEMPRE e SOLO in JSON valido senza markdown.`;
 
@@ -94,18 +89,7 @@ Genera il post per questo tema specifico. Rispondi SOLO in JSON:
 {
   "instagram_caption": "...",
   "linkedin_post": "...",
-  "visual": {
-    "format": "1080x1350",
-    "layout_type": "black_statement | cream_black_split | magazine_cover | carousel",
-    "label": "...",
-    "main_number": "...",
-    "headline": "...",
-    "subheadline": "...",
-    "microcopy": "...",
-    "footer": "Il calcio dei numeri, non dei goal.",
-    "image_direction": "...",
-    "avoid": ["logo in basso a destra", "calciatori", "emoji", "fonti nel visual", "troppo testo"]
-  }
+  "chatgpt_prompt": "Prompt dettagliato in italiano per ChatGPT. Dato principale, headline, sottotitolo, sfondo, layout, cosa evitare."
 }`;
 
   const raw = await callClaude([{ role: 'user', content: prompt }], SONNET_SYSTEM);
@@ -148,17 +132,7 @@ Rispondi SOLO in JSON:
       "tema": "...",
       "instagram_caption": "...",
       "linkedin_post": "...",
-      "visual": {
-        "format": "1080x1350",
-        "layout_type": "...",
-        "label": "...",
-        "main_number": "...",
-        "headline": "...",
-        "subheadline": "...",
-        "footer": "Il calcio dei numeri, non dei goal.",
-        "image_direction": "...",
-        "avoid": ["logo in basso a destra", "calciatori", "emoji"]
-      }
+      "chatgpt_prompt": "Prompt dettagliato per generare l'immagine Instagram su ChatGPT..."
     }
   ]
 }`;
