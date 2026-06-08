@@ -566,24 +566,20 @@ async function crLoadCalendario(){
         </div>
         <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
           <div>
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">📸 Instagram</div>
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">📸 Instagram — Caption</div>
             <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.instagram_caption||'—')}</div>
-            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.instagram_caption||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia IG',2000)})">Copia IG</button>
+            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.instagram_caption||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia caption',2000)})">Copia caption</button>
           </div>
           <div>
             <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">💼 LinkedIn</div>
             <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.linkedin_post||'—')}</div>
-            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.linkedin_post||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia LI',2000)})">Copia LI</button>
+            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.linkedin_post||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia LinkedIn',2000)})">Copia LinkedIn</button>
           </div>
         </div>
-        ${p.visual?`<div style="padding:0 16px 16px">
-          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px">🎨 Visual brief</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <span style="font-family:var(--mn);font-size:9px;background:var(--ink);color:var(--cream);padding:4px 10px;border-radius:4px">${esc(p.visual.layout_type||'')}</span>
-            <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;border-radius:4px">Dato: ${esc(p.visual.main_number||'—')}</span>
-            <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;border-radius:4px">${esc(p.visual.headline||'')}</span>
-          </div>
-          ${p.visual.image_direction?`<div style="font-size:11px;color:var(--muted);margin-top:6px">📷 ${esc(p.visual.image_direction)}</div>`:''}
+        ${p.chatgpt_prompt?`<div style="padding:0 16px 16px 16px;border-top:1px solid var(--rule);margin-top:0;padding-top:14px">
+          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">🎨 Prompt ChatGPT per immagine Instagram</div>
+          <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--ink);color:#F4EFE6;padding:12px;border-radius:6px;font-family:var(--mn)">${esc(p.chatgpt_prompt)}</div>
+          <button class="cr-btn" style="margin-top:8px;font-size:9px;height:26px;background:var(--deepgold);color:var(--cream)" onclick="navigator.clipboard.writeText(${JSON.stringify(p.chatgpt_prompt||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia prompt → ChatGPT',2000)})">Copia prompt → ChatGPT</button>
         </div>`:''}
       </div>`;
     });
