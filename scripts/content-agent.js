@@ -178,7 +178,7 @@ async function main() {
   // Salva calendario in Supabase (agent_memory)
   await supaFetch('/rest/v1/agent_memory', {
     method: 'POST',
-    headers: { 'Prefer': 'resolution=merge-duplicates' },
+    headers: { 'Prefer': 'return=minimal', 'Content-Type': 'application/json' },
     body: JSON.stringify({
       key: 'social_calendario',
       value: {
@@ -203,7 +203,7 @@ async function main() {
           edition_id: edizione.id,
           instagram_caption: postLancio.instagram_caption,
           linkedin_post: postLancio.linkedin_post,
-          visual: postLancio.visual,
+          visual: postLancio.chatgpt_prompt ? {"chatgpt_prompt": postLancio.chatgpt_prompt} : null,
           created_at: new Date().toISOString()
         })
       });
