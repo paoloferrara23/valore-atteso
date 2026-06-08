@@ -176,9 +176,13 @@ async function main() {
   const posts = calendario.calendario || [];
 
   // Salva calendario in Supabase (agent_memory)
+  // Upsert: prima elimina record esistente poi inserisce
+  try {
+    await supaFetch('/rest/v1/agent_memory?key=eq.social_calendario', { method: 'DELETE' });
+  } catch(e) { /* ignora se non esiste */ }
   await supaFetch('/rest/v1/agent_memory', {
     method: 'POST',
-    headers: { 'Prefer': 'return=minimal', 'Content-Type': 'application/json' },
+    headers: { 'Prefer': 'return=minimal' },
     body: JSON.stringify({
       key: 'social_calendario',
       value: {
