@@ -388,7 +388,7 @@ function crTab(name,btn){
   btn.classList.add('on');
   if(name==='redazione')crLoadBozze();
   if(name==='dashboard')crLoadCtx();
-
+  if(name==='social')crLoadCalendario();
 }
 async function crInit(){
   await crLoadCtx();
@@ -536,6 +536,61 @@ async function crSendTest(){
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
+async function crLoadCalendario(){
+  const el=document.getElementById('cr-social-calendario');
+  const st=document.getElementById('cr-social-stato');
+  el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted)">Caricamento calendario...</div>';
+  try{
+    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.social_calendario&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const data=await r.json();
+    const cal=data?.[0]?.value;
+    if(!cal||!cal.posts||!cal.posts.length){
+      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessun calendario disponibile. Il Content Agent gira ogni giovedì alle 08:00.</div>';
+      return;
+    }
+    const posts=cal.posts;
+    // Header edizione
+    let html=`<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-bottom:20px">Edizione #${esc(cal.edition_num)} · ${esc(cal.edition_title)} · Generato ${new Date(cal.generato).toLocaleDateString('it-IT')}</div>`;
+    // Post cards
+    const colori={TEASER:'#8E6B33',LANCIO:'#4a7c4e',APPROFONDIMENTO:'#1C4B8A',SCOUT_PREVIEW:'#6E675F'};
+    posts.forEach(p=>{
+      const col=colori[p.tipo]||'var(--ink)';
+      html+=`<div style="border:1px solid var(--rule);border-radius:12px;margin-bottom:16px;overflow:hidden">
+        <div style="background:var(--ink);padding:12px 16px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <span style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;color:${col};text-transform:uppercase">${esc(p.tipo)}</span>
+            <div style="font-family:var(--sf);font-size:1rem;font-weight:700;color:#F4EFE6;margin-top:2px">${esc(p.giorno)} — ${esc(p.tema||'')}</div>
+          </div>
+          <span style="font-family:var(--mn);font-size:8px;color:var(--muted)">${esc(p.data_relativa||'')}</span>
+        </div>
+        <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">📸 Instagram</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.instagram_caption||'—')}</div>
+            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.instagram_caption||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia IG',2000)})">Copia IG</button>
+          </div>
+          <div>
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px">💼 LinkedIn</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--ink2);white-space:pre-wrap;background:var(--cream2);padding:10px;border-radius:6px;max-height:150px;overflow-y:auto">${esc(p.linkedin_post||'—')}</div>
+            <button class="cr-btn light" style="margin-top:8px;font-size:9px;height:26px" onclick="navigator.clipboard.writeText(${JSON.stringify(p.linkedin_post||'')}).then(()=>{this.textContent='✓ Copiato';setTimeout(()=>this.textContent='Copia LI',2000)})">Copia LI</button>
+          </div>
+        </div>
+        ${p.visual?`<div style="padding:0 16px 16px">
+          <div style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px">🎨 Visual brief</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span style="font-family:var(--mn);font-size:9px;background:var(--ink);color:var(--cream);padding:4px 10px;border-radius:4px">${esc(p.visual.layout_type||'')}</span>
+            <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;border-radius:4px">Dato: ${esc(p.visual.main_number||'—')}</span>
+            <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;border-radius:4px">${esc(p.visual.headline||'')}</span>
+          </div>
+          ${p.visual.image_direction?`<div style="font-size:11px;color:var(--muted);margin-top:6px">📷 ${esc(p.visual.image_direction)}</div>`:''}
+        </div>`:''}
+      </div>`;
+    });
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>';
+  }
 }
 async function crRunGate(num,st){
   st.className='cr-status';st.style.display='block';
@@ -1114,6 +1169,7 @@ async function crLoadBozze(){
             '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">PREVIEW</div>'+
             previewSecs+
             '<div class="cr-status" id="bst-'+e.id+'"></div>'+
+          '<div id="cr-social-'+e.id+'" style="display:none;border-top:1px solid var(--rule);margin-top:16px"></div>'+
           '</div></div>';
       }else{
         return '<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Bozza #'+esc(e.num)+' in elaborazione...</div>';
@@ -1275,6 +1331,7 @@ loadLatestPreview();
       <div class="cr-tabs">
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
         <button class="cr-tab" onclick="crTab('pipeline',this)">Pipeline</button>
+        <button class="cr-tab" onclick="crTab('social',this)" id="cr-tab-social">Social</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
@@ -1306,6 +1363,20 @@ loadLatestPreview();
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
+    </div>
+
+    <div class="cr-panel" id="cr-social">
+      <div style="max-width:800px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Strategia di comunicazione</div>
+            <div style="font-family:var(--sf);font-size:1.4rem;font-weight:700;color:var(--ink)">Calendario social settimanale</div>
+          </div>
+          <button class="cr-btn" onclick="crLoadCalendario()">↻ Aggiorna</button>
+        </div>
+        <div id="cr-social-stato" class="cr-status" style="margin-bottom:16px"></div>
+        <div id="cr-social-calendario"></div>
+      </div>
     </div>
 
     <div class="cr-panel" id="cr-pipeline">
