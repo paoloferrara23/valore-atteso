@@ -150,9 +150,17 @@ async function main() {
   console.log('Content Agent v3 avviato:', new Date().toISOString());
 
   // Leggi ultima edizione pubblicata
-  const eds = await supaFetch('/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=*');
-  if (!Array.isArray(eds) || !eds.length) throw new Error('Nessuna edizione pubblicata trovata');
-  const edizione = eds[0];
+  // Cerca prima bozze con contenuto, poi edizioni pubblicate
+  let edizione = null;
+  const bozze = await supaFetch('/rest/v1/editions?published=eq.false&order=created_at.desc&limit=5&select=*');
+  if (Array.isArray(bozze)) {
+    edizione = bozze.find(e => e.sections && e.sections.length > 0 && e.sections.some(s => s.body && s.body.length > 50)) || null;
+  }
+  if (!edizione) {
+    const eds = await supaFetch('/rest/v1/editions?published=eq.true&order=num.desc&limit=1&select=*');
+    if (!Array.isArray(eds) || !eds.length) throw new Error('Nessuna edizione trovata');
+    edizione = eds[0];
+  }
   console.log('Edizione:', edizione.num, edizione.title);
 
   // Leggi Scout brief per preview prossima settimana
