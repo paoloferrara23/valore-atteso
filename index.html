@@ -973,12 +973,19 @@ async function crSalvaModifiche(edId){
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
       body:JSON.stringify({title:title,sections:sections,date:date})});
     if(!r.ok)throw new Error('HTTP '+r.status);
-    st.className='cr-status ok';st.textContent='✓ Salvato correttamente.';
+    st.className='cr-status ok';st.innerHTML='✓ Salvato. Generazione calendario social in corso...';
     if(btn){btn.textContent='✓ Salvato';btn.style.background='#4a7c4e';}
+    fetch('/api/trigger-content',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD}})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(d.ok)st.innerHTML='✓ Salvato. Calendario social in generazione — vedi tab Social tra 2-3 min.';
+        else st.innerHTML='✓ Salvato. <span style="color:#8E6B33">Content Agent: '+esc(d.error||'')+'</span>';
+      })
+      .catch(function(){st.innerHTML='✓ Salvato.';});
     setTimeout(function(){
       st.style.display='none';
       if(btn){btn.disabled=false;btn.textContent=origTxt;btn.style.background='';}
-    },3000);
+    },6000);
   }catch(e){
     st.className='cr-status err';st.textContent='✗ Errore: '+e.message;
     if(btn){btn.disabled=false;btn.textContent=origTxt;}
