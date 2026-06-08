@@ -157,6 +157,15 @@ REGOLE ASSOLUTE:
 4. Se un dato non è nei dati Scout scrivi [dato da verificare]
 5. Sviluppa analiticamente i dati Scout, non aggiungerne di nuovi
 
+TONO E STILE — INDEROGABILE:
+6. Scrivi in modo analitico ma leggibile — non un report, non un comunicato stampa
+7. I dati finanziari devono essere nel testo ma non devono soffocarlo — ogni numero deve avere contesto
+8. Ogni sezione deve lasciare uno spunto di riflessione per un lettore M&A/PE/consulenza
+9. Le tre sezioni non devono contraddirsi né ripetere gli stessi dati
+10. Non citare mai Calcio e Finanza nel testo — è un competitor. Usa sempre le fonti primarie (bilanci ufficiali club, UEFA, FIGC, Deloitte, comunicati stampa)
+11. Il body di ogni sezione deve essere 220-300 parole — leggibile in 60-90 secondi
+12. Evita tecnicismi senza spiegazione — se usi un termine M&A (es. "basis point", "EBITDA"), contestualizzalo brevemente
+
 ${wikiContext}`;
 
     const writerPrompt = `Genera l'edizione #${draft.num} di Valore Atteso.
