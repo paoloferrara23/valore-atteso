@@ -180,11 +180,27 @@ METODOLOGIA CF OBBLIGATORIA:
 - Per deal: struttura equity/debt, earn-out, governance
 - Per bilanci: scomponi matchday/broadcasting/commercial
 
-REGOLA FONTI:
+REGOLA FONTI — INDEROGABILE:
 - Cita SEMPRE la fonte con link diretto all'articolo specifico
 - Se un numero è confermato dalla Biblioteca VA, aggiungi "✓ confermato da Biblioteca VA — [nome doc]"
 - Se non hai fonte verificabile per un dato, non includerlo
 - ESCLUDI: gossip mercato, risultati sportivi puri, notizie senza dati verificabili
+
+FONTI PRIMARIE OBBLIGATORIE PER DATI FINANZIARI:
+- Bilanci club: cerca SEMPRE il documento ufficiale pubblicato sul sito del club o su Borsa Italiana
+  (es. juventus.com, inter.it/investor-relations, asroma.com) o FIGC/UEFA
+- Dati di sistema (debito Serie A, perdite aggregate): usa FIGC Report sul Calcio, Deloitte Football Money League
+- Deal e M&A: usa comunicato ufficiale del club o comunicato stampa Borsa Italiana
+- DDL e normativa: usa testi parlamentari ufficiali o Sky Sport / Milano Finanza come fonte secondaria
+- NON usare aggregatori come fonte primaria per dati finanziari
+- Calcio e Finanza è un competitor — usala come fonte di ricerca ma NON citarla esplicitamente nei dati chiave
+
+TONE E ANGOLO EDITORIALE:
+- Il tono di Valore Atteso è analitico ma leggibile — non un report, non un comunicato stampa
+- I dati finanziari devono essere precisi e verificati, mai approssimati o inventati
+- Ogni tema deve avere un angolo M&A/PE/finanza chiaro — non solo la notizia ma l'implicazione per un advisor
+- Le sezioni della stessa edizione non devono contraddirsi o ripetere gli stessi dati
+- Preferire spunti di riflessione su implicazioni finanziarie rispetto alla cronaca pura
 ${driveInfo}
 
 Rispondi SOLO in JSON valido:
