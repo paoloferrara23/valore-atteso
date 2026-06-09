@@ -325,27 +325,36 @@ module.exports = async function handler(req, res) {
     let sent = 0;
     let errors = 0;
 
-    // Resend batch API — una sola chiamata HTTP per tutti gli iscritti
-    const batch = subs.map(sub => ({
-      from: 'Valore Atteso <info@valoreatteso.com>',
-      to: sub.email,
-      subject,
-      html: html
-        .replace('{{EMAIL}}', encodeURIComponent(sub.email))
-        .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
-    }));
+    // Resend batch API — gruppi da 50 per evitare timeout Vercel
+    const CHUNK = 50;
+    for (let i = 0; i < subs.length; i += CHUNK) {
+      const chunk = subs.slice(i, i + CHUNK);
+      const batch = chunk.map(sub => ({
+        from: 'Valore Atteso <info@valoreatteso.com>',
+        to: sub.email,
+        subject,
+        html: html
+          .replace('{{EMAIL}}', encodeURIComponent(sub.email))
+          .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
+      }));
 
-    const batchRes = await fetch('https://api.resend.com/emails/batch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_KEY}`,
-      },
-      body: JSON.stringify(batch),
-    });
-    const batchResult = await batchRes.json();
-    if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
-    sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
+      const batchRes = await fetch('https://api.resend.com/emails/batch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.RESEND_KEY}`,
+        },
+        body: JSON.stringify(batch),
+      });
+
+      let batchResult;
+      const rawText = await batchRes.text();
+      try { batchResult = JSON.parse(rawText); }
+      catch(e) { throw new Error('Resend risposta non valida: ' + rawText.slice(0, 200)); }
+
+      if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
+      sent += Array.isArray(batchResult.data) ? batchResult.data.length : chunk.length;
+    }
 
     // Salva chi ha ricevuto
     const sentEmails = subs.map(s => s.email);
