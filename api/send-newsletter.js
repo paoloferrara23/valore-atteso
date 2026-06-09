@@ -325,8 +325,8 @@ module.exports = async function handler(req, res) {
     let sent = 0;
     let errors = 0;
 
-    // Resend batch API — una sola chiamata HTTP per tutti gli iscritti
-    const batch = subs.map(sub => ({
+    // Resend — invio in 2 batch per rispettare timeout Vercel Hobby (10s)
+    const makeBatch = arr => arr.map(sub => ({
       from: 'Valore Atteso <info@valoreatteso.com>',
       to: sub.email,
       subject,
@@ -335,17 +335,22 @@ module.exports = async function handler(req, res) {
         .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`),
     }));
 
-    const batchRes = await fetch('https://api.resend.com/emails/batch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_KEY}`,
-      },
-      body: JSON.stringify(batch),
-    });
-    const _raw = await batchRes.text(); let batchResult; try { batchResult = JSON.parse(_raw); } catch(e) { throw new Error("Resend: " + _raw.slice(0,200)); }
-    if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
-    sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
+    async function sendBatch(arr) {
+      const res = await fetch('https://api.resend.com/emails/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.RESEND_KEY}` },
+        body: JSON.stringify(makeBatch(arr)),
+      });
+      const raw = await res.text();
+      let result;
+      try { result = JSON.parse(raw); } catch(e) { throw new Error('Resend: ' + raw.slice(0, 200)); }
+      if (!res.ok) throw new Error('Resend ' + res.status + ': ' + JSON.stringify(result));
+      return Array.isArray(result.data) ? result.data.length : arr.length;
+    }
+
+    const mid = Math.ceil(subs.length / 2);
+    sent += await sendBatch(subs.slice(0, mid));
+    sent += await sendBatch(subs.slice(mid));
 
     // Salva chi ha ricevuto
     const sentEmails = subs.map(s => s.email);
