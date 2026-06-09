@@ -32,9 +32,9 @@ function buildHtml(edition) {
     const rows = kpis.slice(0, 3).map((k, i) => {
       const border = i < Math.min(kpis.length, 3) - 1 ? 'border-right:1px solid #2C2C2A;' : '';
       const sub = k.sub ? `<div style="font-family:'Courier New',monospace;font-size:7px;color:rgba(200,169,122,0.6);margin-top:3px;">${esc(k.sub)}</div>` : '';
-      return `<td style="padding:14px 12px;${border}vertical-align:top;width:33%;">
-        <div style="font-family:Georgia,serif;font-size:16px;font-weight:900;color:#C8A97A;letter-spacing:-.3px;line-height:1.2;margin-bottom:5px;">${esc(k.value)}</div>
-        <div style="font-family:'Courier New',monospace;font-size:7px;color:rgba(255,255,255,0.5);letter-spacing:.06em;text-transform:uppercase;line-height:1.4;">${esc(k.label)}</div>
+      return `<td style="padding:12px 8px;${border}vertical-align:top;width:33%;">
+        <div style="font-family:Georgia,serif;font-size:15px;font-weight:900;color:#C8A97A;letter-spacing:-.3px;line-height:1.2;margin-bottom:5px;white-space:nowrap;">${esc(k.value)}</div>
+        <div style="font-family:'Courier New',monospace;font-size:7px;color:rgba(255,255,255,0.6);letter-spacing:.06em;text-transform:uppercase;line-height:1.4;">${esc(k.label)}</div>
         ${sub}
       </td>`;
     }).join('');
@@ -134,8 +134,8 @@ function buildHtml(edition) {
 @media only screen and (max-width:600px){
   table[width="640"]{width:100%!important;}
   .kpi-top td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
-  .kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;padding:12px 16px!important;}
-  .kpi-row td div:first-child{font-size:18px!important;}
+  .kpi-row td{padding:10px 8px!important;}
+  .kpi-row td div:first-child{font-size:13px!important;white-space:nowrap!important;}
   h1{font-size:20px!important;letter-spacing:-.5px!important;}
   h2.subtitle{font-size:14px!important;}
   h2.section-title{font-size:17px!important;}
@@ -194,13 +194,13 @@ function buildHtml(edition) {
       <p style="font-family:Georgia,serif;font-size:13px;color:rgba(240,235,225,0.88);font-style:italic;line-height:1.8;margin:0;font-weight:400;">${esc(opener)}</p>
     </div>` : ''}
     <div style="border-top:1px solid rgba(200,169,122,0.2);padding-top:16px;">
-      <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(200,169,122,0.6);letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px;">Condividi con un collega</p>
+      <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(240,235,225,0.6);letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px;">Condividi con un collega</p>
       <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
         <td style="width:50%;padding-right:6px;">
-          <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" style="display:block;background:rgba(200,169,122,0.15);color:#C8A97A;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;border:1px solid rgba(200,169,122,0.3);">WhatsApp →</a>
+          <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;">WhatsApp →</a>
         </td>
         <td style="width:50%;padding-left:6px;">
-          <a href="mailto:?subject=Valore%20Atteso%20%23${esc(num)}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" style="display:block;background:transparent;color:#C8A97A;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;border:1px solid rgba(200,169,122,0.3);">Email →</a>
+          <a href="mailto:?subject=Valore%20Atteso%20%23${esc(num)}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" style="display:block;background:transparent;color:#F4EFE6;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;border:1px solid rgba(240,235,225,0.4);font-weight:700;">Email →</a>
         </td>
       </tr></table>
     </div>
