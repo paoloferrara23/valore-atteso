@@ -194,7 +194,7 @@ function buildHtml(edition) {
       <p style="font-family:Georgia,serif;font-size:13px;color:rgba(240,235,225,0.88);font-style:italic;line-height:1.8;margin:0;font-weight:400;">${esc(opener)}</p>
     </div>` : ''}
     <div style="border-top:1px solid rgba(200,169,122,0.2);padding-top:16px;">
-      <p style="font-family:'Courier New',monospace;font-size:8px;color:rgba(240,235,225,0.6);letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px;">Condividi con un collega</p>
+      <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px;text-align:center;font-weight:700;">— Condividi con un collega —</p>
       <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
         <td style="width:50%;padding-right:6px;">
           <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;">WhatsApp →</a>
