@@ -703,6 +703,18 @@ async function crRunGate(num,st){
   st.innerHTML=`<div style="color:#4a7c4e;margin-bottom:6px"><strong>✓ Gate superato</strong> — ${summary.oks} check OK</div>${rows}`;
   return true;
 }
+async function crSendReminder(){
+  const st=document.getElementById('cr-reminder-status');
+  st.className='cr-status';st.style.display='block';st.textContent='Invio reminder in corso...';
+  try{
+    const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'reminder'})});
+    const t=await r.text();let d;try{d=JSON.parse(t);}catch(e){throw new Error(t.slice(0,200));}
+    if(r.ok&&d.ok){
+      st.className='cr-status ok';
+      st.textContent='✓ Reminder inviato a '+d.sent+' iscritti su '+d.total+' non confermati.';
+    }else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
 async function crRunGateOnly(){
   const num=document.getElementById('cr-gate-num').value.trim().padStart(3,'0');
   const st=document.getElementById('cr-gate-status');
@@ -1450,6 +1462,12 @@ loadLatestPreview();
       </div>
       <div class="cr-sec-title">Invia edizione esistente</div>
       <div class="cr-box"><div style="display:flex;gap:10px;flex-wrap:wrap"><input class="cr-input" id="cr-send-num" placeholder="es. 002"><button class="cr-btn" onclick="crSendExisting()">Invia a tutti</button><button class="cr-btn light" onclick="crSendTest()">▶ Invia test a me</button></div><div id="cr-send-status" class="cr-status"></div></div>
+      <div class="cr-sec-title">Iscritti non confermati</div>
+      <div class="cr-box">
+        <div style="font-size:13px;color:var(--ink2);margin-bottom:12px">Rimanda l'email di conferma a chi si è iscritto ma non ha ancora cliccato il link.</div>
+        <button class="cr-btn" onclick="crSendReminder()">↻ Invia reminder conferma</button>
+        <div id="cr-reminder-status" class="cr-status" style="margin-top:10px"></div>
+      </div>
       <div class="cr-sec-title">Verifica pre-invio</div>
       <div class="cr-box">
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
