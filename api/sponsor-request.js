@@ -8,12 +8,18 @@ const {
 const approveSponsor = require('../lib/approve-sponsor');
 const getSponsorRequest = require('../lib/get-sponsor-request');
 const listSponsorRequests = require('../lib/list-sponsor-requests');
+const reviewSponsorMaterials = require('../lib/review-sponsor-materials');
+const selectSponsorSlot = require('../lib/select-sponsor-slot');
+const updateSponsorStatus = require('../lib/update-sponsor-status');
 const uploadSponsorAssets = require('../lib/upload-sponsor-assets');
 
 const SPONSOR_ACTIONS = {
   approve: approveSponsor,
   get: getSponsorRequest,
   list: listSponsorRequests,
+  review: reviewSponsorMaterials,
+  selectSlot: selectSponsorSlot,
+  updateStatus: updateSponsorStatus,
   upload: uploadSponsorAssets
 };
 
