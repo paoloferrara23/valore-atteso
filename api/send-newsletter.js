@@ -38,9 +38,7 @@ function buildHtml(edition) {
         ${sub}
       </td>`;
     }).join('');
-    return `<table class="kpi-row" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1C1914;border:1px solid #2C2C2A;margin-bottom:18px;">
-      <tr>${rows}</tr>
-    </table>`;
+    return `<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1C1914" style="background:#1C1914;border:1px solid #2C2C2A;margin-bottom:18px;"><tr>${rows}</tr></table><![endif]--><!--[if !mso]><!--><table class="kpi-row" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1C1914" style="background:#1C1914;border:1px solid #2C2C2A;margin-bottom:18px;"><tr>${rows}</tr></table><!--<![endif]-->`;
   }
 
   function renderSection(sec, idx) {
@@ -60,7 +58,7 @@ function buildHtml(edition) {
     const verdictHtml = verdict ? `
       <div style="margin-top:18px;background:#1C1914;padding:18px 20px;border-left:4px solid #E8C87A;">
         <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#E8C87A;text-transform:uppercase;margin-bottom:10px;font-weight:700;">— La nostra lettura</div>
-        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFFFF;line-height:1.7;margin:0;font-weight:400;">${esc(verdict)}</p>
+        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFFFF;line-height:1.7;margin:0;font-weight:400;mso-line-height-rule:exactly;">${esc(verdict)}</p>
       </div>` : '';
 
     const bodyParas = Array.isArray(sec.body)
@@ -197,7 +195,7 @@ function buildHtml(edition) {
       <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px;text-align:center;font-weight:700;">— Condividi con un collega —</p>
       <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
         <td style="width:50%;padding-right:6px;">
-          <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;">WhatsApp →</a>
+          <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" bgcolor="#F4EFE6" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;mso-padding-alt:10px;">WhatsApp →</a>
         </td>
         <td style="width:50%;padding-left:6px;">
           <a href="mailto:?subject=Valore%20Atteso%20%23${esc(num)}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" style="display:block;background:transparent;color:#F4EFE6;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;border:1px solid rgba(240,235,225,0.4);font-weight:700;">Email →</a>
