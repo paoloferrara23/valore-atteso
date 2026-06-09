@@ -32,13 +32,13 @@ function buildHtml(edition) {
     const rows = kpis.slice(0, 3).map((k, i) => {
       const border = i < Math.min(kpis.length, 3) - 1 ? 'border-right:1px solid #CEC3B2;' : '';
       const sub = k.sub ? `<div style="font-family:'Courier New',monospace;font-size:7px;color:#9A9690;margin-top:3px;">${esc(k.sub)}</div>` : '';
-      return `<td style="padding:16px 18px;${border}vertical-align:top;width:33%;">
-        <div style="font-family:Georgia,serif;font-size:20px;font-weight:900;color:#1C1914;letter-spacing:-.5px;line-height:1;margin-bottom:5px;">${esc(k.value)}</div>
+      return `<td style="padding:14px 14px;${border}vertical-align:top;width:33%;">
+        <div style="font-family:Georgia,serif;font-size:16px;font-weight:900;color:#1C1914;letter-spacing:-.3px;line-height:1.2;margin-bottom:5px;word-break:keep-all;">${esc(k.value)}</div>
         <div style="font-family:'Courier New',monospace;font-size:7px;color:#777066;letter-spacing:.04em;text-transform:uppercase;line-height:1.4;">${esc(k.label)}</div>
         ${sub}
       </td>`;
     }).join('');
-    return `<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E7DFD2;border:1px solid #CEC3B2;margin-bottom:18px;">
+    return `<table class="kpi-row" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E7DFD2;border:1px solid #CEC3B2;margin-bottom:18px;">
       <tr>${rows}</tr>
     </table>`;
   }
@@ -127,7 +127,8 @@ function buildHtml(edition) {
 @media only screen and (max-width:600px){
   table[width="640"]{width:100%!important;}
   .kpi-top td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
-  .kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
+  .kpi-row td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;padding:12px 16px!important;}
+  .kpi-row td div:first-child{font-size:18px!important;}
   h1{font-size:20px!important;letter-spacing:-.5px!important;}
   h2.subtitle{font-size:14px!important;}
   h2.section-title{font-size:17px!important;}
@@ -179,7 +180,7 @@ function buildHtml(edition) {
 
   <!-- HERO -->
   <tr><td style="background:#1C1914;padding:32px 28px 28px;">
-    <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px;">— Questa settimana</div>
+    <div style="font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;color:#C8A97A;text-transform:uppercase;margin-bottom:12px;font-weight:700;">— Questa settimana</div>
     <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 8px;">${esc(title)}</h1>
     ${subtitle ? `<h2 class="subtitle" style="font-family:Georgia,serif;font-size:16px;font-weight:400;font-style:italic;color:#C8A97A;line-height:1.3;margin:0 0 18px;">${esc(subtitle)}</h2>` : ''}
     ${opener ? `<div style="border-left:2px solid rgba(200,169,122,0.3);padding-left:14px;">
