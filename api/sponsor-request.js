@@ -4,11 +4,27 @@ const {
   parseJsonBody,
   sendGmail,
   supabaseRequest
-} = require('./_sponsor-utils');
+} = require('../lib/sponsor-utils');
+const approveSponsor = require('../lib/approve-sponsor');
+const getSponsorRequest = require('../lib/get-sponsor-request');
+const listSponsorRequests = require('../lib/list-sponsor-requests');
+const uploadSponsorAssets = require('../lib/upload-sponsor-assets');
+
+const SPONSOR_ACTIONS = {
+  approve: approveSponsor,
+  get: getSponsorRequest,
+  list: listSponsorRequests,
+  upload: uploadSponsorAssets
+};
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 module.exports = async function handler(req, res) {
+  const action = String((req.query && req.query.action) || '');
+  if (SPONSOR_ACTIONS[action]) {
+    return SPONSOR_ACTIONS[action](req, res);
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
