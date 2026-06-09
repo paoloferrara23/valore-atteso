@@ -101,6 +101,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 
 /* KPI BAR */
 .art-kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream2);border-bottom:2px solid var(--ink);margin-bottom:0}
+.art-kpi-mobile{display:none;grid-template-columns:repeat(3,1fr);background:var(--ink);border:1px solid #2C2C2A;margin-bottom:16px;width:100%}
+.art-kpi-mobile-cell{padding:10px 8px;border-right:1px solid #2C2C2A}
+.art-kpi-mobile-cell:last-child{border-right:none}
+.art-kpi-mobile-val{font-family:var(--sf);font-size:14px;font-weight:700;color:#E8C87A;white-space:nowrap;line-height:1.2;margin-bottom:4px}
+.art-kpi-mobile-label{font-family:var(--mn);font-size:6px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,0.75);line-height:1.4}
+.art-kpi-mobile-sub{font-family:var(--mn);font-size:6px;color:rgba(255,255,255,0.5);margin-top:2px}
 .art-kpi-cell{padding:20px 24px;border-right:1px solid var(--rule);position:relative}
 .art-kpi-cell:last-child{border-right:none}
 .art-kpi-sezione{font-family:var(--mn);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);margin-bottom:5px;font-weight:700}
@@ -196,6 +202,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
   .art-kpi-sub{font-size:7px!important;line-height:1.3!important}
   .art-kpi-sezione{font-size:6px!important;letter-spacing:.08em!important}
   .art-kpi-fonte{display:none!important}
+  /* KPI mobile: griglia inline sotto titolo */
+  .art-sec-grid{display:block!important}
+  .art-sec-right{display:none!important}
+  .art-kpi-mobile{display:grid!important}
+  .art-sec-body-col{width:100%!important}
   .art-sec-header{padding:20px 20px 0}
   .art-sec-title,.art-sec-subtitle{padding:0 20px}
   .art-sec-grid{grid-template-columns:1fr;padding:0 20px 24px}
@@ -639,6 +650,33 @@ async function openArt(num){
       const rawKpis = s.kpis?.length ? s.kpis : (s.kpi_rows || []);
           const kpiRows = rawKpis.map(k => ({...k, key: k.key || k.label || ''}));
       const hasRight = kpiRows.length || s.bars?.length || s.insight || s.note_box;
+
+      // KPI mobile — griglia orizzontale sotto il titolo (nascosta su desktop)
+      if(kpiRows.length){
+        const kpiMobile = document.createElement('div');
+        kpiMobile.className = 'art-kpi-mobile';
+        kpiRows.slice(0,3).forEach((k,ki) => {
+          const cell = document.createElement('div');
+          cell.className = 'art-kpi-mobile-cell';
+          const valEl = document.createElement('div');
+          valEl.className = 'art-kpi-mobile-val';
+          valEl.textContent = txt(k.value || '');
+          const lblEl = document.createElement('div');
+          lblEl.className = 'art-kpi-mobile-label';
+          lblEl.textContent = txt(k.key || k.label || '');
+          cell.appendChild(valEl);
+          cell.appendChild(lblEl);
+          if(k.sub){
+            const subEl = document.createElement('div');
+            subEl.className = 'art-kpi-mobile-sub';
+            subEl.textContent = txt(k.sub);
+            cell.appendChild(subEl);
+          }
+          kpiMobile.appendChild(cell);
+        });
+        sec.appendChild(kpiMobile);
+      }
+
       const grid = document.createElement('div');
       grid.className = 'art-sec-grid';
 
