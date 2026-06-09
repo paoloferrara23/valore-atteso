@@ -218,13 +218,26 @@ async function conferma(){
 
   const params = new URLSearchParams(window.location.search);
 
-  const token = params.get('token');
-  const email = params.get('email');
+  // Decode robusto per Outlook Safe Links che può alterare i parametri URL
+  let token = params.get('token');
+  let email = params.get('email');
+
+  // Prova anche a decodificare doppiamente (Outlook a volte double-encoda)
+  if(token) token = decodeURIComponent(token.trim());
+  if(email) email = decodeURIComponent(email.trim());
+
+  // Outlook Safe Links: prova a estrarre l'URL originale se presente
+  const urlParam = params.get('url') || params.get('originalurl');
+  if(urlParam && !token) {
+    try {
+      const originalUrl = new URL(decodeURIComponent(urlParam));
+      token = originalUrl.searchParams.get('token');
+      email = originalUrl.searchParams.get('email');
+    } catch(e) {}
+  }
 
   if(!token){
-
     showError("Nessun token trovato nell'URL.");
-
     return;
   }
 
