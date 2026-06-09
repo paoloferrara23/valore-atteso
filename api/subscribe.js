@@ -47,6 +47,56 @@ module.exports = async function handler(req, res) {
   const FROM = 'Valore Atteso <info@valoreatteso.com>';
   const { email, action, token } = req.body || {};
 
+  // ── REMINDER — rimanda conferma a non confermati ─────────────────────────
+  if (action === 'reminder') {
+    if (req.headers['x-cr-token'] !== (process.env.CR_PASSWORD || 'valopro2025')) {
+      return res.status(401).json({ error: 'Non autorizzato' });
+    }
+    const { data: pending } = await supabase
+      .from('subscribers')
+      .select('email, token')
+      .eq('confirmed', false);
+
+    if (!pending || !pending.length) return res.status(200).json({ ok: true, sent: 0 });
+
+    let sent = 0;
+    for (const sub of pending) {
+      const tok = sub.token || require('crypto').randomUUID();
+      if (!sub.token) {
+        await supabase.from('subscribers').update({ token: tok }).eq('email', sub.email);
+      }
+      const html = `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#D8D0C4">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#D8D0C4"><tr><td align="center">
+<table width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#F0EBE1">
+  <tr><td style="background:#F0EBE1;padding:18px 28px 16px;border-bottom:3px solid #1C1914">
+    <table cellpadding="0" cellspacing="0"><tr>
+      <td style="width:34px;height:34px;border:2px solid #1C1914;text-align:center;vertical-align:middle;font-family:'Courier New',monospace;font-size:10px;font-weight:700;color:#1C1914">VA</td>
+      <td style="padding-left:14px">
+        <div style="font-family:Georgia,serif;font-size:22px;font-weight:900;letter-spacing:-1px;color:#1C1914">VALORE ATTESO</div>
+        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;margin-top:2px">Il calcio dei numeri, non dei goal.</div>
+      </td>
+    </tr></table>
+  </td></tr>
+  <tr><td bgcolor="#1C1914" style="background:#1C1914;padding:32px 28px">
+    <h1 style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#FFFDF8;margin:0 0 16px">Hai dimenticato di confermare</h1>
+    <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 24px">Ti sei iscritto a Valore Atteso ma non hai ancora confermato la tua email. Clicca qui sotto per completare l'iscrizione.</p>
+    <!--[if mso]><table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A97A" style="background:#C8A97A;padding:12px 28px;"><![endif]--><a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(sub.email)}" bgcolor="#C8A97A" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;mso-padding-alt:12px 28px;">Conferma iscrizione →</a><!--[if mso]></td></tr></table><![endif]-->
+    <p style="font-family:Georgia,serif;font-size:12px;color:rgba(240,235,225,0.35);margin:20px 0 0">Il link scade fra 7 giorni. Se non vuoi ricevere questa newsletter ignora questa email.</p>
+  </td></tr>
+</table></td></tr></table>
+</body></html>`;
+
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
+        body: JSON.stringify({ from: FROM, to: sub.email, subject: 'Hai dimenticato di confermare la tua iscrizione a Valore Atteso', html })
+      });
+      if (r.ok) sent++;
+    }
+    return res.status(200).json({ ok: true, sent, total: pending.length });
+  }
+
   // ── CONFERMA ISCRIZIONE ─────────────────────────────────────────────────
   if (action === 'conferma' && token) {
     const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`, {
