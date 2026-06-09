@@ -58,9 +58,9 @@ function buildHtml(edition) {
 
     const verdict = toSentenceCase(sec.verdict || '');
     const verdictHtml = verdict ? `
-      <div style="margin-top:18px;background:#1C1914;padding:18px 20px;border-left:3px solid #C8A97A;">
-        <div style="font-family:'Courier New',monospace;font-size:7px;letter-spacing:.16em;color:#C8A97A;text-transform:uppercase;margin-bottom:10px;">— La nostra lettura</div>
-        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFDF8;line-height:1.65;margin:0;font-weight:400;">${esc(verdict)}</p>
+      <div style="margin-top:18px;background:#1C1914;padding:18px 20px;border-left:4px solid #E8C87A;">
+        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#E8C87A;text-transform:uppercase;margin-bottom:10px;font-weight:700;">— La nostra lettura</div>
+        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFFFF;line-height:1.7;margin:0;font-weight:400;">${esc(verdict)}</p>
       </div>` : '';
 
     const bodyParas = Array.isArray(sec.body)
