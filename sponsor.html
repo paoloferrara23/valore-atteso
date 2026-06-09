@@ -90,6 +90,13 @@ button,input,textarea,select{font:inherit}
 .pkg-badge{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:999px;font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(200,169,122,.14);color:var(--deepgold);border:1px solid rgba(200,169,122,.28)}
 .pkg-cta-wrap{text-align:center;margin-top:36px}
 .pkg-cta-wrap .cta-btn[disabled]{opacity:.35;pointer-events:none;background:var(--ink)}
+.pkg-group{margin-bottom:36px}
+.pkg-group-label{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.pkg-group-label span{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-weight:600}
+.pkg-group-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.pkg-group-label.nl span{color:var(--deepgold)}
+.pkg-group-label.si span{color:#3B6E9A}
+.pkg-group-label.bu span{color:var(--green)}
 
 /* ── PREVIEW ── */
 .prev-section{background:var(--cream2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
@@ -252,64 +259,84 @@ footer{background:var(--cream2);border-top:1px solid var(--rule);margin-top:24px
     <p class="lead">Sei formati pensati per massimizzare la visibilità sul tuo target: decision maker nel finance e sport business.</p>
   </div>
 
-  <div class="pkg-grid">
+  <!-- GRUPPO: NEWSLETTER -->
+  <div class="pkg-group">
+    <div class="pkg-group-label nl"><span>Newsletter</span></div>
+    <div class="pkg-grid">
 
-    <div class="pkg" id="pk-logo" onclick="pickPkg('logo')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Newsletter</div>
-      <div class="pkg-name">Logo + link</div>
-      <div class="pkg-desc">Il tuo logo e un link tracciato nell'header di una singola edizione. Visibilità di brand immediata.</div>
-      <div class="pkg-price">€150 <span>/ edizione</span></div>
-      <ul class="pkg-list"><li>Logo in evidenza</li><li>Link tracciato</li><li>1 edizione</li></ul>
+      <div class="pkg" id="pk-logo" onclick="pickPkg('logo')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Entry level</div>
+        <div class="pkg-name">Logo + link</div>
+        <div class="pkg-desc">Il tuo logo nell'header della newsletter con link tracciato. Visibilità di brand immediata su ogni apertura.</div>
+        <div class="pkg-price">€200 <span>/ edizione</span></div>
+        <ul class="pkg-list"><li>Logo in evidenza</li><li>Link tracciato</li><li>1 edizione</li></ul>
+      </div>
+
+      <div class="pkg" id="pk-mention" onclick="pickPkg('mention')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Editoriale</div>
+        <div class="pkg-name">Menzione editoriale</div>
+        <div class="pkg-desc">1-2 righe nel tono di VA, integrate nel flusso editoriale. Il tuo messaggio letto come contenuto, non come pubblicità.</div>
+        <div class="pkg-price">€300 <span>/ edizione</span></div>
+        <ul class="pkg-list"><li>Tono editoriale coerente</li><li>Max 2 righe + link</li><li>1 edizione</li></ul>
+      </div>
+
+      <div class="pkg" id="pk-sez" onclick="pickPkg('sez')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Premium</div>
+        <div class="pkg-name">Sezione dedicata</div>
+        <div class="pkg-desc">Una sezione completa con il tuo contenuto: 300 parole, logo, CTA. Posizione fissa tra le sezioni editoriali.</div>
+        <div class="pkg-price">€500 <span>/ edizione</span></div>
+        <ul class="pkg-list"><li>Fino a 300 parole</li><li>Logo + CTA inclusi</li><li>Posizione fissa</li></ul>
+        <span class="pkg-badge">Più scelto</span>
+      </div>
+
     </div>
+  </div>
 
-    <div class="pkg" id="pk-mention" onclick="pickPkg('mention')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Newsletter</div>
-      <div class="pkg-name">Menzione editoriale</div>
-      <div class="pkg-desc">Una o due righe curate nel tono di VA, integrate nel flusso editoriale. Naturale, non invasivo.</div>
-      <div class="pkg-price">€300 <span>/ edizione</span></div>
-      <ul class="pkg-list"><li>Tono editoriale coerente</li><li>Max 2 righe + link</li><li>1 edizione</li></ul>
+  <!-- GRUPPO: SITO -->
+  <div class="pkg-group">
+    <div class="pkg-group-label si"><span>Sito web</span></div>
+    <div class="pkg-grid" style="grid-template-columns:1fr 1fr;max-width:760px">
+
+      <div class="pkg" id="pk-week" onclick="pickPkg('week')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Breve durata</div>
+        <div class="pkg-name">Sponsor settimana</div>
+        <div class="pkg-desc">Banner fisso su valoreatteso.com per 7 giorni, visibile su tutte le pagine del sito.</div>
+        <div class="pkg-price">€200 <span>/ settimana</span></div>
+        <ul class="pkg-list"><li>Banner su tutte le pagine</li><li>7 giorni consecutivi</li><li>Link tracciato</li></ul>
+      </div>
+
+      <div class="pkg" id="pk-month" onclick="pickPkg('month')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Presenza continuativa</div>
+        <div class="pkg-name">Sponsor mese</div>
+        <div class="pkg-desc">30 giorni di visibilità su homepage, archivio e tutte le pagine delle edizioni pubblicate.</div>
+        <div class="pkg-price">€500 <span>/ mese</span></div>
+        <ul class="pkg-list"><li>Homepage + archivio</li><li>30 giorni</li><li>Report visibilità</li></ul>
+      </div>
+
     </div>
+  </div>
 
-    <div class="pkg" id="pk-sez" onclick="pickPkg('sez')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Newsletter · <span style="color:var(--deepgold)">Premium</span></div>
-      <div class="pkg-name">Sezione dedicata</div>
-      <div class="pkg-desc">Una sezione completa con il tuo contenuto: 300 parole, logo, CTA. Posizionamento fisso tra le sezioni editoriali.</div>
-      <div class="pkg-price">€500 <span>/ edizione</span></div>
-      <ul class="pkg-list"><li>Fino a 300 parole</li><li>Logo + CTA inclusi</li><li>Posizione fissa</li></ul>
-      <span class="pkg-badge">Più scelto</span>
+  <!-- GRUPPO: COMPLETO -->
+  <div class="pkg-group">
+    <div class="pkg-group-label bu"><span>Newsletter + Sito</span></div>
+    <div style="max-width:480px">
+
+      <div class="pkg" id="pk-bundle" onclick="pickPkg('bundle')">
+        <div class="pkg-check">✓</div>
+        <div class="pkg-type">Massima visibilità</div>
+        <div class="pkg-name">Bundle completo</div>
+        <div class="pkg-desc">4× menzione editoriale al mese nella newsletter + sponsor sito per 30 giorni. Il modo più efficace per essere presenti su tutto Valore Atteso.</div>
+        <div class="pkg-price">€900 <span>/ mese</span></div>
+        <ul class="pkg-list"><li>4× newsletter / mese</li><li>Sito per 30 giorni</li><li>Risparmio €500 vs singoli</li></ul>
+        <span class="pkg-badge">Miglior rapporto</span>
+      </div>
+
     </div>
-
-    <div class="pkg" id="pk-week" onclick="pickPkg('week')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Sito web</div>
-      <div class="pkg-name">Sponsor settimana</div>
-      <div class="pkg-desc">Banner fisso su valoreatteso.com per 7 giorni consecutivi, visibile su tutte le pagine del sito.</div>
-      <div class="pkg-price">€200 <span>/ settimana</span></div>
-      <ul class="pkg-list"><li>Banner su tutte le pagine</li><li>7 giorni consecutivi</li><li>Link tracciato</li></ul>
-    </div>
-
-    <div class="pkg" id="pk-month" onclick="pickPkg('month')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Sito web</div>
-      <div class="pkg-name">Sponsor mese</div>
-      <div class="pkg-desc">30 giorni di visibilità premium su valoreatteso.com: homepage, archivio e tutte le pagine dell'edizione.</div>
-      <div class="pkg-price">€500 <span>/ mese</span></div>
-      <ul class="pkg-list"><li>Homepage + archivio</li><li>30 giorni</li><li>Report visibilità</li></ul>
-    </div>
-
-    <div class="pkg" id="pk-bundle" onclick="pickPkg('bundle')">
-      <div class="pkg-check">✓</div>
-      <div class="pkg-type">Bundle · <span style="color:var(--deepgold)">Best value</span></div>
-      <div class="pkg-name">Bundle completo</div>
-      <div class="pkg-desc">4× menzione editoriale ogni mese + sito sponsor per 30 giorni. La massima visibilità possibile sul target.</div>
-      <div class="pkg-price">€900 <span>/ mese</span></div>
-      <ul class="pkg-list"><li>4× newsletter / mese</li><li>Sito 30 giorni</li><li>Risparmio €700 vs singoli</li></ul>
-      <span class="pkg-badge">Miglior rapporto</span>
-    </div>
-
   </div>
 
   <div class="pkg-cta-wrap">
@@ -365,7 +392,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule);margin-top:24px
         <label>Formato *</label>
         <select id="ff">
           <option value="">— Scegli il formato —</option>
-          <option value="logo">Logo + link — €150/edizione</option>
+          <option value="logo">Logo + link — €200/edizione</option>
           <option value="mention">Menzione editoriale — €300/edizione</option>
           <option value="sez">Sezione dedicata — €500/edizione</option>
           <option value="week">Sponsor settimana sito — €200/settimana</option>
@@ -427,7 +454,7 @@ const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
 
 const PKGS={
-  logo:  {label:'Logo + link',        price:'€150', unit:'edizione', causale:'Sponsorizzazione VA – Logo newsletter'},
+  logo:  {label:'Logo + link',        price:'€200', unit:'edizione', causale:'Sponsorizzazione VA – Logo newsletter'},
   mention:{label:'Menzione editoriale',price:'€300', unit:'edizione', causale:'Sponsorizzazione VA – Menzione editoriale'},
   sez:   {label:'Sezione dedicata',   price:'€500', unit:'edizione', causale:'Sponsorizzazione VA – Sezione dedicata'},
   week:  {label:'Sponsor sito 7gg',   price:'€200', unit:'settimana',causale:'Sponsorizzazione VA – Sponsor sito settimanale'},
