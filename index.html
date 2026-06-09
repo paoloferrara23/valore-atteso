@@ -715,7 +715,8 @@ async function crConfirmSend(num,btn){
   st.innerHTML='Invio in corso...';
   try{
     const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:num})});
-    const d=await r.json();
+    
+    const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Edizione '+(d.edition||num)+' inviata a <strong>'+d.sent+'</strong> iscritti.';}
     else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -730,7 +731,8 @@ async function crSendExisting(){
     if(!ok)return;
     st.textContent='Invio in corso...';
     const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:num})});
-    const d=await r.json();
+    
+    const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Edizione '+(d.edition||num)+' inviata a <strong>'+d.sent+'</strong> iscritti.';}
     else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -839,7 +841,8 @@ async function crInviaBozza(num,id){
     if(!ok)return;
     st.textContent='Invio...';
     const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:padded})});
-    const d=await r.json();
+    
+    const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';}
     else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -1306,7 +1309,8 @@ async function crInviaBozza(num,id){
     if(!ok)return;
     st.textContent='Invio...';
     const r=await fetch('/api/send-newsletter',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({edition_num:padded})});
-    const d=await r.json();
+    
+    const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';}
     else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
