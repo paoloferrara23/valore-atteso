@@ -80,12 +80,12 @@ module.exports = async function handler(req, res) {
       </td>
     </tr></table>
   </td></tr>
-  <tr><td style="background:#1C1914;padding:32px 28px 28px">
+  <tr><td bgcolor="#1C1914" style="background:#1C1914;padding:32px 28px 28px">
     <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#8E6B33;text-transform:uppercase;margin-bottom:12px">— Benvenuto</div>
     <h1 style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#FFFDF8;line-height:1.1;letter-spacing:-1px;margin:0 0 16px">Analisi, non rumore.</h1>
     <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 14px">Ogni martedì mattina trovi nella tua inbox un bilancio analizzato, un deal sezionato e una metrica spiegata. In 8 minuti, con il caffè, prima di una riunione.</p>
     <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 26px">Esplora le analisi già pubblicate nell'archivio.</p>
-    <a href="${SITE}/archivio.html" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none">Vai all'archivio →</a>
+    <!--[if mso]><table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A97A" style="background:#C8A97A;padding:12px 28px;"><![endif]--><a href="${SITE}/archivio.html" bgcolor="#C8A97A" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;mso-padding-alt:12px 28px;">Vai all'archivio →</a><!--[if mso]></td></tr></table><![endif]-->
   </td></tr>
   <tr><td style="background:#E7DFD2;border-top:3px solid #1C1914;padding:16px 28px;text-align:center">
     <p style="font-family:'Courier New',monospace;font-size:8.5px;color:#9A9690;margin:0">Per cancellarti <a href="${SITE}/api/unsubscribe?token=${unsubToken}" style="color:#777066">clicca qui</a>.</p>
@@ -136,10 +136,10 @@ module.exports = async function handler(req, res) {
       </td>
     </tr></table>
   </td></tr>
-  <tr><td style="background:#1C1914;padding:32px 28px">
+  <tr><td bgcolor="#1C1914" style="background:#1C1914;padding:32px 28px">
     <h1 style="font-family:Georgia,serif;font-size:22px;font-weight:900;color:#FFFDF8;margin:0 0 16px">Conferma la tua iscrizione</h1>
     <p style="font-family:Georgia,serif;font-size:14px;color:rgba(240,235,225,0.75);font-weight:300;line-height:1.85;margin:0 0 24px">Clicca il pulsante qui sotto per completare l'iscrizione a Valore Atteso.</p>
-    <a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none">Conferma iscrizione →</a>
+    <!--[if mso]><table cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#C8A97A" style="background:#C8A97A;padding:12px 28px;"><![endif]--><a href="${SITE}/conferma.html?token=${tok}&email=${encodeURIComponent(email)}" bgcolor="#C8A97A" style="display:inline-block;background:#C8A97A;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;text-decoration:none;mso-padding-alt:12px 28px;">Conferma iscrizione →</a><!--[if mso]></td></tr></table><![endif]-->
     <p style="font-family:Georgia,serif;font-size:12px;color:rgba(240,235,225,0.35);margin:20px 0 0">Il link scade fra 7 giorni.</p>
   </td></tr>
 </table></td></tr></table>
