@@ -1,68 +1,63 @@
-const { Resend } = require('resend');
+const crypto = require('crypto');
+const {
+  escapeHtml,
+  parseJsonBody,
+  sendGmail,
+  supabaseRequest
+} = require('./_sponsor-utils');
 
-const resend = new Resend(process.env.RESEND_KEY);
-
-function esc(s) {
-  return String(s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({
-      ok: false,
-      error: 'Method not allowed'
-    });
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
   try {
-    const {
-      name,
-      company,
-      email,
-      format,
-      notes
-    } = req.body || {};
+    const { name, company, email, format, notes } = parseJsonBody(req);
+    const clean = {
+      contact_name: String(name || '').trim(),
+      company: String(company || '').trim(),
+      email: String(email || '').trim().toLowerCase(),
+      format: String(format || '').trim(),
+      notes: String(notes || '').trim()
+    };
 
-    if (!name || !company || !email || !format) {
-      return res.status(400).json({
-        ok: false,
-        error: 'Campi obbligatori mancanti'
-      });
+    if (!clean.contact_name || !clean.company || !clean.format || !EMAIL_RE.test(clean.email)) {
+      return res.status(400).json({ ok: false, error: 'Controlla i campi obbligatori' });
     }
 
-    await resend.emails.send({
-      from: 'Valore Atteso <info@valoreatteso.com>',
+    const token = crypto.randomBytes(32).toString('hex');
+    await supabaseRequest('/rest/v1/sponsor_requests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ ...clean, status: 'new', token })
+    });
+
+    await sendGmail({
       to: 'info@valoreatteso.com',
-      reply_to: email,
-      subject: `Nuova richiesta sponsorizzazione — ${company}`,
+      replyTo: clean.email,
+      subject: `Nuova richiesta sponsor - ${clean.company}`,
       html: `
-        <div style="font-family:Arial,sans-serif;background:#F0EBE1;padding:28px;color:#1C1914">
-          <h2 style="margin:0 0 18px">Nuova richiesta sponsorizzazione</h2>
-
-          <p><strong>Nome:</strong> ${esc(name)}</p>
-          <p><strong>Azienda:</strong> ${esc(company)}</p>
-          <p><strong>Email:</strong> ${esc(email)}</p>
-          <p><strong>Formato:</strong> ${esc(format)}</p>
-
-          <p><strong>Note:</strong></p>
-          <p style="white-space:pre-line">${esc(notes || 'Nessuna nota')}</p>
+        <div style="font-family:Arial,sans-serif;color:#1C1914">
+          <h2>Nuova richiesta sponsor</h2>
+          <p><strong>Azienda:</strong> ${escapeHtml(clean.company)}</p>
+          <p><strong>Contatto:</strong> ${escapeHtml(clean.contact_name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(clean.email)}</p>
+          <p><strong>Formato:</strong> ${escapeHtml(clean.format)}</p>
+          <p><strong>Note:</strong><br>${escapeHtml(clean.notes || 'Nessuna nota')}</p>
+          <p>La richiesta deve essere approvata manualmente prima di contattare lo sponsor.</p>
         </div>
       `
     });
 
-    return res.status(200).json({
-      ok: true
-    });
-
-  } catch (err) {
-    console.error('[sponsor-request]', err);
-
-    return res.status(500).json({
-      ok: false,
-      error: err.message
-    });
+    return res.status(200).json({ ok: true });
+  } catch (error) {
+    console.error('[sponsor-request]', error);
+    return res.status(500).json({ ok: false, error: 'Errore durante la gestione della richiesta' });
   }
 };
