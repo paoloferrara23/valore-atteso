@@ -325,7 +325,7 @@ module.exports = async function handler(req, res) {
     let sent = 0;
     let errors = 0;
 
-    // Resend batch API — invio unico
+    // Resend batch API — una sola chiamata HTTP per tutti gli iscritti
     const batch = subs.map(sub => ({
       from: 'Valore Atteso <info@valoreatteso.com>',
       to: sub.email,
@@ -343,12 +343,11 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify(batch),
     });
-
     const rawText = await batchRes.text();
     let batchResult;
     try { batchResult = JSON.parse(rawText); }
-    catch(e) { throw new Error('Resend risposta non valida: ' + rawText.slice(0, 200)); }
-    if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
+    catch(e) { throw new Error('Resend: ' + rawText.slice(0, 300)); }
+    if (!batchRes.ok) throw new Error('Resend error ' + batchRes.status + ': ' + JSON.stringify(batchResult));
     sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
 
     // Salva chi ha ricevuto
