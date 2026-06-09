@@ -49,11 +49,13 @@ module.exports = async function handler(req, res) {
       .update({ confirmed: false, unsub_token: null })
       .eq('email', email);
 
-    await supabase.from('agent_runs').insert({
-      agent: 'unsubscribe', status: 'success',
-      summary: `Iscritto cancellato: ${email}`,
-      data: { email, method: token ? 'token' : 'email' }
-    }).catch(() => {});
+    try {
+      await supabase.from('agent_runs').insert({
+        agent: 'unsubscribe', status: 'success',
+        summary: `Iscritto cancellato: ${email}`,
+        data: { email, method: token ? 'token' : 'email' }
+      });
+    } catch(e) { /* non bloccante */ }
 
     if (req.method === 'GET') return res.redirect(302, `${SITE}/cancella.html?done=1`);
     return res.status(200).json({ ok: true });
