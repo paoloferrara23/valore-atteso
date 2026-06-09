@@ -411,16 +411,46 @@ async function crLoadSponsors(){
       return;
     }
     el.innerHTML=d.requests.map(function(item){
+      const asset=Array.isArray(item.sponsor_assets)?item.sponsor_assets[0]:item.sponsor_assets;
       const canApprove=item.status==='new';
+      const hasSlot=!!item.selected_slot_id;
+      const isPaid=item.payment_status==='received';
+      const materialsUploaded=item.materials_status==='uploaded';
+      const materialsApproved=item.materials_status==='approved';
+      const canMarkPaid=hasSlot&&!isPaid&&item.status!=='scheduled';
+      const canReview=isPaid&&materialsUploaded;
+      const canSchedule=isPaid&&materialsApproved&&item.status!=='scheduled';
+      const amount=item.amount?new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(item.amount):'—';
+      const scheduled=item.scheduled_date?new Date(item.scheduled_date+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}):'—';
+      const actions=[
+        canApprove?'<button class="cr-btn gold" onclick="crApproveSponsor(\''+item.id+'\',this)">Approva richiesta</button>':'',
+        canMarkPaid?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'mark_paid\',this)">Segna pagamento ricevuto</button>':'',
+        canReview?'<button class="cr-btn gold" onclick="crReviewSponsor(\''+item.id+'\',\'approve\',this)">Approva materiali</button>':'',
+        canReview?'<button class="cr-btn light" onclick="crReviewSponsor(\''+item.id+'\',\'changes\',this)">Richiedi modifiche</button>':'',
+        canSchedule?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'schedule\',this)">Programma uscita</button>':''
+      ].filter(Boolean).join(' ');
       return '<div class="cr-box" style="margin-bottom:10px">'+
         '<div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap">'+
-          '<div><div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold)">'+esc(item.status||'new')+'</div>'+
+          '<div style="flex:1;min-width:260px"><div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold)">'+esc((item.status||'new').replaceAll('_',' '))+'</div>'+
           '<div style="font-family:var(--sf);font-size:1.25rem;font-weight:600">'+esc(item.company)+'</div>'+
           '<div style="font-size:13px;color:var(--ink2)">'+esc(item.contact_name)+' · '+esc(item.email)+'</div>'+
           '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:6px">'+esc(item.format)+' · '+new Date(item.created_at).toLocaleString('it-IT')+'</div>'+
           (item.notes?'<div style="font-size:13px;color:var(--ink2);margin-top:10px">'+esc(item.notes)+'</div>':'')+'</div>'+
-          (canApprove?'<button class="cr-btn gold" onclick="crApproveSponsor(\''+item.id+'\',this)">Approva</button>':'<span style="font-family:var(--mn);font-size:9px;color:var(--muted)">Nessuna azione</span>')+
-        '</div></div>';
+          '<div style="min-width:220px;background:var(--cream);border:1px solid var(--rule);border-radius:12px;padding:12px">'+
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:var(--mn);font-size:8px;color:var(--muted)">'+
+              '<div>Slot<br><strong style="color:var(--ink)">'+esc(item.slot_type||'—')+'</strong></div>'+
+              '<div>Data<br><strong style="color:var(--ink)">'+esc(scheduled)+'</strong></div>'+
+              '<div>Importo<br><strong style="color:var(--ink)">'+esc(amount)+'</strong></div>'+
+              '<div>Pagamento<br><strong style="color:var(--ink)">'+esc(item.payment_status||'not_requested')+'</strong></div>'+
+            '</div></div>'+
+        '</div>'+
+        (asset?'<div style="display:grid;grid-template-columns:100px 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--rule)">'+
+          (asset.logo_signed_url?'<img src="'+esc(asset.logo_signed_url)+'" alt="Logo sponsor" style="width:100px;height:80px;object-fit:contain;background:white;border:1px solid var(--rule);border-radius:10px">':'<div></div>')+
+          '<div><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);text-transform:uppercase">Materiali · '+esc(item.materials_status||'pending')+'</div>'+
+          '<strong>'+esc(asset.headline)+'</strong><div style="font-size:13px;color:var(--ink2);margin-top:5px">'+esc(asset.body)+'</div>'+
+          '<a href="'+esc(asset.cta_url)+'" target="_blank" style="font-family:var(--mn);font-size:8px;text-decoration:underline">'+esc(asset.cta_url)+'</a></div></div>':'')+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+(actions||'<span style="font-family:var(--mn);font-size:9px;color:var(--muted)">In attesa del prossimo passaggio</span>')+'</div>'+
+        '</div>';
     }).join('');
   }catch(e){
     el.innerHTML='';
@@ -428,6 +458,36 @@ async function crLoadSponsors(){
     status.style.display='block';
     status.textContent='Errore: '+e.message;
   }
+}
+
+async function crReviewSponsor(id,decision,button){
+  let message='';
+  if(decision==='changes'){
+    message=prompt('Quali modifiche deve apportare lo sponsor?')||'';
+    if(!message)return;
+  }
+  const status=document.getElementById('cr-sponsor-status');
+  button.disabled=true;status.className='cr-status';status.style.display='block';
+  status.textContent=decision==='approve'?'Approvazione materiali in corso...':'Invio richiesta modifiche...';
+  try{
+    const r=await fetch('/api/review-sponsor-materials',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({request_id:id,decision,message})});
+    const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    status.className='cr-status ok';status.textContent=decision==='approve'?'Materiali approvati. Email inviata allo sponsor.':'Modifiche richieste. Email inviata allo sponsor.';
+    crLoadSponsors();
+  }catch(e){button.disabled=false;status.className='cr-status err';status.textContent='Errore: '+e.message}
+}
+
+async function crSponsorStatus(id,action,button){
+  const labels={mark_paid:'Confermi di aver ricevuto il pagamento?',schedule:'Confermi la programmazione dello slot selezionato?'};
+  if(!confirm(labels[action]))return;
+  const status=document.getElementById('cr-sponsor-status');
+  button.disabled=true;status.className='cr-status';status.style.display='block';status.textContent='Aggiornamento in corso...';
+  try{
+    const r=await fetch('/api/update-sponsor-status',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({request_id:id,action})});
+    const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    status.className='cr-status ok';status.textContent=action==='mark_paid'?'Pagamento registrato. Area materiali sbloccata e email inviata.':'Uscita programmata.';
+    crLoadSponsors();
+  }catch(e){button.disabled=false;status.className='cr-status err';status.textContent='Errore: '+e.message}
 }
 
 async function crApproveSponsor(id,button){
