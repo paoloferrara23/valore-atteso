@@ -231,6 +231,24 @@ function buildHtml(edition) {
       </tr>
     </table>
 
+    <!-- Share block -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="border-top:1px solid #CEC3B2;padding:24px 0 20px;text-align:center;">
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#6E675F;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;">Hai trovato utile questa analisi?</p>
+        <p style="font-family:Georgia,serif;font-size:14px;color:#1C1914;margin:0 0 16px;line-height:1.6;">Condividila con un collega che segue il business del calcio.</p>
+        <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+          <tr>
+            <td style="padding-right:8px;">
+              <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" style="display:inline-block;background:#1C1914;color:#F4EFE6;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;text-decoration:none;">WhatsApp →</a>
+            </td>
+            <td>
+              <a href="mailto:?subject=Valore%20Atteso%20%23${edition.num}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" style="display:inline-block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px 18px;text-decoration:none;border:1px solid #1C1914;">Email →</a>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+
     <!-- Legal -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr><td style="border-top:1px solid #CEC3B2;padding:14px 0 18px;text-align:center;">
