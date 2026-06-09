@@ -35,7 +35,12 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
         Prefer: 'return=minimal'
       },
-      body: JSON.stringify({ ...clean, status: 'new', token })
+      body: JSON.stringify({
+        ...clean,
+        name: clean.contact_name,
+        status: 'new',
+        token
+      })
     });
 
     await sendGmail({
