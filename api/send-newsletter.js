@@ -343,11 +343,8 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify(batch),
     });
-    const rawText = await batchRes.text();
-    let batchResult;
-    try { batchResult = JSON.parse(rawText); }
-    catch(e) { throw new Error('Resend: ' + rawText.slice(0, 300)); }
-    if (!batchRes.ok) throw new Error('Resend error ' + batchRes.status + ': ' + JSON.stringify(batchResult));
+    const _raw = await batchRes.text(); let batchResult; try { batchResult = JSON.parse(_raw); } catch(e) { throw new Error("Resend: " + _raw.slice(0,200)); }
+    if (!batchRes.ok) throw new Error('Resend batch error: ' + JSON.stringify(batchResult));
     sent = Array.isArray(batchResult.data) ? batchResult.data.length : subs.length;
 
     // Salva chi ha ricevuto
