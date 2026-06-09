@@ -122,8 +122,15 @@ function buildHtml(edition) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
 <title>${esc(title)} — Valore Atteso #${esc(num)}</title>
 <style>
+@media (prefers-color-scheme: dark) {
+  body, table, td, div, p, a { color: inherit !important; background-color: inherit !important; }
+  body { background: #D8D0C4 !important; }
+  .force-light { background: #D8D0C4 !important; }
+}
 @media only screen and (max-width:600px){
   table[width="640"]{width:100%!important;}
   .kpi-top td{display:block!important;width:100%!important;border-right:none!important;border-bottom:1px solid #CEC3B2!important;box-sizing:border-box!important;}
@@ -138,13 +145,13 @@ function buildHtml(edition) {
 </style>
 <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
 </head>
-<body style="margin:0;padding:0;background:#D8D0C4;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
+<body style="margin:0;padding:0;background:#D8D0C4;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;" data-ogsc bgcolor="#D8D0C4">
 
 <div style="display:none;max-height:0;overflow:hidden;font-size:1px;color:#F0EBE1;">
   ${esc(subtitle || opener || '')} · valoreatteso.com
 </div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#D8D0C4;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#D8D0C4" style="background:#D8D0C4;">
 <tr><td align="center" style="padding:0;">
 <table width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#F0EBE1;">
 
