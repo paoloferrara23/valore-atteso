@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<link rel="canonical" href="https://valoreatteso.com/sponsor.html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sponsorizza Valore Atteso — Newsletter su finance e sport business. 116 professionisti M&A, PE, consulenza ogni martedì.">
+<title>Sponsorizza | Valore Atteso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;
+  --muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--gold2:#B08A4A;
+  --deepgold:#8E6B33;--green:#1B4332;--white:#FFFDF8;
+  --dp:'Playfair Display',Georgia,serif;
+  --sf:'Source Serif 4',Georgia,serif;
+  --mn:'JetBrains Mono',monospace;--max:1120px
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.58;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+
+/* ── NAV ── */
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+.nav{max-width:var(--max);margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--sf);font-size:2rem;font-weight:600;letter-spacing:-.8px;color:var(--ink)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);transition:.15s}
+.nav-link:hover{color:var(--ink)}
+.nav-link.on{color:var(--ink)}
+.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s}
+.nav-cta:hover{background:transparent;color:var(--ink)}
+.ham{display:none;background:none;border:none;flex-direction:column;gap:5px;cursor:pointer}
+.ham span{width:24px;height:2px;background:var(--ink);display:block}
+.mob-nav{display:none;position:fixed;top:64px;left:0;right:0;background:var(--cream);border-bottom:1px solid var(--rule);z-index:99;padding:18px 24px;box-shadow:0 16px 40px rgba(28,25,20,.08)}
+.mob-nav.open{display:block}
+.mob-nav a{display:block;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding:14px 0;border-bottom:1px solid var(--rule)}
+.mob-nav .mob-cta{margin-top:12px;padding:13px 18px;background:var(--ink);color:var(--cream);text-align:center;border-radius:999px;border-bottom:none}
+
+/* ── PROGRESS BAR ── */
+.pbar{background:var(--cream2);border-bottom:1px solid var(--rule);position:sticky;top:64px;z-index:99}
+.pbar-in{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex}
+.pstep{flex:1;padding:13px 0;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+.pstep.active{color:var(--ink);border-bottom-color:var(--ink)}
+.pstep.done{color:var(--deepgold);border-bottom-color:var(--gold)}
+
+/* ── HERO ── */
+.hero{max-width:var(--max);margin:0 auto;padding:72px 24px 56px;text-align:center}
+.eyebrow{font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:14px}
+.hero h1{font-family:var(--sf);font-size:clamp(2.4rem,4.8vw,4.2rem);font-weight:600;letter-spacing:-1px;line-height:1.03;margin-bottom:20px;max-width:800px;margin-inline:auto}
+.hero h1 em{font-style:normal;color:var(--deepgold)}
+.hero-sub{font-size:18px;color:var(--ink2);font-weight:300;line-height:1.72;max-width:620px;margin:0 auto 38px}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 28px;border-radius:999px;border:none;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.16s}
+.cta-btn:hover{background:var(--gold);color:var(--ink)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:620px;margin:44px auto 0}
+.stat{border:1px solid var(--rule);background:rgba(255,253,248,.54);border-radius:20px;padding:20px 14px}
+.stat-n{font-family:var(--sf);font-size:2.2rem;font-weight:600;letter-spacing:-.4px;color:var(--ink);line-height:1}
+.stat-l{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+
+/* ── AUDIENCE STRIP ── */
+.aud{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.aud-in{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:stretch}
+.aud-item{flex:1;padding:22px 20px;border-right:1px solid rgba(255,255,255,.1)}
+.aud-item:last-child{border-right:none}
+.aud-n{font-family:var(--sf);font-size:1.8rem;font-weight:600;letter-spacing:-.3px;color:var(--cream);line-height:1}
+.aud-l{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,235,225,.46);margin-top:5px}
+
+/* ── PACKAGES ── */
+.section{max-width:var(--max);margin:0 auto;padding:72px 24px}
+.section-head{text-align:center;margin-bottom:44px}
+.h2{font-family:var(--sf);font-size:clamp(1.9rem,3.4vw,2.8rem);line-height:1.06;letter-spacing:-.5px;font-weight:600;margin-bottom:14px}
+.lead{color:var(--ink2);font-size:17px;font-weight:300;line-height:1.78;max-width:660px;margin:0 auto}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pkg{border:2px solid var(--rule);background:var(--white);border-radius:22px;padding:26px;cursor:pointer;transition:border-color .18s,box-shadow .18s;position:relative;display:flex;flex-direction:column;gap:0}
+.pkg:hover{border-color:var(--gold);box-shadow:0 8px 28px rgba(200,169,122,.14)}
+.pkg.sel{border-color:var(--gold);background:rgba(200,169,122,.05);box-shadow:0 10px 36px rgba(200,169,122,.18)}
+.pkg-check{position:absolute;top:16px;right:16px;width:22px;height:22px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;opacity:0;transition:.18s;font-family:var(--mn);font-size:10px;color:var(--ink);font-weight:700}
+.pkg.sel .pkg-check{opacity:1}
+.pkg-type{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);margin-bottom:10px}
+.pkg-name{font-family:var(--sf);font-size:1.25rem;font-weight:600;letter-spacing:-.3px;margin-bottom:8px}
+.pkg-desc{font-size:14px;color:var(--ink2);font-weight:300;line-height:1.6;flex:1;margin-bottom:16px}
+.pkg-price{font-family:var(--sf);font-size:1.9rem;font-weight:600;letter-spacing:-.4px;color:var(--ink)}
+.pkg-price span{font-family:var(--mn);font-size:11px;font-weight:400;color:var(--muted)}
+.pkg-list{margin-top:14px;display:flex;flex-direction:column;gap:5px;list-style:none}
+.pkg-list li{font-family:var(--mn);font-size:9px;letter-spacing:.03em;color:var(--ink2)}
+.pkg-list li::before{content:'→ ';color:var(--gold)}
+.pkg-badge{display:inline-block;margin-top:12px;padding:3px 10px;border-radius:999px;font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;background:rgba(200,169,122,.14);color:var(--deepgold);border:1px solid rgba(200,169,122,.28)}
+.pkg-cta-wrap{text-align:center;margin-top:36px}
+.pkg-cta-wrap .cta-btn[disabled]{opacity:.35;pointer-events:none;background:var(--ink)}
+
+/* ── PREVIEW ── */
+.prev-section{background:var(--cream2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.prev-inner{max-width:var(--max);margin:0 auto;padding:68px 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.prev-left .eyebrow{margin-bottom:12px}
+.prev-left h2{font-family:var(--sf);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;letter-spacing:-.5px;line-height:1.08;margin-bottom:14px}
+.prev-left p{font-size:15px;color:var(--ink2);font-weight:300;line-height:1.72;margin-bottom:24px}
+.ftabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.ftab{height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--rule);background:transparent;font-family:var(--mn);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:.15s}
+.ftab.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* Email mock */
+.em{background:#F8F5EE;border:1px solid #D0CBC0;border-radius:8px;overflow:hidden;font-family:Georgia,serif;font-size:13px;box-shadow:0 14px 44px rgba(28,25,20,.14)}
+.em-head{background:#1A1A1A;padding:16px 22px;text-align:center}
+.em-logo{font-family:Georgia,serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-1px}
+.em-num{font-family:'Courier New',monospace;font-size:8px;color:#C8A97A;letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.em-opener{padding:13px 22px;background:#EDE9E0;border-bottom:1px solid #D0CBC0;font-style:italic;font-size:12px;color:#4C453D;font-weight:300;line-height:1.65}
+.em-sec{padding:13px 22px;border-bottom:1px solid #D0CBC0}
+.em-sec-lbl{font-family:'Courier New',monospace;font-size:8px;color:#8E6B33;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.em-sec-title{font-family:Georgia,serif;font-size:14px;font-weight:700;margin-bottom:5px}
+.em-sec-body{font-family:Georgia,serif;font-size:12px;color:#4C453D;font-weight:300;line-height:1.6}
+.em-foot{padding:10px 22px;background:#EDE9E0;text-align:center;font-family:'Courier New',monospace;font-size:8px;color:#9A9690;letter-spacing:.08em}
+/* Sponsor slots */
+.sp-logo{padding:10px 22px;background:#FAEEDA;border-top:1px solid #D4A017;border-bottom:1px solid #D4A017;display:flex;align-items:center;gap:12px}
+.sp-logo-box{width:54px;height:26px;background:#D0CBC0;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:7px;color:#9A9690;flex-shrink:0}
+.sp-logo-txt{font-family:'Courier New',monospace;font-size:8px;color:#854F0B}
+.sp-mention{padding:12px 22px;background:#FAEEDA;border-top:1px solid #D4A017;border-bottom:1px solid #D4A017}
+.sp-mention-lbl{font-family:'Courier New',monospace;font-size:7px;color:#854F0B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.sp-mention-txt{font-family:Georgia,serif;font-size:12px;color:#3D3C39;font-style:italic;line-height:1.6}
+.sp-sez{padding:14px 22px;background:#FAEEDA;border-top:2px solid #D4A017;border-bottom:2px solid #D4A017}
+.sp-sez-lbl{font-family:'Courier New',monospace;font-size:7px;color:#854F0B;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.sp-sez-title{font-family:Georgia,serif;font-size:14px;font-weight:700;margin-bottom:6px}
+.sp-sez-body{font-family:Georgia,serif;font-size:11px;color:#4C453D;font-weight:300;line-height:1.6}
+.sp-site{padding:14px 22px}
+.sp-site-lbl{font-family:'Courier New',monospace;font-size:7px;color:#854F0B;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.sp-site-box{background:#D0CBC0;height:56px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:9px;color:#9A9690}
+
+/* ── FORM ── */
+.form-wrap{max-width:660px;margin:0 auto;padding:72px 24px}
+.form-card{background:var(--white);border:1px solid var(--rule);border-radius:24px;padding:40px}
+.form-title{font-family:var(--sf);font-size:1.8rem;font-weight:600;letter-spacing:-.4px;margin-bottom:8px}
+.form-sub{font-size:15px;color:var(--ink2);font-weight:300;line-height:1.65;margin-bottom:30px}
+.field{margin-bottom:18px}
+.field label{display:block;font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;height:48px;border:1px solid var(--rule);background:var(--cream);border-radius:12px;padding:0 16px;color:var(--ink);font-size:15px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field textarea{height:96px;padding:12px 16px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fcheck{display:flex;gap:10px;align-items:flex-start;margin-top:4px;font-family:var(--mn);font-size:9px;color:var(--muted);line-height:1.6;letter-spacing:.02em}
+.fcheck input{margin-top:2px;accent-color:var(--ink);flex-shrink:0}
+.fcheck a{text-decoration:underline}
+.fsubmit{width:100%;height:52px;border:none;border-radius:999px;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.15s;margin-top:24px}
+.fsubmit:hover:not(:disabled){background:var(--gold);color:var(--ink)}
+.fsubmit:disabled{opacity:.38;cursor:not-allowed}
+.ferr{display:none;margin-top:12px;padding:10px 14px;background:rgba(185,58,47,.08);color:#B93A2F;font-family:var(--mn);font-size:9px;border-radius:10px;letter-spacing:.03em}
+
+/* ── CONFIRMATION ── */
+.conf-wrap{display:none;max-width:660px;margin:0 auto;padding:0 24px 72px}
+.conf-card{background:var(--white);border:1px solid var(--rule);border-radius:24px;padding:40px}
+.conf-icon{font-size:34px;margin-bottom:14px}
+.conf-title{font-family:var(--sf);font-size:1.8rem;font-weight:600;letter-spacing:-.4px;margin-bottom:10px}
+.conf-text{font-size:15px;color:var(--ink2);font-weight:300;line-height:1.72;margin-bottom:28px}
+.bank-box{background:var(--cream2);border:1px solid var(--rule);border-radius:16px;padding:22px}
+.bank-ttl{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.bank-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.bank-row:last-child{border-bottom:none}
+.bank-k{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.bank-v{font-family:var(--mn);font-size:11px;color:var(--ink);text-align:right;word-break:break-all}
+.conf-note{margin-top:20px;font-family:var(--mn);font-size:9px;color:var(--muted);letter-spacing:.03em;line-height:1.75;padding:14px;background:var(--cream2);border-radius:10px;border:1px solid var(--rule)}
+
+/* ── FOOTER ── */
+footer{background:var(--cream2);border-top:1px solid var(--rule);margin-top:24px}
+.foot-in{max-width:var(--max);margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.foot-logo{font-family:var(--sf);font-size:1.6rem;font-weight:600;letter-spacing:-.5px;color:var(--ink)}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap}
+.foot-links a{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.legal{max-width:var(--max);margin:0 auto;padding:0 24px 26px;font-family:var(--mn);font-size:9px;letter-spacing:.03em;color:var(--muted);line-height:1.7}
+
+/* ── RESPONSIVE ── */
+@media(max-width:920px){
+  .pkg-grid{grid-template-columns:1fr 1fr}
+  .prev-inner{grid-template-columns:1fr;gap:28px}
+  .aud-in{flex-wrap:wrap}
+  .aud-item{flex:1 1 45%;border-right:none;border-bottom:1px solid rgba(255,255,255,.1)}
+  .aud-item:last-child{border-bottom:none}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .nav-links{display:none}.ham{display:flex}
+  .pkg-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr}
+  .field-row{grid-template-columns:1fr}
+  .form-card,.conf-card{padding:24px}
+  .aud-item{flex:1 1 100%}
+  .pstep{font-size:8px;padding:11px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav">
+    <a class="logo" href="/">Valore Atteso</a>
+    <div class="nav-links">
+      <a class="nav-link" href="/">Newsletter</a>
+      <a class="nav-link" href="/archivio.html">Archivio</a>
+      <a class="nav-link on" href="/sponsor.html">Sponsorizza</a>
+      <a class="nav-cta" href="/#signup-top">Iscriviti gratis</a>
+    </div>
+    <button class="ham" onclick="toggleMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+</div>
+<div class="mob-nav" id="mob-nav">
+  <a href="/" onclick="closeMob()">Newsletter</a>
+  <a href="/archivio.html" onclick="closeMob()">Archivio</a>
+  <a href="/sponsor.html" onclick="closeMob()">Sponsorizza</a>
+  <a class="mob-cta" href="/#signup-top" onclick="closeMob()">Iscriviti gratis</a>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="pbar">
+  <div class="pbar-in">
+    <div class="pstep active" id="ps1">1 · Formato</div>
+    <div class="pstep" id="ps2">2 · Preview</div>
+    <div class="pstep" id="ps3">3 · Richiesta</div>
+    <div class="pstep" id="ps4">4 · Conferma</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero" id="sec-hero">
+  <div class="eyebrow">Opportunità di sponsorizzazione</div>
+  <h1>Parla a chi decide<br>nel <em>business del calcio.</em></h1>
+  <p class="hero-sub">116 professionisti M&A, Private Equity e consulenza leggono Valore Atteso ogni martedì. Un messaggio che viene letto, non filtrato.</p>
+  <button class="cta-btn" onclick="goto('sec-pkgs')">Scegli il formato →</button>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">116</div><div class="stat-l">Iscritti confermati</div></div>
+    <div class="stat"><div class="stat-n">8 min</div><div class="stat-l">Lettura media</div></div>
+    <div class="stat"><div class="stat-n">Ogni martedì</div><div class="stat-l">Frequenza garantita</div></div>
+  </div>
+</div>
+
+<!-- AUDIENCE STRIP -->
+<div class="aud">
+  <div class="aud-in">
+    <div class="aud-item"><div class="aud-n">95%</div><div class="aud-l">Uomini professionisti</div></div>
+    <div class="aud-item"><div class="aud-n">25–44</div><div class="aud-l">Fascia d'età</div></div>
+    <div class="aud-item"><div class="aud-n">M&A</div><div class="aud-l">Private Equity</div></div>
+    <div class="aud-item"><div class="aud-n">Advisory</div><div class="aud-l">Consulenza strategica</div></div>
+    <div class="aud-item"><div class="aud-n">Zero</div><div class="aud-l">Tifosi. Solo finance.</div></div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<div class="section" id="sec-pkgs">
+  <div class="section-head">
+    <div class="eyebrow">Formati disponibili</div>
+    <h2 class="h2">Scegli la tua presenza</h2>
+    <p class="lead">Sei formati pensati per massimizzare la visibilità sul tuo target: decision maker nel finance e sport business.</p>
+  </div>
+
+  <div class="pkg-grid">
+
+    <div class="pkg" id="pk-logo" onclick="pickPkg('logo')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Newsletter</div>
+      <div class="pkg-name">Logo + link</div>
+      <div class="pkg-desc">Il tuo logo e un link tracciato nell'header di una singola edizione. Visibilità di brand immediata.</div>
+      <div class="pkg-price">€150 <span>/ edizione</span></div>
+      <ul class="pkg-list"><li>Logo in evidenza</li><li>Link tracciato</li><li>1 edizione</li></ul>
+    </div>
+
+    <div class="pkg" id="pk-mention" onclick="pickPkg('mention')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Newsletter</div>
+      <div class="pkg-name">Menzione editoriale</div>
+      <div class="pkg-desc">Una o due righe curate nel tono di VA, integrate nel flusso editoriale. Naturale, non invasivo.</div>
+      <div class="pkg-price">€300 <span>/ edizione</span></div>
+      <ul class="pkg-list"><li>Tono editoriale coerente</li><li>Max 2 righe + link</li><li>1 edizione</li></ul>
+    </div>
+
+    <div class="pkg" id="pk-sez" onclick="pickPkg('sez')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Newsletter · <span style="color:var(--deepgold)">Premium</span></div>
+      <div class="pkg-name">Sezione dedicata</div>
+      <div class="pkg-desc">Una sezione completa con il tuo contenuto: 300 parole, logo, CTA. Posizionamento fisso tra le sezioni editoriali.</div>
+      <div class="pkg-price">€500 <span>/ edizione</span></div>
+      <ul class="pkg-list"><li>Fino a 300 parole</li><li>Logo + CTA inclusi</li><li>Posizione fissa</li></ul>
+      <span class="pkg-badge">Più scelto</span>
+    </div>
+
+    <div class="pkg" id="pk-week" onclick="pickPkg('week')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Sito web</div>
+      <div class="pkg-name">Sponsor settimana</div>
+      <div class="pkg-desc">Banner fisso su valoreatteso.com per 7 giorni consecutivi, visibile su tutte le pagine del sito.</div>
+      <div class="pkg-price">€200 <span>/ settimana</span></div>
+      <ul class="pkg-list"><li>Banner su tutte le pagine</li><li>7 giorni consecutivi</li><li>Link tracciato</li></ul>
+    </div>
+
+    <div class="pkg" id="pk-month" onclick="pickPkg('month')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Sito web</div>
+      <div class="pkg-name">Sponsor mese</div>
+      <div class="pkg-desc">30 giorni di visibilità premium su valoreatteso.com: homepage, archivio e tutte le pagine dell'edizione.</div>
+      <div class="pkg-price">€500 <span>/ mese</span></div>
+      <ul class="pkg-list"><li>Homepage + archivio</li><li>30 giorni</li><li>Report visibilità</li></ul>
+    </div>
+
+    <div class="pkg" id="pk-bundle" onclick="pickPkg('bundle')">
+      <div class="pkg-check">✓</div>
+      <div class="pkg-type">Bundle · <span style="color:var(--deepgold)">Best value</span></div>
+      <div class="pkg-name">Bundle completo</div>
+      <div class="pkg-desc">4× menzione editoriale ogni mese + sito sponsor per 30 giorni. La massima visibilità possibile sul target.</div>
+      <div class="pkg-price">€900 <span>/ mese</span></div>
+      <ul class="pkg-list"><li>4× newsletter / mese</li><li>Sito 30 giorni</li><li>Risparmio €700 vs singoli</li></ul>
+      <span class="pkg-badge">Miglior rapporto</span>
+    </div>
+
+  </div>
+
+  <div class="pkg-cta-wrap">
+    <button class="cta-btn" id="pkg-cta" onclick="goto('sec-prev')" disabled>Vedi come appare →</button>
+  </div>
+</div>
+
+<!-- PREVIEW -->
+<div class="prev-section" id="sec-prev">
+  <div class="prev-inner">
+    <div class="prev-left">
+      <div class="eyebrow">Passo 2 · Anteprima</div>
+      <h2>Esattamente così lo vedranno.</h2>
+      <p>Valore Atteso è letta da professionisti senior. Nessun rumore, nessuna distrazione. Il tuo messaggio arriva pulito, nel contesto giusto.</p>
+      <div class="ftabs" id="ftabs">
+        <button class="ftab" id="ft-logo" onclick="switchFmt('logo')">Logo</button>
+        <button class="ftab" id="ft-mention" onclick="switchFmt('mention')">Menzione</button>
+        <button class="ftab" id="ft-sez" onclick="switchFmt('sez')">Sezione</button>
+        <button class="ftab" id="ft-week" onclick="switchFmt('week')">Sito</button>
+        <button class="ftab" id="ft-bundle" onclick="switchFmt('bundle')">Bundle</button>
+      </div>
+      <button class="cta-btn" onclick="goto('sec-form')">Richiedi questo formato →</button>
+    </div>
+    <div>
+      <div class="em" id="em-preview"><!-- filled by JS --></div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div id="sec-form">
+  <div class="form-wrap" id="form-wrap">
+    <div class="form-card">
+      <div class="eyebrow" style="margin-bottom:12px">Passo 3 · Richiesta</div>
+      <div class="form-title">Parliamoci.</div>
+      <div class="form-sub">Compila il form. Ti rispondo entro 24 ore con conferma disponibilità e istruzioni per il bonifico.</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Nome *</label>
+          <input type="text" id="fn" placeholder="Mario Rossi" autocomplete="name">
+        </div>
+        <div class="field">
+          <label>Azienda *</label>
+          <input type="text" id="fc" placeholder="Rossi Advisory">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email *</label>
+        <input type="email" id="fe" placeholder="mario@rossi.com" autocomplete="email" inputmode="email">
+      </div>
+      <div class="field">
+        <label>Formato *</label>
+        <select id="ff">
+          <option value="">— Scegli il formato —</option>
+          <option value="logo">Logo + link — €150/edizione</option>
+          <option value="mention">Menzione editoriale — €300/edizione</option>
+          <option value="sez">Sezione dedicata — €500/edizione</option>
+          <option value="week">Sponsor settimana sito — €200/settimana</option>
+          <option value="month">Sponsor mese sito — €500/mese</option>
+          <option value="bundle">Bundle completo — €900/mese</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Note o domande (opzionale)</label>
+        <textarea id="fnotes" placeholder="Data preferita, obiettivi, domande..."></textarea>
+      </div>
+      <label class="fcheck">
+        <input type="checkbox" id="fpriv" onchange="chkSubmit()">
+        <span>Accetto la <a href="/privacy.html" target="_blank">Privacy Policy</a>. I dati vengono usati solo per gestire questa richiesta.</span>
+      </label>
+      <div class="ferr" id="ferr"></div>
+      <button class="fsubmit" id="fsub" onclick="submitForm()" disabled>Invia richiesta →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="conf-wrap" id="sec-conf">
+  <div class="conf-card">
+    <div class="conf-icon">✓</div>
+    <div class="eyebrow" style="margin-bottom:10px">Passo 4 · Conferma</div>
+    <div class="conf-title">Richiesta ricevuta.</div>
+    <p class="conf-text">Ti rispondo entro 24 ore per confermare disponibilità e data. Nel frattempo, ecco le coordinate per il bonifico — il pagamento è atteso solo dopo la mia conferma scritta.</p>
+    <div class="bank-box">
+      <div class="bank-ttl">Coordinate bancarie</div>
+      <div class="bank-row"><div class="bank-k">Intestatario</div><div class="bank-v">Paolo Ferrara</div></div>
+      <div class="bank-row"><div class="bank-k">IBAN</div><div class="bank-v" id="conf-iban"><!-- INSERIRE IBAN --></div></div>
+      <div class="bank-row"><div class="bank-k">BIC / SWIFT</div><div class="bank-v" id="conf-bic"><!-- INSERIRE BIC --></div></div>
+      <div class="bank-row"><div class="bank-k">Importo</div><div class="bank-v" id="conf-amount">—</div></div>
+      <div class="bank-row"><div class="bank-k">Causale</div><div class="bank-v" id="conf-causale">Sponsorizzazione Valore Atteso</div></div>
+    </div>
+    <div class="conf-note">Non effettuare il bonifico prima di ricevere conferma via email. Nessun pagamento verrà accettato senza accordo scritto.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-logo">Valore Atteso</div>
+    <div class="foot-links">
+      <a href="/archivio.html">Archivio</a>
+      <a href="/glossario.html">Glossario</a>
+      <a href="mailto:info@valoreatteso.com">Contatti</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/cookie-policy.html">Cookie</a>
+      <a href="/disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="legal">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative.</div>
+</footer>
+
+<script>
+const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
+
+const PKGS={
+  logo:  {label:'Logo + link',        price:'€150', unit:'edizione', causale:'Sponsorizzazione VA – Logo newsletter'},
+  mention:{label:'Menzione editoriale',price:'€300', unit:'edizione', causale:'Sponsorizzazione VA – Menzione editoriale'},
+  sez:   {label:'Sezione dedicata',   price:'€500', unit:'edizione', causale:'Sponsorizzazione VA – Sezione dedicata'},
+  week:  {label:'Sponsor sito 7gg',   price:'€200', unit:'settimana',causale:'Sponsorizzazione VA – Sponsor sito settimanale'},
+  month: {label:'Sponsor sito mese',  price:'€500', unit:'mese',     causale:'Sponsorizzazione VA – Sponsor sito mensile'},
+  bundle:{label:'Bundle completo',    price:'€900', unit:'mese',     causale:'Sponsorizzazione VA – Bundle newsletter + sito'},
+};
+
+let selFmt = null;
+
+function toggleMob(){document.getElementById('mob-nav').classList.toggle('open')}
+function closeMob(){document.getElementById('mob-nav').classList.remove('open')}
+
+function goto(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function setStep(n){
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById('ps'+i);
+    if(!el)return;
+    el.classList.remove('active','done');
+    if(i<n)el.classList.add('done');
+    if(i===n)el.classList.add('active');
+  }
+}
+
+function pickPkg(id){
+  document.querySelectorAll('.pkg').forEach(p=>p.classList.remove('sel'));
+  const el=document.getElementById('pk-'+id);
+  if(el)el.classList.add('sel');
+  selFmt=id;
+  const cta=document.getElementById('pkg-cta');
+  cta.removeAttribute('disabled');
+  // pre-fill form select
+  const sel=document.getElementById('ff');
+  if(sel)sel.value=id;
+  switchFmt(id);
+  setStep(2);
+}
+
+function switchFmt(id){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  const tab=document.getElementById('ft-'+(id==='month'?'week':id));
+  if(tab)tab.classList.add('on');
+  buildPreview(id);
+}
+
+function newsBase(slot){
+  return`<div class="em-head"><div class="em-logo">Valore Atteso</div><div class="em-num">Edizione #042 · martedì 3 giugno 2025</div></div>`
+  +`<div class="em-opener">L'acquisizione di un club di Serie A da parte di un fondo PE americano riapre il dibattito sui multipli di valutazione nel calcio europeo.</div>`
+  +slot
+  +`<div class="em-sec"><div class="em-sec-lbl">01 · Il Bilancio</div><div class="em-sec-title">Juventus: EBITDA negativo per il quarto anno</div><div class="em-sec-body">Il rosso operativo si stabilizza a €82M. Player trading ancora determinante nel pareggio di bilancio...</div></div>`
+  +`<div class="em-sec"><div class="em-sec-lbl">02 · Il Deal</div><div class="em-sec-title">RedBird e il modello multiclub: 5 asset, un solo stack</div><div class="em-sec-body">Multiplo pagato su AC Milan: 8.8× EBITDA rettificato. Come è cambiato dopo 3 anni...</div></div>`
+  +`<div class="em-sec"><div class="em-sec-lbl">03 · La Metrica</div><div class="em-sec-title">Debt-to-revenue nei top club europei</div><div class="em-sec-body">Solo 6 club su 20 sotto la soglia UEFA del 1.5×. I dati per paese...</div></div>`
+  +`<div class="em-foot">Valore Atteso · Annulla iscrizione</div>`;
+}
+
+function buildPreview(id){
+  const el=document.getElementById('em-preview');
+  if(!el)return;
+  const slots={
+    logo: `<div class="sp-logo"><div class="sp-logo-box">LOGO</div><div class="sp-logo-txt">Sponsor di questa edizione &middot; <strong style="color:#1A1A1A">La Tua Azienda</strong></div></div>`,
+    mention:`<div class="sp-mention"><div class="sp-mention-lbl">Sponsor</div><div class="sp-mention-txt">Questa edizione è supportata da <strong>La Tua Azienda</strong> — il tuo messaggio editoriale in 1-2 righe, nel tono di Valore Atteso. <a href="#" style="color:#8E6B33">Scopri →</a></div></div>`,
+    sez:`<div class="sp-sez"><div class="sp-sez-lbl">Partner · La Tua Azienda</div><div class="sp-sez-title">Il tuo titolo (max 60 caratteri)</div><div class="sp-sez-body">Il tuo contenuto fino a 300 parole. Un caso studio, un insight per professionisti finance, una call to action. Tono professionale. <a href="#" style="color:#8E6B33">Scopri di più →</a></div></div>`,
+    bundle:`<div class="sp-mention"><div class="sp-mention-lbl">Partner editoriale</div><div class="sp-mention-txt">Questa edizione è supportata da <strong>La Tua Azienda</strong> — tuo messaggio 1-2 righe, 4 volte al mese. <a href="#" style="color:#8E6B33">Scopri →</a></div></div>`,
+  };
+  if(id==='week'||id==='month'){
+    const u=id==='month'?'Mese':'Settimana';
+    el.innerHTML=`<div class="em-head"><div class="em-logo">Valore Atteso</div><div class="em-num">valoreatteso.com · Sponsor ${u}</div></div>`
+      +`<div class="sp-site" style="background:#FAEEDA;border-top:2px solid #D4A017;border-bottom:2px solid #D4A017"><div class="sp-site-lbl">Sponsor · ${u}</div><div class="sp-site-box">Il tuo banner — logo, headline, link tracciato</div></div>`
+      +`<div class="em-sec"><div class="em-sec-lbl">Homepage</div><div class="em-sec-title">Il tuo logo su ogni pagina del sito</div><div class="em-sec-body">Visibile su homepage, archivio e ogni edizione pubblicata per tutta la durata dello sponsor.</div></div>`
+      +`<div class="em-foot">valoreatteso.com · Sponsor attivo su tutte le pagine</div>`;
+  } else {
+    el.innerHTML=newsBase(slots[id]||slots.mention);
+  }
+}
+
+function chkSubmit(){
+  const ok=document.getElementById('fpriv').checked;
+  document.getElementById('fsub').disabled=!ok;
+}
+
+async function submitForm(){
+  const name=document.getElementById('fn').value.trim();
+  const company=document.getElementById('fc').value.trim();
+  const email=document.getElementById('fe').value.trim();
+  const format=document.getElementById('ff').value;
+  const notes=document.getElementById('fnotes').value.trim();
+  const errEl=document.getElementById('ferr');
+  const btn=document.getElementById('fsub');
+
+  errEl.style.display='none';
+  if(!name){errEl.textContent='Inserisci il tuo nome.';errEl.style.display='block';return;}
+  if(!company){errEl.textContent='Inserisci il nome dell\'azienda.';errEl.style.display='block';return;}
+  if(!email||!email.includes('@')){errEl.textContent='Inserisci un\'email valida.';errEl.style.display='block';return;}
+  if(!format){errEl.textContent='Seleziona un formato.';errEl.style.display='block';return;}
+
+  btn.disabled=true;
+  btn.textContent='Invio in corso...';
+
+  try{
+    await fetch(SURL+'/rest/v1/sponsor_requests',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SKEY,'Authorization':'Bearer '+SKEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({name,company,email,format:PKGS[format]?.label||format,notes})
+    });
+  }catch(e){/* fail silently */}
+
+  const pkg=PKGS[format]||{price:'—',causale:'Sponsorizzazione Valore Atteso'};
+  document.getElementById('conf-amount').textContent=pkg.price+' / '+pkg.unit;
+  document.getElementById('conf-causale').textContent=pkg.causale+' – '+company.slice(0,24);
+
+  document.getElementById('form-wrap').style.display='none';
+  const conf=document.getElementById('sec-conf');
+  conf.style.display='block';
+  conf.scrollIntoView({behavior:'smooth',block:'start'});
+  setStep(4);
+}
+
+// Init
+buildPreview('mention');
+</script>
+</body>
+</html>
