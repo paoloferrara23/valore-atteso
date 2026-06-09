@@ -56,10 +56,12 @@ function buildHtml(edition) {
 
     const verdict = toSentenceCase(sec.verdict || '');
     const verdictHtml = verdict ? `
-      <div style="margin-top:18px;background:#1C1914;padding:18px 20px;border-left:4px solid #E8C87A;">
-        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#E8C87A;text-transform:uppercase;margin-bottom:10px;font-weight:700;">— La nostra lettura</div>
-        <p style="font-family:Georgia,serif;font-size:15px;color:#FFFFFF;line-height:1.7;margin:0;font-weight:400;mso-line-height-rule:exactly;">${esc(verdict)}</p>
-      </div>` : '';
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1C1914" style="background:#1C1914;margin-top:18px;border-left:4px solid #E8C87A;">
+        <tr><td style="padding:18px 20px;background:#1C1914;" bgcolor="#1C1914">
+          <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#E8C87A;text-transform:uppercase;margin-bottom:10px;font-weight:700;">— La nostra lettura</div>
+          <p style="font-family:Georgia,serif;font-size:15px;color:#FFFFFF;line-height:1.7;margin:0;font-weight:400;mso-line-height-rule:exactly;">${esc(verdict)}</p>
+        </td></tr>
+      </table>` : '';
 
     const bodyParas = Array.isArray(sec.body)
       ? sec.body
@@ -70,17 +72,22 @@ function buildHtml(edition) {
     ).join('');
 
     return `
-    <div style="background:${bg};padding:28px 28px 26px;border-bottom:2px solid #CEC3B2;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-        <div style="width:26px;height:26px;background:#1C1914;border-radius:50%;text-align:center;line-height:26px;font-family:'Courier New',monospace;font-size:9px;font-weight:700;color:#C8A97A;">${idx + 1}</div>
-        <div style="font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;">${esc(label)}</div>
-        <div style="flex:1;height:1px;background:#CEC3B2;"></div>
-      </div>
-      <h2 style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:#1C1914;letter-spacing:-.4px;line-height:1.2;margin:0 0 18px;">${esc(sec.title)}</h2>
-      ${kpiRow}
-      ${bodyHtml}
-      ${verdictHtml}
-    </div>`;
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${bg}" style="background:${bg};border-bottom:2px solid #CEC3B2;">
+      <tr><td style="padding:28px 28px 26px;background:${bg};" bgcolor="${bg}">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+          <tr>
+            <td width="26" style="width:26px;">
+              <div style="width:26px;height:26px;background:#1C1914;text-align:center;line-height:26px;font-family:'Courier New',monospace;font-size:9px;font-weight:700;color:#C8A97A;">${idx + 1}</div>
+            </td>
+            <td style="padding-left:10px;font-family:'Courier New',monospace;font-size:8px;letter-spacing:.16em;color:#777066;text-transform:uppercase;vertical-align:middle;">${esc(label)}</td>
+          </tr>
+        </table>
+        <h2 style="font-family:Georgia,serif;font-size:20px;font-weight:700;color:#1C1914;letter-spacing:-.4px;line-height:1.2;margin:0 0 18px;">${esc(sec.title)}</h2>
+        ${kpiRow}
+        ${bodyHtml}
+        ${verdictHtml}
+      </td></tr>
+    </table>`;
   }
 
   function renderTesi(tesi = {}) {
@@ -191,17 +198,19 @@ function buildHtml(edition) {
     ${opener ? `<div style="border-left:2px solid rgba(200,169,122,0.3);padding-left:14px;margin-bottom:20px;">
       <p style="font-family:Georgia,serif;font-size:13px;color:rgba(240,235,225,0.88);font-style:italic;line-height:1.8;margin:0;font-weight:400;">${esc(opener)}</p>
     </div>` : ''}
-    <div style="border-top:1px solid rgba(200,169,122,0.2);padding-top:16px;">
-      <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px;text-align:center;font-weight:700;">— Condividi con un collega —</p>
-      <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
-        <td style="width:50%;padding-right:6px;">
-          <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" bgcolor="#F4EFE6" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;mso-padding-alt:10px;">WhatsApp →</a>
-        </td>
-        <td style="width:50%;padding-left:6px;">
-          <a href="mailto:?subject=Valore%20Atteso%20%23${esc(num)}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" style="display:block;background:transparent;color:#F4EFE6;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;border:1px solid rgba(240,235,225,0.4);font-weight:700;">Email →</a>
-        </td>
-      </tr></table>
-    </div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid rgba(200,169,122,0.2);margin-top:16px;">
+      <tr><td style="padding-top:16px;text-align:center;">
+        <p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px;font-weight:700;">— Condividi con un collega —</p>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+          <td width="50%" style="padding-right:6px;">
+            <a href="https://wa.me/?text=Ho%20letto%20Valore%20Atteso%2C%20la%20newsletter%20sul%20business%20del%20calcio%20europeo.%20Vale%20la%20pena%3A%20valoreatteso.com" bgcolor="#F4EFE6" style="display:block;background:#F4EFE6;color:#1C1914;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;">WhatsApp →</a>
+          </td>
+          <td width="50%" style="padding-left:6px;">
+            <a href="mailto:?subject=Valore%20Atteso%20%23${esc(num)}%20%E2%80%94%20${encodeURIComponent(edition.title)}&body=Ti%20condivido%20l%27ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0AQuesta%20settimana%3A%20${encodeURIComponent(edition.title)}%0A%0AIscriviti%20gratis%3A%20valoreatteso.com" bgcolor="#1C1914" style="display:block;background:#1C1914;color:#F4EFE6;font-family:'Courier New',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px;text-decoration:none;text-align:center;font-weight:700;border:1px solid #F4EFE6;">Email →</a>
+          </td>
+        </tr></table>
+      </td></tr>
+    </table>
   </td></tr>
 
 
