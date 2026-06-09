@@ -313,6 +313,7 @@ const CR_PWD = 'valopro2025';
 let isAdmin = false;
 let currentEditionId = null;
 let currentEditionNum = null;
+let currentEditionData = null;
 let isEditing = false;
 
 function checkAdmin(){
@@ -365,10 +366,15 @@ async function saveEdit(){
       const sourcesEl = sec.querySelector('.edit-sources');
       const sources = sourcesEl ? sourcesEl.innerText.split('·').map(x=>x.replace(/^Fonti:\s*/,'').trim()).filter(Boolean) : [];
       const kpiRows = sec.querySelectorAll('.edit-kpi-row');
-      const kpis = Array.from(kpiRows).map(row => ({
+      const kpisFromDom = Array.from(kpiRows).map(row => ({
         key: row.querySelector('.edit-kpi-key')?.innerText.trim() || '',
         value: row.querySelector('.edit-kpi-val')?.innerText.trim() || ''
-      }));
+      })).filter(k => k.value);
+      // Mantieni KPI esistenti se il DOM non ha campi KPI visibili
+      const existingKpis = (currentEditionData && currentEditionData.sections && currentEditionData.sections[i]) 
+        ? (currentEditionData.sections[i].kpis || currentEditionData.sections[i].kpi_rows || []) 
+        : [];
+      const kpis = kpisFromDom.length > 0 ? kpisFromDom : existingKpis;
       return { label, title, body, verdict, sources, kpis };
     });
 
@@ -489,6 +495,7 @@ async function openArt(num){
     const e = eds&&eds[0];
     if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
     currentEditionId = e.id;
+    currentEditionData = e;
     const secs = e.sections||[];
     const tesi = e.tesi||null;
     const monitoring = e.monitoring||[];
