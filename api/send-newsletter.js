@@ -32,7 +32,7 @@ function buildHtml(edition) {
     const rows = kpis.slice(0, 3).map((k, i) => {
       const border = i < Math.min(kpis.length, 3) - 1 ? 'border-right:1px solid #2C2C2A;' : '';
       const sub = k.sub ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.65);margin-top:3px;line-height:1.4;">${esc(k.sub)}</div>` : '';
-      return `<td style="padding:12px 8px;${border}vertical-align:top;width:33%;">
+      return `<td style="padding:12px 8px;${border}vertical-align:top;width:33%;text-align:center;">
         <div style="font-family:Georgia,serif;font-size:15px;font-weight:900;color:#E8C87A;letter-spacing:-.3px;line-height:1.2;margin-bottom:6px;white-space:nowrap;">${esc(k.value)}</div>
         <div style="font-family:'Courier New',monospace;font-size:8px;color:rgba(255,255,255,0.85);letter-spacing:.06em;text-transform:uppercase;line-height:1.5;">${esc(k.label)}</div>
         ${sub}
