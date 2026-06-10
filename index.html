@@ -2126,14 +2126,15 @@ async function crOutFunnel(leadId,oid){
     const c=crOutData.contacts.find(x=>x.lead_id===leadId);
     if(!l||!c||!c.public_email)throw new Error('Contatto con email mancante');
     const r=await fetch(SURL+'/rest/v1/sponsor_requests',{method:'POST',headers:{...OUT_PATCH,Prefer:'return=representation'},
-      body:JSON.stringify({company:l.company,name:c.full_name||'—',email:c.public_email,format:'Da definire',notes:'Origine: outreach automatico · lead '+leadId})});
+      body:JSON.stringify({company:l.company,name:c.full_name||'—',contact_name:c.full_name||'—',email:c.public_email,format:'Da definire',notes:'Origine: outreach automatico · lead '+leadId})});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const rows=await r.json();
     await fetch(SURL+'/rest/v1/sponsor_outreach?id=eq.'+oid,{method:'PATCH',headers:OUT_PATCH,body:JSON.stringify({sponsor_request_id:rows[0].id,status:'closed',updated_at:new Date().toISOString()})});
     await fetch(SURL+'/rest/v1/sponsor_leads?id=eq.'+leadId,{method:'PATCH',headers:OUT_PATCH,body:JSON.stringify({status:'converted',updated_at:new Date().toISOString()})});
     st.className='cr-status ok';st.textContent='✓ Richiesta sponsor creata — visibile qui sopra tra le richieste dal sito.';
+    st.scrollIntoView({behavior:'smooth',block:'center'});
     crLoadOutreach();
-  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;st.scrollIntoView({behavior:'smooth',block:'center'});}
 }
 </script>
 
