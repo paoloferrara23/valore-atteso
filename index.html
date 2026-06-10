@@ -2083,10 +2083,20 @@ async function crOutAction(id,table,patch,okMsg){
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
 }
 
-function crOutExclude(leadId){
-  const reason=prompt('Motivo esclusione:');
+async function crOutExclude(leadId){
+  const reason=prompt('Motivo esclusione (il lead verrà eliminato):');
   if(reason===null)return;
-  crOutAction(leadId,'leads',{status:'excluded',excluded_reason:reason||'esclusa manualmente'},'Lead escluso');
+  const st=document.getElementById('cr-out-status');
+  try{
+    const l=crOutData.leads.find(x=>x.id===leadId);
+    if(l&&l.domain){
+      await fetch(SURL+'/rest/v1/sponsor_excluded_domains',{method:'POST',headers:{...OUT_PATCH,Prefer:'resolution=ignore-duplicates'},body:JSON.stringify({domain:l.domain,company:l.company||null,reason:reason||'esclusa manualmente'})});
+    }
+    const r=await fetch(SURL+'/rest/v1/sponsor_leads?id=eq.'+leadId,{method:'DELETE',headers:OUT_PATCH});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.className='cr-status ok';st.textContent='✓ Lead eliminato (dominio escluso dalle prossime ricerche)';
+    crLoadOutreach();
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
 }
 
 async function crOutContacted(leadId,oid){

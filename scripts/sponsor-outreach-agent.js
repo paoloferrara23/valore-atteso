@@ -146,15 +146,16 @@ Rispondi SOLO con JSON: {"classification","summary","proposed_reply":"breve risp
 
 // ── Dedup ──
 async function loadDedupSets() {
-  const [leads, contacts, requests] = await Promise.all([
+  const [leads, contacts, requests, excluded] = await Promise.all([
     supaFetch('/rest/v1/sponsor_leads?select=domain,evidence_url,company'),
     supaFetch('/rest/v1/sponsor_contacts?select=public_email,linkedin_url'),
-    supaFetch('/rest/v1/sponsor_requests?select=company')
+    supaFetch('/rest/v1/sponsor_requests?select=company'),
+    supaFetch('/rest/v1/sponsor_excluded_domains?select=domain,company').catch(() => [])
   ]);
   return {
-    domains: new Set((leads || []).map(l => l.domain).filter(Boolean)),
+    domains: new Set([...(leads || []), ...(excluded || [])].map(l => l.domain).filter(Boolean)),
     evidenceUrls: new Set((leads || []).map(l => l.evidence_url).filter(Boolean)),
-    companies: new Set([...(leads || []), ...(requests || [])].map(x => (x.company || '').toLowerCase().trim()).filter(Boolean)),
+    companies: new Set([...(leads || []), ...(requests || []), ...(excluded || [])].map(x => (x.company || '').toLowerCase().trim()).filter(Boolean)),
     emails: new Set((contacts || []).map(c => (c.public_email || '').toLowerCase()).filter(Boolean)),
     linkedins: new Set((contacts || []).map(c => c.linkedin_url).filter(Boolean))
   };

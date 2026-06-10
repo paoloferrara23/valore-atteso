@@ -110,6 +110,21 @@ CREATE POLICY "anon read runs" ON sponsor_outreach_runs FOR SELECT TO anon USING
 CREATE POLICY "anon insert runs" ON sponsor_outreach_runs FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "anon update runs" ON sponsor_outreach_runs FOR UPDATE TO anon USING (true) WITH CHECK (true);
 
+-- ── ESCLUSIONI MANUALI ──
+-- Il bottone "Escludi" in Control Room elimina il lead (cascade) e salva
+-- qui il dominio, così lo Scout non lo ripropone nei run successivi.
+CREATE TABLE IF NOT EXISTS sponsor_excluded_domains (
+  domain text PRIMARY KEY,
+  company text,
+  reason text,
+  excluded_at timestamptz DEFAULT now()
+);
+ALTER TABLE sponsor_excluded_domains ENABLE ROW LEVEL SECURITY;
+GRANT SELECT, INSERT ON sponsor_excluded_domains TO anon;
+CREATE POLICY "anon read excluded" ON sponsor_excluded_domains FOR SELECT TO anon USING (true);
+CREATE POLICY "anon insert excluded" ON sponsor_excluded_domains FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY "anon delete leads" ON sponsor_leads FOR DELETE TO anon USING (true);
+
 -- ── DATI DI ESEMPIO (decommentare per test) ──
 -- INSERT INTO sponsor_leads (company, website, domain, sector, sponsorship_evidence, evidence_url, evidence_source, fit_reason, fit_score, confidence, status)
 -- VALUES ('Esempio FinTech SpA', 'https://esempio-fintech.example', 'esempio-fintech.example', 'fintech',
