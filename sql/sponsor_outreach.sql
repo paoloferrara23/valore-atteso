@@ -95,13 +95,20 @@ ALTER TABLE sponsor_contacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sponsor_outreach ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sponsor_outreach_runs ENABLE ROW LEVEL SECURITY;
 
--- Control Room (anon): lettura + aggiornamento stato. INSERT/DELETE solo service key.
+-- Control Room e agente GitHub Actions usano la stessa SUPABASE_KEY (anon),
+-- come gli altri agenti del progetto: lettura, inserimento e aggiornamento stato.
 CREATE POLICY "anon read leads" ON sponsor_leads FOR SELECT TO anon USING (true);
+CREATE POLICY "anon insert leads" ON sponsor_leads FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "anon update leads" ON sponsor_leads FOR UPDATE TO anon USING (true) WITH CHECK (true);
 CREATE POLICY "anon read contacts" ON sponsor_contacts FOR SELECT TO anon USING (true);
+CREATE POLICY "anon insert contacts" ON sponsor_contacts FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY "anon update contacts" ON sponsor_contacts FOR UPDATE TO anon USING (true) WITH CHECK (true);
 CREATE POLICY "anon read outreach" ON sponsor_outreach FOR SELECT TO anon USING (true);
+CREATE POLICY "anon insert outreach" ON sponsor_outreach FOR INSERT TO anon WITH CHECK (true);
 CREATE POLICY "anon update outreach" ON sponsor_outreach FOR UPDATE TO anon USING (true) WITH CHECK (true);
 CREATE POLICY "anon read runs" ON sponsor_outreach_runs FOR SELECT TO anon USING (true);
+CREATE POLICY "anon insert runs" ON sponsor_outreach_runs FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY "anon update runs" ON sponsor_outreach_runs FOR UPDATE TO anon USING (true) WITH CHECK (true);
 
 -- ── DATI DI ESEMPIO (decommentare per test) ──
 -- INSERT INTO sponsor_leads (company, website, domain, sector, sponsorship_evidence, evidence_url, evidence_source, fit_reason, fit_score, confidence, status)
