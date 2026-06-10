@@ -1,10 +1,10 @@
 // gmail.js — Helper Gmail API per outreach sponsor
 // SOLO creazione bozze e lettura thread. Nessuna funzione di invio.
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
-const SENDER = process.env.GMAIL_SENDER || 'info@valoreatteso.com';
+const CLIENT_ID = (process.env.GOOGLE_CLIENT_ID || '').trim();
+const CLIENT_SECRET = (process.env.GOOGLE_CLIENT_SECRET || '').trim();
+const REFRESH_TOKEN = (process.env.GOOGLE_REFRESH_TOKEN || '').trim();
+const SENDER = (process.env.GMAIL_SENDER || 'info@valoreatteso.com').trim();
 
 let cachedToken = null;
 let cachedExp = 0;
@@ -21,7 +21,11 @@ async function getAccessToken() {
       grant_type: 'refresh_token'
     })
   });
-  if (!r.ok) throw new Error(`OAuth refresh fallito: ${r.status}`);
+  if (!r.ok) {
+    // Il body di Google distingue invalid_client (ID/secret errati) da invalid_grant (token scaduto/revocato)
+    const detail = (await r.text().catch(() => '')).slice(0, 300);
+    throw new Error(`OAuth refresh fallito: ${r.status} ${detail}`);
+  }
   const d = await r.json();
   cachedToken = d.access_token;
   cachedExp = Date.now() + (d.expires_in || 3600) * 1000;

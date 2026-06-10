@@ -350,8 +350,13 @@ async function main() {
         let gmailIds = { draftId: null, threadId: null };
         let status = 'draft';
         if (gmail.gmailConfigured()) {
-          gmailIds = await gmail.createDraft(contact.public_email, draft.subject, fullBody);
-          status = 'gmail_created';
+          try {
+            gmailIds = await gmail.createDraft(contact.public_email, draft.subject, fullBody);
+            status = 'gmail_created';
+          } catch (ge) {
+            // La bozza resta in Supabase (status draft): recuperata al run successivo
+            errors.push({ step: 'gmail_draft', company: c.company, error: ge.message });
+          }
         }
         await supaFetch('/rest/v1/sponsor_outreach', {
           method: 'POST', headers: { 'Prefer': 'return=minimal' },
@@ -372,6 +377,43 @@ async function main() {
       } catch (e) { errors.push({ step: 'draft', company: c.company, error: e.message }); }
     }
 
+    // 4b. Recupero: lead con email verificata ma rimasti senza outreach (es. errore Gmail in run precedenti)
+    const orphans = await supaFetch('/rest/v1/sponsor_leads?status=eq.discovered&fit_score=gte.60&select=*,sponsor_contacts(*),sponsor_outreach(id)').catch(() => []);
+    for (const lead of orphans || []) {
+      if (draftsCreated >= DRAFT_LIMIT) break;
+      if ((lead.sponsor_outreach || []).length) continue;
+      const contact = (lead.sponsor_contacts || []).find(x => x.public_email);
+      if (!contact) continue;
+      try {
+        const draft = await writeOutreach(lead, contact);
+        const fullBody = `${draft.body}\n\n${SIGNATURE}`;
+        let gmailIds = { draftId: null, threadId: null };
+        let status = 'draft';
+        if (gmail.gmailConfigured()) {
+          try {
+            gmailIds = await gmail.createDraft(contact.public_email, draft.subject, fullBody);
+            status = 'gmail_created';
+          } catch (ge) { errors.push({ step: 'gmail_draft', company: lead.company, error: ge.message }); }
+        }
+        await supaFetch('/rest/v1/sponsor_outreach', {
+          method: 'POST', headers: { 'Prefer': 'return=minimal' },
+          body: JSON.stringify({
+            lead_id: lead.id, contact_id: contact.id,
+            subject: draft.subject, email_body: fullBody,
+            personalization_notes: draft.personalization_notes || null,
+            source_summary: `Evidenza: ${lead.evidence_url} · Contatto: ${contact.source_url}`,
+            status, gmail_draft_id: gmailIds.draftId, gmail_thread_id: gmailIds.threadId
+          })
+        });
+        await supaFetch(`/rest/v1/sponsor_leads?id=eq.${lead.id}`, {
+          method: 'PATCH', headers: { 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ status: 'drafted', updated_at: new Date().toISOString() })
+        });
+        draftsCreated++;
+        console.log(`Bozza recuperata: ${lead.company} → ${contact.public_email}`);
+      } catch (e) { errors.push({ step: 'recover_draft', company: lead.company, error: e.message }); }
+    }
+
     // 5. Risposte + bozze richieste manualmente dalla Control Room
     const replies = await checkReplies().catch(e => { errors.push({ step: 'replies', error: e.message }); return 0; });
     console.log(`Risposte rilevate: ${replies}`);
@@ -387,8 +429,10 @@ async function main() {
         const fullBody = `${draft.body}\n\n${SIGNATURE}`;
         let patch = { subject: draft.subject, email_body: fullBody, status: 'draft', updated_at: new Date().toISOString() };
         if (gmail.gmailConfigured()) {
-          const ids = await gmail.createDraft(contact.public_email, draft.subject, fullBody);
-          patch = { ...patch, status: 'gmail_created', gmail_draft_id: ids.draftId, gmail_thread_id: ids.threadId };
+          try {
+            const ids = await gmail.createDraft(contact.public_email, draft.subject, fullBody);
+            patch = { ...patch, status: 'gmail_created', gmail_draft_id: ids.draftId, gmail_thread_id: ids.threadId };
+          } catch (ge) { errors.push({ step: 'gmail_draft', id: p.id, error: ge.message }); }
         }
         await supaFetch(`/rest/v1/sponsor_outreach?id=eq.${p.id}`, {
           method: 'PATCH', headers: { 'Prefer': 'return=minimal' }, body: JSON.stringify(patch)
