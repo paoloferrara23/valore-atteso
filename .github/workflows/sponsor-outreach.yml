@@ -1,0 +1,34 @@
+name: Sponsor Outreach Agent
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # Ogni giorno alle 07:00 ora italiana (estate; 06:00 inverno)
+  workflow_dispatch:
+
+jobs:
+  sponsor-outreach:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd scripts && npm init -y 2>/dev/null || true && npm install @supabase/supabase-js 2>/dev/null || true
+      - name: Esegui Sponsor Outreach Agent
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
+          SPONSOR_SCOUT_MODEL: ${{ vars.SPONSOR_SCOUT_MODEL }}
+          SPONSOR_OUTREACH_DAILY_LIMIT: ${{ vars.SPONSOR_OUTREACH_DAILY_LIMIT }}
+          SPONSOR_OUTREACH_DRAFT_LIMIT: ${{ vars.SPONSOR_OUTREACH_DRAFT_LIMIT }}
+          SPONSOR_OUTREACH_SIGNATURE: ${{ vars.SPONSOR_OUTREACH_SIGNATURE }}
+          TRIGGER_TYPE: ${{ github.event_name == 'workflow_dispatch' && 'manual' || 'scheduled' }}
+        run: node scripts/sponsor-outreach-agent.js

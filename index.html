@@ -1662,6 +1662,7 @@ loadLatestPreview();
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('sponsor',this)">Sponsor</button>
         <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
+        <button class="cr-tab" onclick="crTab('outreach',this);crLoadOutreach()">Outreach</button>
       </div>
       <button class="cr-close" onclick="crClose()">Chiudi</button>
     </div>
@@ -1972,8 +1973,145 @@ loadLatestPreview();
       </div>
     </div>
 
+    <div class="cr-panel" id="cr-outreach">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+        <button class="cr-btn gold" onclick="crRunAgent('sponsor-outreach')">▶ Esegui ricerca ora</button>
+        <span style="font-family:var(--mn);font-size:9px;color:var(--muted)" id="cr-out-runinfo"></span>
+      </div>
+
+      <div class="cr-sec-title">Richieste sponsor dal sito</div>
+      <div class="cr-box" style="overflow-x:auto"><table class="cr-subs-table" id="cr-out-requests"><tr><td style="font-family:var(--mn);font-size:10px;color:var(--muted)">Caricamento...</td></tr></table></div>
+
+      <div class="cr-sec-title">Lead outreach</div>
+      <div class="cr-box">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+          <select class="cr-input" id="cr-out-fstato" onchange="crRenderLeads()" style="width:160px">
+            <option value="">Tutti gli stati</option>
+            <option value="discovered">Scoperti</option>
+            <option value="drafted">Bozza pronta</option>
+            <option value="contacted">Contattati</option>
+            <option value="replied">Risposto</option>
+            <option value="linkedin_only">Solo LinkedIn</option>
+            <option value="excluded">Esclusi</option>
+            <option value="converted">Convertiti</option>
+          </select>
+          <input class="cr-input" id="cr-out-fscore" type="number" placeholder="Score min" onchange="crRenderLeads()" style="width:110px">
+          <label style="font-family:var(--mn);font-size:9px;color:var(--muted);display:flex;gap:6px;align-items:center"><input type="checkbox" id="cr-out-femail" onchange="crRenderLeads()"> Solo con email</label>
+        </div>
+        <div id="cr-out-leads" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+      <div id="cr-out-status" class="cr-status"></div>
+    </div>
+
   </div>
 </div>
+
+<script>
+let crOutData={leads:[],contacts:[],outreach:[]};
+const OUT_HDRS={apikey:SKEY,Authorization:'Bearer '+SKEY};
+const OUT_PATCH={'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'};
+
+async function crLoadOutreach(){
+  try{
+    const [runs,reqs,leads,contacts,outreach]=await Promise.all([
+      fetch(SURL+'/rest/v1/sponsor_outreach_runs?select=*&order=run_date.desc&limit=7',{headers:OUT_HDRS}).then(r=>r.json()),
+      fetch(SURL+'/rest/v1/sponsor_requests?select=*&order=created_at.desc&limit=20',{headers:OUT_HDRS}).then(r=>r.json()),
+      fetch(SURL+'/rest/v1/sponsor_leads?select=*&order=discovered_at.desc&limit=100',{headers:OUT_HDRS}).then(r=>r.json()),
+      fetch(SURL+'/rest/v1/sponsor_contacts?select=*',{headers:OUT_HDRS}).then(r=>r.json()),
+      fetch(SURL+'/rest/v1/sponsor_outreach?select=*',{headers:OUT_HDRS}).then(r=>r.json())
+    ]);
+    const last=runs&&runs[0];
+    document.getElementById('cr-out-runinfo').textContent=last?('Ultimo run: '+last.run_date+' · '+last.status+' · '+(last.leads_found||0)+' lead · '+(last.drafts_created||0)+' bozze'):'Nessun run ancora';
+    document.getElementById('cr-out-requests').innerHTML=
+      '<tr><th>Data</th><th>Azienda</th><th>Contatto</th><th>Formato</th><th>Data richiesta</th></tr>'+
+      ((reqs&&reqs.length)?reqs.map(r=>'<tr><td>'+new Date(r.created_at).toLocaleDateString('it-IT')+'</td><td>'+esc(r.company)+'</td><td>'+esc(r.name)+' · '+esc(r.email)+'</td><td>'+esc(r.format)+'</td><td>'+(r.requested_date||'—')+'</td></tr>').join(''):'<tr><td colspan="5" style="color:var(--muted)">Nessuna richiesta</td></tr>');
+    crOutData={leads:leads||[],contacts:contacts||[],outreach:outreach||[]};
+    crRenderLeads();
+  }catch(e){
+    const st=document.getElementById('cr-out-status');
+    st.className='cr-status err';st.textContent='Errore caricamento: '+e.message;
+  }
+}
+
+function crRenderLeads(){
+  const fs=document.getElementById('cr-out-fstato').value;
+  const fScore=parseInt(document.getElementById('cr-out-fscore').value,10);
+  const fEmail=document.getElementById('cr-out-femail').checked;
+  const byLead={};crOutData.contacts.forEach(c=>{byLead[c.lead_id]=c});
+  const orByLead={};crOutData.outreach.forEach(o=>{orByLead[o.lead_id]=o});
+  let rows=crOutData.leads.filter(l=>
+    (!fs||l.status===fs)&&(isNaN(fScore)||((l.fit_score||0)>=fScore))&&(!fEmail||(byLead[l.id]&&byLead[l.id].public_email)));
+  document.getElementById('cr-out-leads').innerHTML=rows.length?rows.map(l=>{
+    const c=byLead[l.id],o=orByLead[l.id];
+    const cls=o&&o.reply_classification;
+    return '<div style="background:var(--white);border:1px solid var(--rule);border-radius:14px;padding:14px">'+
+      '<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start">'+
+      '<div><strong style="font-family:var(--sf);font-size:1.05rem">'+esc(l.company)+'</strong>'+
+      ' <span class="cr-source-badge">'+esc(l.status)+'</span>'+
+      (l.fit_score!=null?' <span class="cr-source-badge" style="color:'+(l.fit_score>=70?'var(--green)':'var(--muted)')+'">fit '+l.fit_score+'</span>':'')+
+      (l.confidence?' <span class="cr-source-badge">'+esc(l.confidence)+'</span>':'')+
+      '<div style="font-family:var(--mn);font-size:9px;color:var(--ink2);margin-top:6px">'+esc((l.sponsorship_evidence||'').slice(0,140))+' <a href="'+esc(l.evidence_url||'#')+'" target="_blank" rel="noopener" style="color:var(--deepgold);text-decoration:underline">fonte</a></div>'+
+      (c?'<div style="font-family:var(--mn);font-size:9px;color:var(--ink2);margin-top:4px">👤 '+esc(c.full_name||'—')+' · '+esc(c.role||'—')+(c.public_email?' · '+esc(c.public_email):'')+(c.linkedin_url?' · <a href="'+esc(c.linkedin_url)+'" target="_blank" rel="noopener" style="text-decoration:underline">LinkedIn</a>':'')+' · <a href="'+esc(c.source_url||'#')+'" target="_blank" rel="noopener" style="color:var(--deepgold)">fonte</a></div>':'')+
+      (o?'<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:4px">✉ Bozza: '+esc(o.status)+(cls?' · risposta: <strong>'+esc(cls)+'</strong>':'')+(o.reply_summary?'<br>'+esc(o.reply_summary.slice(0,160)):'')+'</div>':'')+
+      '</div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
+      (o&&o.email_body?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutShowDraft(this.dataset.id)">Bozza</button>':'')+
+      (o?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutAction(this.dataset.id,\'outreach\',{status:\'regenerate\'},\'Bozza in rigenerazione al prossimo run\')">Rigenera</button>':'')+
+      (o&&o.status==='draft'?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutAction(this.dataset.id,\'outreach\',{status:\'draft_requested\'},\'Bozza Gmail al prossimo run\')">→ Gmail</button>':'')+
+      (o&&o.status!=='sent'&&o.status!=='replied'?'<button class="cr-run-btn" data-id="'+l.id+'" data-oid="'+(o?o.id:'')+'" onclick="crOutContacted(this.dataset.id,this.dataset.oid)">Già contattato</button>':'')+
+      (o&&o.status==='replied'?'<select class="cr-input" style="height:26px;font-size:8px;width:130px" data-id="'+o.id+'" onchange="crOutAction(this.dataset.id,\'outreach\',{reply_classification:this.value},\'Classificata\')"><option value="">Classifica…</option><option>interested</option><option>question</option><option>referral</option><option>not_interested</option><option>unsubscribe</option><option>automatic_reply</option><option>unclear</option></select>':'')+
+      (cls==='interested'&&!o.sponsor_request_id?'<button class="cr-run-btn" style="border-color:var(--green);color:var(--green)" data-lid="'+l.id+'" data-oid="'+o.id+'" onclick="crOutFunnel(this.dataset.lid,this.dataset.oid)">Avvia funnel sponsor</button>':'')+
+      (l.status!=='excluded'?'<button class="cr-run-btn" data-id="'+l.id+'" onclick="crOutExclude(this.dataset.id)">Escludi</button>':'')+
+      '</div></div></div>';
+  }).join(''):'<div style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessun lead con questi filtri.</div>';
+}
+
+function crOutShowDraft(oid){
+  const o=crOutData.outreach.find(x=>x.id===oid);
+  if(!o)return;
+  alert('OGGETTO: '+o.subject+'\n\n'+o.email_body);
+}
+
+async function crOutAction(id,table,patch,okMsg){
+  const st=document.getElementById('cr-out-status');
+  try{
+    patch.updated_at=new Date().toISOString();
+    const r=await fetch(SURL+'/rest/v1/sponsor_'+table+'?id=eq.'+id,{method:'PATCH',headers:OUT_PATCH,body:JSON.stringify(patch)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.className='cr-status ok';st.textContent='✓ '+okMsg;
+    crLoadOutreach();
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
+
+function crOutExclude(leadId){
+  const reason=prompt('Motivo esclusione:');
+  if(reason===null)return;
+  crOutAction(leadId,'leads',{status:'excluded',excluded_reason:reason||'esclusa manualmente'},'Lead escluso');
+}
+
+async function crOutContacted(leadId,oid){
+  if(oid)await crOutAction(oid,'outreach',{status:'sent',sent_at:new Date().toISOString()},'Segnato come contattato');
+  crOutAction(leadId,'leads',{status:'contacted'},'Lead contattato');
+}
+
+async function crOutFunnel(leadId,oid){
+  if(!confirm('Creare una richiesta sponsor per questo lead? Seguirà il flusso normale delle richieste dal sito.'))return;
+  const st=document.getElementById('cr-out-status');
+  try{
+    const l=crOutData.leads.find(x=>x.id===leadId);
+    const c=crOutData.contacts.find(x=>x.lead_id===leadId);
+    if(!l||!c||!c.public_email)throw new Error('Contatto con email mancante');
+    const r=await fetch(SURL+'/rest/v1/sponsor_requests',{method:'POST',headers:{...OUT_PATCH,Prefer:'return=representation'},
+      body:JSON.stringify({company:l.company,name:c.full_name||'—',email:c.public_email,format:'Da definire',notes:'Origine: outreach automatico · lead '+leadId})});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const rows=await r.json();
+    await fetch(SURL+'/rest/v1/sponsor_outreach?id=eq.'+oid,{method:'PATCH',headers:OUT_PATCH,body:JSON.stringify({sponsor_request_id:rows[0].id,status:'closed',updated_at:new Date().toISOString()})});
+    await fetch(SURL+'/rest/v1/sponsor_leads?id=eq.'+leadId,{method:'PATCH',headers:OUT_PATCH,body:JSON.stringify({status:'converted',updated_at:new Date().toISOString()})});
+    st.className='cr-status ok';st.textContent='✓ Richiesta sponsor creata — visibile qui sopra tra le richieste dal sito.';
+    crLoadOutreach();
+  }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
+}
+</script>
 
 </body>
 </html>
