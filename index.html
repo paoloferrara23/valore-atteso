@@ -2016,7 +2016,7 @@ async function crLoadOutreach(){
     const [runs,reqs,leads,contacts,outreach]=await Promise.all([
       fetch(SURL+'/rest/v1/sponsor_outreach_runs?select=*&order=run_date.desc&limit=7',{headers:OUT_HDRS}).then(r=>r.json()),
       fetch(SURL+'/rest/v1/sponsor_requests?select=*&order=created_at.desc&limit=20',{headers:OUT_HDRS}).then(r=>r.json()),
-      fetch(SURL+'/rest/v1/sponsor_leads?select=*&order=discovered_at.desc&limit=100',{headers:OUT_HDRS}).then(r=>r.json()),
+      fetch(SURL+'/rest/v1/sponsor_leads?select=*&order=fit_score.desc.nullslast,discovered_at.desc&limit=100',{headers:OUT_HDRS}).then(r=>r.json()),
       fetch(SURL+'/rest/v1/sponsor_contacts?select=*',{headers:OUT_HDRS}).then(r=>r.json()),
       fetch(SURL+'/rest/v1/sponsor_outreach?select=*',{headers:OUT_HDRS}).then(r=>r.json())
     ]);
