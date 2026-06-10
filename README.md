@@ -8,8 +8,9 @@ riservato ai flussi newsletter.
 
 ### Deploy
 
-1. Eseguire `sql/sponsor_funnel.sql`, `sql/sponsor_phase_3.sql` e
-   `sql/sponsor_editorial_preview.sql`.
+1. Eseguire `sql/sponsor_funnel.sql`, `sql/sponsor_phase_3.sql`,
+   `sql/sponsor_editorial_preview.sql`, `sql/sponsor_legal_acceptances.sql` e
+   `sql/sponsor_secure_access.sql`.
 2. Verificare che il bucket privato `sponsor-assets` sia presente.
 3. Configurare le variabili Vercel per Production e Preview.
 4. Pubblicare il progetto.
@@ -23,6 +24,9 @@ riservato ai flussi newsletter.
 - `GOOGLE_REFRESH_TOKEN`
 - `GMAIL_SENDER`
 - `SPONSOR_ADMIN_SECRET`
+- `SPONSOR_ACCOUNT_HOLDER`
+- `SPONSOR_IBAN`
+- `SPONSOR_PAYPAL_URL`
 
 Il refresh token Google deve includere lo scope
 `https://www.googleapis.com/auth/gmail.send`.
@@ -32,7 +36,7 @@ Il refresh token Google deve includere lo scope
 1. approvazione manuale della richiesta;
 2. scelta tra Main slot (EUR 500) e Slot secondario (EUR 250);
 3. selezione di uno dei prossimi 8 martedi disponibili;
-4. invio separato delle istruzioni di bonifico;
+4. visualizzazione di bonifico e PayPal nell'area privata;
 5. conferma manuale del pagamento dalla Control Room;
 6. sblocco del caricamento materiali;
 7. approvazione o richiesta modifiche;
@@ -58,6 +62,9 @@ espressamente la pubblicazione. Le accettazioni sono registrate nella tabella
 evidenze. Il Publisher Gate blocca l'invio se mancano.
 
 Nessuna email viene inviata allo sponsor prima dell'approvazione manuale.
+Le coordinate di pagamento non vengono inviate via email: compaiono nell'area
+privata solo dopo la selezione dello slot. Il link email è monouso, scade dopo
+14 giorni e al primo accesso crea una sessione HttpOnly valida 14 giorni.
 Coordinate bancarie e causale non sono esposte nelle pagine pubbliche o
 private.
 
