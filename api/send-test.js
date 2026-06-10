@@ -1,7 +1,8 @@
 // api/send-test.js
 // CommonJS — Vercel serverless function
 
-const sendNewsletter = require('./send-newsletter');
+const { buildHtml } = require('./send-newsletter');
+const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,7 +18,9 @@ module.exports = async function handler(req, res) {
 
     const supabase = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_KEY
+      process.env.SUPABASE_SECRET_KEY
+        || process.env.SUPABASE_SERVICE_ROLE_KEY
+        || process.env.SUPABASE_KEY
     );
 
     const resend = new Resend(process.env.RESEND_KEY);
@@ -47,46 +50,7 @@ module.exports = async function handler(req, res) {
     }
 
     const edition = editions[0];
-
-    // IMPORTANTE:
-    // recuperiamo la funzione buildHtml dal file originale
-    const fs = require('fs');
-    const path = require('path');
-
-    const filePath = path.join(process.cwd(), 'api', 'send-newsletter.js');
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-
-    const buildHtmlMatch = fileContent.match(
-      /function buildHtml\(edition\) \{([\s\S]*?)return `<!DOCTYPE html>/
-    );
-
-    if (!buildHtmlMatch) {
-      throw new Error('Impossibile leggere buildHtml');
-    }
-
-    // Metodo semplice: utilizziamo direttamente il file originale
-    delete require.cache[require.resolve('./send-newsletter')];
-    require('./send-newsletter');
-
-    // Estraggo buildHtml dinamicamente
-    const vm = require('vm');
-
-    const sandbox = {
-      module: {},
-      exports: {},
-      require,
-      process,
-      console,
-    };
-
-    vm.createContext(sandbox);
-    vm.runInContext(fileContent, sandbox);
-
-    const buildHtml = sandbox.buildHtml;
-
-    if (!buildHtml) {
-      throw new Error('buildHtml non disponibile');
-    }
+    edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
     const html = buildHtml(edition)
       .replace('{{EMAIL}}', encodeURIComponent('info@valoreatteso.com'))
@@ -108,6 +72,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       sent: true,
       id: result.data?.id || null,
+      sponsors: edition.sponsors.length,
     });
 
   } catch (err) {

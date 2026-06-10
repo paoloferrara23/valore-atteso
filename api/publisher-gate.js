@@ -5,7 +5,9 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
+  process.env.SUPABASE_SECRET_KEY
+    || process.env.SUPABASE_SERVICE_ROLE_KEY
+    || process.env.SUPABASE_KEY
 );
 
 module.exports = async function handler(req, res) {
@@ -194,6 +196,32 @@ module.exports = async function handler(req, res) {
       checks.push({ type: 'error', code: 'not_published', message: 'Edizione non marcata come pubblicata' });
       blockers++;
     }
+
+    // 6. SPONSOR ASSOCIATI
+    const { data: sponsors, error: sponsorErr } = await supabase
+      .from('sponsor_requests')
+      .select('company,slot_type,preview_status,payment_status,materials_status')
+      .eq('edition_id', edition.id);
+    if (sponsorErr) throw new Error('Supabase sponsor: ' + sponsorErr.message);
+    (sponsors || []).forEach(sponsor => {
+      const ready = sponsor.preview_status === 'approved'
+        && sponsor.payment_status === 'received'
+        && sponsor.materials_status === 'approved';
+      if (!ready) {
+        checks.push({
+          type: 'error',
+          code: 'sponsor_not_ready',
+          message: `Sponsor ${sponsor.company}: preview, pagamento o materiali non pronti`
+        });
+        blockers++;
+      } else {
+        checks.push({
+          type: 'ok',
+          code: 'sponsor_ready',
+          message: `Sponsor ${sponsor.company}: ${sponsor.slot_type} pronto per l'invio`
+        });
+      }
+    });
 
     // ── RISULTATO FINALE ────────────────────────────────────────────────────
     const errors = checks.filter(c => c.type === 'error').length;

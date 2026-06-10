@@ -1,8 +1,11 @@
 {
   "rewrites": [
     { "source": "/api/approve-sponsor", "destination": "/api/sponsor-request?action=approve" },
+    { "source": "/api/delete-sponsor-request", "destination": "/api/sponsor-request?action=delete" },
+    { "source": "/api/get-edition-sponsors", "destination": "/api/sponsor-request?action=editionSponsors" },
     { "source": "/api/get-sponsor-request", "destination": "/api/sponsor-request?action=get" },
     { "source": "/api/list-sponsor-requests", "destination": "/api/sponsor-request?action=list" },
+    { "source": "/api/manage-sponsor-editorial", "destination": "/api/sponsor-request?action=manageEditorial" },
     { "source": "/api/review-sponsor-materials", "destination": "/api/sponsor-request?action=review" },
     { "source": "/api/select-sponsor-slot", "destination": "/api/sponsor-request?action=selectSlot" },
     { "source": "/api/update-sponsor-status", "destination": "/api/sponsor-request?action=updateStatus" },
