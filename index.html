@@ -453,8 +453,13 @@ async function crLoadSponsors(){
         '</div>'+
         (asset?'<div style="display:grid;grid-template-columns:100px 1fr;gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--rule)">'+
           (asset.logo_signed_url?'<img src="'+esc(asset.logo_signed_url)+'" alt="Logo sponsor" style="width:100px;height:80px;object-fit:contain;background:white;border:1px solid var(--rule);border-radius:10px">':'<div></div>')+
-          '<div><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);text-transform:uppercase">Materiali · '+esc(item.materials_status||'pending')+'</div><strong>'+esc(asset.headline)+'</strong>'+
-          '<div style="font-size:13px;color:var(--ink2);margin-top:5px">'+esc(asset.body)+'</div><a href="'+esc(asset.cta_url)+'" target="_blank" style="font-family:var(--mn);font-size:8px;text-decoration:underline">'+esc(asset.cta_url)+'</a></div></div>':'')+
+          '<div><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);text-transform:uppercase">Revisione redazionale · '+esc(item.materials_status||'pending')+'</div><div style="font-size:12px;color:var(--ink2);margin-top:5px">Modifica il testo ricevuto prima di approvare e inviare la preview al cliente.</div></div></div>'+
+          '<div style="margin-top:14px;padding:16px;background:var(--cream);border:1px solid var(--rule);border-radius:12px">'+
+            '<label style="display:block;font-family:var(--mn);font-size:8px;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Headline</label><input id="sponsor-headline-'+item.id+'" class="cr-input" maxlength="160" value="'+esc(asset.headline)+'" style="width:100%;max-width:none;box-sizing:border-box;margin-bottom:11px">'+
+            '<label style="display:block;font-family:var(--mn);font-size:8px;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Testo sponsor</label><textarea id="sponsor-body-'+item.id+'" class="cr-input" maxlength="3000" style="width:100%;max-width:none;height:120px;resize:vertical;box-sizing:border-box;margin-bottom:11px">'+esc(asset.body)+'</textarea>'+
+            '<label style="display:block;font-family:var(--mn);font-size:8px;text-transform:uppercase;color:var(--muted);margin-bottom:5px">Link CTA</label><input id="sponsor-cta-'+item.id+'" class="cr-input" type="url" value="'+esc(asset.cta_url)+'" style="width:100%;max-width:none;box-sizing:border-box">'+
+            '<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px"><div style="font-size:11px;color:var(--ink2)">Il salvataggio riporta la preview in bozza e richiede una nuova approvazione.</div><button class="cr-btn light" onclick="crSaveSponsorEditorial(\''+item.id+'\',this)">Salva bozza redazionale</button></div>'+
+          '</div>':'')+
         (canManageEditorial?'<div style="margin-top:16px;padding:14px;background:var(--cream);border:1px solid var(--rule);border-radius:12px"><div style="font-family:var(--mn);font-size:8px;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px">Inserimento newsletter</div>'+
           '<select class="cr-input" style="width:100%;max-width:none" onchange="crAssignSponsorEdition(\''+item.id+'\',this.value,this)"><option value="">Seleziona edizione...</option>'+editionOptions+'</select>'+
           (!editions.length?'<div style="font-size:12px;color:var(--ink2);margin-top:9px">Nessuna bozza futura disponibile. La prossima edizione comparirà qui quando la Redazione genera la bozza.</div>':'')+
@@ -548,6 +553,21 @@ async function crReviewSponsor(id,decision,button){
     status.className='cr-status ok';status.textContent=decision==='approve'?'Materiali approvati. Email inviata allo sponsor.':'Modifiche richieste. Email inviata allo sponsor.';
     crLoadSponsors();
   }catch(e){button.disabled=false;status.className='cr-status err';status.textContent='Errore: '+e.message}
+}
+
+async function crSaveSponsorEditorial(id,button){
+  const headline=document.getElementById('sponsor-headline-'+id).value.trim();
+  const body=document.getElementById('sponsor-body-'+id).value.trim();
+  const ctaUrl=document.getElementById('sponsor-cta-'+id).value.trim();
+  const status=document.getElementById('cr-sponsor-status');
+  if(!headline||!body||!ctaUrl){status.className='cr-status err';status.style.display='block';status.textContent='Compila headline, testo sponsor e link CTA.';return}
+  button.disabled=true;button.textContent='Salvataggio...';status.className='cr-status';status.style.display='block';status.textContent='Salvataggio della bozza redazionale...';
+  try{
+    const r=await fetch('/api/manage-sponsor-editorial',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'update_assets',request_id:id,headline,body,cta_url:ctaUrl})});
+    const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    status.className='cr-status ok';status.textContent='Bozza redazionale salvata. Ora controllala e approva i materiali.';
+    crLoadSponsors();
+  }catch(e){button.disabled=false;button.textContent='Salva bozza redazionale';status.className='cr-status err';status.textContent='Errore: '+e.message}
 }
 
 async function crSponsorStatus(id,action,button){
