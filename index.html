@@ -407,6 +407,7 @@ async function crLoadSponsors(){
     if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
     if(!d.requests.length){el.innerHTML='<div class="cr-box">Nessuna richiesta sponsor.</div>';return}
     const editions=d.editions||[];
+    const previewEdition=d.preview_edition||null;
     el.innerHTML=d.requests.map(function(item){
       const asset=Array.isArray(item.sponsor_assets)?item.sponsor_assets[0]:item.sponsor_assets;
       const assignedEdition=Array.isArray(item.editions)?item.editions[0]:item.editions;
@@ -419,7 +420,7 @@ async function crLoadSponsors(){
       const canReview=isPaid&&materialsUploaded;
       const canSchedule=isPaid&&materialsApproved&&item.status!=='scheduled';
       const canManageEditorial=isPaid&&materialsApproved;
-      const canSendPreview=canManageEditorial&&!!item.edition_id&&item.preview_status!=='approved';
+      const canSendPreview=canManageEditorial&&item.preview_status!=='approved';
       const amount=item.amount?new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(item.amount):'—';
       const scheduled=item.scheduled_date?new Date(item.scheduled_date+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}):'—';
       const editionOptions=editions.map(function(edition){
@@ -432,7 +433,7 @@ async function crLoadSponsors(){
         canReview?'<button class="cr-btn gold" onclick="crReviewSponsor(\''+item.id+'\',\'approve\',this)">Approva materiali</button>':'',
         canReview?'<button class="cr-btn light" onclick="crReviewSponsor(\''+item.id+'\',\'changes\',this)">Richiedi modifiche</button>':'',
         canSchedule?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'schedule\',this)">Programma uscita</button>':'',
-        asset?'<button class="cr-btn light" onclick="crToggleSponsorPreview(\''+item.id+'\')">Preview</button>':'',
+        asset&&canManageEditorial?'<button class="cr-btn light" onclick="crOpenSponsorNewsletterPreview(\''+item.id+'\')">Preview newsletter</button>':'',
         canSendPreview?'<button class="cr-btn gold" onclick="crSendSponsorPreview(\''+item.id+'\',this)">Invia preview al cliente</button>':'',
         '<button class="cr-btn light" style="color:#9B3027;border-color:#CFA9A4" onclick="crDeleteSponsor(\''+item.id+'\',\''+safeCompany+'\',this)">Elimina</button>'
       ].filter(Boolean).join(' ');
@@ -454,6 +455,8 @@ async function crLoadSponsors(){
           '<div style="font-size:13px;color:var(--ink2);margin-top:5px">'+esc(asset.body)+'</div><a href="'+esc(asset.cta_url)+'" target="_blank" style="font-family:var(--mn);font-size:8px;text-decoration:underline">'+esc(asset.cta_url)+'</a></div></div>':'')+
         (canManageEditorial?'<div style="margin-top:16px;padding:14px;background:var(--cream);border:1px solid var(--rule);border-radius:12px"><div style="font-family:var(--mn);font-size:8px;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px">Inserimento newsletter</div>'+
           '<select class="cr-input" style="width:100%;max-width:none" onchange="crAssignSponsorEdition(\''+item.id+'\',this.value,this)"><option value="">Seleziona edizione...</option>'+editionOptions+'</select>'+
+          (!editions.length?'<div style="font-size:12px;color:var(--ink2);margin-top:9px">Nessuna bozza futura disponibile. La prossima edizione comparirà qui quando la Redazione genera la bozza.</div>':'')+
+          (previewEdition?'<div style="font-size:12px;color:var(--ink2);margin-top:9px">La preview cliente usa l’ultima edizione pubblicata <strong>#'+esc(previewEdition.num)+'</strong> come modello. Non programma lo sponsor su quell’edizione.</div>':'')+
           '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:8px">Preview: <strong style="color:var(--ink)">'+esc(item.preview_status||'not_sent')+'</strong>'+
           (assignedEdition?' · Edizione <strong style="color:var(--ink)">#'+esc(assignedEdition.num)+'</strong>':' · Nessuna edizione associata')+'</div></div>':'')+
         (asset?'<div id="sponsor-preview-'+item.id+'" style="display:none;margin-top:16px;border:1px solid var(--rule);background:#E7DFD2;padding:24px;border-radius:12px"><div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:12px">Partner · '+esc(item.slot_type==='main'?'Main slot':'Slot secondario')+'</div>'+
@@ -472,6 +475,27 @@ function crToggleSponsorPreview(id){
   if(el)el.style.display=el.style.display==='none'?'block':'none';
 }
 
+async function crOpenSponsorNewsletterPreview(id){
+  const status=document.getElementById('cr-sponsor-status');
+  status.className='cr-status';status.style.display='block';status.textContent='Preparazione preview completa...';
+  try{
+    const r=await fetch('/api/manage-sponsor-editorial',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({action:'get_preview',request_id:id})});
+    const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    let modal=document.getElementById('cr-sponsor-preview-modal');
+    if(!modal){
+      modal=document.createElement('div');
+      modal.id='cr-sponsor-preview-modal';
+      modal.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(28,25,20,.82);padding:22px;overflow:auto';
+      modal.innerHTML='<div style="max-width:760px;margin:0 auto;background:var(--cream);border-radius:18px;overflow:hidden"><div style="display:flex;justify-content:space-between;gap:16px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--rule)"><div id="cr-sponsor-preview-title" style="font-family:var(--mn);font-size:10px;color:var(--ink)"></div><button class="cr-btn light" onclick="document.getElementById(\'cr-sponsor-preview-modal\').style.display=\'none\'">Chiudi</button></div><div style="padding:12px;background:#D8D0C4"><iframe id="cr-sponsor-preview-frame" title="Preview newsletter sponsor" style="display:block;width:100%;height:78vh;border:0;background:#D8D0C4"></iframe></div></div>';
+      document.body.appendChild(modal);
+    }
+    document.getElementById('cr-sponsor-preview-title').textContent='Edizione #'+d.edition.num+' · '+d.placement;
+    document.getElementById('cr-sponsor-preview-frame').srcdoc=d.html;
+    modal.style.display='block';
+    status.className='cr-status ok';status.textContent='Preview pronta. Dopo il controllo puoi inviarla al cliente.';
+  }catch(e){status.className='cr-status err';status.textContent='Errore: '+e.message}
+}
+
 async function crAssignSponsorEdition(id,editionId,select){
   if(!editionId)return;
   const status=document.getElementById('cr-sponsor-status');
@@ -484,7 +508,7 @@ async function crAssignSponsorEdition(id,editionId,select){
 }
 
 async function crSendSponsorPreview(id,button){
-  if(!confirm('Inviare via Gmail la preview allo sponsor?'))return;
+  if(!confirm('Inviare via Gmail allo sponsor la preview completa appena verificata?'))return;
   const status=document.getElementById('cr-sponsor-status');
   button.disabled=true;status.className='cr-status';status.style.display='block';status.textContent='Invio preview...';
   try{
@@ -1360,12 +1384,30 @@ async function crApprovaBozzaConData(id,num){
   }
 }
 
+function crRenderSponsorInDraft(item){
+  const asset=Array.isArray(item.sponsor_assets)?item.sponsor_assets[0]:item.sponsor_assets;
+  if(!asset)return '';
+  const isMain=item.slot_type==='main';
+  return '<div style="margin:18px 0;padding:'+(isMain?'24px':'18px')+';background:'+(isMain?'#E7DFD2':'#F7F4EF')+';border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">'+
+    '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:12px">Partner · '+(isMain?'Main slot':'Slot secondario')+'</div>'+
+    (asset.logo_signed_url?'<img src="'+esc(asset.logo_signed_url)+'" alt="" style="display:block;max-width:120px;max-height:54px;object-fit:contain;margin-bottom:14px">':'')+
+    '<div style="font-family:var(--sf);font-size:'+(isMain?'1.4rem':'1.15rem')+';font-weight:700;margin-bottom:8px">'+esc(asset.headline||'')+'</div>'+
+    '<div style="font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:12px">'+esc(asset.body||'')+'</div>'+
+    '<span style="display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:8px;padding:9px 14px">Scopri di più →</span>'+
+    '<div style="font-family:var(--mn);font-size:7px;color:var(--muted);margin-top:12px">Contenuto sponsorizzato · Preview Redazione</div></div>';
+}
+
 async function crLoadBozze(){
   var el=document.getElementById('cr-bozze-list');
   el.innerHTML='<div class="cr-box">Caricamento...</div>';
   try{
-    var r=await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    var bozze=await r.json();
+    var results=await Promise.all([
+      fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}}),
+      fetch('/api/list-sponsor-requests',{headers:{'x-cr-token':CR_PWD}})
+    ]);
+    var bozze=await results[0].json();
+    var sponsorPayload=await results[1].json();
+    var redazioneSponsors=sponsorPayload&&Array.isArray(sponsorPayload.requests)?sponsorPayload.requests:[];
     if(!Array.isArray(bozze)||!bozze.length){
       el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessuna bozza. L\'agente genera lunedi alle 08:00.</div>';
       return;
@@ -1396,6 +1438,9 @@ async function crLoadBozze(){
 
       }else if(hasSections){
         var secs=e.sections||[];
+        var editionSponsors=redazioneSponsors.filter(function(item){return item.edition_id===e.id&&item.payment_status==='received'&&item.materials_status==='approved'});
+        var mainDraftSponsors=editionSponsors.filter(function(item){return item.slot_type==='main'}).map(crRenderSponsorInDraft).join('');
+        var secondaryDraftSponsors=editionSponsors.filter(function(item){return item.slot_type==='secondary'}).map(crRenderSponsorInDraft).join('');
         var previewSecs=secs.map(function(s,i){
           var sid=e.id+'-'+i;
           var kHtml=(s.kpis||[]).map(function(k,ki){
@@ -1443,7 +1488,8 @@ async function crLoadBozze(){
           '</div></div>'+
           '<div style="padding:24px;border-top:1px solid var(--rule)">'+
             '<div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">PREVIEW</div>'+
-            previewSecs+
+            (editionSponsors.length?'<div style="font-family:var(--mn);font-size:9px;color:#315C49;margin-bottom:12px">Sponsor associati: '+editionSponsors.length+' · inseriti nella posizione finale</div>':'')+
+            mainDraftSponsors+previewSecs+secondaryDraftSponsors+
             '<div class="cr-status" id="bst-'+e.id+'"></div>'+
           '<div id="cr-social-'+e.id+'" style="display:none;border-top:1px solid var(--rule);margin-top:16px"></div>'+
           '</div></div>';
