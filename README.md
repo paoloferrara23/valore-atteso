@@ -8,7 +8,8 @@ riservato ai flussi newsletter.
 
 ### Deploy
 
-1. Eseguire `sql/sponsor_funnel.sql` e `sql/sponsor_phase_3.sql`.
+1. Eseguire `sql/sponsor_funnel.sql`, `sql/sponsor_phase_3.sql` e
+   `sql/sponsor_editorial_preview.sql`.
 2. Verificare che il bucket privato `sponsor-assets` sia presente.
 3. Configurare le variabili Vercel per Production e Preview.
 4. Pubblicare il progetto.
@@ -36,6 +37,10 @@ Il refresh token Google deve includere lo scope
 6. sblocco del caricamento materiali;
 7. approvazione o richiesta modifiche;
 8. programmazione manuale dell'uscita.
+9. associazione dello sponsor a una bozza o edizione;
+10. invio della preview privata al cliente;
+11. approvazione della preview da parte del cliente;
+12. inserimento automatico del blocco sponsor durante il test e l'invio newsletter.
 
 Nessuna email viene inviata allo sponsor prima dell'approvazione manuale.
 Coordinate bancarie e causale non sono esposte nelle pagine pubbliche o
@@ -56,7 +61,12 @@ Room riceve un URL firmato temporaneo generato server-side.
 
 La tab Sponsor mostra richiesta, slot, data, importo, pagamento e materiali.
 Da qui si approva la richiesta, si registra manualmente il pagamento, si
-approvano o respingono i materiali e si programma l'uscita.
+approvano o respingono i materiali, si associa l'edizione, si invia la
+preview e si programma l'uscita. Il pulsante Elimina cancella richiesta e
+materiali e libera lo slot dopo una doppia conferma.
 
-Non sono ancora attivi pagamento automatico, riscrittura AI in due versioni
-o inserimento automatico dello sponsor nella newsletter.
+Il Publisher Gate blocca l'invio se uno sponsor associato non ha pagamento,
+materiali e preview approvati. Il blocco viene inserito automaticamente nel
+rendering dell'email e dell'archivio. L'invio della newsletter resta manuale.
+
+Non sono ancora attivi pagamento automatico o riscrittura AI in due versioni.

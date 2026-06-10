@@ -98,6 +98,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 
 /* OPENER */
 .art-opener{font-family:var(--sf);font-size:17px;color:var(--ink2);font-weight:300;line-height:1.75;font-style:italic;padding:24px 32px;background:var(--cream2);border-left:3px solid var(--deepgold);margin-bottom:0}
+.art-sponsor{padding:28px 32px;background:var(--cream2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.art-sponsor.secondary{background:#F7F4EF;padding-top:22px;padding-bottom:22px}
+.art-sponsor-label{font-family:var(--mn);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--deepgold);margin-bottom:13px}
+.art-sponsor img{display:block;max-width:120px;max-height:54px;object-fit:contain;margin-bottom:15px}
+.art-sponsor h2{font-family:var(--sf);font-size:21px;line-height:1.2;margin:0 0 9px}
+.art-sponsor.secondary h2{font-size:17px}
+.art-sponsor p{font-family:var(--sf);font-size:14px;color:var(--ink2);font-weight:300;line-height:1.75;margin:0 0 15px}
+.art-sponsor a{display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:10px 17px;text-decoration:none}
+.art-sponsor small{display:block;font-family:var(--mn);font-size:7px;color:var(--muted);margin-top:13px}
 
 /* KPI BAR */
 .art-kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);background:var(--cream2);border-bottom:2px solid var(--ink);margin-bottom:0}
@@ -516,6 +525,12 @@ async function openArt(num){
     const tesi = e.tesi||null;
     const monitoring = e.monitoring||[];
     const kpis = e.kpis||[];
+    let sponsors = [];
+    try {
+      const sponsorResponse = await fetch('/api/get-edition-sponsors?edition_id='+encodeURIComponent(e.id));
+      const sponsorData = await sponsorResponse.json();
+      if(sponsorResponse.ok && sponsorData.ok) sponsors = sponsorData.sponsors || [];
+    } catch(_) {}
 
     el.innerHTML = '';
 
@@ -581,6 +596,21 @@ async function openArt(num){
       opEl.textContent = txt(e.opener);
       card.appendChild(opEl);
     }
+
+    function appendSponsor(sponsor){
+      if(!sponsor||!sponsor.asset)return;
+      const asset=sponsor.asset;
+      const wrap=document.createElement('div');
+      wrap.className='art-sponsor '+(sponsor.slot_type==='main'?'main':'secondary');
+      const label=document.createElement('div');label.className='art-sponsor-label';label.textContent='Partner · '+(sponsor.slot_type==='main'?'Main slot':'Slot secondario');wrap.appendChild(label);
+      if(asset.logo_signed_url){const img=document.createElement('img');img.src=asset.logo_signed_url;img.alt=sponsor.company||'';wrap.appendChild(img)}
+      const headline=document.createElement('h2');headline.textContent=asset.headline||'';wrap.appendChild(headline);
+      const body=document.createElement('p');body.textContent=asset.body||'';wrap.appendChild(body);
+      const link=document.createElement('a');link.href=asset.cta_url||'#';link.target='_blank';link.rel='noopener sponsored';link.textContent='Scopri di più →';wrap.appendChild(link);
+      const disclosure=document.createElement('small');disclosure.textContent='Contenuto sponsorizzato';wrap.appendChild(disclosure);
+      card.appendChild(wrap);
+    }
+    sponsors.filter(s=>s.slot_type==='main').forEach(appendSponsor);
 
     // KPI BAR — prende il KPI più importante da ogni sezione
     const kpiData = secs.slice(0,3).map((s,i) => {
@@ -798,6 +828,8 @@ async function openArt(num){
       sec.appendChild(grid);
       card.appendChild(sec);
     });
+
+    sponsors.filter(s=>s.slot_type==='secondary').forEach(appendSponsor);
 
     // TESI
     if(tesi && (tesi.headline || tesi.top?.length)){

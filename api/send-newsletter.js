@@ -2,10 +2,14 @@
 // CommonJS — Vercel serverless function
 const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
+const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
+const { renderSponsorEmail } = require('../lib/sponsor-renderer');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
+  process.env.SUPABASE_SECRET_KEY
+    || process.env.SUPABASE_SERVICE_ROLE_KEY
+    || process.env.SUPABASE_KEY
 );
 const resend = new Resend(process.env.RESEND_KEY);
 
@@ -21,7 +25,7 @@ function toSentenceCase(s) {
 }
 
 function buildHtml(edition) {
-  const { num, title, subtitle, date, opener, sections = [], tesi, monitoring = [] } = edition;
+  const { num, title, subtitle, date, opener, sections = [], tesi, monitoring = [], sponsors = [] } = edition;
 
   const s1 = sections[0] || {};
   const s2 = sections[1] || {};
@@ -120,6 +124,14 @@ function buildHtml(edition) {
 
   const sectionsHtml = sections.map((sec, i) => renderSection(sec, i)).join('');
   const tesiHtml = renderTesi(tesi);
+  const mainSponsorHtml = sponsors
+    .filter(sponsor => sponsor.slot_type === 'main')
+    .map(renderSponsorEmail)
+    .join('');
+  const secondarySponsorHtml = sponsors
+    .filter(sponsor => sponsor.slot_type === 'secondary')
+    .map(renderSponsorEmail)
+    .join('');
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -213,10 +225,13 @@ function buildHtml(edition) {
     </table>
   </td></tr>
 
+  ${mainSponsorHtml ? `<tr><td>${mainSponsorHtml}</td></tr>` : ''}
 
 
   <!-- SEZIONI -->
   <tr><td>${sectionsHtml}</td></tr>
+
+  ${secondarySponsorHtml ? `<tr><td>${secondarySponsorHtml}</td></tr>` : ''}
 
   <!-- TESI -->
   ${tesiHtml ? `<tr><td>${tesiHtml}</td></tr>` : ''}
@@ -295,7 +310,7 @@ function buildHtml(edition) {
 }
 
 
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -318,6 +333,7 @@ module.exports = async function handler(req, res) {
     if (edErr) throw new Error('Supabase: ' + edErr.message);
     if (!editions || !editions.length) throw new Error('Edizione non trovata o non pubblicata');
     const edition = editions[0];
+    edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
     const { data: subs, error: subErr } = await supabase
       .from('subscribers')
@@ -395,7 +411,13 @@ module.exports = async function handler(req, res) {
       data: { edition_num: edition.num, sent, errors },
     });
 
-    return res.status(200).json({ ok: true, edition: `#${edition.num}`, sent, errors });
+    return res.status(200).json({
+      ok: true,
+      edition: `#${edition.num}`,
+      sent,
+      errors,
+      sponsors: edition.sponsors.length
+    });
 
   } catch (err) {
     console.error('[send-newsletter]', err);
@@ -406,6 +428,9 @@ module.exports = async function handler(req, res) {
     }).catch(() => {});
     return res.status(500).json({ error: err.message });
   }
-};
+}
+
+module.exports = handler;
+module.exports.buildHtml = buildHtml;
 
 
