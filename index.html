@@ -407,7 +407,7 @@ async function crLoadSponsors(){
     if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
     if(!d.requests.length){el.innerHTML='<div class="cr-box">Nessuna richiesta sponsor.</div>';return}
     const editions=d.editions||[];
-    const previewEdition=d.preview_edition||null;
+    const currentTermsVersion=d.terms_version||'';
     el.innerHTML=d.requests.map(function(item){
       const asset=Array.isArray(item.sponsor_assets)?item.sponsor_assets[0]:item.sponsor_assets;
       const assignedEdition=Array.isArray(item.editions)?item.editions[0]:item.editions;
@@ -416,10 +416,12 @@ async function crLoadSponsors(){
       const isPaid=item.payment_status==='received';
       const materialsUploaded=item.materials_status==='uploaded';
       const materialsApproved=item.materials_status==='approved';
-      const canMarkPaid=hasSlot&&!isPaid&&item.status!=='scheduled';
-      const canReview=isPaid&&materialsUploaded;
-      const canSchedule=isPaid&&materialsApproved&&item.status!=='scheduled';
-      const canManageEditorial=isPaid&&materialsApproved;
+      const termsCurrent=!!item.terms_accepted_at&&item.terms_version===currentTermsVersion;
+      const previewApproved=item.preview_status==='approved';
+      const canMarkPaid=termsCurrent&&hasSlot&&previewApproved&&!isPaid&&item.status!=='scheduled';
+      const canReview=termsCurrent&&materialsUploaded;
+      const canSchedule=termsCurrent&&isPaid&&materialsApproved&&previewApproved&&item.status!=='scheduled';
+      const canManageEditorial=termsCurrent&&materialsApproved;
       const canSendPreview=canManageEditorial&&item.preview_status!=='approved';
       const amount=item.amount?new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(item.amount):'—';
       const scheduled=item.scheduled_date?new Date(item.scheduled_date+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'}):'—';
@@ -429,12 +431,12 @@ async function crLoadSponsors(){
       const safeCompany=String(item.company||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       const actions=[
         canApprove?'<button class="cr-btn gold" onclick="crApproveSponsor(\''+item.id+'\',this)">Approva richiesta</button>':'',
-        canMarkPaid?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'mark_paid\',this)">Segna pagamento ricevuto</button>':'',
         canReview?'<button class="cr-btn gold" onclick="crReviewSponsor(\''+item.id+'\',\'approve\',this)">Approva materiali</button>':'',
         canReview?'<button class="cr-btn light" onclick="crReviewSponsor(\''+item.id+'\',\'changes\',this)">Richiedi modifiche</button>':'',
-        canSchedule?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'schedule\',this)">Programma uscita</button>':'',
         asset&&canManageEditorial?'<button class="cr-btn light" onclick="crOpenSponsorNewsletterPreview(\''+item.id+'\')">Preview newsletter</button>':'',
         canSendPreview?'<button class="cr-btn gold" onclick="crSendSponsorPreview(\''+item.id+'\',this)">Invia preview al cliente</button>':'',
+        canMarkPaid?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'mark_paid\',this)">Segna pagamento ricevuto</button>':'',
+        canSchedule?'<button class="cr-btn gold" onclick="crSponsorStatus(\''+item.id+'\',\'schedule\',this)">Programma uscita</button>':'',
         '<button class="cr-btn light" style="color:#9B3027;border-color:#CFA9A4" onclick="crDeleteSponsor(\''+item.id+'\',\''+safeCompany+'\',this)">Elimina</button>'
       ].filter(Boolean).join(' ');
       return '<div class="cr-box" style="margin-bottom:10px">'+
@@ -459,13 +461,13 @@ async function crLoadSponsors(){
           '<div style="font-size:12px;color:var(--ink2);margin-top:9px">La preview cliente usa un template neutro con Il Bilancio, Il Deal e La Metrica. L’edizione scelta serve solo alla programmazione.</div>'+
           '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:8px">Preview: <strong style="color:var(--ink)">'+esc(item.preview_status||'not_sent')+'</strong>'+
           (assignedEdition?' · Edizione <strong style="color:var(--ink)">#'+esc(assignedEdition.num)+'</strong>':' · Nessuna edizione associata')+'</div>'+
-          '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:6px">Condizioni: <strong style="color:'+(item.terms_accepted_at?'#315C49':'#9B3027')+'">'+(item.terms_accepted_at?'accettate':'mancanti')+'</strong> · Pubblicazione: <strong style="color:'+(item.publication_authorized_at?'#315C49':'#9B3027')+'">'+(item.publication_authorized_at?'autorizzata':'non autorizzata')+'</strong></div></div>':'')+
+          '<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:6px">Condizioni: <strong style="color:'+(termsCurrent?'#315C49':'#9B3027')+'">'+(termsCurrent?'accettate':'da accettare')+'</strong> · Pubblicazione: <strong style="color:'+(item.publication_authorized_at?'#315C49':'#9B3027')+'">'+(item.publication_authorized_at?'autorizzata':'non autorizzata')+'</strong></div></div>':'')+
         (asset?'<div id="sponsor-preview-'+item.id+'" style="display:none;margin-top:16px;border:1px solid var(--rule);background:#E7DFD2;padding:24px;border-radius:12px"><div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:12px">Partner · '+esc(item.slot_type==='main'?'Main slot':'Slot secondario')+'</div>'+
           (asset.logo_signed_url?'<img src="'+esc(asset.logo_signed_url)+'" alt="" style="display:block;max-width:120px;max-height:54px;object-fit:contain;margin-bottom:14px">':'')+
           '<div style="font-family:var(--sf);font-size:'+(item.slot_type==='main'?'1.45rem':'1.15rem')+';font-weight:700;margin-bottom:8px">'+esc(asset.headline)+'</div><div style="font-family:var(--sf);font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:13px">'+esc(asset.body)+'</div>'+
           '<span style="display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:8px;padding:9px 14px">Scopri di più →</span><div style="font-family:var(--mn);font-size:7px;color:var(--muted);margin-top:12px">Contenuto sponsorizzato</div></div>':'')+
         '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+actions+'</div>'+
-        (item.preview_status==='approved'&&assignedEdition?'<div style="font-family:var(--mn);font-size:9px;color:#315C49;margin-top:12px">✓ Pronto per l’inserimento automatico nell’edizione #'+esc(assignedEdition.num)+'</div>':'')+
+        (isPaid&&item.preview_status==='approved'&&assignedEdition?'<div style="font-family:var(--mn);font-size:9px;color:#315C49;margin-top:12px">✓ Pronto per l’inserimento automatico nell’edizione #'+esc(assignedEdition.num)+'</div>':'')+
         '</div>';
     }).join('');
   }catch(e){el.innerHTML='';status.className='cr-status err';status.style.display='block';status.textContent='Errore: '+e.message}
@@ -556,7 +558,7 @@ async function crSponsorStatus(id,action,button){
   try{
     const r=await fetch('/api/update-sponsor-status',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({request_id:id,action})});
     const d=await r.json();if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
-    status.className='cr-status ok';status.textContent=action==='mark_paid'?'Pagamento registrato. Area materiali sbloccata e email inviata.':'Uscita programmata.';
+    status.className='cr-status ok';status.textContent=action==='mark_paid'?'Pagamento registrato. Lo slot può essere programmato.':'Uscita programmata.';
     crLoadSponsors();
   }catch(e){button.disabled=false;status.className='cr-status err';status.textContent='Errore: '+e.message}
 }
