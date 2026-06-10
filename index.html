@@ -2053,9 +2053,11 @@ function crRenderLeads(){
       '<div style="font-family:var(--mn);font-size:9px;color:var(--ink2);margin-top:6px">'+esc((l.sponsorship_evidence||'').slice(0,140))+' <a href="'+esc(l.evidence_url||'#')+'" target="_blank" rel="noopener" style="color:var(--deepgold);text-decoration:underline">fonte</a></div>'+
       (c?'<div style="font-family:var(--mn);font-size:9px;color:var(--ink2);margin-top:4px">👤 '+esc(c.full_name||'—')+' · '+esc(c.role||'—')+(c.public_email?' · '+esc(c.public_email):'')+(c.linkedin_url?' · <a href="'+esc(c.linkedin_url)+'" target="_blank" rel="noopener" style="text-decoration:underline">LinkedIn</a>':'')+' · <a href="'+esc(c.source_url||'#')+'" target="_blank" rel="noopener" style="color:var(--deepgold)">fonte</a></div>':'')+
       (o?'<div style="font-family:var(--mn);font-size:9px;color:var(--muted);margin-top:4px">✉ Bozza: '+esc(o.status)+(cls?' · risposta: <strong>'+esc(cls)+'</strong>':'')+(o.reply_summary?'<br>'+esc(o.reply_summary.slice(0,160)):'')+'</div>':'')+
+      (o&&o.proposed_reply?'<div style="font-family:var(--mn);font-size:9px;margin-top:6px;background:#eef7ee;border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:6px 8px">💬 <strong>Risposta suggerita:</strong> '+esc(o.proposed_reply.slice(0,200))+(o.proposed_reply.length>200?'…':'')+'</div>':'')+
       '</div>'+
       '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
       (o&&o.email_body?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutShowDraft(this.dataset.id)">Bozza</button>':'')+
+      (o&&o.proposed_reply?'<button class="cr-run-btn" style="border-color:var(--green);color:var(--green)" data-id="'+o.id+'" onclick="crOutCopyReply(this.dataset.id)">Copia risposta</button>':'')+
       (o?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutAction(this.dataset.id,\'outreach\',{status:\'regenerate\'},\'Bozza in rigenerazione al prossimo run\')">Rigenera</button>':'')+
       (o&&o.status==='draft'?'<button class="cr-run-btn" data-id="'+o.id+'" onclick="crOutAction(this.dataset.id,\'outreach\',{status:\'draft_requested\'},\'Bozza Gmail al prossimo run\')">→ Gmail</button>':'')+
       (o&&o.status!=='sent'&&o.status!=='replied'?'<button class="cr-run-btn" data-id="'+l.id+'" data-oid="'+(o?o.id:'')+'" onclick="crOutContacted(this.dataset.id,this.dataset.oid)">Già contattato</button>':'')+
@@ -2069,7 +2071,19 @@ function crRenderLeads(){
 function crOutShowDraft(oid){
   const o=crOutData.outreach.find(x=>x.id===oid);
   if(!o)return;
-  alert('OGGETTO: '+o.subject+'\n\n'+o.email_body);
+  let msg='OGGETTO: '+o.subject+'\n\n'+o.email_body;
+  if(o.proposed_reply)msg+='\n\n──────────────────\nRISPOSTA SUGGERITA:\n'+o.proposed_reply;
+  alert(msg);
+}
+
+function crOutCopyReply(oid){
+  const o=crOutData.outreach.find(x=>x.id===oid);
+  if(!o||!o.proposed_reply)return;
+  navigator.clipboard.writeText(o.proposed_reply).then(()=>{
+    const st=document.getElementById('cr-out-status');
+    st.className='cr-status ok';st.textContent='✓ Risposta copiata negli appunti';
+    setTimeout(()=>{st.textContent='';st.className='cr-status';},3000);
+  }).catch(()=>alert(o.proposed_reply));
 }
 
 async function crOutAction(id,table,patch,okMsg){
