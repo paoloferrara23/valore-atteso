@@ -4,6 +4,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { renderSponsorEmail } = require('../lib/sponsor-renderer');
+const sendUtilsHandler = require('../lib/send-utils');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -311,6 +312,10 @@ function buildHtml(edition) {
 
 
 async function handler(req, res) {
+  if (String((req.query && req.query.action) || '') === 'utils') {
+    return sendUtilsHandler(req, res);
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

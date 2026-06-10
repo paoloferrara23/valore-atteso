@@ -8,6 +8,7 @@
     { "source": "/api/manage-sponsor-editorial", "destination": "/api/sponsor-request?action=manageEditorial" },
     { "source": "/api/review-sponsor-materials", "destination": "/api/sponsor-request?action=review" },
     { "source": "/api/select-sponsor-slot", "destination": "/api/sponsor-request?action=selectSlot" },
+    { "source": "/api/send-utils", "destination": "/api/send-newsletter?action=utils" },
     { "source": "/api/update-sponsor-status", "destination": "/api/sponsor-request?action=updateStatus" },
     { "source": "/api/upload-sponsor-assets", "destination": "/api/sponsor-request?action=upload" }
   ],
