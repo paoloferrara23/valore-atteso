@@ -36,14 +36,14 @@ Il refresh token Google deve includere lo scope
 1. approvazione manuale della richiesta;
 2. scelta tra Main slot (EUR 500) e Slot secondario (EUR 250);
 3. selezione di uno dei prossimi 8 martedi disponibili;
-4. visualizzazione di bonifico e PayPal nell'area privata;
-5. conferma manuale del pagamento dalla Control Room;
-6. sblocco del caricamento materiali;
-7. approvazione o richiesta modifiche;
-8. programmazione manuale dell'uscita.
-9. associazione dello sponsor a una bozza o edizione;
-10. invio della preview privata al cliente;
-11. approvazione della preview da parte del cliente;
+4. caricamento di logo, brief e link;
+5. approvazione o richiesta modifiche ai materiali;
+6. invio della preview privata su template neutro;
+7. approvazione della menzione da parte del cliente;
+8. visualizzazione di bonifico e PayPal nell'area privata;
+9. conferma manuale del pagamento dalla Control Room;
+10. associazione dello sponsor a una bozza o edizione;
+11. programmazione manuale dell'uscita;
 12. inserimento automatico del blocco sponsor durante il test e l'invio newsletter.
 
 ### Accettazioni legali
@@ -63,7 +63,7 @@ evidenze. Il Publisher Gate blocca l'invio se mancano.
 
 Nessuna email viene inviata allo sponsor prima dell'approvazione manuale.
 Le coordinate di pagamento non vengono inviate via email: compaiono nell'area
-privata solo dopo la selezione dello slot. Il link email è monouso, scade dopo
+privata solo dopo l'approvazione della preview. Il link email è monouso, scade dopo
 14 giorni e al primo accesso crea una sessione HttpOnly valida 14 giorni.
 Coordinate bancarie e causale non sono esposte nelle pagine pubbliche o
 private.
@@ -82,9 +82,9 @@ Room riceve un URL firmato temporaneo generato server-side.
 ### Control Room
 
 La tab Sponsor mostra richiesta, slot, data, importo, pagamento e materiali.
-Da qui si approva la richiesta, si registra manualmente il pagamento, si
-approvano o respingono i materiali, si associa l'edizione, si invia la
-preview e si programma l'uscita. Il pulsante Elimina cancella richiesta e
+Da qui si approva la richiesta, si approvano o respingono i materiali, si
+invia la preview, si registra manualmente il pagamento, si associa l'edizione
+e si programma l'uscita. Il pulsante Elimina cancella richiesta e
 materiali e libera lo slot dopo una doppia conferma.
 
 Il Publisher Gate blocca l'invio se uno sponsor associato non ha pagamento,
