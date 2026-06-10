@@ -1976,6 +1976,7 @@ loadLatestPreview();
     <div class="cr-panel" id="cr-outreach">
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
         <button class="cr-btn gold" onclick="crRunAgent('sponsor-outreach')">▶ Esegui ricerca ora</button>
+        <button class="cr-btn" onclick="crLoadOutreach()">↻ Aggiorna</button>
         <span style="font-family:var(--mn);font-size:9px;color:var(--muted)" id="cr-out-runinfo"></span>
       </div>
 
@@ -2012,6 +2013,7 @@ const OUT_HDRS={apikey:SKEY,Authorization:'Bearer '+SKEY};
 const OUT_PATCH={'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY,Prefer:'return=minimal'};
 
 async function crLoadOutreach(){
+  document.getElementById('cr-out-runinfo').textContent='Aggiornamento…';
   try{
     const [runs,reqs,leads,contacts,outreach]=await Promise.all([
       fetch(SURL+'/rest/v1/sponsor_outreach_runs?select=*&order=run_date.desc&limit=7',{headers:OUT_HDRS}).then(r=>r.json()),
