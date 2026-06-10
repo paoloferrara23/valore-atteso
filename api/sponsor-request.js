@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const {
   escapeHtml,
   parseJsonBody,
@@ -56,7 +55,6 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ ok: false, error: 'Controlla i campi obbligatori' });
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
     await supabaseRequest('/rest/v1/sponsor_requests', {
       method: 'POST',
       headers: {
@@ -66,8 +64,7 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         ...clean,
         name: clean.contact_name,
-        status: 'new',
-        token
+        status: 'new'
       })
     });
 
