@@ -23,7 +23,7 @@ h1{font-size:clamp(2.7rem,6vw,5rem);line-height:1.01;letter-spacing:-1.7px;font-
 .section{max-width:var(--max);margin:auto;padding:70px 24px}.section-head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:28px}.section-head h2{font-size:clamp(2rem,4vw,3rem);line-height:1.06}.section-head p{max-width:430px;color:var(--ink2);font-weight:300}
 .plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.plan{position:relative;min-width:0;background:rgba(255,253,248,.7);border:1px solid var(--rule);border-radius:24px;padding:34px 30px;display:flex;flex-direction:column}.plan.featured{background:var(--ink);color:var(--cream);border-color:var(--ink)}
 .badge{display:inline-block;font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold);background:var(--cream2);padding:6px 9px;border-radius:999px;margin-bottom:18px}.featured .badge{background:var(--gold);color:var(--ink)}
-.plan-top{display:flex;justify-content:space-between;gap:18px;align-items:start}.plan h3{font-size:2rem;line-height:1.1}.price{font-family:var(--mn);font-size:1.4rem;font-weight:600}.price small{display:block;font-size:8px;font-weight:400;color:var(--muted);text-align:right}.featured .price small{color:var(--gold)}
+.plan-top{display:flex;justify-content:space-between;gap:18px;align-items:start}.plan h3{font-size:2rem;line-height:1.1}
 .plan-desc{color:var(--ink2);font-weight:300;margin:15px 0 22px}.featured .plan-desc{color:var(--cream2)}
 .features{list-style:none;border-top:1px solid var(--rule);flex:1}.features li{padding:11px 0;border-bottom:1px solid var(--rule);font-size:15px}.features li::before{content:"✓";font-family:var(--mn);color:var(--deepgold);margin-right:9px}.featured .features li::before{color:var(--gold)}
 .plan-select{width:100%;height:43px;margin-top:22px;border:1px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);font-family:var(--mn);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}.plan-select:hover{background:var(--ink);color:var(--cream)}.featured .plan-select{border-color:var(--gold);color:var(--gold)}.featured .plan-select:hover{background:var(--gold);color:var(--ink)}
@@ -34,7 +34,7 @@ h1{font-size:clamp(2.7rem,6vw,5rem);line-height:1.01;letter-spacing:-1.7px;font-
 footer{max-width:var(--max);margin:auto;padding:30px 24px;border-top:1px solid var(--rule);font-family:var(--mn);font-size:9px;color:var(--muted)}
 @media(max-width:1050px){.plans{grid-template-columns:1fr 1fr}.plan:last-child{grid-column:1/-1}}
 @media(max-width:800px){.plans{grid-template-columns:1fr}.plan:last-child{grid-column:auto}.plan{padding:30px}.steps{grid-template-columns:1fr}.step{min-height:auto}.section-head{display:block}.section-head p{margin-top:12px}}
-@media(max-width:620px){.section{padding:52px 18px}.plans{gap:14px}.plan{padding:26px 22px;border-radius:20px}.plan h3{font-size:1.75rem}.plan-desc{font-size:16px;line-height:1.65}.features li{font-size:15px;line-height:1.5;padding:12px 0}.plan-select{height:50px;font-size:10px}.row{grid-template-columns:1fr}.form-card{padding:26px}.hero{padding-top:62px}.positioning{line-height:1.6;border-radius:18px}.plan-top{display:block}.price{margin-top:12px}.price small{text-align:left}}
+@media(max-width:620px){.section{padding:52px 18px}.plans{gap:14px}.plan{padding:26px 22px;border-radius:20px}.plan h3{font-size:1.75rem}.plan-desc{font-size:16px;line-height:1.65}.features li{font-size:15px;line-height:1.5;padding:12px 0}.plan-select{height:50px;font-size:10px}.row{grid-template-columns:1fr}.form-card{padding:26px}.hero{padding-top:62px}.positioning{line-height:1.6;border-radius:18px}.plan-top{display:block}}
 </style>
 </head>
 <body>
@@ -55,7 +55,7 @@ footer{max-width:var(--max);margin:auto;padding:30px 24px;border-top:1px solid v
     <div class="plans">
       <article class="plan featured">
         <div class="badge">Massima visibilità</div>
-        <div class="plan-top"><h3>Main slot</h3><div class="price">€500<small>per edizione</small></div></div>
+        <div class="plan-top"><h3>Main slot</h3></div>
         <p class="plan-desc">Lo spazio principale della newsletter, inserito dopo l'apertura editoriale.</p>
         <ul class="features">
           <li>Logo del brand</li><li>Headline dedicata</li><li>Testo fino a 450 caratteri</li><li>Call to action con link</li><li>Report aperture e click</li>
@@ -64,7 +64,7 @@ footer{max-width:var(--max);margin:auto;padding:30px 24px;border-top:1px solid v
       </article>
       <article class="plan">
         <div class="badge">Presenza essenziale</div>
-        <div class="plan-top"><h3>Slot secondario</h3><div class="price">€250<small>per edizione</small></div></div>
+        <div class="plan-top"><h3>Slot secondario</h3></div>
         <p class="plan-desc">Una presenza compatta all'interno del flusso della newsletter.</p>
         <ul class="features">
           <li>Logo del brand</li><li>Testo fino a 220 caratteri</li><li>Link alla pagina scelta</li><li>Posizione secondaria</li><li>Report aperture e click</li>
@@ -73,7 +73,7 @@ footer{max-width:var(--max);margin:auto;padding:30px 24px;border-top:1px solid v
       </article>
       <article class="plan">
         <div class="badge">Progetto su misura</div>
-        <div class="plan-top"><h3>Sito e bundle</h3><div class="price">Su richiesta<small>preventivo dedicato</small></div></div>
+        <div class="plan-top"><h3>Sito e bundle</h3></div>
         <p class="plan-desc">Una presenza continuativa o un progetto integrato tra newsletter, sito e contenuti dedicati.</p>
         <ul class="features">
           <li>Formula costruita sugli obiettivi</li><li>Presenza su più uscite</li><li>Integrazione newsletter e sito</li><li>Creatività e calendario dedicati</li><li>Report personalizzato</li>
@@ -105,7 +105,7 @@ footer{max-width:var(--max);margin:auto;padding:30px 24px;border-top:1px solid v
         <form id="sponsor-form">
           <div class="row"><div class="field"><label for="name">Nome *</label><input id="name" name="name" autocomplete="name" required></div><div class="field"><label for="company">Azienda *</label><input id="company" name="company" required></div></div>
           <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field"><label for="format">Formato di interesse *</label><select id="format" name="format" required><option value="">Seleziona</option><option value="Main slot">Main slot · €500</option><option value="Slot secondario">Slot secondario · €250</option><option value="Progetto personalizzato">Sito o bundle · su richiesta</option></select></div>
+          <div class="field"><label for="format">Formato di interesse *</label><select id="format" name="format" required><option value="">Seleziona</option><option value="Main slot">Main slot</option><option value="Slot secondario">Slot secondario</option><option value="Progetto personalizzato">Sito e bundle</option></select></div>
           <div class="field"><label for="notes">Obiettivo o periodo preferito</label><textarea id="notes" name="notes" placeholder="Raccontaci cosa vuoi promuovere e quando..."></textarea></div>
           <label class="privacy"><input type="checkbox" required><span>Accetto la <a href="/privacy.html" target="_blank">Privacy Policy</a>.</span></label>
           <div id="message" class="message" role="alert"></div><button id="submit" class="submit" type="submit">Invia richiesta</button>
