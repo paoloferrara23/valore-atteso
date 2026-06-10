@@ -8,6 +8,7 @@ const AGENT_MAP = {
   editoriale: { workflow: 'editoriale-agent.yml',   label: 'Editoriale Agent' },
   growth:     { workflow: 'growth-agent.yml',       label: 'Growth Agent' },
   content:    { workflow: 'content-agent.yml',      label: 'Content Agent' },
+  'sponsor-outreach': { workflow: 'sponsor-outreach.yml', label: 'Sponsor Outreach' },
 };
 
 const REPO = 'paoloferrara23/valore-atteso';

@@ -152,6 +152,14 @@ button,input,textarea,select{font:inherit}
 .fsubmit:hover:not(:disabled){background:var(--gold);color:var(--ink)}
 .fsubmit:disabled{opacity:.38;cursor:not-allowed}
 .ferr{display:none;margin-top:12px;padding:10px 14px;background:rgba(185,58,47,.08);color:#B93A2F;font-family:var(--mn);font-size:9px;border-radius:10px;letter-spacing:.03em}
+.cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cal-day{height:auto;padding:10px 6px;border:1px solid var(--rule);background:var(--cream);border-radius:12px;text-align:center;cursor:pointer;transition:.15s;font-family:var(--mn)}
+.cal-day:hover{border-color:var(--gold)}
+.cal-day.sel{border-color:var(--gold);background:rgba(200,169,122,.14);box-shadow:0 4px 14px rgba(200,169,122,.2)}
+.cal-day-num{font-family:var(--sf);font-size:1.15rem;font-weight:600;color:var(--ink);line-height:1.1}
+.cal-day-mon{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.cal-day-tag{font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:var(--deepgold);margin-top:3px}
+@media(max-width:640px){.cal-grid{grid-template-columns:repeat(2,1fr)}}
 
 /* ── CONFIRMATION ── */
 .conf-wrap{display:none;max-width:660px;margin:0 auto;padding:0 24px 72px}
@@ -400,9 +408,13 @@ footer{background:var(--cream2);border-top:1px solid var(--rule);margin-top:24px
           <option value="bundle">Bundle completo — €900/mese</option>
         </select>
       </div>
+      <div class="field" id="fdate-wrap">
+        <label id="fdate-label">Data di uscita preferita (martedì) *</label>
+        <div class="cal-grid" id="fdate-grid"><!-- riempito da JS --></div>
+      </div>
       <div class="field">
         <label>Note o domande (opzionale)</label>
-        <textarea id="fnotes" placeholder="Data preferita, obiettivi, domande..."></textarea>
+        <textarea id="fnotes" placeholder="Obiettivi, domande..."></textarea>
       </div>
       <label class="fcheck">
         <input type="checkbox" id="fpriv" onchange="chkSubmit()">
@@ -420,16 +432,15 @@ footer{background:var(--cream2);border-top:1px solid var(--rule);margin-top:24px
     <div class="conf-icon">✓</div>
     <div class="eyebrow" style="margin-bottom:10px">Passo 4 · Conferma</div>
     <div class="conf-title">Richiesta ricevuta.</div>
-    <p class="conf-text">Ti rispondo entro 24 ore per confermare disponibilità e data. Nel frattempo, ecco le coordinate per il bonifico — il pagamento è atteso solo dopo la mia conferma scritta.</p>
+    <p class="conf-text">Ti rispondo entro 24 ore a conferma della disponibilità, con i dettagli per formalizzare la sponsorizzazione. Nessun pagamento richiesto ora.</p>
     <div class="bank-box">
-      <div class="bank-ttl">Coordinate bancarie</div>
-      <div class="bank-row"><div class="bank-k">Intestatario</div><div class="bank-v">Paolo Ferrara</div></div>
-      <div class="bank-row"><div class="bank-k">IBAN</div><div class="bank-v" id="conf-iban"><!-- INSERIRE IBAN --></div></div>
-      <div class="bank-row"><div class="bank-k">BIC / SWIFT</div><div class="bank-v" id="conf-bic"><!-- INSERIRE BIC --></div></div>
-      <div class="bank-row"><div class="bank-k">Importo</div><div class="bank-v" id="conf-amount">—</div></div>
-      <div class="bank-row"><div class="bank-k">Causale</div><div class="bank-v" id="conf-causale">Sponsorizzazione Valore Atteso</div></div>
+      <div class="bank-ttl">Riepilogo richiesta</div>
+      <div class="bank-row"><div class="bank-k">Formato</div><div class="bank-v" id="conf-format">—</div></div>
+      <div class="bank-row"><div class="bank-k">Investimento</div><div class="bank-v" id="conf-amount">—</div></div>
+      <div class="bank-row"><div class="bank-k">Data richiesta</div><div class="bank-v" id="conf-date">—</div></div>
+      <div class="bank-row"><div class="bank-k">Risposta entro</div><div class="bank-v">24 ore</div></div>
     </div>
-    <div class="conf-note">Non effettuare il bonifico prima di ricevere conferma via email. Nessun pagamento verrà accettato senza accordo scritto.</div>
+    <div class="conf-note">Riceverai una email da info@valoreatteso.com con la conferma della data e i passi successivi. Il pagamento avviene solo dopo accordo scritto.</div>
   </div>
 </div>
 
@@ -463,6 +474,42 @@ const PKGS={
 };
 
 let selFmt = null;
+let selDate = null;
+
+// Prossimi 8 martedì (min 7 giorni di preavviso per la newsletter)
+function nextTuesdays(n){
+  const out=[];
+  const d=new Date();
+  d.setDate(d.getDate()+7); // preavviso minimo
+  while(d.getDay()!==2)d.setDate(d.getDate()+1);
+  for(let i=0;i<n;i++){out.push(new Date(d));d.setDate(d.getDate()+7);}
+  return out;
+}
+const MONTHS=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+
+function renderCalendar(){
+  const grid=document.getElementById('fdate-grid');
+  const isSite=selFmt==='week'||selFmt==='month';
+  document.getElementById('fdate-label').textContent=isSite?'Data di inizio preferita (martedì) *':'Data di uscita preferita (martedì) *';
+  grid.innerHTML=nextTuesdays(8).map(d=>{
+    const iso=d.toISOString().slice(0,10);
+    return '<div class="cal-day'+(selDate===iso?' sel':'')+'" data-iso="'+iso+'" onclick="pickDate(this.dataset.iso)">'
+      +'<div class="cal-day-num">'+d.getDate()+'</div>'
+      +'<div class="cal-day-mon">'+MONTHS[d.getMonth()]+' '+d.getFullYear()+'</div>'
+      +'<div class="cal-day-tag">martedì</div></div>';
+  }).join('');
+}
+
+function pickDate(iso){
+  selDate=iso;
+  document.querySelectorAll('.cal-day').forEach(el=>el.classList.toggle('sel',el.dataset.iso===iso));
+}
+
+function fmtDate(iso){
+  if(!iso)return '—';
+  const d=new Date(iso+'T12:00:00');
+  return 'martedì '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
+}
 
 function toggleMob(){document.getElementById('mob-nav').classList.toggle('open')}
 function closeMob(){document.getElementById('mob-nav').classList.remove('open')}
@@ -492,6 +539,7 @@ function pickPkg(id){
   // pre-fill form select
   const sel=document.getElementById('ff');
   if(sel)sel.value=id;
+  renderCalendar();
   switchFmt(id);
   setStep(2);
 }
@@ -552,6 +600,7 @@ async function submitForm(){
   if(!company){errEl.textContent='Inserisci il nome dell\'azienda.';errEl.style.display='block';return;}
   if(!email||!email.includes('@')){errEl.textContent='Inserisci un\'email valida.';errEl.style.display='block';return;}
   if(!format){errEl.textContent='Seleziona un formato.';errEl.style.display='block';return;}
+  if(!selDate){errEl.textContent='Seleziona una data dal calendario.';errEl.style.display='block';return;}
 
   btn.disabled=true;
   btn.textContent='Invio in corso...';
@@ -560,13 +609,14 @@ async function submitForm(){
     await fetch(SURL+'/rest/v1/sponsor_requests',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SKEY,'Authorization':'Bearer '+SKEY,'Prefer':'return=minimal'},
-      body:JSON.stringify({name,company,email,format:PKGS[format]?.label||format,notes})
+      body:JSON.stringify({name,company,email,format:PKGS[format]?.label||format,notes,requested_date:selDate})
     });
   }catch(e){/* fail silently */}
 
-  const pkg=PKGS[format]||{price:'—',causale:'Sponsorizzazione Valore Atteso'};
+  const pkg=PKGS[format]||{label:'—',price:'—',unit:''};
+  document.getElementById('conf-format').textContent=pkg.label;
   document.getElementById('conf-amount').textContent=pkg.price+' / '+pkg.unit;
-  document.getElementById('conf-causale').textContent=pkg.causale+' – '+company.slice(0,24);
+  document.getElementById('conf-date').textContent=fmtDate(selDate);
 
   document.getElementById('form-wrap').style.display='none';
   const conf=document.getElementById('sec-conf');
@@ -577,6 +627,7 @@ async function submitForm(){
 
 // Init
 buildPreview('mention');
+renderCalendar();
 </script>
 </body>
 </html>
