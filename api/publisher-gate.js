@@ -200,18 +200,20 @@ module.exports = async function handler(req, res) {
     // 6. SPONSOR ASSOCIATI
     const { data: sponsors, error: sponsorErr } = await supabase
       .from('sponsor_requests')
-      .select('company,slot_type,preview_status,payment_status,materials_status')
+      .select('company,slot_type,preview_status,payment_status,materials_status,terms_accepted_at,publication_authorized_at')
       .eq('edition_id', edition.id);
     if (sponsorErr) throw new Error('Supabase sponsor: ' + sponsorErr.message);
     (sponsors || []).forEach(sponsor => {
       const ready = sponsor.preview_status === 'approved'
         && sponsor.payment_status === 'received'
-        && sponsor.materials_status === 'approved';
+        && sponsor.materials_status === 'approved'
+        && sponsor.terms_accepted_at
+        && sponsor.publication_authorized_at;
       if (!ready) {
         checks.push({
           type: 'error',
           code: 'sponsor_not_ready',
-          message: `Sponsor ${sponsor.company}: preview, pagamento o materiali non pronti`
+          message: `Sponsor ${sponsor.company}: mancano approvazioni, pagamento, materiali o accettazioni legali`
         });
         blockers++;
       } else {

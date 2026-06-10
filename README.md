@@ -42,6 +42,21 @@ Il refresh token Google deve includere lo scope
 11. approvazione della preview da parte del cliente;
 12. inserimento automatico del blocco sponsor durante il test e l'invio newsletter.
 
+### Accettazioni legali
+
+Prima della selezione dello slot, lo sponsor deve:
+
+- accettare le Condizioni di sponsorizzazione;
+- garantire diritti e liceita dei materiali;
+- dichiarare di aver letto la Privacy Policy;
+- approvare specificamente controllo editoriale, rinvio/cancellazione,
+  limitazione di responsabilita e controversie.
+
+Prima della pubblicazione deve inoltre approvare la preview e autorizzarne
+espressamente la pubblicazione. Le accettazioni sono registrate nella tabella
+`sponsor_acceptances` con versione del documento, timestamp, IP, user-agent ed
+evidenze. Il Publisher Gate blocca l'invio se mancano.
+
 Nessuna email viene inviata allo sponsor prima dell'approvazione manuale.
 Coordinate bancarie e causale non sono esposte nelle pagine pubbliche o
 private.
