@@ -23,38 +23,48 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni martedì
 
 ## Struttura repo
 ```
-/api/           → endpoint Vercel (max 12 file — piano Hobby)
+/api/           → endpoint Vercel (max 12 file JS — piano Hobby)
+/lib/           → moduli condivisi richiesti da api/ (NON eliminare senza verificare require() intra-lib)
 /scripts/       → agenti GitHub Actions
 /.github/workflows/ → schedule agenti
+/sql/           → migrazioni schema Supabase (già applicate)
 /index.html     → sito principale + Control Room
 /archivio.html  → archivio newsletter
 /glossario.html → glossario termini
+/sponsor.html   → pagina sponsor pubblica
+/sponsor-area.html → area riservata sponsor
 ```
 
 ## File API (12/12 — limite raggiunto)
 - `ad.js` — Control Room AD (chat con Claude)
-- `cr-data.js` — dati dashboard Control Room
 - `genera-edizione.js` — genera bozza completa edizione
 - `genera-opzioni.js` — genera 3 opzioni per sezione
-- `run-agent.js` — esegui agenti manualmente
-- `scout-select.js` — pagina selezione temi Scout
-- `send-newsletter.js` — invio newsletter a tutti
-- `send-test.js` — invio test
-- `send-utils.js` — comunicazioni one-shot + reinvio mancanti
+- `meta-webhook.js` — webhook Meta Lead Ads → Supabase
+- `publisher-gate.js` — verifica pre-pubblicazione (dedup temi, KPI, fonti)
+- `run-agent.js` — esegui agenti manualmente dalla Control Room
+- `send-newsletter.js` — invio newsletter + send-utils (action=utils)
+- `send-test.js` — invio email di test
+- `sponsor-request.js` — gestione completa funnel sponsor (list/get/approve/delete/upload/ecc.)
 - `subscribe.js` — iscrizione con rate limiting
+- `trigger-content.js` — triggera Content Agent via GitHub Actions workflow_dispatch
 - `unsubscribe.js` — disiscrizione con token sicuro
-- `package.json` — dipendenze (@supabase/supabase-js, resend)
+
+Le rotte `/api/send-utils`, `/api/list-sponsor-requests`, `/api/approve-sponsor` ecc. sono rewrite in `vercel.json` → puntano a `send-newsletter.js` e `sponsor-request.js`.
 
 ## Agenti GitHub Actions
 | Agente | Giorno | Orario IT | File |
 |--------|--------|-----------|------|
 | Scout | Sabato | 08:00 | scripts/scout.js |
 | SEO | Domenica | 08:00 | scripts/seo-agent.js |
+| Keep Alive | Domenica | 08:00 | (commit vuoto — mantiene repo attivo) |
 | Editoriale | Lunedì | 08:00 | scripts/agent.js |
 | Deliverability | Martedì | 14:00 | scripts/deliverability-agent.js |
 | Growth | Mercoledì | 08:00 | scripts/growth-agent.js |
 | Content | Giovedì | 08:00 | scripts/content-agent.js |
+| Sponsor Outreach | Venerdì | 07:00 | scripts/sponsor-outreach-agent.js |
+| Cost Guardian | Venerdì | 09:00 | scripts/cost-guardian.js |
 | Security | Ogni giorno | 10:00 | scripts/security-agent.js |
+| Incident Response | Ogni giorno | 09:00 | scripts/incident-response-agent.js |
 
 ## Supabase — tabelle principali
 - `editions` — edizioni newsletter (num, title, subtitle, date, sections, published)
@@ -83,6 +93,7 @@ Tutti gli agenti usano `scripts/email-template.js` — modulo condiviso.
 8. **Auth `x-cr-token`** su tutti gli endpoint protetti (non su subscribe/unsubscribe)
 9. **Dopo env var Vercel**: sempre redeploy manuale senza cache
 10. **Supabase**: `apply_migration` per DDL, `execute_sql` per query
+11. **Prima di eliminare file in `lib/`**: cercare i riferimenti anche dentro `lib/` stessa con `grep -rn "nome-file" lib/` — i moduli si importano a vicenda
 
 ## Control Room
 - Accessibile dal tastino ⚙ in basso a destra sul sito
