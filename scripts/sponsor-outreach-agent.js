@@ -13,7 +13,7 @@ const { logRun, supaFetch } = require('./memory');
 const gmail = require('./gmail');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY;
-const MODEL = process.env.SPONSOR_SCOUT_MODEL || 'claude-opus-4-5';
+const MODEL = process.env.SPONSOR_SCOUT_MODEL || 'claude-sonnet-4-6';
 const DAILY_LIMIT = parseInt(process.env.SPONSOR_OUTREACH_DAILY_LIMIT || '10', 10);
 const DRAFT_LIMIT = parseInt(process.env.SPONSOR_OUTREACH_DRAFT_LIMIT || '5', 10);
 const SIGNATURE = process.env.SPONSOR_OUTREACH_SIGNATURE ||
