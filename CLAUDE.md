@@ -97,7 +97,7 @@ Tutti gli agenti usano `scripts/email-template.js` — modulo condiviso.
 
 ## Control Room
 - Accessibile dal tastino ⚙ in basso a destra sul sito
-- Password: `valopro2025` (env var `CR_PASSWORD`)
+- Password: nella env var `CR_PASSWORD` su Vercel (mai scriverla in chiaro nel repo)
 - Tab: Dashboard · AD · Redazione · Comunicazioni
 - L'AD usa il sistema prompt in index.html — mantenerlo aggiornato
 
@@ -111,7 +111,7 @@ Tutti gli agenti usano `scripts/email-template.js` — modulo condiviso.
 ## Token e credenziali
 - GitHub token per push: in env var `GH_TOKEN` su Vercel e secret `GH_PAT` su GitHub
 - GitHub token Claude Code: già configurato via connessione repo
-- Google Drive: `GOOGLE_DRIVE_API_KEY` + `GOOGLE_DRIVE_FOLDER_ID` (`1hsB1x1FIVekEYXxzLxLm_9elf5ttDPoj`)
+- Google Drive: env var `GOOGLE_DRIVE_API_KEY` + `GOOGLE_DRIVE_FOLDER_ID` su Vercel
 
 ## Stato iscritti (aggiornare periodicamente)
 - Iscritti confermati: ~116 (giugno 2026)
