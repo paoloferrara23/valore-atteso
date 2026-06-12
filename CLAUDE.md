@@ -114,14 +114,35 @@ Tutti gli agenti usano `scripts/email-template.js` — modulo condiviso.
 - Google Drive: `GOOGLE_DRIVE_API_KEY` + `GOOGLE_DRIVE_FOLDER_ID` (`1hsB1x1FIVekEYXxzLxLm_9elf5ttDPoj`)
 
 ## Stato iscritti (aggiornare periodicamente)
-- Iscritti confermati: 65 (maggio 2026)
-- Obiettivo 3 mesi: 300
-- Canali acquisizione: Instagram ads (Lead Gen Form), LinkedIn organico
+- Iscritti confermati: ~116 (giugno 2026)
+- Edizioni pubblicate: 6 — la #006 con buoni open/click rate
+- Canali acquisizione: LinkedIn organico, Instagram ads (Lead Gen Form), referral
 
-## Prossimi task prioritari
-- [ ] Welcome sequence — 3 email in 7 giorni per nuovi iscritti
-- [ ] Integrazione Meta Lead Ads → Supabase via webhook
-- [ ] Attivare open/click tracking Resend (DNS `links.valoreatteso.com` su Vercel)
-- [ ] LinkedIn Content Agent — usare sistematicamente le bozze 3x/settimana
-- [ ] Agente commerciale sponsor (fase 200+ iscritti)
-- [ ] Report "Business del Calcio 2025" (fase 300+ iscritti)
+## Decisioni strategiche (giugno 2026)
+- **Welcome sequence: SCARTATA** — Paolo la considera spam. Non riproporla.
+- **Sponsor Hunter + tracking Resend**: già impostati. Non ricostruire.
+- **Principio guida fino a dicembre**: il sistema tecnico è completo. Priorità a distribuzione e vendita, NON a nuove feature. Prima di proporre qualsiasi nuovo agente o funzionalità, chiedersi: porta iscritti o revenue entro 30 giorni? Se no, non proporla.
+- **Kill criterion (verifica: dicembre 2026)**: almeno uno tra (a) 400+ iscritti con crescita organica costante, (b) primo cliente NaS firmato, (c) opportunità professionale concreta generata dal progetto. Se nessuno dei tre → ridurre a vetrina passiva (1 edizione/2 settimane, zero sviluppo).
+
+## Roadmap giugno → dicembre 2026
+
+### Giugno–Luglio — Vendita e referral
+- [ ] Media kit PDF — open/click rate certificati Resend, profilo audience, pricing €150–250/edizione (sponsor seed)
+- [ ] Primo outreach sponsor diretto — 10–15 target: fintech, software per studi professionali, formazione finance
+- [ ] Referral link nel footer newsletter — "inoltra a un collega" con tracking
+- [ ] Cadenza LinkedIn personale di Paolo: 2–3 post/settimana dalle bozze del Content Agent (collo di bottiglia: pubblicazione, non generazione)
+
+### Agosto–Settembre — Crescita a pagamento e milestone 300
+- [ ] Obiettivo: 300 iscritti confermati entro metà settembre (+15 netti/settimana)
+- [ ] LinkedIn Ads Lead Gen Form — €10/giorno, target CFO/M&A/PE Italia (solo dopo referral + organico attivi)
+- [ ] Cross-promotion con 2–3 newsletter adiacenti (fintech, PE, sport business — non concorrenti)
+- [ ] Primo sponsor pagante chiuso
+
+### Ottobre–Novembre — Monetizzazione e NaS
+- [ ] Report one-shot a pagamento (€49–99) — es. "Chi compra il calcio italiano nel 2026"
+- [ ] One-pager NaS attivo: primo outreach a studi professionali/PMI (pricing €1.500–3.000 setup + €500–1.500/mese)
+- [ ] Valutare tier premium solo se 400+ iscritti
+
+### Dicembre — Verifica kill criterion
+- [ ] Bilancio: iscritti, revenue, pipeline NaS, opportunità generate
+- [ ] Decisione: scala / continua / vetrina passiva
