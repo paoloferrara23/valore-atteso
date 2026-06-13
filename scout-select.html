@@ -62,6 +62,11 @@
     <div class="actions">
       <button class="btn-submit" onclick="submitSelection()">✓ Conferma selezione</button>
       <div class="status" id="status"></div>
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--rule)">
+        <div style="font-family:var(--mn);font-size:9px;color:var(--ink2);margin-bottom:8px">Nessuna proposta ti convince? Avvia una nuova ricerca Scout con temi diversi.</div>
+        <button onclick="rigenera()" id="btn-rigenera" style="background:none;border:1px solid var(--rule);color:var(--ink2);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:10px 20px;cursor:pointer;text-transform:uppercase">↻ Genera altre proposte</button>
+        <div class="status" id="status-rigenera"></div>
+      </div>
     </div>
   </div>
 </main>
@@ -170,6 +175,29 @@ async function submitSelection(){
   }catch(e){
     st.className='status err';st.textContent=e.message;
     btn.disabled=false;btn.textContent='✓ Conferma selezione';
+  }
+}
+
+async function rigenera(){
+  const btn=document.getElementById('btn-rigenera');
+  const st=document.getElementById('status-rigenera');
+  const token=new URLSearchParams(location.search).get('token');
+  btn.disabled=true;btn.textContent='Ricerca in corso...';
+  st.style.display='none';
+  try{
+    const r=await fetch('/api/run-agent',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({agent:'scout',scout_token:token})
+    });
+    const d=await r.json();
+    if(!r.ok||d.error)throw new Error(d.error||'Errore');
+    st.className='status ok';
+    st.textContent='✓ Scout avviato. Riceverai una nuova email tra 3-5 minuti con proposte diverse.';
+    btn.textContent='↻ Avviato';
+  }catch(e){
+    st.className='status err';st.textContent=e.message;
+    btn.disabled=false;btn.textContent='↻ Genera altre proposte';
   }
 }
 

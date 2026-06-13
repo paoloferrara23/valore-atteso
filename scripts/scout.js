@@ -137,6 +137,24 @@ function generateToken() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
 
+// ── Leggi storico edizioni da editorial_wiki ──────────────────────────────
+async function leggiWiki() {
+  if (!SUPA_URL || !SUPA_KEY) return '';
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/editorial_wiki?categoria=in.(edizione,club_analizzato)&select=categoria,valore,edizione_ref&order=edizione_ref.asc.nullslast`, {
+      headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+    });
+    if (!r.ok) return '';
+    const rows = await r.json();
+    const edizioni = rows.filter(r => r.categoria === 'edizione').map(r => r.valore).join('\n');
+    if (!edizioni) return '';
+    return `\n\nEDIZIONI GIÀ PUBBLICATE — TEMI DA NON RIPETERE:\nPuoi riprendere un tema solo se hai dati nuovi e un angolo editoriale completamente diverso. Mai ripetere la stessa azienda/deal/metrica.\n${edizioni}`;
+  } catch(e) {
+    console.warn('Wiki fetch error:', e.message);
+    return '';
+  }
+}
+
 // ── MAIN ────────────────────────────────────────────────────────────────────
 async function main() {
   const start = Date.now();
@@ -144,14 +162,15 @@ async function main() {
   const settimana = new Date().toLocaleDateString('it-IT');
   console.log('Scout v2.1 avviato:', new Date().toISOString());
 
-  // ── Fase 1: Leggi biblioteca Drive ──────────────────────────────────────
-  const { files: driveFiles, context: driveContext } = await leggiDrive();
+  // ── Fase 1: Leggi biblioteca Drive + wiki storico ───────────────────────
+  const [{ files: driveFiles, context: driveContext }, wikiContext] = await Promise.all([leggiDrive(), leggiWiki()]);
 
   const driveInfo = driveFiles.length > 0
     ? `\n\nBIBLIOTECA VA — DOCUMENTI CARICATI DA PAOLO (usa per verificare/integrare i numeri trovati online):\n${driveContext}\n\nFile disponibili: ${driveFiles.join(', ')}`
     : '\n\n[Nessun documento nella biblioteca Drive — usa solo fonti web]';
 
   // ── Fase 2: Web search ───────────────────────────────────────────────────
+  console.log('Wiki storico:', wikiContext ? `${wikiContext.length} caratteri` : 'non disponibile');
   console.log('Fase 2: ricerca web...');
 
   const system = `Sei lo Scout senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
@@ -201,7 +220,7 @@ TONE E ANGOLO EDITORIALE:
 - Ogni tema deve avere un angolo M&A/PE/finanza chiaro — non solo la notizia ma l'implicazione per un advisor
 - Le sezioni della stessa edizione non devono contraddirsi o ripetere gli stessi dati
 - Preferire spunti di riflessione su implicazioni finanziarie rispetto alla cronaca pura
-${driveInfo}
+${driveInfo}${wikiContext}
 
 Rispondi SOLO in JSON valido:
 {

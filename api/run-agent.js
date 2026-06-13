@@ -21,9 +21,19 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  if (req.headers['x-cr-token'] !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  const { agent, scout_token } = req.body || {};
 
-  const { agent } = req.body || {};
+  if (req.headers['x-cr-token'] !== CR_TOKEN) {
+    // Auth alternativa: scout token dall'email (solo per ri-avviare lo Scout)
+    if (agent === 'scout' && scout_token) {
+      const { data: pendingRow } = await supabase.from('agent_memory').select('value').eq('key', 'scout_pending').single();
+      if (!pendingRow?.value?.selection_token || pendingRow.value.selection_token !== scout_token) {
+        return res.status(401).json({ error: 'Token non valido o scaduto.' });
+      }
+    } else {
+      return res.status(401).json({ error: 'Non autorizzato' });
+    }
+  }
   if (!agent || !AGENT_MAP[agent]) {
     return res.status(400).json({ error: `Agente non valido. Disponibili: ${Object.keys(AGENT_MAP).join(', ')}` });
   }
