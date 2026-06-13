@@ -155,6 +155,50 @@ async function leggiWiki() {
   }
 }
 
+// ── Contesto stagionale dinamico ─────────────────────────────────────────
+function contestoStagionale() {
+  const now = new Date();
+  const m = now.getMonth() + 1; // 1-12
+  const y = now.getFullYear();
+
+  const eventi = [];
+
+  // Mondiale 2026 (giugno–luglio 2026)
+  if (y === 2026 && (m === 6 || m === 7)) {
+    eventi.push(`MONDIALE 2026 IN CORSO (giugno–luglio 2026) — PRIORITÀ MASSIMA:
+  Cerca attivamente angoli business sul Mondiale: ricavi FIFA (target $11 miliardi), diritti TV per area geografica, deal sponsorizzazione (Adidas, Coca-Cola, Hyundai, ecc.), hospitality e ticketing (USA/Canada/Messico), compensazione club UEFA/FIFA per cessione giocatori, impatto sui bilanci dei club con giocatori in nazionale, stadium economics delle sedi ospitanti.
+  L'ANGOLO VA: come il Mondiale trasforma l'economia del calcio mondiale — non la cronaca sportiva, ma l'implicazione finanziaria per club, investitori e advisor.`);
+  }
+
+  // Mercato trasferimenti estivo
+  if (m === 6 || m === 7 || m === 8) {
+    eventi.push(`MERCATO ESTIVO APERTO (1 luglio – 31 agosto): cerca deal in corso o attesi, multipli EV/ricavi pagati, struttura equity/earn-out, ruolo fondi PE nel finanziamento acquisti.`);
+  }
+
+  // Fine stagione / bilanci annuali
+  if (m === 5 || m === 6) {
+    eventi.push(`FINE STAGIONE EUROPEA: bilanci annuali club in uscita, Revenue da Champions/Europa League, impatto PSR/FFP sui prossimi acquisti.`);
+  }
+
+  // Mercato invernale
+  if (m === 1) {
+    eventi.push(`MERCATO INVERNALE (gennaio): deal last-minute, prestiti con opzione, impatto su salary cap.`);
+  }
+
+  // Champions League finale / knockout
+  if (m === 4 || m === 5) {
+    eventi.push(`FASE FINALE CHAMPIONS LEAGUE: impatto economico dei quarti/semifinali/finale — distribuzione UEFA, premium TV, valorizzazione club.`);
+  }
+
+  // Fair play finanziario (scadenze tipiche settembre)
+  if (m === 8 || m === 9) {
+    eventi.push(`FAIR PLAY FINANZIARIO: UEFA pubblica aggiornamenti PSR/FFP — sanzioni, restrizioni mercato, compliance club Serie A/Premier.`);
+  }
+
+  if (!eventi.length) return '';
+  return `\n\nCONTESTO STAGIONALE ATTUALE — cerca prioritariamente notizie legate a questi eventi:\n${eventi.join('\n')}`;
+}
+
 // ── MAIN ────────────────────────────────────────────────────────────────────
 async function main() {
   const start = Date.now();
@@ -162,8 +206,10 @@ async function main() {
   const settimana = new Date().toLocaleDateString('it-IT');
   console.log('Scout v2.1 avviato:', new Date().toISOString());
 
-  // ── Fase 1: Leggi biblioteca Drive + wiki storico ───────────────────────
+  // ── Fase 1: Leggi biblioteca Drive + wiki storico + contesto stagionale ─
   const [{ files: driveFiles, context: driveContext }, wikiContext] = await Promise.all([leggiDrive(), leggiWiki()]);
+  const stagionale = contestoStagionale();
+  console.log('Contesto stagionale:', stagionale ? stagionale.slice(0, 100) + '...' : 'nessuno');
 
   const driveInfo = driveFiles.length > 0
     ? `\n\nBIBLIOTECA VA — DOCUMENTI CARICATI DA PAOLO (usa per verificare/integrare i numeri trovati online):\n${driveContext}\n\nFile disponibili: ${driveFiles.join(', ')}`
@@ -220,7 +266,7 @@ TONE E ANGOLO EDITORIALE:
 - Ogni tema deve avere un angolo M&A/PE/finanza chiaro — non solo la notizia ma l'implicazione per un advisor
 - Le sezioni della stessa edizione non devono contraddirsi o ripetere gli stessi dati
 - Preferire spunti di riflessione su implicazioni finanziarie rispetto alla cronaca pura
-${driveInfo}${wikiContext}
+${stagionale}${driveInfo}${wikiContext}
 
 Rispondi SOLO in JSON valido:
 {
@@ -269,7 +315,7 @@ Rispondi SOLO in JSON valido:
   // FASE 1: Ricerca web — output testo libero (no JSON)
   const testoRicerca = await callClaude([{
     role: 'user',
-    content: `Oggi è ${oggi}. Cerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo (Serie A, Premier, Liga, Bundesliga, Ligue 1). Priorità qualità su quantità. Per ogni tema: titolo, fonte con URL diretto, dati finanziari chiave, sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, formato testo semplice, NON JSON.`
+    content: `Oggi è ${oggi}.${stagionale ? '\n\nEVENTI PRIORITARI ORA:\n' + stagionale.replace(/\n\nCONTESTO STAGIONALE ATTUALE[^\n]*\n/,'') : ''}\n\nCerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo. Priorità: eventi stagionali in corso (vedi sopra), poi notizie di bilancio/deal/metrica da Serie A, Premier, Liga, Bundesliga, Ligue 1. Per ogni tema: titolo, fonte con URL diretto, dati finanziari chiave, sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, formato testo semplice, NON JSON.`
   }], system, true);
 
   console.log('Fase 1 completata, testo:', testoRicerca.slice(0, 200));
