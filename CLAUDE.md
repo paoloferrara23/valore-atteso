@@ -114,7 +114,7 @@ Tutti gli agenti usano `scripts/email-template.js` — modulo condiviso.
 - Google Drive: env var `GOOGLE_DRIVE_API_KEY` + `GOOGLE_DRIVE_FOLDER_ID` su Vercel
 
 ## Stato iscritti (aggiornare periodicamente)
-- Iscritti confermati: ~116 (giugno 2026)
+- Iscritti totali: 127 | Confermati: 116 (giugno 2026)
 - Edizioni pubblicate: 6 — la #006 con buoni open/click rate
 - Canali acquisizione: LinkedIn organico, Instagram ads (Lead Gen Form), referral
 

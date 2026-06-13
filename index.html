@@ -1137,7 +1137,14 @@ async function crGeneraOpzioni(){
   try{
     var last=crCtx.last?parseInt(crCtx.last.num,10):0;
     var editionNum=String(last+1).padStart(3,'0');
-    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT'),tematiche:tematicheLibere})});
+    var customSez=null;
+    if(crRedazioneMode!=='manual'){
+      var cb=document.getElementById('cr-custom-bilancio')?.value.trim()||'';
+      var cd=document.getElementById('cr-custom-deal')?.value.trim()||'';
+      var cm=document.getElementById('cr-custom-metrica')?.value.trim()||'';
+      if(cb||cd||cm)customSez={bilancio:cb||null,deal:cd||null,metrica:cm||null};
+    }
+    var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT'),tematiche:tematicheLibere,custom_sections:customSez})});
     var d=await r.json();
     if(!r.ok||d.error)throw new Error(d.error||'Errore');
     st.className='cr-status ok';st.textContent='Opzioni generate.';
@@ -1913,6 +1920,21 @@ loadLatestPreview();
           <div id="cr-mode-auto-panel">
             <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:100%;box-sizing:border-box">
             <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:6px">Lo Scout sceglie i temi migliori della settimana. Puoi aggiungere un hint per orientarlo.</div>
+            <div style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:14px;margin-bottom:6px;letter-spacing:.08em">ARGOMENTO FISSO PER SEZIONE — opzionale, sovrascrive lo Scout</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL BILANCIO</span>
+                <input class="cr-input" id="cr-custom-bilancio" placeholder="es. Mondiale 2026 — ricavi FIFA..." style="flex:1;box-sizing:border-box">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL DEAL</span>
+                <input class="cr-input" id="cr-custom-deal" placeholder="es. Manchester United — nuova offerta..." style="flex:1;box-sizing:border-box">
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">LA METRICA</span>
+                <input class="cr-input" id="cr-custom-metrica" placeholder="es. Ricavi hospitality Mondiale..." style="flex:1;box-sizing:border-box">
+              </div>
+            </div>
           </div>
 
           <!-- MODALITÀ MANUALE: 3 tematiche libere -->

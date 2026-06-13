@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
   if (req.headers['x-cr-token'] !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
 
   try {
-    const { hint, editionNum, oggi, tematiche } = req.body;
+    const { hint, editionNum, oggi, tematiche, custom_sections } = req.body;
 
     // Leggi Scout e SEO dalla memoria
     const [scoutRow, seoRow] = await Promise.all([
@@ -63,6 +63,16 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
       }
       if (seo?.keywords) contextBlock += `\nKEYWORD SEO: ${seo.keywords.slice(0,5).join(', ')}`;
       if (hint) contextBlock += `\nHINT EDITORIALE: ${hint}`;
+      if (custom_sections) {
+        const overrides = [];
+        if (custom_sections.bilancio) overrides.push(`- IL BILANCIO: "${custom_sections.bilancio}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
+        if (custom_sections.deal) overrides.push(`- IL DEAL: "${custom_sections.deal}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
+        if (custom_sections.metrica) overrides.push(`- LA METRICA: "${custom_sections.metrica}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
+        if (overrides.length) {
+          contextBlock += `\n\nARGOMENTI FISSI DA PAOLO (per queste sezioni ignora il brief Scout, genera 3 angoli sul tema indicato):\n${overrides.join('\n')}`;
+          modeLabel += ' + argomenti personalizzati';
+        }
+      }
     }
 
     const system = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
