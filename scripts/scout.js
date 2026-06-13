@@ -333,7 +333,7 @@ JSON richiesto:
   }, 'scout');
 
   // ── Fase 5: Email con approvazione ───────────────────────────────────────
-  const selectUrl = `${SITE_URL}/api/scout-select?token=${selectionToken}`;
+  const selectUrl = `${SITE_URL}/scout-select?token=${selectionToken}`;
 
   const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
   const temasHTML = tuttiTemi.map((t, i) => {

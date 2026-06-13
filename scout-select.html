@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Selezione temi · Valore Atteso</title>
+  <style>
+    :root{--cream:#F4EFE6;--ink:#1C1914;--gold:#C8A97A;--rule:#D8D0C4;--ink2:#5A534B;--green:#1B4332;--blue:#1B3A6B;--red2:#6B1B1B;--mn:'JetBrains Mono','Courier New',monospace;--sf:'Source Serif 4',Georgia,serif}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:100vh}
+    header{background:var(--ink);padding:14px 24px;display:flex;align-items:center;gap:12px}
+    .logo{font-family:var(--mn);font-size:11px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+    .badge{font-family:var(--mn);font-size:9px;color:#666;border:1px solid #333;padding:2px 8px}
+    main{max-width:760px;margin:0 auto;padding:32px 20px 80px}
+    .page-title{font-size:1.35rem;font-weight:700;margin-bottom:4px}
+    .page-sub{font-family:var(--mn);font-size:10px;color:var(--ink2);margin-bottom:8px}
+    .page-hint{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:32px;border-left:3px solid var(--gold);padding-left:12px}
+    .section-block{margin-bottom:28px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+    .section-head{background:var(--ink);padding:10px 16px}
+    .section-label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+    .option-card{padding:14px 16px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .12s;border-left:3px solid transparent}
+    .option-card:hover{background:#ECE6DC}
+    .option-card.selected{background:#E8F0E4;border-left-color:var(--green)}
+    .option-num{font-family:var(--mn);font-size:8px;color:#9A9690;margin-bottom:4px}
+    .option-title{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.3}
+    .option-summary{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:4px}
+    .option-angolo{font-family:var(--mn);font-size:9px;color:#8E6B33}
+    .custom-row{padding:14px 16px;background:#F7F4EF;display:flex;flex-direction:column;gap:6px}
+    .custom-label{font-family:var(--mn);font-size:9px;color:var(--ink2);letter-spacing:.08em}
+    .custom-input{width:100%;border:1px solid var(--rule);border-radius:2px;padding:9px 11px;font-family:var(--sf);font-size:13px;background:white;color:var(--ink);transition:border .12s}
+    .custom-input:focus{outline:none;border-color:#8E6B33}
+    .custom-input.active{border-color:var(--green);background:#F0F7EE}
+    .actions{margin-top:24px}
+    .btn-submit{background:var(--ink);color:var(--gold);font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:none;padding:16px 40px;cursor:pointer;width:100%}
+    .btn-submit:hover{background:#333}
+    .btn-submit:disabled{opacity:.5;cursor:not-allowed}
+    .status{font-family:var(--mn);font-size:11px;margin-top:12px;padding:10px 14px;border-radius:2px;display:none}
+    .status.ok{background:#E4EDE7;color:var(--green);display:block}
+    .status.err{background:#F7E4E4;color:#6B1B1B;display:block}
+    .loading{text-align:center;padding:60px;font-family:var(--mn);font-size:11px;color:var(--ink2)}
+    .brief-box{background:#F0EBE1;border:1px solid var(--rule);border-radius:3px;padding:14px 16px;margin-bottom:28px;font-size:13px;line-height:1.65;color:var(--ink2)}
+    .brief-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+  </style>
+</head>
+<body>
+<header>
+  <span class="logo">Valore Atteso</span>
+  <span class="badge">Selezione temi settimanale</span>
+</header>
+<main>
+  <div id="app-loading" class="loading">Caricamento brief Scout...</div>
+  <div id="app-error" class="loading" style="display:none;color:#B5221A"></div>
+  <div id="app-content" style="display:none">
+    <div class="page-title">Selezione temi</div>
+    <div class="page-sub" id="page-date"></div>
+    <p class="page-hint">Per ogni sezione: clicca su una proposta Scout <strong>oppure</strong> scrivi il tuo argomento nel campo di testo. Le sezioni non compilate vengono gestite autonomamente dall\'agente.</p>
+    <div id="brief-block" style="display:none" class="brief-box">
+      <div class="brief-label">Brief Scout della settimana</div>
+      <div id="brief-text"></div>
+    </div>
+    <div id="sections-container"></div>
+    <div class="actions">
+      <button class="btn-submit" onclick="submitSelection()">✓ Conferma selezione</button>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+</main>
+<script>
+const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
+const HDR={apikey:SKEY,'Authorization':'Bearer '+SKEY};
+const SEZIONI=[
+  {key:'bilancio',label:'Il Bilancio',color:'#C8A97A'},
+  {key:'deal',label:'Il Deal',color:'#C8A97A'},
+  {key:'metrica',label:'La Metrica',color:'#C8A97A'}
+];
+let pending=null;
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function showError(msg){
+  document.getElementById('app-loading').style.display='none';
+  const el=document.getElementById('app-error');
+  el.style.display='block';el.textContent=msg;
+}
+
+function selectOption(sez,idx){
+  document.querySelectorAll('[data-sez="'+sez+'"].option-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelector('[data-sez="'+sez+'"][data-idx="'+idx+'"]').classList.add('selected');
+  const ci=document.getElementById('custom-'+sez);
+  if(ci){ci.value='';ci.classList.remove('active');}
+}
+
+function onCustomInput(sez){
+  const ci=document.getElementById('custom-'+sez);
+  if(ci.value.trim()){
+    document.querySelectorAll('[data-sez="'+sez+'"].option-card').forEach(c=>c.classList.remove('selected'));
+    ci.classList.add('active');
+  }else{
+    ci.classList.remove('active');
+  }
+}
+
+function renderSections(brief){
+  const tps=brief.temi_per_sezione||{};
+  let html='';
+  SEZIONI.forEach(function(sez){
+    const temi=(tps[sez.key]||[]).slice(0,3);
+    html+='<div class="section-block">';
+    html+='<div class="section-head"><span class="section-label" style="color:'+sez.color+'">'+sez.label+'</span></div>';
+    if(temi.length){
+      temi.forEach(function(t,i){
+        html+='<div class="option-card" data-sez="'+sez.key+'" data-idx="'+i+'" onclick="selectOption(\''+sez.key+'\','+i+')">';
+        html+='<div class="option-num">Proposta '+(i+1)+'</div>';
+        html+='<div class="option-title">'+esc(t.titolo||t.title||'')+'</div>';
+        html+='<div class="option-summary">'+esc(t.sommario||t.summary||'')+'</div>';
+        if(t.angolo)html+='<div class="option-angolo">↳ '+esc(t.angolo)+'</div>';
+        html+='</div>';
+      });
+    }else{
+      html+='<div style="padding:14px 16px;font-family:var(--mn);font-size:10px;color:#9A9690">Nessuna proposta Scout per questa sezione.</div>';
+    }
+    html+='<div class="custom-row">';
+    html+='<div class="custom-label">Oppure inserisci il tuo argomento:</div>';
+    html+='<input class="custom-input" id="custom-'+sez.key+'" placeholder="es. Mondiale 2026 — ricavi FIFA e club ospitanti..." oninput="onCustomInput(\''+sez.key+'\')">';
+    html+='</div>';
+    html+='</div>';
+  });
+  return html;
+}
+
+async function submitSelection(){
+  const btn=document.querySelector('.btn-submit');
+  const st=document.getElementById('status');
+  btn.disabled=true;btn.textContent='Salvataggio...';
+  st.style.display='none';
+
+  const sel={};
+  SEZIONI.forEach(function(sez){
+    const custom=document.getElementById('custom-'+sez.key)?.value.trim();
+    const selected=document.querySelector('[data-sez="'+sez.key+'"].selected');
+    if(custom){
+      sel[sez.key]={type:'custom',text:custom};
+    }else if(selected){
+      const idx=parseInt(selected.dataset.idx);
+      const temi=(pending.temi_per_sezione||{})[sez.key]||[];
+      const t=temi[idx]||{};
+      sel[sez.key]={type:'scout',idx:idx,titolo:t.titolo||t.title||'',sommario:t.sommario||t.summary||''};
+    }else{
+      sel[sez.key]=null;
+    }
+  });
+
+  try{
+    const payload={
+      key:'scout_selection',
+      value:{week:new Date().toLocaleDateString('it-IT'),...sel},
+      written_by:'paolo',
+      updated_at:new Date().toISOString()
+    };
+    const r=await fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{
+      method:'POST',
+      headers:{...HDR,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    if(!r.ok)throw new Error('Errore salvataggio ('+r.status+')');
+    st.className='status ok';
+    st.textContent='✓ Selezione salvata. Luned\xec l\'agente editoriale user\xe0 questi temi.';
+    btn.textContent='✓ Salvato';
+  }catch(e){
+    st.className='status err';st.textContent=e.message;
+    btn.disabled=false;btn.textContent='✓ Conferma selezione';
+  }
+}
+
+async function init(){
+  const token=new URLSearchParams(location.search).get('token');
+  if(!token){showError('Link non valido — token mancante.');return;}
+  try{
+    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_pending&select=value',{headers:HDR});
+    if(!r.ok)throw new Error('Errore caricamento dati Scout.');
+    const data=await r.json();
+    if(!data.length||!data[0].value){showError('Nessun brief Scout disponibile. Riprova dopo che lo Scout ha girato sabato.');return;}
+    pending=data[0].value;
+    if(pending.selection_token&&pending.selection_token!==token){
+      showError('Link scaduto o non valido. Usa il link dell\'ultima email Scout.');return;
+    }
+    document.getElementById('page-date').textContent='Brief settimana del '+(pending.settimana||new Date().toLocaleDateString('it-IT'));
+    if(pending.brief_narrativo){
+      document.getElementById('brief-text').textContent=pending.brief_narrativo;
+      document.getElementById('brief-block').style.display='block';
+    }
+    document.getElementById('sections-container').innerHTML=renderSections(pending);
+    document.getElementById('app-loading').style.display='none';
+    document.getElementById('app-content').style.display='block';
+  }catch(e){showError(e.message);}
+}
+init();
+</script>
+</body>
+</html>

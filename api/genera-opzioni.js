@@ -28,12 +28,15 @@ module.exports = async function handler(req, res) {
     const { hint, editionNum, oggi, tematiche, custom_sections } = req.body;
 
     // Leggi Scout e SEO dalla memoria
-    const [scoutRow, seoRow] = await Promise.all([
+    const [scoutRow, seoRow, selRow] = await Promise.all([
       supabase.from('agent_memory').select('value,updated_at').eq('key', 'scout_brief').single(),
-      supabase.from('agent_memory').select('value').eq('key', 'seo_keywords').single()
+      supabase.from('agent_memory').select('value').eq('key', 'seo_keywords').single(),
+      supabase.from('agent_memory').select('value').eq('key', 'scout_selection').single()
     ]);
     const scout = scoutRow.data?.value;
     const seo = seoRow.data?.value;
+    // Selezione fatta da Paolo dalla pagina scout-select.html
+    const scoutSel = selRow.data?.value;
 
     let contextBlock = '';
     let modeLabel = '';
@@ -63,6 +66,17 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
       }
       if (seo?.keywords) contextBlock += `\nKEYWORD SEO: ${seo.keywords.slice(0,5).join(', ')}`;
       if (hint) contextBlock += `\nHINT EDITORIALE: ${hint}`;
+      // Usa selezione da scout-select.html se disponibile e non sovrascritta manualmente
+      if (scoutSel && !custom_sections) {
+        const fromPage = {};
+        ['bilancio', 'deal', 'metrica'].forEach(s => {
+          const v = scoutSel[s];
+          if (v?.type === 'custom' && v.text) fromPage[s] = v.text;
+        });
+        if (Object.keys(fromPage).length) {
+          custom_sections = fromPage;
+        }
+      }
       if (custom_sections) {
         const overrides = [];
         if (custom_sections.bilancio) overrides.push(`- IL BILANCIO: "${custom_sections.bilancio}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);

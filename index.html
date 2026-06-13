@@ -1114,9 +1114,23 @@ function crLeggiSezioniDom(edId,sections){
 
 /* ── REDAZIONE MODE ── */
 let crRedazioneMode = 'auto';
+async function crLoadScoutSelection(){
+  try{
+    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_selection&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const d=await r.json();
+    if(!d.length||!d[0].value)return;
+    const sel=d[0].value;
+    ['bilancio','deal','metrica'].forEach(function(s){
+      const v=sel[s];
+      const el=document.getElementById('cr-custom-'+s);
+      if(el&&v&&v.type==='custom'&&v.text)el.value=v.text;
+    });
+  }catch(e){}
+}
 function crSetMode(m){
   crRedazioneMode=m;
   document.getElementById('cr-mode-auto-panel').style.display=m==='auto'?'block':'none';
+  if(m==='auto')crLoadScoutSelection();
   document.getElementById('cr-mode-manual-panel').style.display=m==='manual'?'block':'none';
   document.getElementById('cr-mode-auto').style.opacity=m==='auto'?'1':'0.5';
   document.getElementById('cr-mode-manual').style.opacity=m==='manual'?'1':'0.5';
