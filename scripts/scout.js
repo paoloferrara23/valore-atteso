@@ -1,6 +1,7 @@
 // scripts/scout.js — Scout Agent v2.1
 // Web search libero su fonti certificate → verifica con Drive → brief + approvazione
 
+const crypto = require('crypto');
 const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
 
@@ -134,7 +135,7 @@ async function leggiDrive() {
 }
 
 function generateToken() {
-  return Math.random().toString(36).slice(2) + Date.now().toString(36);
+  return crypto.randomBytes(24).toString('hex');
 }
 
 // ── MAIN ────────────────────────────────────────────────────────────────────
@@ -325,11 +326,20 @@ JSON richiesto:
 
   // ── Fase 4: Salva pending con token approvazione ─────────────────────────
   const selectionToken = generateToken();
+  const briefId = crypto.randomUUID();
 
   await supaUpsert('scout_pending', {
     ...brief,
+    brief_id: briefId,
     drive_files: driveFiles,
     selection_token: selectionToken
+  }, 'scout');
+
+  // A new Scout run must never inherit the previous week's selection.
+  await supaUpsert('scout_selezione', {
+    brief_id: briefId,
+    stato: 'pending',
+    creato_at: new Date().toISOString()
   }, 'scout');
 
   // ── Fase 5: Email con approvazione ───────────────────────────────────────
