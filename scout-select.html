@@ -53,7 +53,7 @@
   <div id="app-content" style="display:none">
     <div class="page-title">Selezione temi</div>
     <div class="page-sub" id="page-date"></div>
-    <p class="page-hint">Per ogni sezione: clicca su una proposta Scout <strong>oppure</strong> scrivi il tuo argomento nel campo di testo. Le sezioni non compilate vengono gestite autonomamente dall\'agente.</p>
+    <p class="page-hint">Per ogni sezione: clicca su una proposta Scout <strong>oppure</strong> scrivi il tuo argomento nel campo di testo. Devi confermare un tema per tutte e tre le sezioni.</p>
     <div id="brief-block" style="display:none" class="brief-box">
       <div class="brief-label">Brief Scout della settimana</div>
       <div id="brief-text"></div>
@@ -156,25 +156,29 @@ async function submitSelection(){
     }
   });
 
+  const missing=SEZIONI.filter(function(sez){return !sel[sez.key]}).map(function(sez){return sez.label});
+  if(missing.length){
+    st.className='status err';
+    st.textContent='Seleziona un tema per: '+missing.join(', ')+'.';
+    btn.disabled=false;btn.textContent='Conferma selezione';
+    return;
+  }
+
   try{
-    const payload={
-      key:'scout_selection',
-      value:{week:new Date().toLocaleDateString('it-IT'),...sel},
-      written_by:'paolo',
-      updated_at:new Date().toISOString()
-    };
-    const r=await fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{
+    const token=new URLSearchParams(location.search).get('token');
+    const r=await fetch('/api/scout-select',{
       method:'POST',
-      headers:{...HDR,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify(payload)
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token:token,selections:sel})
     });
-    if(!r.ok)throw new Error('Errore salvataggio ('+r.status+')');
+    const data=await r.json();
+    if(!r.ok||!data.ok)throw new Error(data.error||'Errore salvataggio ('+r.status+')');
     st.className='status ok';
-    st.textContent='✓ Selezione salvata. Luned\xec l\'agente editoriale user\xe0 questi temi.';
-    btn.textContent='✓ Salvato';
+    st.textContent='Selezione salvata. Redazione usera esclusivamente questi temi.';
+    btn.textContent='Salvato';
   }catch(e){
     st.className='status err';st.textContent=e.message;
-    btn.disabled=false;btn.textContent='✓ Conferma selezione';
+    btn.disabled=false;btn.textContent='Conferma selezione';
   }
 }
 
