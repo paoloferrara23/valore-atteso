@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
     const edition = editions[0];
     edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
-    const toEmail = process.env.APPROVAL_EMAIL || 'info@valoreatteso.com';
+    const toEmail = (process.env.APPROVAL_EMAIL || 'info@valoreatteso.com').trim();
 
     const html = buildHtml(edition)
       .replace('{{EMAIL}}', encodeURIComponent(toEmail))
