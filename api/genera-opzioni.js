@@ -25,13 +25,14 @@ module.exports = async function handler(req, res) {
   if (req.headers['x-cr-token'] !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
 
   try {
-    const { hint, editionNum, oggi, tematiche, custom_sections } = req.body;
+    const { hint, editionNum, oggi, tematiche } = req.body;
+    let customSections = req.body.custom_sections || null;
 
     // Leggi Scout e SEO dalla memoria
     const [scoutRow, seoRow, selRow] = await Promise.all([
       supabase.from('agent_memory').select('value,updated_at').eq('key', 'scout_brief').single(),
       supabase.from('agent_memory').select('value').eq('key', 'seo_keywords').single(),
-      supabase.from('agent_memory').select('value').eq('key', 'scout_selection').single()
+      supabase.from('agent_memory').select('value,updated_at').eq('key', 'scout_selezione').single()
     ]);
     const scout = scoutRow.data?.value;
     const seo = seoRow.data?.value;
@@ -56,9 +57,19 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
     } else {
       // MODALITÀ AUTO: Scout + SEO
       modeLabel = 'automatico da Scout';
+      const validSelection = scout
+        && scoutSel?.stato === 'approved'
+        && scout.brief_id
+        && scout.brief_id === scoutSel.brief_id
+        && scoutSel.temi?.bilancio
+        && scoutSel.temi?.deal
+        && scoutSel.temi?.metrica;
+      if (!validSelection) {
+        return res.status(409).json({ error: 'Nessuna selezione Scout valida per il brief corrente. Conferma prima i tre temi dal link Scout.' });
+      }
       if (scout) {
         contextBlock += `\nTEMI SCOUT (aggiornati ${scoutRow.data?.updated_at?.slice(0,10)}):\n`;
-        contextBlock += JSON.stringify(scout.temi || scout, null, 2);
+        contextBlock += JSON.stringify(scoutSel.temi, null, 2);
         if (scout.tema_consigliato) contextBlock += `\nTEMA CONSIGLIATO: ${scout.tema_consigliato}`;
         if (scout.note_editoriali) contextBlock += `\nNOTE: ${scout.note_editoriali}`;
       } else {
@@ -66,27 +77,16 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
       }
       if (seo?.keywords) contextBlock += `\nKEYWORD SEO: ${seo.keywords.slice(0,5).join(', ')}`;
       if (hint) contextBlock += `\nHINT EDITORIALE: ${hint}`;
-      // Usa selezione da scout-select.html se disponibile e non sovrascritta manualmente
-      if (scoutSel && !custom_sections) {
-        const fromPage = {};
-        ['bilancio', 'deal', 'metrica'].forEach(s => {
-          const v = scoutSel[s];
-          if (v?.type === 'custom' && v.text) fromPage[s] = v.text;
-        });
-        if (Object.keys(fromPage).length) {
-          custom_sections = fromPage;
-        }
-      }
-      if (custom_sections) {
-        const overrides = [];
-        if (custom_sections.bilancio) overrides.push(`- IL BILANCIO: "${custom_sections.bilancio}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
-        if (custom_sections.deal) overrides.push(`- IL DEAL: "${custom_sections.deal}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
-        if (custom_sections.metrica) overrides.push(`- LA METRICA: "${custom_sections.metrica}" (argomento fisso — genera 3 angoli diversi, non 3 temi diversi)`);
-        if (overrides.length) {
-          contextBlock += `\n\nARGOMENTI FISSI DA PAOLO (per queste sezioni ignora il brief Scout, genera 3 angoli sul tema indicato):\n${overrides.join('\n')}`;
-          modeLabel += ' + argomenti personalizzati';
-        }
-      }
+      customSections = {
+        bilancio: scoutSel.temi.bilancio.titolo || scoutSel.temi.bilancio.custom,
+        deal: scoutSel.temi.deal.titolo || scoutSel.temi.deal.custom,
+        metrica: scoutSel.temi.metrica.titolo || scoutSel.temi.metrica.custom,
+        ...(customSections || {})
+      };
+      contextBlock += `\n\nTEMI SELEZIONATI DA PAOLO (obbligatori: genera 3 angoli diversi per ogni tema, non sostituire i temi):
+- IL BILANCIO: "${customSections.bilancio}"
+- IL DEAL: "${customSections.deal}"
+- LA METRICA: "${customSections.metrica}"`;
     }
 
     const system = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
