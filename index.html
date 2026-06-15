@@ -1115,17 +1115,24 @@ function crLeggiSezioniDom(edId,sections){
 /* ── REDAZIONE MODE ── */
 let crRedazioneMode = 'auto';
 async function crLoadScoutSelection(){
+  var st=document.getElementById('cr-scout-selection-status');
+  if(st){st.textContent='Caricamento selezione Scout...';st.style.color='var(--muted)';}
   try{
-    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_selection&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_selezione&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const d=await r.json();
-    if(!d.length||!d[0].value)return;
+    if(!d.length||!d[0].value||d[0].value.stato!=='approved'){
+      if(st){st.textContent='Nessuna selezione Scout confermata.';st.style.color='#9B3027';}
+      return false;
+    }
     const sel=d[0].value;
     ['bilancio','deal','metrica'].forEach(function(s){
-      const v=sel[s];
+      const v=sel.temi&&sel.temi[s];
       const el=document.getElementById('cr-custom-'+s);
-      if(el&&v&&v.type==='custom'&&v.text)el.value=v.text;
+      if(el&&v)el.value=v.titolo||v.custom||'';
     });
-  }catch(e){}
+    if(st){st.textContent='Selezione Scout caricata: questi tre temi saranno obbligatori.';st.style.color='#315C49';}
+    return true;
+  }catch(e){if(st){st.textContent='Errore caricamento selezione Scout.';st.style.color='#9B3027';}return false}
 }
 function crSetMode(m){
   crRedazioneMode=m;
@@ -1149,6 +1156,10 @@ async function crGeneraOpzioni(){
     tematicheLibere={bilancio:tb,deal:td,metrica:tm};
   }
   try{
+    if(crRedazioneMode==='auto'){
+      var hasScoutSelection=await crLoadScoutSelection();
+      if(!hasScoutSelection)throw new Error('Conferma prima i tre temi dal link Scout.');
+    }
     var last=crCtx.last?parseInt(crCtx.last.num,10):0;
     var editionNum=String(last+1).padStart(3,'0');
     var customSez=null;
@@ -1933,20 +1944,21 @@ loadLatestPreview();
           <!-- MODALITÀ AUTO: hint generico -->
           <div id="cr-mode-auto-panel">
             <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:100%;box-sizing:border-box">
-            <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:6px">Lo Scout sceglie i temi migliori della settimana. Puoi aggiungere un hint per orientarlo.</div>
-            <div style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:14px;margin-bottom:6px;letter-spacing:.08em">ARGOMENTO FISSO PER SEZIONE — opzionale, sovrascrive lo Scout</div>
+            <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:6px">Usa i tre temi che hai confermato dal link Scout. Puoi aggiungere un hint editoriale.</div>
+            <div id="cr-scout-selection-status" style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:9px">Caricamento selezione Scout...</div>
+            <div style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:14px;margin-bottom:6px;letter-spacing:.08em">TEMI SCOUT SELEZIONATI</div>
             <div style="display:flex;flex-direction:column;gap:6px">
               <div style="display:flex;gap:8px;align-items:center">
                 <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL BILANCIO</span>
-                <input class="cr-input" id="cr-custom-bilancio" placeholder="es. Mondiale 2026 — ricavi FIFA..." style="flex:1;box-sizing:border-box">
+                <input class="cr-input" id="cr-custom-bilancio" readonly placeholder="Tema selezionato nello Scout" style="flex:1;box-sizing:border-box;background:#F4EFE6">
               </div>
               <div style="display:flex;gap:8px;align-items:center">
                 <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">IL DEAL</span>
-                <input class="cr-input" id="cr-custom-deal" placeholder="es. Manchester United — nuova offerta..." style="flex:1;box-sizing:border-box">
+                <input class="cr-input" id="cr-custom-deal" readonly placeholder="Tema selezionato nello Scout" style="flex:1;box-sizing:border-box;background:#F4EFE6">
               </div>
               <div style="display:flex;gap:8px;align-items:center">
                 <span style="font-family:var(--mn);font-size:9px;color:#8E6B33;width:90px;flex-shrink:0">LA METRICA</span>
-                <input class="cr-input" id="cr-custom-metrica" placeholder="es. Ricavi hospitality Mondiale..." style="flex:1;box-sizing:border-box">
+                <input class="cr-input" id="cr-custom-metrica" readonly placeholder="Tema selezionato nello Scout" style="flex:1;box-sizing:border-box;background:#F4EFE6">
               </div>
             </div>
           </div>
