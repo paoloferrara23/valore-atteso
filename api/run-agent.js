@@ -1,5 +1,6 @@
 // api/run-agent.js — Esegui agente manualmente dalla Control Room
 const { createClient } = require('@supabase/supabase-js');
+const scoutSelect = require('../lib/scout-select');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 const AGENT_MAP = {
@@ -14,6 +15,10 @@ const AGENT_MAP = {
 const REPO = 'paoloferrara23/valore-atteso';
 
 module.exports = async function handler(req, res) {
+  if (req.query?.action === 'scoutSelect') {
+    return scoutSelect(req, res);
+  }
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

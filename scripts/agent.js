@@ -65,21 +65,28 @@ async function main() {
 
   const scoutBrief    = await memGet('scout_brief');
   const scoutSelezione = await memGet('scout_selezione');
+  const scoutPending  = await memGet('scout_pending');
   const seoKeywords   = await memGet('seo_keywords');
 
   let temiContext = '';
   let modalita = 'opzioni'; // default
+  let selectedTopics = null;
 
   if (scoutBrief) {
     const brief = scoutBrief.value;
     const selezione = scoutSelezione?.value;
+    const sameBrief = brief.brief_id
+      && selezione?.brief_id
+      && brief.brief_id === selezione.brief_id
+      && selezione.stato === 'approved';
 
-    if (selezione && brief.temi_per_sezione && selezione.selezionato_at) {
-      const b = brief.temi_per_sezione.bilancio?.[selezione.bilancio];
-      const d = brief.temi_per_sezione.deal?.[selezione.deal];
-      const m = brief.temi_per_sezione.metrica?.[selezione.metrica];
+    if (sameBrief && brief.temi_per_sezione && selezione.selezionato_at) {
+      const b = selezione.temi?.bilancio || brief.temi_per_sezione.bilancio?.[selezione.bilancio];
+      const d = selezione.temi?.deal || brief.temi_per_sezione.deal?.[selezione.deal];
+      const m = selezione.temi?.metrica || brief.temi_per_sezione.metrica?.[selezione.metrica];
       if (b && d && m) {
         modalita = 'diretta';
+        selectedTopics = { bilancio: b, deal: d, metrica: m };
         temiContext = `\n\nPAOLO HA SELEZIONATO I TEMI (${new Date(selezione.selezionato_at).toLocaleDateString('it-IT')}):\n\nIL BILANCIO: "${b.titolo}"\n${b.sommario || b.summary}\nAngolo: ${b.angolo || ''}\nFonte: ${b.fonte_principale || b.source || ''}\n\nIL DEAL: "${d.titolo}"\n${d.sommario || d.summary}\nAngolo: ${d.angolo || ''}\nFonte: ${d.fonte_principale || d.source || ''}\n\nLA METRICA: "${m.titolo}"\n${m.sommario || m.summary}\nAngolo: ${m.angolo || ''}\nFonte: ${m.fonte_principale || m.source || ''}\n\nRACCOMANDAZIONE SCOUT: ${brief.raccomandazione?.tema || ''}${brief.note_editoriali ? `\nNOTE: ${brief.note_editoriali}` : ''}`;
         console.log('Modalità diretta — selezione di Paolo trovata');
       }
@@ -89,34 +96,42 @@ async function main() {
     }
   }
 
+  const pendingIsNewer = scoutPending
+    && (!scoutBrief || new Date(scoutPending.updated_at) > new Date(scoutBrief.updated_at));
+  if (pendingIsNewer && !selectedTopics) {
+    throw new Error('Il brief Scout piu recente e ancora in attesa di selezione. Redazione non avviata per evitare di usare i temi precedenti.');
+  }
+
   if (seoKeywords) temiContext += `\n\nKEYWORD SEO:\n${JSON.stringify(seoKeywords.value, null, 2)}`;
 
   // editionNum già calcolato nella guardia iniziale
-  const haSelezione = scoutSelezione?.value?.selezionato_at && scoutBrief?.value?.temi_per_sezione && scoutSelezione.value.bilancio != null;
+  const haSelezione = !!selectedTopics;
 
   const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.\n3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.\nTono: analitico, diretto, dati verificabili, nessun gossip.\nPubblico: professionisti M&A, PE, consulenza, finanza.\nREGOLA: usa SOLO dati dai temi Scout. VIETATO inventare.\nKPI FORMAT: [{"label":"max 4 parole","value":"numero+unità","sub":"max 4 parole"}]\n${temiContext}\nRispondi SOLO in JSON valido:\n{"num":"${editionNum}","section_options":{"bilancio":[{"title":"...","summary":"...","kpi_preview":["..."],"source":"..."},...],"deal":[...],"metrica":[...]}}`;
 
-  const testo = await callClaude([{ role: 'user', content: `Genera opzioni editoriali per edizione #${editionNum}. Per ogni sezione 3 opzioni con dati Scout reali.` }], system);
-
   let options;
-  try {
-    const match = testo.match(/\{[\s\S]*\}/);
-    options = JSON.parse(match[0].replace(/[\x00-\x1F\x7F]/g,' ').replace(/,(\s*[}\]])/g,'$1'));
-  } catch { throw new Error('JSON opzioni non valido'); }
+  if (haSelezione) {
+    options = { num: editionNum };
+  } else {
+    const testo = await callClaude([{ role: 'user', content: `Genera opzioni editoriali per edizione #${editionNum}. Per ogni sezione 3 opzioni con dati Scout reali.` }], system);
+    try {
+      const match = testo.match(/\{[\s\S]*\}/);
+      options = JSON.parse(match[0].replace(/[\x00-\x1F\x7F]/g,' ').replace(/,(\s*[}\]])/g,'$1'));
+    } catch { throw new Error('JSON opzioni non valido'); }
+  }
 
   // ── MODALITÀ DIRETTA: selezione già fatta ────────────────────────────────
   if (haSelezione && scoutBrief?.value?.temi_per_sezione) {
-    const sel = scoutSelezione.value;
     const ts  = scoutBrief.value.temi_per_sezione;
-    const bilancio = ts.bilancio?.[sel.bilancio];
-    const deal     = ts.deal?.[sel.deal];
-    const metrica  = ts.metrica?.[sel.metrica];
+    const bilancio = selectedTopics.bilancio;
+    const deal     = selectedTopics.deal;
+    const metrica  = selectedTopics.metrica;
 
     if (bilancio && deal && metrica) {
       const saveRes = await fetch(`${SUPA_URL}/rest/v1/editions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Prefer': 'return=representation' },
-        body: JSON.stringify({ num: options.num || editionNum, title: `Bozza #${options.num || editionNum}`, date: oggi, sections: [], section_options: ts, published: false, tags: ['Il Bilancio', 'Il Deal', 'La Metrica'] })
+        body: JSON.stringify({ num: options.num || editionNum, title: `Bozza #${options.num || editionNum}`, date: oggi, sections: [], section_options: ts, published: false, tags: ['Il Bilancio', 'Il Deal', 'La Metrica', `scout:${scoutBrief.value.brief_id}`] })
       });
       const savedRows = await saveRes.json();
       const editionId = savedRows[0]?.id;
