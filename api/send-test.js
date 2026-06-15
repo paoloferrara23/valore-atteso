@@ -1,7 +1,7 @@
 // api/send-test.js
-const { buildHtml } = require('./send-newsletter');
-const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { createClient } = require('@supabase/supabase-js');
+const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
+const { buildHtml } = require('../lib/build-html');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -56,7 +56,7 @@ module.exports = async function handler(req, res) {
 
     const raw = await response.text();
     let result;
-    try { result = JSON.parse(raw); } catch(e) { throw new Error('Resend: ' + raw.slice(0, 200)); }
+    try { result = JSON.parse(raw); } catch(e) { throw new Error('Resend risposta non JSON: ' + raw.slice(0, 200)); }
     if (!response.ok) throw new Error('Resend ' + response.status + ': ' + (result.message || JSON.stringify(result)));
 
     return res.status(200).json({
