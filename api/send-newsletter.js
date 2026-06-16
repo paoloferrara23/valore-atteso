@@ -2,7 +2,6 @@
 // CommonJS — Vercel serverless function
 const { createClient } = require('@supabase/supabase-js');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
-const sendUtilsHandler = require('../lib/send-utils');
 const { buildHtml } = require('../lib/build-html');
 
 const supabase = createClient(
@@ -14,6 +13,7 @@ const supabase = createClient(
 
 async function handler(req, res) {
   if (String((req.query && req.query.action) || '') === 'utils') {
+    const sendUtilsHandler = require('../lib/send-utils');
     return sendUtilsHandler(req, res);
   }
 
