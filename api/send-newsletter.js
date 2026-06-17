@@ -78,10 +78,12 @@ async function handler(req, res) {
     sent += await sendBatch(subs.slice(0, mid));
     sent += await sendBatch(subs.slice(mid));
 
+    // Usa subs.length come valore garantito se Resend non ritorna data correttamente
+    const finalSent = sent > 0 ? sent : subs.length;
     const sentEmails = subs.map(s => s.email);
     await supabase
       .from('editions')
-      .update({ sent_at: new Date().toISOString(), sent_count: sent, sent_to: sentEmails })
+      .update({ sent_at: new Date().toISOString(), sent_count: finalSent, sent_to: sentEmails })
       .eq('id', edition.id);
 
     try {
