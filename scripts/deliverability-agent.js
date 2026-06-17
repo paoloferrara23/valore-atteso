@@ -53,7 +53,8 @@ async function main() {
   }
 
   // ── 3. Calcola metriche ──────────────────────────────────────────────────
-  const totale     = emails.length;
+  // Usa sent_count da Supabase come totale reale — più affidabile di Resend tracking
+  const totale     = ed.sent_count > 0 ? ed.sent_count : emails.length;
   const consegnate = emails.filter(e => ['delivered','opened','clicked'].includes(e.last_event)).length;
   const aperte     = emails.filter(e => ['opened','clicked'].includes(e.last_event)).length;
   const cliccate   = emails.filter(e => e.last_event === 'clicked').length;
