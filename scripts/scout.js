@@ -465,7 +465,7 @@ JSON richiesto:
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
     body: JSON.stringify({
       from: FROM, to: APPROVAL_EMAIL,
-      subject: `Scout VA · ${brief.raccomandazione?.tema || brief.temi[0]?.titolo || 'Brief settimanale'} · approva →`,
+      subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
       html
     })
   });
