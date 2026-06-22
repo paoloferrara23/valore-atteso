@@ -1286,10 +1286,12 @@ async function crGeneraBozza(edId){
     if(!b||!dd||!m){st.className='cr-status err';st.textContent='Seleziona un tema per ogni sezione.';return;}
     var de=document.getElementById('date-'+edId);
     var he=document.getElementById('hint-'+edId);
+    st.textContent='Generazione in corso (30-60s)...';
     var resp=await fetch('/api/genera-edizione',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},
       body:JSON.stringify({editionId:edId,bilancio:b,deal:dd,metrica:m,date:de?de.value:'',hint:he?he.value:''})});
+    if(!resp.ok){var errTxt=await resp.text().catch(function(){return '';});throw new Error('Errore server ('+resp.status+'). Riprova tra qualche secondo.');}
     var ddd=await resp.json();
-    if(resp.ok&&ddd.ok){st.className='cr-status ok';st.textContent='Bozza generata.';setTimeout(function(){crLoadBozze();},1500);}
+    if(ddd.ok){st.className='cr-status ok';st.textContent='Bozza generata.';setTimeout(function(){crLoadBozze();},1500);}
     else{st.className='cr-status err';st.textContent='Errore: '+(ddd.error||resp.status);}
   }catch(ex){st.className='cr-status err';st.textContent='Errore: '+ex.message;}
 }
