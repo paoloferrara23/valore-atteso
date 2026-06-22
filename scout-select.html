@@ -166,13 +166,33 @@ async function submitSelection(){
 
   try{
     const token=new URLSearchParams(location.search).get('token');
-    const r=await fetch('/api/scout-select',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({token:token,selections:sel})
+    const briefId=pending.brief_id||('legacy-'+Date.now());
+    const now=new Date().toISOString();
+
+    // Costruisci oggetto selezione
+    const temi={};
+    SEZIONI.forEach(function(sez){
+      const s=sel[sez.key];
+      if(s.type==='custom'){
+        temi[sez.key]={custom:s.text,titolo:s.text,sommario:'Tema indicato direttamente dall editore.'};
+      }else{
+        const idx=s.idx;
+        const t=((pending.temi_per_sezione||{})[sez.key]||[])[idx]||{};
+        temi[sez.key]=t;
+      }
     });
-    const data=await r.json();
-    if(!r.ok||!data.ok)throw new Error(data.error||'Errore salvataggio ('+r.status+')');
+    const selection={brief_id:briefId,stato:'approved',bilancio:sel.bilancio.type==='scout'?sel.bilancio.idx:null,deal:sel.deal.type==='scout'?sel.deal.idx:null,metrica:sel.metrica.type==='scout'?sel.metrica.idx:null,temi:temi,selezionato_at:now};
+    const approvedBrief={...pending,brief_id:briefId,stato:'approvato',selezione:selection,approvato_at:now};
+    delete approvedBrief.selection_token;
+
+    // Salva direttamente su Supabase dal browser
+    const upsertHdr={'Content-Type':'application/json','apikey':SKEY,'Authorization':'Bearer '+SKEY,'Prefer':'resolution=merge-duplicates,return=minimal'};
+    const [r1,r2,r3]=await Promise.all([
+      fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{method:'POST',headers:upsertHdr,body:JSON.stringify({key:'scout_selezione',value:selection,written_by:'scout',updated_at:now})}),
+      fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{method:'POST',headers:upsertHdr,body:JSON.stringify({key:'scout_brief',value:approvedBrief,written_by:'scout',updated_at:now})}),
+      fetch(SURL+'/rest/v1/agent_runs',{method:'POST',headers:{...upsertHdr,'Prefer':'return=minimal'},body:JSON.stringify({agent:'scout',status:'success',summary:'Temi Scout selezionati.',data:{brief_id:briefId,selezione:selection}})})
+    ]);
+    if(!r1.ok||!r2.ok)throw new Error('Errore salvataggio Supabase ('+r1.status+'/'+r2.status+')');
     st.className='status ok';
     st.textContent='Selezione salvata. Redazione usera esclusivamente questi temi.';
     btn.textContent='Salvato';
