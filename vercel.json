@@ -1,5 +1,8 @@
 {
   "cleanUrls": true,
+  "functions": {
+    "api/genera-edizione.js": { "maxDuration": 60 }
+  },
   "rewrites": [
     { "source": "/api/approve-sponsor", "destination": "/api/sponsor-request?action=approve" },
     { "source": "/api/delete-sponsor-request", "destination": "/api/sponsor-request?action=delete" },
