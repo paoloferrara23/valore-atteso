@@ -76,7 +76,7 @@ ${JSON.stringify(sezCorrente, null, 2)}
 
 ISTRUZIONI:
 - Mantieni lo stesso tema ma migliora qualità, precisione e stile
-- Aggiungi dati più specifici se mancanti
+- NON inventare numeri o fonti non presenti nei dati esistenti — usa [dato da verificare] se mancanti
 - Verifica che ogni dato abbia una fonte
 - Migliora il verdict per renderlo più incisivo
 
