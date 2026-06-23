@@ -6,11 +6,13 @@
 <title>Club Intelligence — Valore Atteso</title>
 <style>
   :root{
-    --bg:#0A0B0F; --bg2:#10121A; --panel:#14161F; --panel2:#181B26;
-    --line:#232735; --line2:#2E3344;
-    --txt:#E7EAF2; --txt2:#9BA2B4; --txt3:#5C6478;
-    --inter-blue:#0099E5; --inter-navy:#0A1A4A; --inter-cyan:#19E0C8;
-    --gold:#E8C87A; --red:#FF5C6C; --green:#2BD9A0;
+    --bg:#06070C; --bg2:#0A0C14; --panel:#0E1018; --panel2:#12141E;
+    --line:#1E2230; --line2:#2A3040;
+    --txt:#EAEDF5; --txt2:#9AA2B6; --txt3:#5A6175;
+    --green:#28E0A0; --red:#FF5C6C; --gold:#E8C87A;
+    /* dinamici per club (mantenuti per le viste legacy) */
+    --inter-blue:#0099E5; --inter-cyan:#19E0C8; --inter-navy:#0A1A4A;
+    --acc:#0099E5; --acc2:#19E0C8;
     --mono:'SF Mono',ui-monospace,'Roboto Mono',Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;
   }
@@ -18,160 +20,181 @@
   html,body{height:100%}
   body{
     background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(0,153,229,.10), transparent 60%),
-      radial-gradient(900px 500px at -5% 110%, rgba(25,224,200,.06), transparent 55%),
+      radial-gradient(1300px 700px at 82% -12%, color-mix(in srgb, var(--inter-blue) 14%, transparent), transparent 60%),
+      radial-gradient(1000px 600px at -8% 112%, rgba(40,224,160,.05), transparent 55%),
+      repeating-linear-gradient(0deg, transparent 0 2px, rgba(255,255,255,.012) 2px 3px),
       var(--bg);
     color:var(--txt); font-family:var(--sans);
     -webkit-font-smoothing:antialiased; overflow-x:hidden;
   }
   ::selection{background:var(--inter-blue);color:#000}
   a{color:inherit;text-decoration:none}
+  .nd{color:var(--txt3);font-style:italic;font-weight:500}
+  .cnt{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
 
-  /* ── Layout ── */
-  .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  .app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
 
-  /* ── Sidebar ── */
+  /* ─── Sidebar ─── */
   .side{
     background:linear-gradient(180deg,var(--bg2),var(--bg));
     border-right:1px solid var(--line);
-    padding:22px 16px; position:sticky; top:0; height:100vh;
-    display:flex; flex-direction:column; gap:6px;
+    padding:20px 14px; position:sticky; top:0; height:100vh;
+    display:flex; flex-direction:column; gap:5px;
   }
-  .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 20px}
+  .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px}
   .brand-mark{
-    width:34px;height:34px;border-radius:9px;flex:none;
+    width:36px;height:36px;border-radius:10px;flex:none;
     background:linear-gradient(135deg,var(--inter-blue),var(--inter-cyan));
     display:grid;place-items:center;font-weight:800;font-size:15px;color:#04121f;
-    box-shadow:0 0 0 1px rgba(255,255,255,.06),0 8px 22px rgba(0,153,229,.30);
+    box-shadow:0 0 0 1px rgba(255,255,255,.07),0 10px 24px color-mix(in srgb,var(--inter-blue) 35%,transparent);
   }
-  .brand-name{font-weight:700;font-size:14.5px;letter-spacing:-.2px}
-  .brand-sub{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
-
-  .nav-label{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.16em;text-transform:uppercase;padding:14px 10px 6px}
+  .brand-name{font-weight:750;font-size:14.5px;letter-spacing:-.3px}
+  .brand-sub{font-family:var(--mono);font-size:8.5px;color:var(--txt3);letter-spacing:.16em;text-transform:uppercase;margin-top:3px}
+  .nav-cap{font-family:var(--mono);font-size:8.5px;color:var(--txt3);letter-spacing:.18em;text-transform:uppercase;padding:14px 10px 7px}
+  #nav{display:flex;flex-direction:column;gap:4px}
   .nav-item{
-    display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;
-    color:var(--txt2);font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;
+    display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:9px;
+    color:var(--txt2);font-size:13.5px;font-weight:560;cursor:pointer;transition:.15s;position:relative;
   }
+  .nav-item svg{width:22px;height:22px;flex:none}
+  .nav-item .nav-ic{width:18px;height:18px}
   .nav-item:hover{background:var(--panel);color:var(--txt)}
-  .nav-item.active{background:linear-gradient(90deg,rgba(0,153,229,.16),rgba(0,153,229,.02));color:#fff;box-shadow:inset 2px 0 0 var(--inter-blue)}
-  .nav-item .ic{width:17px;height:17px;flex:none;opacity:.85}
-  .nav-item .mini-crest{width:20px;height:20px;flex:none;border-radius:6px}
-  .nav-item.soon{opacity:.4;cursor:not-allowed}
-  .nav-item.soon::after{content:'PRESTO';font-family:var(--mono);font-size:8px;letter-spacing:.1em;margin-left:auto;color:var(--txt3);border:1px solid var(--line2);padding:1px 5px;border-radius:5px}
-
-  .side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
-  .club-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
-  .club-chip .badge{width:26px;height:26px;flex:none}
-
-  /* ── Main ── */
-  .main{padding:0 0 60px}
-  .topbar{
-    position:sticky;top:0;z-index:20;
-    background:rgba(10,11,15,.72);backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-    padding:16px 34px;display:flex;align-items:center;gap:18px;
-  }
-  .crest{width:46px;height:46px;flex:none;filter:drop-shadow(0 4px 14px rgba(0,153,229,.35))}
-  .club-h1{font-size:21px;font-weight:750;letter-spacing:-.4px;line-height:1.05}
-  .club-meta{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.06em;margin-top:3px;display:flex;gap:14px;flex-wrap:wrap}
-  .club-meta b{color:var(--inter-cyan);font-weight:600}
-  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-  .season-pick{
-    display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);
-    border-radius:9px;padding:8px 13px;font-family:var(--mono);font-size:12px;color:var(--txt);cursor:default
-  }
-  .season-pick b{color:var(--inter-blue)}
-  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(43,217,160,.18);animation:pulse 2s infinite}
+  .nav-item.active{background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 20%,transparent),transparent);color:#fff;box-shadow:inset 2px 0 0 var(--acc)}
+  .nav-item.vs.active{--acc:var(--inter-cyan)}
+  .nav-item.soon{opacity:.36;cursor:not-allowed}
+  .nav-item.soon::after{content:'PRESTO';font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;margin-left:auto;color:var(--txt3);border:1px solid var(--line2);padding:1px 5px;border-radius:5px}
+  .side-foot{margin-top:auto;border-top:1px solid var(--line);padding:13px 8px 2px}
+  .foot-line{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--green);display:flex;align-items:center;gap:7px}
+  .foot-sub{font-family:var(--mono);font-size:9px;color:var(--txt3);margin-top:5px;letter-spacing:.04em}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(40,224,160,.16);animation:pulse 2s infinite}
   @keyframes pulse{50%{opacity:.4}}
 
-  .wrap{padding:30px 34px;max-width:1180px}
+  /* ─── Main ─── */
+  .main{padding:0 0 70px;min-width:0}
 
-  /* ── Intro / what-is ── */
-  .intro{
-    position:relative;overflow:hidden;
-    background:linear-gradient(120deg,rgba(10,26,74,.55),rgba(20,22,31,.4));
-    border:1px solid var(--line2);border-radius:18px;padding:26px 28px;margin-bottom:26px;
+  /* terminal header (confronto) */
+  .thead{
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:18px;
+    background:rgba(6,7,12,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+    padding:13px 30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
   }
-  .intro::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;
-    background:radial-gradient(circle,rgba(0,153,229,.22),transparent 70%);pointer-events:none}
-  .intro-tag{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--inter-cyan);text-transform:uppercase;margin-bottom:10px}
-  .intro h2{font-size:23px;font-weight:760;letter-spacing:-.6px;line-height:1.18;max-width:660px;margin-bottom:12px}
-  .intro h2 .hl{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .intro p{color:var(--txt2);font-size:14px;line-height:1.65;max-width:600px}
-  .intro-steps{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
-  .step{flex:1;min-width:150px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
-  .step .n{font-family:var(--mono);font-size:10px;color:var(--inter-blue);letter-spacing:.1em}
-  .step .t{font-weight:650;font-size:13px;margin:6px 0 4px}
-  .step .d{font-size:11.5px;color:var(--txt3);line-height:1.5}
+  .thead-l{display:flex;align-items:center;gap:9px;color:var(--txt2)}
+  .thead-c{margin-left:auto;color:#fff;font-weight:600}
+  .thead-r{margin-left:auto;color:var(--green)}
 
-  /* ── Section label ── */
-  .sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;margin:30px 2px 14px;display:flex;align-items:center;gap:10px}
-  .sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
-
-  /* ── KPI grid ── */
-  .kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .kpi{
-    background:linear-gradient(180deg,var(--panel),var(--panel2));
-    border:1px solid var(--line);border-radius:14px;padding:17px 17px 15px;position:relative;overflow:hidden;
-    transition:.18s;cursor:default;
+  /* club header */
+  .chead{
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;
+    background:rgba(6,7,12,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+    padding:14px 30px;
   }
-  .kpi:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.4)}
-  .kpi::after{content:'';position:absolute;left:0;top:0;width:100%;height:2px;background:var(--accent,var(--inter-blue));opacity:.7}
-  .kpi .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--txt3);text-transform:uppercase;display:flex;align-items:center;gap:6px}
-  .kpi .val{font-size:27px;font-weight:780;letter-spacing:-1px;margin:11px 0 3px;font-feature-settings:'tnum'}
-  .kpi .sub{font-size:11px;color:var(--txt2)}
-  .delta{font-family:var(--mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;margin-top:9px;padding:2px 7px;border-radius:6px}
-  .delta.up{color:var(--green);background:rgba(43,217,160,.10)}
-  .delta.down{color:var(--red);background:rgba(255,92,108,.10)}
-  .delta.flat{color:var(--txt2);background:rgba(155,162,180,.10)}
-  .src{position:absolute;right:11px;top:13px;width:15px;height:15px;border-radius:50%;border:1px solid var(--line2);
-    display:grid;place-items:center;font-family:var(--mono);font-size:9px;color:var(--txt3);cursor:help}
-  .src:hover{border-color:var(--inter-blue);color:var(--inter-blue)}
-  .src .tip{
-    position:absolute;right:0;top:22px;width:210px;background:#05060a;border:1px solid var(--line2);
-    border-radius:8px;padding:9px 11px;font-family:var(--sans);font-size:10.5px;color:var(--txt2);line-height:1.5;
-    opacity:0;pointer-events:none;transform:translateY(-4px);transition:.15s;z-index:30;text-align:left;font-weight:400
-  }
-  .src:hover .tip{opacity:1;transform:translateY(0)}
-  .src .tip b{color:var(--inter-cyan)}
-  .nd{color:var(--txt3);font-style:italic;font-weight:500}
+  .chead-crest{flex:none;filter:drop-shadow(0 6px 18px color-mix(in srgb,var(--ca) 40%,transparent))}
+  .chead-name{font-size:19px;font-weight:760;letter-spacing:-.4px;line-height:1.05}
+  .chead-meta{font-family:var(--mono);font-size:9.5px;color:var(--txt2);letter-spacing:.05em;margin-top:5px;display:flex;gap:13px;flex-wrap:wrap;text-transform:uppercase}
+  .chead-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .chead-season{font-family:var(--mono);font-size:12px;color:var(--acc);font-weight:700}
+  .vs-btn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--txt);background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:8px 13px;cursor:pointer;transition:.15s}
+  .vs-btn:hover{border-color:var(--acc);color:#fff}
 
-  /* ── Panels row ── */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 30px;overflow-x:auto}
+  .tab{padding:13px 16px;font-size:13px;font-weight:620;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px;white-space:nowrap}
+  .tab:hover{color:var(--txt2)}
+  .tab.active{color:#fff;border-bottom-color:var(--acc)}
+
+  .wrap{padding:26px 30px;max-width:1240px}
+  #stage{animation:fade .28s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ─── Section labels ─── */
+  .sec-term,.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;margin:30px 2px 14px;display:flex;align-items:center;gap:10px}
+  .sec-term::after,.sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
+  .term-strip{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--inter-cyan);text-transform:uppercase;margin-bottom:18px}
+
+  /* ─── CONFRONTO board ─── */
+  .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid var(--line);border-radius:18px;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2))}
+  .col{position:relative;padding:26px 22px 20px;border-right:1px solid var(--line);cursor:pointer;transition:.2s;overflow:hidden}
+  .col:last-child{border-right:none}
+  .col::before{content:'';position:absolute;left:0;top:0;width:100%;height:3px;background:var(--ca)}
+  .col-glow{position:absolute;right:-50px;top:-50px;width:200px;height:200px;background:radial-gradient(circle,color-mix(in srgb,var(--ca) 26%,transparent),transparent 70%);pointer-events:none;opacity:.5;transition:.25s}
+  .col:hover{background:color-mix(in srgb,var(--ca) 7%,var(--panel))}
+  .col:hover .col-glow{opacity:1;transform:scale(1.15)}
+  .col-crest{filter:drop-shadow(0 8px 22px color-mix(in srgb,var(--ca) 45%,transparent));margin-bottom:14px}
+  .col-name{font-size:22px;font-weight:800;letter-spacing:-.6px;color:var(--ca)}
+  .col-meta{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin:4px 0 18px}
+  .col-block{margin-bottom:14px}
+  .cb-lab{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
+  .cb-val{font-size:clamp(23px,2.5vw,31px);font-weight:820;letter-spacing:-1.2px;margin-top:3px;font-variant-numeric:tabular-nums}
+  .cb-val.acc{color:var(--ca)} .cb-val.pos{color:var(--green)} .cb-val.neg{color:var(--red)}
+  .col-cta{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--txt3);margin-top:18px;transition:.18s}
+  .col:hover .col-cta{color:var(--ca)}
+
+  /* ─── head to head ─── */
+  .h2h{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .h2h-block{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .h2h-lab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--txt2);text-transform:uppercase;margin-bottom:13px}
+  .h2h-lab em{color:var(--txt3);font-style:normal;text-transform:none;letter-spacing:0}
+  .h2h-row{display:grid;grid-template-columns:118px 1fr 96px;align-items:center;gap:11px;padding:6px 0;border-radius:8px;cursor:pointer;transition:.15s}
+  .h2h-row:hover{background:rgba(255,255,255,.02)}
+  .h2h-club{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:650;color:var(--txt2)}
+  .h2h-row.lead .h2h-club{color:#fff}
+  .h2h-track{height:10px;background:var(--bg);border-radius:6px;overflow:hidden}
+  .h2h-val{font-family:var(--mono);font-size:12px;text-align:right;color:var(--txt);font-variant-numeric:tabular-nums}
+  .h2h-row.lead .h2h-val{font-weight:700}
+  .lead-i{color:var(--green);font-style:normal;font-size:9px}
+  .board-note{margin-top:26px;padding:14px 18px;background:rgba(40,224,160,.05);border:1px solid rgba(40,224,160,.18);border-radius:11px;font-size:11.5px;color:var(--txt2);line-height:1.6}
+
+  /* ─── club hero ─── */
+  .hero-club{display:flex;align-items:center;gap:26px;background:linear-gradient(115deg,color-mix(in srgb,var(--ca) 14%,var(--panel)),var(--panel2));border:1px solid var(--line2);border-radius:20px;padding:26px 30px;position:relative;overflow:hidden}
+  .hero-club::before{content:'';position:absolute;right:-70px;top:-70px;width:320px;height:320px;background:radial-gradient(circle,color-mix(in srgb,var(--ca) 26%,transparent),transparent 70%);pointer-events:none}
+  .hero-crest{flex:none;filter:drop-shadow(0 10px 28px color-mix(in srgb,var(--ca) 45%,transparent))}
+  .hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--ca);text-transform:uppercase}
+  .hero-name{font-size:25px;font-weight:800;letter-spacing:-.7px;margin:7px 0 18px}
+  .hero-numbers{display:grid;grid-template-columns:repeat(4,auto);gap:30px}
+  .hn-l{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
+  .hn-v{font-size:clamp(20px,2vw,27px);font-weight:820;letter-spacing:-1px;margin-top:5px;font-variant-numeric:tabular-nums}
+  .hn-v.acc{color:var(--ca)} .hn-v.pos{color:var(--green)} .hn-v.neg{color:var(--red)}
+
+  /* ─── cards / generic ─── */
   .row{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px}
   .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px 22px}
   .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-  .card-h h3{font-size:14.5px;font-weight:700;letter-spacing:-.2px}
+  .card-h h3{font-size:14.5px;font-weight:720;letter-spacing:-.2px}
   .card-h .hint{font-family:var(--mono);font-size:9.5px;color:var(--txt3);letter-spacing:.06em}
   .card-sub{font-size:11.5px;color:var(--txt3);margin-bottom:18px}
 
-  /* ── Revenue split bars ── */
+  /* split bars */
   .split{display:flex;flex-direction:column;gap:11px;margin-top:4px}
   .split-row{display:flex;align-items:center;gap:11px}
-  .split-row .k{font-size:12px;color:var(--txt2);width:138px;flex:none}
-  .split-row .bar{flex:1;height:8px;background:var(--bg);border-radius:5px;overflow:hidden}
-  .split-row .fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--inter-navy),var(--inter-blue))}
+  .split-row .k{font-size:12px;color:var(--txt2);width:150px;flex:none}
+  .split-row .bar{flex:1;height:9px;background:var(--bg);border-radius:6px;overflow:hidden}
+  .split-row .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 40%,#000),var(--acc));animation:growW 1s cubic-bezier(.2,.8,.2,1)}
   .split-row .v{font-family:var(--mono);font-size:11.5px;color:var(--txt);width:64px;text-align:right;flex:none}
 
-  /* ── P&L table ── */
+  /* statline */
+  .statline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  .stat{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px}
+  .stat .sl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
+  .stat .sv{font-size:19px;font-weight:760;letter-spacing:-.5px;margin-top:7px;font-variant-numeric:tabular-nums}
+  .stat .sd{font-size:10.5px;color:var(--txt3);margin-top:4px;line-height:1.4}
+
+  /* P&L */
   .pnl{width:100%;border-collapse:collapse;margin-top:4px}
   .pnl td{padding:11px 6px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
   .pnl td.lbl{color:var(--txt2)}
-  .pnl td.amt{text-align:right;font-family:var(--mono);font-size:13px;color:var(--txt);font-feature-settings:'tnum';white-space:nowrap}
+  .pnl td.amt{text-align:right;font-family:var(--mono);font-size:13px;color:var(--txt);font-variant-numeric:tabular-nums;white-space:nowrap}
   .pnl tr.sub td{font-size:11.5px;color:var(--txt3);padding:6px 6px 6px 24px;border-bottom:none}
   .pnl tr.sub td.amt{color:var(--txt2)}
-  .pnl tr.total td{font-weight:750;color:#fff;font-size:14px;border-top:1px solid var(--line2);border-bottom:none;padding-top:13px}
-  .pnl .neg{color:var(--red)}
-  .pnl .pos{color:var(--green)}
+  .pnl tr.total td{font-weight:760;color:#fff;font-size:14px;border-top:1px solid var(--line2);border-bottom:none;padding-top:13px}
 
-  /* ── Margin cascade ── */
+  /* cascade */
   .casc{display:flex;flex-direction:column;gap:13px;margin-top:6px}
   .casc-row .ct{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px}
   .casc-row .ct .cn{color:var(--txt2);font-weight:600}
   .casc-row .ct .cv{font-family:var(--mono);font-size:12.5px}
-  .casc-row .ctrack{height:9px;background:var(--bg);border-radius:5px;overflow:hidden}
-  .casc-row .cfill{height:100%;border-radius:5px}
+  .casc-row .ctrack{height:9px;background:var(--bg);border-radius:6px;overflow:hidden}
+  .casc-row .cfill{height:100%;border-radius:6px;animation:growW 1s cubic-bezier(.2,.8,.2,1)}
 
-  /* ── Gauges ── */
+  /* gauges */
   .gauges{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .gauge{text-align:center}
   .gauge .ring{position:relative;width:128px;height:128px;margin:0 auto 8px}
@@ -180,38 +203,14 @@
   .gauge .ringval .lim{font-family:var(--mono);font-size:9px;color:var(--txt3)}
   .gauge .gl{font-size:12.5px;font-weight:600;margin-top:2px}
   .gauge .gd{font-size:10.5px;color:var(--txt3);margin-top:3px;line-height:1.4}
+  .ring-fg{animation:ringgrow 1.15s ease both}
+  @keyframes ringgrow{from{stroke-dashoffset:339}}
   .status-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:3px 8px;border-radius:6px;margin-top:8px;text-transform:uppercase}
-  .status-pill.ok{color:var(--green);background:rgba(43,217,160,.12)}
+  .status-pill.ok{color:var(--green);background:rgba(40,224,160,.12)}
   .status-pill.warn{color:var(--gold);background:rgba(232,200,122,.12)}
   .status-pill.bad{color:var(--red);background:rgba(255,92,108,.12)}
 
-  .statline{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-  .stat{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px}
-  .stat .sl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
-  .stat .sv{font-size:19px;font-weight:740;letter-spacing:-.5px;margin-top:7px;font-feature-settings:'tnum'}
-  .stat .sd{font-size:10.5px;color:var(--txt3);margin-top:4px;line-height:1.4}
-
-  /* ── Peer table ── */
-  .ptable{width:100%;border-collapse:collapse;margin-top:8px}
-  .ptable th{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--txt3);text-align:right;padding:10px 8px;font-weight:500}
-  .ptable th:first-child{text-align:left}
-  .ptable td{padding:14px 8px;border-top:1px solid var(--line);font-family:var(--mono);font-size:13.5px;text-align:right;color:var(--txt2);font-feature-settings:'tnum'}
-  .ptable td:first-child{text-align:left;font-family:var(--sans);font-weight:650;color:var(--txt);font-size:13.5px}
-  .ptable .mini{width:17px;height:17px;border-radius:5px;display:inline-block;vertical-align:middle;margin-right:9px}
-  .ptable .lead{color:var(--inter-cyan);font-weight:700}
-
-  /* ── Peer bars ── */
-  .peer{display:flex;flex-direction:column;gap:13px;margin-top:4px}
-  .peer-row{display:grid;grid-template-columns:120px 1fr 70px;align-items:center;gap:12px}
-  .peer-row .club{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600}
-  .peer-row .club .mini{width:18px;height:18px;border-radius:5px;flex:none}
-  .peer-row .track{height:24px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative}
-  .peer-row .pf{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-family:var(--mono);font-size:10px;color:#04121f;font-weight:700;background:linear-gradient(90deg,#3a3f52,#525872)}
-  .peer-row.me .pf{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan))}
-  .peer-row .num{font-family:var(--mono);font-size:12px;text-align:right;color:var(--txt2)}
-  .peer-row.me .num{color:var(--inter-cyan);font-weight:700}
-
-  /* ── Deal cards ── */
+  /* deals */
   .deals{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
   .deal{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px 17px;transition:.16s}
   .deal:hover{border-color:var(--line2)}
@@ -220,66 +219,63 @@
   .deal .dd{font-size:11.5px;color:var(--txt3);line-height:1.55}
   .deal .dv{font-family:var(--mono);font-size:16px;font-weight:700;margin-top:11px;color:var(--gold)}
 
-  /* ── Term sheet ── */
+  /* term sheet */
   .terms{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:6px}
   .terms .cell{padding:13px 16px;border-bottom:1px solid var(--line)}
   .terms .cell:nth-child(odd){border-right:1px solid var(--line)}
   .terms .tk{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3)}
   .terms .tv{font-size:14px;font-weight:600;margin-top:5px}
 
-  /* ── Jump cards ── */
+  /* jump */
   .jumpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
   .jump{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:17px 18px;cursor:pointer;transition:.18s}
-  .jump:hover{border-color:var(--inter-blue);transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.35)}
+  .jump:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.35)}
   .jump .jt{font-weight:680;font-size:14px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
-  .jump .jt .arr{color:var(--inter-blue);font-size:16px}
+  .jump .jt .arr{color:var(--acc);font-size:16px}
   .jump .jd{font-size:11.5px;color:var(--txt3);line-height:1.5}
 
-  .footnote{margin-top:34px;padding:14px 18px;background:rgba(43,217,160,.06);border:1px solid rgba(43,217,160,.2);border-radius:11px;font-size:11.5px;color:var(--txt2);line-height:1.6}
+  .footnote{margin-top:30px;padding:14px 18px;background:rgba(40,224,160,.05);border:1px solid rgba(40,224,160,.18);border-radius:11px;font-size:11.5px;color:var(--txt2);line-height:1.6}
   .footnote b{color:var(--green)}
   .footnote.warn{background:rgba(232,200,122,.06);border-color:rgba(232,200,122,.2)}
   .footnote.warn b{color:var(--gold)}
 
-  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 34px;overflow-x:auto}
-  .tab{padding:13px 16px;font-size:13px;font-weight:600;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px;white-space:nowrap}
-  .tab:hover{color:var(--txt2)}
-  .tab.active{color:#fff;border-bottom-color:var(--inter-blue)}
+  @keyframes growW{from{width:0}}
 
-  #stage{animation:fade .25s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-  @media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}.kgrid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr!important}.deals,.gauges,.terms{grid-template-columns:1fr}.jumpgrid{grid-template-columns:1fr}.statline{grid-template-columns:1fr}}
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr}
+    .side{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);padding:9px 12px;gap:8px;z-index:30}
+    .side .brand,.nav-cap,.nav-item.soon,.side-foot{display:none}
+    #nav{flex-direction:row;gap:8px}
+    .nav-item{white-space:nowrap;padding:7px 11px;border-radius:999px;border:1px solid var(--line)}
+    .nav-item.active{box-shadow:none;border-color:var(--acc)}
+    .board{grid-template-columns:1fr 1fr}
+    .h2h{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr!important}
+    .deals,.gauges,.terms{grid-template-columns:1fr}
+    .jumpgrid,.hero-numbers{grid-template-columns:1fr 1fr}
+    .hero-club{flex-direction:column;align-items:flex-start;gap:18px}
+    .wrap,.thead,.chead,.tabs{padding-left:18px;padding-right:18px}
+  }
+  @media(max-width:520px){.board{grid-template-columns:1fr}.hero-numbers{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- ════ SIDEBAR ════ -->
   <aside class="side">
     <a class="brand" href="/" title="Torna a Valore Atteso">
       <div class="brand-mark">VΛ</div>
-      <div>
-        <div class="brand-name">Club Intelligence</div>
-        <div class="brand-sub">by Valore Atteso</div>
-      </div>
+      <div><div class="brand-name">Club Intelligence</div><div class="brand-sub">by Valore Atteso</div></div>
     </a>
-
-    <div class="nav-label">Club coperti</div>
-    <div id="clubNav"></div>
-
-    <div class="nav-label">In arrivo</div>
+    <div id="nav"></div>
+    <div class="nav-cap">In arrivo</div>
     <div class="nav-item soon">Milan</div>
     <div class="nav-item soon">Roma</div>
     <div class="nav-item soon">Atalanta</div>
-
-    <div class="side-foot">
-      <div class="club-chip" id="clubChip"></div>
-    </div>
+    <div class="side-foot" id="foot"></div>
   </aside>
 
-  <!-- ════ MAIN ════ -->
   <main class="main">
-    <div class="topbar" id="topbar"></div>
+    <div id="head"></div>
     <div class="tabs" id="tabs"></div>
     <div class="wrap"><div id="stage"></div></div>
   </main>
@@ -367,145 +363,252 @@ let CLUBS = {
   }
 };
 
-const VIEWS = [
-  ['panoramica','Panoramica'],
-  ['conto','Conto economico'],
-  ['sostenibilita','Sostenibilità'],
-  ['peer','Confronto peer'],
-  ['deal','Deal & Bond']
-];
+const CLUB_TABS = [['panoramica','Panoramica'],['conto','Conto economico'],['sostenibilita','Sostenibilità'],['deal','Deal & Bond']];
 
-let cur = 'inter';
-let view = 'panoramica';
+let mode = 'confronto';   // 'confronto' | 'club'
+let cur  = 'inter';
+let tab  = 'panoramica';
+const prefersReduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-/* ── helpers ── */
+/* ── helpers numerici ── */
 function num(v,maxDec){ if(v==null) return null;
   return Number(v).toLocaleString('it-IT',{minimumFractionDigits:0,maximumFractionDigits:(maxDec==null?1:maxDec)}); }
+function fmt(v,dec){ return Number(v).toLocaleString('it-IT',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
 function eur(v){ return v==null ? '<span class="nd">n/d</span>' : '€'+num(v)+'M'; }
 function eurSigned(v){ if(v==null) return '<span class="nd">n/d</span>';
   const sign = v>0?'+':(v<0?'−':''); const col = v>0?'var(--green)':(v<0?'var(--red)':'var(--txt)');
   return '<span style="color:'+col+'">'+sign+'€'+num(Math.abs(v))+'M</span>'; }
 function pct(v){ return v==null ? '<span class="nd">n/d</span>' : num(v)+'%'; }
-function pfn(v){ // posizione finanziaria netta: >0 = indebitamento, <0 = cassa netta
-  if(v==null) return '<span class="nd">n/d</span>';
+function pfn(v){ if(v==null) return '<span class="nd">n/d</span>';
   if(v>0) return '<span style="color:var(--red)">−€'+num(v)+'M</span>';
   if(v<0) return '<span style="color:var(--green)">+€'+num(Math.abs(v))+'M</span>';
-  return '€0M';
-}
+  return '€0M'; }
 function intnum(v){ return Number(v).toLocaleString('it-IT'); }
-
-function crestSVG(c, size){
-  size = size||46;
-  return '<svg class="crest" style="width:'+size+'px;height:'+size+'px" viewBox="0 0 48 48">'+
-    '<circle cx="24" cy="24" r="22" fill="#000"/>'+
-    '<circle cx="24" cy="24" r="22" fill="none" stroke="'+c.accent+'" stroke-width="1.5"/>'+
-    '<circle cx="24" cy="24" r="16" fill="none" stroke="#fff" stroke-width="1" opacity=".5"/>'+
-    '<g stroke="'+c.accent+'" stroke-width="2.2">'+
-      '<line x1="24" y1="10" x2="24" y2="38"/><line x1="10" y1="24" x2="38" y2="24"/>'+
-      '<line x1="14" y1="14" x2="34" y2="34"/><line x1="34" y1="14" x2="14" y2="34"/></g>'+
-    '<circle cx="24" cy="24" r="7" fill="#000" stroke="'+c.accent+'" stroke-width="1.5"/>'+
-    '<text x="24" y="27" text-anchor="middle" font-family="monospace" font-size="7" font-weight="800" fill="'+c.accent+'">'+c.short+'</text>'+
-  '</svg>';
+/* count-up span */
+function dataNum(value,opts){
+  opts=opts||{}; var dec=opts.dec!=null?opts.dec:1;
+  if(value==null) return '<span class="nd">n/d</span>';
+  var pre=opts.prefix||'', suf=opts.suffix||'';
+  return '<span class="cnt" data-count="'+value+'" data-dec="'+dec+'" data-prefix="'+pre+'" data-suffix="'+suf+'">'+pre+fmt(value,dec)+suf+'</span>';
 }
-function miniBadge(c){
-  return '<span class="mini" style="background:linear-gradient(135deg,'+c.accent+',#000)"></span>';
+function animateCounts(root){
+  root.querySelectorAll('.cnt[data-count]').forEach(function(el){
+    var target=parseFloat(el.dataset.count); if(isNaN(target)) return;
+    var dec=parseInt(el.dataset.dec||'0'), pre=el.dataset.prefix||'', suf=el.dataset.suffix||'';
+    if(prefersReduced){ el.textContent=pre+fmt(target,dec)+suf; return; }
+    var dur=950, t0=performance.now();
+    function frame(t){ var p=Math.min(1,(t-t0)/dur); var e=1-Math.pow(1-p,3);
+      el.textContent=pre+fmt(target*e,dec)+suf;
+      if(p<1) requestAnimationFrame(frame); else el.textContent=pre+fmt(target,dec)+suf; }
+    requestAnimationFrame(frame);
+  });
+}
+
+/* ── crest su misura (stilizzati, originali — nessun marchio ufficiale) ── */
+const CREST = {
+  inter:function(c){ return ''+
+    '<defs><linearGradient id="gi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0A1A4A"/><stop offset=".5" stop-color="#0099E5"/><stop offset="1" stop-color="#19E0C8"/></linearGradient><radialGradient id="gic" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="#0c1430"/><stop offset="1" stop-color="#05070d"/></radialGradient></defs>'+
+    '<circle cx="50" cy="50" r="47" fill="url(#gic)" stroke="url(#gi)" stroke-width="3.5"/>'+
+    '<circle cx="50" cy="50" r="40" fill="none" stroke="#0099E5" stroke-width="1.4" opacity=".55"/>'+
+    '<circle cx="50" cy="50" r="33" fill="none" stroke="#19E0C8" stroke-width="1" opacity=".35"/>'+
+    '<circle cx="50" cy="50" r="26" fill="none" stroke="#0099E5" stroke-width="1" opacity=".2"/>'+
+    '<text x="50" y="61" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="26" letter-spacing="-1" fill="url(#gi)">IM</text>'; },
+  juventus:function(c){ return ''+
+    '<defs><clipPath id="jc"><path d="M50 7 L86 19 V50 C86 76 50 93 50 93 C50 93 14 76 14 50 V19 Z"/></clipPath></defs>'+
+    '<g clip-path="url(#jc)">'+
+      '<rect x="14" y="5" width="72" height="90" fill="#0a0a0a"/>'+
+      '<rect x="22" y="5" width="11" height="90" fill="#f2f2f2"/>'+
+      '<rect x="44.5" y="5" width="11" height="90" fill="#f2f2f2"/>'+
+      '<rect x="67" y="5" width="11" height="90" fill="#f2f2f2"/>'+
+    '</g>'+
+    '<path d="M50 7 L86 19 V50 C86 76 50 93 50 93 C50 93 14 76 14 50 V19 Z" fill="none" stroke="#E2B53C" stroke-width="3.5"/>'+
+    '<path d="M50 15 l2.2 4.6 5.1 .7 -3.7 3.6 .9 5.1 -4.5-2.4 -4.5 2.4 .9-5.1 -3.7-3.6 5.1-.7 Z" fill="#E2B53C"/>'+
+    '<text x="50" y="66" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="40" fill="#E2B53C">J</text>'; },
+  napoli:function(c){ return ''+
+    '<defs><linearGradient id="gn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a3b6b"/><stop offset=".5" stop-color="#12A0D7"/><stop offset="1" stop-color="#5CC8F2"/></linearGradient><radialGradient id="gnc" cx=".5" cy=".4" r=".75"><stop offset="0" stop-color="#0a2540"/><stop offset="1" stop-color="#04121f"/></radialGradient></defs>'+
+    '<circle cx="50" cy="50" r="47" fill="url(#gnc)" stroke="url(#gn)" stroke-width="3.5"/>'+
+    '<circle cx="50" cy="50" r="40" fill="none" stroke="#12A0D7" stroke-width="1.3" opacity=".5"/>'+
+    '<path d="M50 17 l2.2 4.6 5.1 .7 -3.7 3.6 .9 5.1 -4.5-2.4 -4.5 2.4 .9-5.1 -3.7-3.6 5.1-.7 Z" fill="#E8C87A"/>'+
+    '<text x="50" y="67" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="34" fill="url(#gn)">N</text>'; }
+};
+function crestGeneric(c){
+  var id='g_'+c.slug;
+  return '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c.accent+'"/><stop offset="1" stop-color="'+c.accent2+'"/></linearGradient></defs>'+
+    '<circle cx="50" cy="50" r="46" fill="#06080E" stroke="url(#'+id+')" stroke-width="3"/>'+
+    '<circle cx="50" cy="50" r="37" fill="none" stroke="'+c.accent+'" stroke-width="1" opacity=".45"/>'+
+    '<text x="50" y="62" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="30" fill="url(#'+id+')">'+c.short+'</text>';
+}
+function crest(c,size){
+  size=size||64;
+  var inner = CREST[c.slug] ? CREST[c.slug](c) : crestGeneric(c);
+  return '<svg class="crest" viewBox="0 0 100 100" width="'+size+'" height="'+size+'">'+inner+'</svg>';
 }
 
 /* ════════ RENDER ════════ */
+function el(id){ return document.getElementById(id); }
+function setTheme(a,a2){
+  document.documentElement.style.setProperty('--acc',a);
+  document.documentElement.style.setProperty('--acc2',a2);
+  document.documentElement.style.setProperty('--inter-blue',a);
+  document.documentElement.style.setProperty('--inter-cyan',a2);
+}
 function render(){
-  const c = CLUBS[cur];
-  // recolora il tema con i colori del club selezionato
-  document.documentElement.style.setProperty('--inter-blue', c.accent);
-  document.documentElement.style.setProperty('--inter-cyan', c.accent2);
+  const ks=Object.keys(CLUBS);
+  if(!CLUBS[cur]) cur=ks[0];
 
-  // sidebar club nav
-  document.getElementById('clubNav').innerHTML = Object.keys(CLUBS).map(function(k){
-    const cl = CLUBS[k];
-    return '<div class="nav-item'+(k===cur?' active':'')+'" data-club="'+k+'">'+
-      '<svg class="mini-crest" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#000" stroke="'+cl.accent+'" stroke-width="2"/>'+
-      '<text x="24" y="30" text-anchor="middle" font-family="monospace" font-size="16" font-weight="800" fill="'+cl.accent+'">'+cl.short+'</text></svg>'+
-      cl.name+'</div>';
-  }).join('');
+  // sidebar nav
+  el('nav').innerHTML =
+    '<div class="nav-item vs'+(mode==='confronto'?' active':'')+'" data-go="confronto">'+
+      '<svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 7l-3 6h6z"/><path d="M19 7l-3 6h6z"/><path d="M5 7l7-2 7 2"/><path d="M4 20h16"/></svg>'+
+      'Confronto</div>'+
+    '<div class="nav-cap">Club · 2024/25</div>'+
+    ks.map(function(k){ const cl=CLUBS[k];
+      return '<div class="nav-item'+(mode==='club'&&k===cur?' active':'')+'" data-club="'+k+'" style="--acc:'+cl.accent+'">'+crest(cl,22)+'<span>'+cl.name+'</span></div>';
+    }).join('');
 
-  // chip
-  document.getElementById('clubChip').innerHTML =
-    '<svg class="badge" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#000" stroke="'+c.accent+'" stroke-width="1.5"/>'+
-    '<text x="20" y="25" text-anchor="middle" font-family="monospace" font-size="11" font-weight="800" fill="'+c.accent+'">'+c.short+'</text></svg>'+
-    '<div><div style="font-size:12px;font-weight:600">'+c.full.split(' ').slice(0,2).join(' ')+'</div>'+
-    '<div style="font-family:var(--mono);font-size:9px;color:var(--txt3)">'+c.league+' · '+c.fin.season+'</div></div>';
+  el('foot').innerHTML='<div class="foot-line"><span class="live-dot"></span>'+(LIVE?'LIVE · SUPABASE':'SNAPSHOT VERIFICATO')+'</div>'+
+    '<div class="foot-sub">'+ks.length+' club · Serie A · 2024/25</div>';
 
-  // topbar
-  document.getElementById('topbar').innerHTML =
-    crestSVG(c,46)+
-    '<div><div class="club-h1">'+c.full+'</div>'+
-    '<div class="club-meta">'+
-      '<span>'+c.league.toUpperCase()+'</span>'+
-      '<span>PROPRIETÀ <b>'+c.owner+'</b></span>'+
-      '<span>STADIO '+c.stadium+' · '+intnum(c.capacity)+'</span>'+
-      '<span>FONDATA '+c.founded+'</span>'+
-    '</div></div>'+
-    '<div class="topbar-right">'+
-      '<div class="season-pick">Esercizio <b>'+c.fin.season+'</b></div>'+
-      '<div class="season-pick"><span class="live-dot"></span> '+(LIVE?'Dati live · Supabase':'Dati verificati')+'</div>'+
-    '</div>';
-
-  // tabs
-  document.getElementById('tabs').innerHTML = VIEWS.map(function(v){
-    return '<div class="tab'+(v[0]===view?' active':'')+'" data-view="'+v[0]+'">'+v[1]+'</div>';
-  }).join('');
-
-  // stage
-  const r = {panoramica:viewPanoramica, conto:viewConto, sostenibilita:viewSosten, peer:viewPeer, deal:viewDeal}[view];
-  const stage = document.getElementById('stage');
-  stage.style.animation='none'; void stage.offsetWidth; stage.style.animation='';
-  stage.innerHTML = r(c);
-
+  if(mode==='confronto'){
+    setTheme('#0099E5','#19E0C8');
+    el('head').innerHTML = termHead();
+    el('tabs').style.display='none';
+    setStage(renderConfronto(ks));
+  } else {
+    const c=CLUBS[cur];
+    setTheme(c.accent,c.accent2);
+    el('head').innerHTML = clubHead(c);
+    el('tabs').style.display='flex';
+    el('tabs').innerHTML = CLUB_TABS.map(function(t){ return '<div class="tab'+(t[0]===tab?' active':'')+'" data-tab="'+t[0]+'">'+t[1]+'</div>'; }).join('');
+    const r = {panoramica:viewPanoramica, conto:viewConto, sostenibilita:viewSosten, deal:viewDeal}[tab] || viewPanoramica;
+    setStage(r(c));
+  }
   bind();
 }
-
+function setStage(html){
+  const s=el('stage'); s.style.animation='none'; void s.offsetWidth; s.style.animation='';
+  s.innerHTML=html; animateCounts(s);
+}
 function bind(){
-  document.querySelectorAll('[data-club]').forEach(function(el){
-    el.onclick = function(){ cur = el.dataset.club; render(); window.scrollTo({top:0,behavior:'smooth'}); };
-  });
-  document.querySelectorAll('[data-view]').forEach(function(el){
-    el.onclick = function(){ view = el.dataset.view; render(); window.scrollTo({top:0,behavior:'smooth'}); };
-  });
+  document.querySelectorAll('[data-go]').forEach(function(x){ x.onclick=function(){ mode=x.dataset.go; render(); scrollTop(); }; });
+  document.querySelectorAll('[data-club]').forEach(function(x){ x.onclick=function(){ mode='club'; cur=x.dataset.club; render(); scrollTop(); }; });
+  document.querySelectorAll('[data-tab]').forEach(function(x){ x.onclick=function(){ tab=x.dataset.tab; render(); scrollTop(); }; });
+}
+function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ── header bars ── */
+function termHead(){
+  return '<div class="thead"><div class="thead-l"><span class="live-dot"></span> Valore Atteso · Club Intelligence</div>'+
+    '<div class="thead-c">Confronto — Serie A 2024/25</div>'+
+    '<div class="thead-r">'+(LIVE?'● Live':'● Verificato')+'</div></div>';
+}
+function clubHead(c){
+  return '<div class="chead" style="--ca:'+c.accent+'">'+
+    '<div class="chead-crest">'+crest(c,52)+'</div>'+
+    '<div class="chead-id"><div class="chead-name">'+c.full+'</div>'+
+      '<div class="chead-meta"><span>'+c.league+'</span><span>'+c.owner+'</span><span>'+c.stadium+' · '+intnum(c.capacity)+'</span><span>Fondata '+c.founded+'</span></div></div>'+
+    '<div class="chead-right"><button class="vs-btn" data-go="confronto">⚖ Confronto</button><div class="chead-season">'+c.fin.season+'</div></div>'+
+  '</div>';
 }
 
-/* ════════ VIEWS ════════ */
+/* ════════ VIEW: CONFRONTO (board) ════════ */
+function renderConfronto(ks){
+  const cols = ks.map(function(k){ return clubCol(CLUBS[k]); }).join('');
+  const metrics=[
+    {key:'revenue_total',label:'Ricavi totali',type:'eur',better:'high'},
+    {key:'net_result',label:'Risultato netto',type:'sig',better:'high'},
+    {key:'wage_ratio',label:'Costo personale / Ricavi',type:'pct',better:'low'},
+    {key:'player_trading',label:'Plusvalenze',type:'eur',better:'high'},
+    {key:'net_debt',label:'Posizione finanziaria netta',type:'pfn',better:'lowdebt'},
+    {key:'equity',label:'Patrimonio netto',type:'sig',better:'high'}
+  ];
+  const h2h = metrics.map(function(m){ return h2hRow(m,ks); }).join('');
+  return '<div class="term-strip">▌ Head to head · bilanci '+CLUBS[ks[0]].fin.season+' · fonti ufficiali</div>'+
+    '<div class="board">'+cols+'</div>'+
+    '<div class="sec-term">Confronto metrica per metrica</div>'+
+    '<div class="h2h">'+h2h+'</div>'+
+    '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca un club</b> per la scheda completa. Dati verificati da bilanci depositati ed estratti nel database Valore Atteso, con la stessa tracciabilità della newsletter. <b style="color:var(--inter-cyan)">Milan e Roma in arrivo.</b></div>';
+}
+function clubCol(c){
+  const f=c.fin; const disp=(f.net_debt==null?null:-f.net_debt);
+  return '<div class="col" data-club="'+c.slug+'" style="--ca:'+c.accent+';--ca2:'+c.accent2+'">'+
+    '<div class="col-glow"></div>'+
+    '<div class="col-crest">'+crest(c,86)+'</div>'+
+    '<div class="col-name">'+c.name+'</div>'+
+    '<div class="col-meta">'+c.league+' · '+f.season+'</div>'+
+    '<div class="col-block"><div class="cb-lab">Ricavi</div><div class="cb-val acc">'+dataNum(f.revenue_total,{prefix:'€',suffix:'M'})+'</div></div>'+
+    '<div class="col-block"><div class="cb-lab">Risultato netto</div><div class="cb-val '+(f.net_result>0?'pos':'neg')+'">'+dataNum(f.net_result==null?null:Math.abs(f.net_result),{prefix:(f.net_result>0?'+€':'−€'),suffix:'M'})+'</div></div>'+
+    '<div class="col-block"><div class="cb-lab">Pos. finanziaria netta</div><div class="cb-val '+(disp!=null&&disp>=0?'pos':'neg')+'">'+dataNum(disp==null?null:Math.abs(disp),{prefix:(disp!=null&&disp>=0?'+€':'−€'),suffix:'M'})+'</div></div>'+
+    '<div class="col-cta">Scheda completa →</div>'+
+  '</div>';
+}
+function fmtMetric(m,v){
+  if(v==null) return '<span class="nd">n/d</span>';
+  if(m.type==='eur') return '€'+fmt(v,1)+'M';
+  if(m.type==='pct') return fmt(v,1)+'%';
+  if(m.type==='sig'){ var s=v>0?'+':(v<0?'−':''); return s+'€'+fmt(Math.abs(v),1)+'M'; }
+  if(m.type==='pfn'){ var d=-v; var s2=d>0?'+':(d<0?'−':''); return s2+'€'+fmt(Math.abs(d),1)+'M'; }
+  return fmt(v,1);
+}
+function bestKey(m,ks){
+  var best=null,bs=-Infinity;
+  ks.forEach(function(k){ var v=CLUBS[k].fin[m.key]; if(v==null) return;
+    var s = (m.better==='high') ? v : -v; // low / lowdebt → minore è meglio
+    if(s>bs){ bs=s; best=k; }
+  });
+  return best;
+}
+function h2hRow(m,ks){
+  var vals=ks.map(function(k){return CLUBS[k].fin[m.key];});
+  var maxAbs=Math.max.apply(null, vals.map(function(v){return v==null?0:Math.abs(v);}))||1;
+  var best=bestKey(m,ks);
+  var rows=ks.map(function(k){
+    var c=CLUBS[k], v=c.fin[m.key];
+    var w=v==null?0:Math.abs(v)/maxAbs*100;
+    var neg=(v!=null&&v<0);
+    var fill;
+    if(m.key==='net_debt') fill=(v<0?'var(--green)':'var(--red)');
+    else if(m.key==='net_result'||m.key==='equity') fill=(neg?'var(--red)':'linear-gradient(90deg,'+c.accent+'66,'+c.accent+')');
+    else fill='linear-gradient(90deg,'+c.accent+'66,'+c.accent+')';
+    return '<div class="h2h-row'+(k===best?' lead':'')+'" data-club="'+k+'">'+
+      '<div class="h2h-club">'+crest(c,20)+'<span>'+c.name+'</span></div>'+
+      '<div class="h2h-track"><div class="barfill" style="width:'+w.toFixed(1)+'%;background:'+fill+'"></div></div>'+
+      '<div class="h2h-val">'+fmtMetric(m,v)+(k===best?' <i class="lead-i">●</i>':'')+'</div>'+
+    '</div>';
+  }).join('');
+  return '<div class="h2h-block"><div class="h2h-lab">'+m.label+(m.better==='low'?' <em>· meglio se basso</em>':'')+'</div>'+rows+'</div>';
+}
+
+/* ════════ VIEW: club ════════ */
 function srcLine(f){
   var dt = f.source_date ? ' (deposito '+f.source_date+')' : '';
   return '<div class="footnote"><b>◆ Dati verificati.</b> Fonte: '+f.source+dt+'. '+
     'Estratti dal database Valore Atteso, stessa logica di tracciabilità della newsletter. '+f.notes+'</div>';
 }
+function heroNum(lab,val,cls){ return '<div class="hn"><div class="hn-l">'+lab+'</div><div class="hn-v '+cls+'">'+val+'</div></div>'; }
 
 function viewPanoramica(c){
-  const f=c.fin;
-  const opRev = f.broadcast+f.commercial+f.matchday+f.revenue_other;
+  const f=c.fin; const disp=(f.net_debt==null?null:-f.net_debt);
   return ''+
-  '<div class="intro">'+
-    '<div class="intro-tag">◆ Cos’è questo strumento</div>'+
-    '<h2>La <span class="hl">salute finanziaria</span> di '+c.name+', leggibile in 30 secondi.</h2>'+
-    '<p>Club Intelligence trasforma il bilancio consolidato depositato — centinaia di pagine — in un profilo finanziario chiaro, comparabile e tracciabile. Gli stessi dati verificati che alimentano Valore Atteso, ma interattivi.</p>'+
-    '<div class="intro-steps">'+
-      '<div class="step"><div class="n">01</div><div class="t">Fonti verificate</div><div class="d">Solo bilanci depositati e prospetti ufficiali. Ogni numero ha una fonte.</div></div>'+
-      '<div class="step"><div class="n">02</div><div class="t">Ratio reali</div><div class="d">Wage/revenue, PFN, plusvalenze. Presi dal bilancio, non stimati.</div></div>'+
-      '<div class="step"><div class="n">03</div><div class="t">Confronto peer</div><div class="d">Inter vs Juventus, stessa metrica e stesso esercizio.</div></div>'+
+  '<div class="hero-club" style="--ca:'+c.accent+'">'+
+    '<div class="hero-crest">'+crest(c,118)+'</div>'+
+    '<div class="hero-info">'+
+      '<div class="hero-eyebrow">'+c.league+' · Bilancio '+f.season+'</div>'+
+      '<div class="hero-name">'+c.full+'</div>'+
+      '<div class="hero-numbers">'+
+        heroNum('Ricavi', dataNum(f.revenue_total,{prefix:'€',suffix:'M'}), 'acc')+
+        heroNum('Risultato netto', dataNum(f.net_result==null?null:Math.abs(f.net_result),{prefix:(f.net_result>0?'+€':'−€'),suffix:'M'}), f.net_result>0?'pos':'neg')+
+        heroNum('Pos. fin. netta', dataNum(disp==null?null:Math.abs(disp),{prefix:(disp!=null&&disp>=0?'+€':'−€'),suffix:'M'}), (disp!=null&&disp>=0)?'pos':'neg')+
+        heroNum('Wage / Revenue', dataNum(f.wage_ratio,{suffix:'%'}), f.wage_ratio<=70?'pos':'neg')+
+      '</div>'+
     '</div>'+
   '</div>'+
 
-  '<div class="sec-label">Indicatori chiave · esercizio '+f.season+'</div>'+
-  '<div class="kgrid">'+
-    kpi('Ricavi totali', eur(f.revenue_total), 'valore della produzione', c.accent, 'Voce A) del conto economico consolidato '+f.season+'.', null)+
-    kpi('Risultato netto', eurSigned(f.net_result), f.net_result>0?'utile d’esercizio':'perdita d’esercizio', f.net_result>0?'var(--green)':'var(--red)', 'Risultato netto consolidato '+f.season+'.', null)+
-    kpi('Costo personale / Ricavi', pct(f.wage_ratio), 'monte ingaggi €'+num(f.wages)+'M', 'var(--gold)', 'Costo del personale ÷ ricavi totali. Soglia di sostenibilità indicativa ~70%.', f.wage_ratio<=70?'ok':'no')+
-    kpi('Posizione fin. netta', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta · liquidità > debito':'patrimonio netto '+ (f.equity<0?'−':'+') +'€'+num(Math.abs(f.equity))+'M'), (f.net_debt!=null&&f.net_debt<0?'var(--green)':'var(--red)'), 'Posizione finanziaria netta a fine esercizio (debito finanziario − liquidità).', null)+
-  '</div>'+
-
+  '<div class="sec-label">Composizione ricavi · '+f.season+'</div>'+
   '<div class="row">'+
     '<div class="card">'+
-      '<div class="card-h"><h3>Composizione ricavi</h3><span class="hint">'+f.season+' · €M</span></div>'+
-      '<div class="card-sub">Da dove arrivano i '+eur(f.revenue_total)+'.</div>'+
+      '<div class="card-h"><h3>Da dove arrivano i '+eur(f.revenue_total)+'</h3><span class="hint">€M</span></div>'+
+      '<div class="card-sub">Le voci del valore della produzione.</div>'+
       '<div class="split">'+
         splitRow('Diritti TV / UEFA', f.broadcast, f.revenue_total)+
         splitRow('Commerciali / sponsor', f.commercial, f.revenue_total)+
@@ -519,7 +622,7 @@ function viewPanoramica(c){
       '<div class="card-sub">Debito, equity e leva sul trading.</div>'+
       '<div class="statline" style="grid-template-columns:1fr 1fr;margin-top:6px">'+
         stat('PFN', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta (liquidità > debito)':'indebitamento finanziario netto'))+
-        stat('Patrimonio netto', (f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M', f.equity<0?'consolidato negativo':'positivo')+
+        stat('Patrimonio netto', (f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M', f.equity<0?'negativo':'positivo')+
         stat('Plusvalenze', '€'+num(f.player_trading)+'M', 'proventi gestione calciatori')+
         stat('EBITDA', eur(f.ebitda), f.ebitda==null?'non riportato a bilancio':'margine operativo lordo')+
       '</div>'+
@@ -532,7 +635,6 @@ function viewPanoramica(c){
     jump('sostenibilita','Sostenibilità','Wage/revenue, debito ed equity rispetto alle soglie.')+
     jump('deal','Deal & Bond','Bond, sponsor, proprietà: le operazioni dell’esercizio.')+
   '</div>'+
-
   srcLine(f);
 }
 
@@ -553,13 +655,12 @@ function viewConto(c){
     row('Gestione finanziaria, straordinaria e fiscale', finGap==null?'<span class="nd">n/d</span>':eurSigned(finGap))+
     row('Risultato netto', eurSigned(f.net_result), true);
 
-  // cascade — solo step disponibili
   const steps=[['Valore produzione', f.revenue_total],['EBITDA', f.ebitda],['EBIT', f.ebit],['Risultato netto', f.net_result]]
     .filter(function(s){return s[1]!=null;});
   const base=f.revenue_total;
   const casc = steps.map(function(s){
     const v=s[1]; const w=Math.max(2,Math.min(100, Math.abs(v)/base*100));
-    const col = v<0?'var(--red)':'linear-gradient(90deg,var(--inter-navy),var(--inter-blue))';
+    const col = v<0?'var(--red)':'linear-gradient(90deg,color-mix(in srgb,var(--acc) 40%,#000),var(--acc))';
     return '<div class="casc-row"><div class="ct"><span class="cn">'+s[0]+'</span>'+
       '<span class="cv" style="color:'+(v<0?'var(--red)':'var(--txt)')+'">'+eurSigned(v)+' · '+num(v/base*100)+'%</span></div>'+
       '<div class="ctrack"><div class="cfill" style="width:'+w+'%;background:'+col+'"></div></div></div>';
@@ -584,12 +685,12 @@ function viewSosten(c){
   const wr=f.wage_ratio;
   const wrStatus = wr<=60?'ok':(wr<=70?'warn':'bad');
   const ndrRaw = (f.net_debt!=null && f.revenue_total) ? f.net_debt/f.revenue_total*100 : null;
-  const ndr = (ndrRaw==null) ? 0 : Math.max(0, ndrRaw); // cassa netta (net_debt<0) -> 0 leva
+  const ndr = (ndrRaw==null) ? 0 : Math.max(0, ndrRaw);
   const ndrStatus = (ndrRaw!=null && ndrRaw<=0) ? 'ok' : (ndr<=100?'ok':(ndr<=150?'warn':'bad'));
   let lettura = 'Costo del personale al <b style="color:'+(wr<=70?'var(--green)':'var(--red)')+'">'+num(wr)+'%</b> dei ricavi'+(wr<=70?', sotto la soglia di sostenibilità.':', sopra la soglia di riferimento.');
   if(f.net_result!=null) lettura += f.net_result>0
-    ? ' L\'esercizio chiude in <b style="color:var(--green)">utile (+€'+num(f.net_result)+'M)</b>: genera autofinanziamento.'
-    : ' L\'esercizio chiude in <b style="color:var(--red)">perdita (−€'+num(Math.abs(f.net_result))+'M)</b>'+(f.player_trading?', in larga parte coperta dalle plusvalenze (€'+num(f.player_trading)+'M).':'.');
+    ? ' L’esercizio chiude in <b style="color:var(--green)">utile (+€'+num(f.net_result)+'M)</b>: genera autofinanziamento.'
+    : ' L’esercizio chiude in <b style="color:var(--red)">perdita (−€'+num(Math.abs(f.net_result))+'M)</b>'+(f.player_trading?', in larga parte coperta dalle plusvalenze (€'+num(f.player_trading)+'M).':'.');
   if(f.net_debt!=null && f.net_debt<0) lettura += ' <b style="color:var(--green)">Posizione finanziaria netta positiva</b> (cassa > debito): solidità elevata.';
   else if(f.equity!=null && f.equity<0) lettura += ' Patrimonio netto ancora negativo: equilibrio da ricostruire.';
   return ''+
@@ -612,56 +713,11 @@ function viewSosten(c){
         stat('PFN', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta':'debito finanziario netto'))+
         stat('Risultato netto', (f.net_result>0?'+':'−')+'€'+num(Math.abs(f.net_result))+'M', f.net_result>0?'autofinanziamento':'assorbe equity')+
       '</div>'+
-      '<div style="margin-top:18px;font-size:11.5px;color:var(--txt2);line-height:1.6;border-top:1px solid var(--line);padding-top:14px">'+
-        lettura+
-      '</div>'+
+      '<div style="margin-top:18px;font-size:11.5px;color:var(--txt2);line-height:1.6;border-top:1px solid var(--line);padding-top:14px">'+lettura+'</div>'+
     '</div>'+
   '</div>'+
-  '<div class="footnote warn"><b>◆ Nota metodologica.</b> Lo Squad Cost Ratio UEFA completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. Qui mostriamo il rapporto <b>costo del personale / ricavi</b>, voce verificata e comparabile. Lo SCR pieno arriverà quando il parser estrarrà ammortamenti cartellini e commissioni per ogni club.</div>'+
+  '<div class="footnote warn"><b>◆ Nota metodologica.</b> Lo Squad Cost Ratio UEFA completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. Qui mostriamo il rapporto <b>costo del personale / ricavi</b>, voce verificata e comparabile.</div>'+
   srcLine(f);
-}
-
-function viewPeer(){
-  const ks=Object.keys(CLUBS);
-  const maxRev=Math.max.apply(null, ks.map(function(k){return CLUBS[k].fin.revenue_total;}));
-  // barre ricavi
-  const bars = ks.map(function(k,i){
-    const c=CLUBS[k]; const f=c.fin; const w=f.revenue_total/maxRev*100;
-    return '<div class="peer-row'+(i===0?' me':'')+'">'+
-      '<div class="club">'+miniBadge(c)+c.name+'</div>'+
-      '<div class="track"><div class="pf" style="width:'+w.toFixed(0)+'%">€'+num(f.revenue_total)+'M</div></div>'+
-      '<div class="num">'+(i+1)+'°</div></div>';
-  }).join('');
-  // tabella multi-metrica
-  const head='<tr><th>Club</th><th>Ricavi</th><th>Wage/Rev</th><th>Risultato</th><th>PFN</th><th>Plusval.</th><th>Patrim.</th></tr>';
-  const body=ks.map(function(k){
-    const c=CLUBS[k]; const f=c.fin;
-    return '<tr'+(k===cur?' style="background:rgba(0,153,229,.05)"':'')+'>'+
-      '<td><span class="mini" style="background:linear-gradient(135deg,'+c.accent+',#000)"></span>'+c.name+'</td>'+
-      '<td>€'+num(f.revenue_total)+'M</td>'+
-      '<td>'+num(f.wage_ratio)+'%</td>'+
-      '<td style="color:'+(f.net_result>0?'var(--green)':'var(--red)')+'">'+(f.net_result>0?'+':'−')+'€'+num(Math.abs(f.net_result))+'M</td>'+
-      '<td>'+pfn(f.net_debt)+'</td>'+
-      '<td>€'+num(f.player_trading)+'M</td>'+
-      '<td style="color:'+(f.equity<0?'var(--red)':'var(--txt2)')+'">'+(f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M</td>'+
-    '</tr>';
-  }).join('');
-
-  return ''+
-  '<div class="sec-label">Confronto peer · Serie A · 2024/25</div>'+
-  '<div class="row" style="grid-template-columns:1fr 1.25fr">'+
-    '<div class="card">'+
-      '<div class="card-h"><h3>Ricavi a confronto</h3><span class="hint">€M</span></div>'+
-      '<div class="card-sub">Stessa metrica, stesso esercizio, stesse fonti.</div>'+
-      '<div class="peer">'+bars+'</div>'+
-    '</div>'+
-    '<div class="card">'+
-      '<div class="card-h"><h3>Tutte le metriche</h3><span class="hint">valori verificati</span></div>'+
-      '<div class="card-sub">Il quadro completo, club per club.</div>'+
-      '<table class="ptable">'+head+body+'</table>'+
-    '</div>'+
-  '</div>'+
-  '<div class="footnote"><b>◆ Due storie opposte, stesso campionato.</b> Inter chiude in utile (+€35,4M) con ricavi record e wage ratio al 44,7%. La Juventus, pur con ricavi simili (€529,6M), perde €58,1M: senza i €89,7M di plusvalenze il rosso sarebbe stato ben più ampio. Il <b>Napoli</b> campione perde €21,4M nella stagione senza coppe, ma vanta l’unica <b>cassa netta positiva</b> (+€137,0M) del gruppo. <b>Milan e Roma in arrivo</b> quando i bilanci saranno caricati.</div>';
 }
 
 function viewDeal(c){
@@ -672,33 +728,26 @@ function viewDeal(c){
       '<div class="dv">'+d.value+'</div></div>';
   }).join('');
 
-  // term sheet — solo Inter ha bond con dettagli noti
   let terms='';
   if(c.slug==='inter'){
     terms='<div class="sec-label">Term sheet bond · Senior Secured Notes</div>'+
       '<div class="card"><div class="terms">'+
-        cell('Emittente','Inter Media and Communication')+
-        cell('Importo','€350M')+
-        cell('Cedola','4,52% fissa')+
-        cell('Scadenza','2030')+
-        cell('Emissione','Giugno 2025')+
-        cell('Bond rifinanziato','€415M (2022)')+
+        cell('Emittente','Inter Media and Communication')+ cell('Importo','€350M')+
+        cell('Cedola','4,52% fissa')+ cell('Scadenza','2030')+
+        cell('Emissione','Giugno 2025')+ cell('Bond rifinanziato','€415M (2022)')+
       '</div>'+
       '<div style="margin-top:14px;font-size:11.5px;color:var(--txt2);line-height:1.6">Il nuovo bond riduce l’importo (da €415M a €350M) e migliora il costo del debito: segnale che il mercato percepisce l’Inter come meno rischiosa dopo il subentro di Oaktree e il ritorno all’utile.</div>'+
       '</div>';
   } else {
-    const pfnTxt = f.net_debt==null ? 'n/d'
-      : (f.net_debt<0 ? '+€'+num(Math.abs(f.net_debt))+'M · cassa netta' : '−€'+num(f.net_debt)+'M');
+    const pfnTxt = f.net_debt==null ? 'n/d' : (f.net_debt<0 ? '+€'+num(Math.abs(f.net_debt))+'M · cassa netta' : '−€'+num(f.net_debt)+'M');
     const eqTxt = f.equity==null ? 'n/d' : ((f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M');
     const nota = (f.net_debt!=null && f.net_debt<0)
       ? 'Liquidità superiore al debito finanziario: posizione finanziaria netta positiva, tra le strutture più solide della categoria.'
       : 'Patrimonio netto '+(f.equity!=null&&f.equity<0?'sottile/negativo: equilibrio dipendente da aumenti di capitale e plusvalenze':'positivo')+'; sostenibilità legata a gestione operativa e player trading.';
     terms='<div class="sec-label">Struttura finanziaria · '+f.season+'</div>'+
       '<div class="card"><div class="terms">'+
-        cell('Proprietà', c.owner)+
-        cell('Posizione fin. netta', pfnTxt)+
-        cell('Patrimonio netto', eqTxt)+
-        cell('Stadio', c.stadium+' · '+intnum(c.capacity))+
+        cell('Proprietà', c.owner)+ cell('Posizione fin. netta', pfnTxt)+
+        cell('Patrimonio netto', eqTxt)+ cell('Stadio', c.stadium+' · '+intnum(c.capacity))+
       '</div>'+
       '<div style="margin-top:14px;font-size:11.5px;color:var(--txt2);line-height:1.6">'+nota+'</div>'+
       '</div>';
@@ -706,29 +755,17 @@ function viewDeal(c){
 
   return ''+
   '<div class="sec-label">Operazioni dell’esercizio · '+f.season+'</div>'+
-  '<div class="deals">'+cards+'</div>'+
-  terms+
-  srcLine(f);
+  '<div class="deals">'+cards+'</div>'+ terms+ srcLine(f);
 }
 
 /* ── component helpers ── */
-function kpi(lab,val,sub,accent,tip,status){
-  const pill = status==null?'' : (status==='ok'
-    ? '<div class="delta up" style="margin-top:9px">● sotto soglia</div>'
-    : '<div class="delta down" style="margin-top:9px">● sopra soglia</div>');
-  return '<div class="kpi" style="--accent:'+accent+'">'+
-    '<div class="src">i<span class="tip">'+tip+'</span></div>'+
-    '<div class="lab">'+lab+'</div>'+
-    '<div class="val">'+val+'</div>'+
-    '<div class="sub">'+sub+'</div>'+pill+'</div>';
-}
 function splitRow(k,v,tot){
   const w=(v/tot*100); return '<div class="split-row"><div class="k">'+k+'</div>'+
     '<div class="bar"><div class="fill" style="width:'+w.toFixed(0)+'%"></div></div>'+
     '<div class="v">€'+num(v)+'M</div></div>';
 }
 function stat(l,v,d){ return '<div class="stat"><div class="sl">'+l+'</div><div class="sv">'+v+'</div><div class="sd">'+d+'</div></div>'; }
-function jump(v,t,d){ return '<div class="jump" data-view="'+v+'"><div class="jt">'+t+'<span class="arr">→</span></div><div class="jd">'+d+'</div></div>'; }
+function jump(v,t,d){ return '<div class="jump" data-tab="'+v+'"><div class="jt">'+t+'<span class="arr">→</span></div><div class="jd">'+d+'</div></div>'; }
 function row(l,v,total,strong){
   const cls = total?' class="total"':''; const amtcls = strong?' style="color:#fff;font-weight:700"':'';
   return '<tr'+cls+'><td class="lbl">'+l+'</td><td class="amt"'+amtcls+'>'+v+'</td></tr>';
@@ -736,15 +773,14 @@ function row(l,v,total,strong){
 function sub(l,v){ return '<tr class="sub"><td class="lbl">'+l+'</td><td class="amt">'+v+'</td></tr>'; }
 function cell(k,v){ return '<div class="cell"><div class="tk">'+k+'</div><div class="tv">'+v+'</div></div>'; }
 function gauge(label,value,limit,unit,status,desc){
-  const C=339; const frac=Math.max(0,Math.min(1, value/limit));
-  const off=C*(1-frac);
+  const C=339; const frac=Math.max(0,Math.min(1, value/limit)); const off=C*(1-frac);
   const col = status==='ok'?'var(--green)':(status==='warn'?'var(--gold)':'var(--red)');
   const pillTxt = status==='ok'?'Sostenibile':(status==='warn'?'Da monitorare':'Critico');
   const pillCls = status==='ok'?'ok':(status==='warn'?'warn':'bad');
   return '<div class="gauge"><div class="ring">'+
     '<svg width="128" height="128" viewBox="0 0 128 128">'+
       '<circle cx="64" cy="64" r="54" fill="none" stroke="var(--line)" stroke-width="11"/>'+
-      '<circle cx="64" cy="64" r="54" fill="none" stroke="'+col+'" stroke-width="11" stroke-linecap="round" '+
+      '<circle class="ring-fg" cx="64" cy="64" r="54" fill="none" stroke="'+col+'" stroke-width="11" stroke-linecap="round" '+
         'stroke-dasharray="'+C+'" stroke-dashoffset="'+off.toFixed(0)+'" transform="rotate(-90 64 64)"/>'+
     '</svg>'+
     '<div class="ringval"><div class="big" style="color:'+col+'">'+num(value)+unit+'</div><div class="lim">limite '+limit+unit+'</div></div>'+
@@ -817,7 +853,7 @@ async function loadLive(){
     if(!Array.isArray(clubs) || !clubs.length) return;
     const out = {};
     clubs.forEach(function(cl){
-      const fin = (fins||[]).find(function(x){ return x.club_id===cl.id; }); // season.desc → la più recente
+      const fin = (fins||[]).find(function(x){ return x.club_id===cl.id; });
       const dl  = (deals||[]).filter(function(x){ return x.club_id===cl.id; });
       out[cl.slug] = buildClub(cl, fin, dl);
     });
