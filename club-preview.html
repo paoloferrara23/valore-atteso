@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Club Intelligence — Preview</title>
+<style>
+  :root{
+    --bg:#0A0B0F; --bg2:#10121A; --panel:#14161F; --panel2:#181B26;
+    --line:#232735; --line2:#2E3344;
+    --txt:#E7EAF2; --txt2:#9BA2B4; --txt3:#5C6478;
+    --inter-blue:#0099E5; --inter-navy:#0A1A4A; --inter-cyan:#19E0C8;
+    --gold:#E8C87A; --red:#FF5C6C; --green:#2BD9A0;
+    --mono:'SF Mono',ui-monospace,'Roboto Mono',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(0,153,229,.10), transparent 60%),
+      radial-gradient(900px 500px at -5% 110%, rgba(25,224,200,.06), transparent 55%),
+      var(--bg);
+    color:var(--txt); font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  ::selection{background:var(--inter-blue);color:#000}
+  a{color:inherit;text-decoration:none}
+
+  /* ── Layout ── */
+  .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+  /* ── Sidebar ── */
+  .side{
+    background:linear-gradient(180deg,var(--bg2),var(--bg));
+    border-right:1px solid var(--line);
+    padding:22px 16px; position:sticky; top:0; height:100vh;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;padding:6px 8px 20px}
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;flex:none;
+    background:linear-gradient(135deg,var(--inter-blue),var(--inter-cyan));
+    display:grid;place-items:center;font-weight:800;font-size:15px;color:#04121f;
+    box-shadow:0 0 0 1px rgba(255,255,255,.06),0 8px 22px rgba(0,153,229,.30);
+  }
+  .brand-name{font-weight:700;font-size:14.5px;letter-spacing:-.2px}
+  .brand-sub{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+
+  .nav-label{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.16em;text-transform:uppercase;padding:14px 10px 6px}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;
+    color:var(--txt2);font-size:13.5px;font-weight:500;cursor:pointer;transition:.15s;
+  }
+  .nav-item:hover{background:var(--panel);color:var(--txt)}
+  .nav-item.active{background:linear-gradient(90deg,rgba(0,153,229,.16),rgba(0,153,229,.02));color:#fff;box-shadow:inset 2px 0 0 var(--inter-blue)}
+  .nav-item .ic{width:17px;height:17px;flex:none;opacity:.85}
+  .nav-item.soon{opacity:.4;cursor:not-allowed}
+  .nav-item.soon::after{content:'PRESTO';font-family:var(--mono);font-size:8px;letter-spacing:.1em;margin-left:auto;color:var(--txt3);border:1px solid var(--line2);padding:1px 5px;border-radius:5px}
+
+  .side-foot{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
+  .club-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+  .club-chip .badge{width:26px;height:26px;flex:none}
+
+  /* ── Main ── */
+  .main{padding:0 0 60px}
+  .topbar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(10,11,15,.72);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    padding:16px 34px;display:flex;align-items:center;gap:18px;
+  }
+  .crest{width:46px;height:46px;flex:none;filter:drop-shadow(0 4px 14px rgba(0,153,229,.35))}
+  .club-h1{font-size:21px;font-weight:750;letter-spacing:-.4px;line-height:1.05}
+  .club-meta{font-family:var(--mono);font-size:10px;color:var(--txt2);letter-spacing:.06em;margin-top:3px;display:flex;gap:14px;flex-wrap:wrap}
+  .club-meta b{color:var(--inter-cyan);font-weight:600}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .season-pick{
+    display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line2);
+    border-radius:9px;padding:8px 13px;font-family:var(--mono);font-size:12px;color:var(--txt);cursor:pointer
+  }
+  .season-pick b{color:var(--inter-blue)}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(43,217,160,.18);animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.4}}
+
+  .wrap{padding:30px 34px;max-width:1180px}
+
+  /* ── Intro / what-is ── */
+  .intro{
+    position:relative;overflow:hidden;
+    background:linear-gradient(120deg,rgba(10,26,74,.55),rgba(20,22,31,.4));
+    border:1px solid var(--line2);border-radius:18px;padding:26px 28px;margin-bottom:26px;
+  }
+  .intro::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;
+    background:radial-gradient(circle,rgba(0,153,229,.22),transparent 70%);pointer-events:none}
+  .intro-tag{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--inter-cyan);text-transform:uppercase;margin-bottom:10px}
+  .intro h2{font-size:23px;font-weight:760;letter-spacing:-.6px;line-height:1.18;max-width:660px;margin-bottom:12px}
+  .intro h2 .hl{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .intro p{color:var(--txt2);font-size:14px;line-height:1.65;max-width:600px}
+  .intro-steps{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .step{flex:1;min-width:150px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+  .step .n{font-family:var(--mono);font-size:10px;color:var(--inter-blue);letter-spacing:.1em}
+  .step .t{font-weight:650;font-size:13px;margin:6px 0 4px}
+  .step .d{font-size:11.5px;color:var(--txt3);line-height:1.5}
+
+  /* ── KPI grid ── */
+  .sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;margin:30px 2px 14px;display:flex;align-items:center;gap:10px}
+  .sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
+
+  .kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{
+    background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--line);border-radius:14px;padding:17px 17px 15px;position:relative;overflow:hidden;
+    transition:.18s;cursor:default;
+  }
+  .kpi:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+  .kpi::after{content:'';position:absolute;left:0;top:0;width:100%;height:2px;background:var(--accent,var(--inter-blue));opacity:.7}
+  .kpi .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--txt3);text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .kpi .val{font-size:27px;font-weight:780;letter-spacing:-1px;margin:11px 0 3px;font-feature-settings:'tnum'}
+  .kpi .sub{font-size:11px;color:var(--txt2)}
+  .delta{font-family:var(--mono);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:3px;margin-top:9px;padding:2px 7px;border-radius:6px}
+  .delta.up{color:var(--green);background:rgba(43,217,160,.10)}
+  .delta.down{color:var(--red);background:rgba(255,92,108,.10)}
+  .src{position:absolute;right:11px;top:13px;width:15px;height:15px;border-radius:50%;border:1px solid var(--line2);
+    display:grid;place-items:center;font-family:var(--mono);font-size:9px;color:var(--txt3);cursor:help}
+  .src:hover{border-color:var(--inter-blue);color:var(--inter-blue)}
+  .src .tip{
+    position:absolute;right:0;top:22px;width:200px;background:#05060a;border:1px solid var(--line2);
+    border-radius:8px;padding:9px 11px;font-family:var(--sans);font-size:10.5px;color:var(--txt2);line-height:1.5;
+    opacity:0;pointer-events:none;transform:translateY(-4px);transition:.15s;z-index:30;text-align:left;font-weight:400
+  }
+  .src:hover .tip{opacity:1;transform:translateY(0)}
+  .src .tip b{color:var(--inter-cyan)}
+
+  /* ── Panels row ── */
+  .row{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+  .card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .card-h h3{font-size:14.5px;font-weight:700;letter-spacing:-.2px}
+  .card-h .hint{font-family:var(--mono);font-size:9.5px;color:var(--txt3);letter-spacing:.06em}
+  .card-sub{font-size:11.5px;color:var(--txt3);margin-bottom:18px}
+
+  /* ── Line chart ── */
+  .chart{width:100%;height:190px}
+  .chart .grid-l{stroke:var(--line);stroke-width:1}
+  .chart .area{fill:url(#grad)}
+  .chart .line{fill:none;stroke:var(--inter-blue);stroke-width:2.5;filter:drop-shadow(0 3px 8px rgba(0,153,229,.4))}
+  .chart .dot{fill:var(--bg);stroke:var(--inter-cyan);stroke-width:2.5}
+  .chart .xl{fill:var(--txt3);font-family:var(--mono);font-size:9px}
+  .chart .vl{fill:var(--txt);font-family:var(--mono);font-size:9.5px;font-weight:600}
+
+  /* ── Donut / revenue split ── */
+  .split{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+  .split-row{display:flex;align-items:center;gap:11px}
+  .split-row .k{font-size:12px;color:var(--txt2);width:118px;flex:none}
+  .split-row .bar{flex:1;height:8px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .split-row .fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--inter-navy),var(--inter-blue))}
+  .split-row .v{font-family:var(--mono);font-size:11.5px;color:var(--txt);width:62px;text-align:right;flex:none}
+
+  /* ── Compliance gauge ── */
+  .gauges{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .gauge{text-align:center}
+  .gauge .ring{position:relative;width:128px;height:128px;margin:0 auto 8px}
+  .gauge .ringval{position:absolute;inset:0;display:grid;place-content:center}
+  .gauge .ringval .big{font-size:25px;font-weight:780;letter-spacing:-1px}
+  .gauge .ringval .lim{font-family:var(--mono);font-size:9px;color:var(--txt3)}
+  .gauge .gl{font-size:12.5px;font-weight:600;margin-top:2px}
+  .gauge .gd{font-size:10.5px;color:var(--txt3);margin-top:3px;line-height:1.4}
+  .status-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:3px 8px;border-radius:6px;margin-top:8px;text-transform:uppercase}
+  .status-pill.ok{color:var(--green);background:rgba(43,217,160,.12)}
+  .status-pill.warn{color:var(--gold);background:rgba(232,200,122,.12)}
+
+  /* ── Peer comparison ── */
+  .peer{display:flex;flex-direction:column;gap:13px;margin-top:4px}
+  .peer-row{display:grid;grid-template-columns:120px 1fr 70px;align-items:center;gap:12px}
+  .peer-row .club{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600}
+  .peer-row .club .mini{width:18px;height:18px;border-radius:5px;flex:none}
+  .peer-row .track{height:24px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative}
+  .peer-row .pf{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-family:var(--mono);font-size:10px;color:#04121f;font-weight:700}
+  .peer-row.me .pf{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan))}
+  .peer-row .pf{background:linear-gradient(90deg,#3a3f52,#525872)}
+  .peer-row .num{font-family:var(--mono);font-size:12px;text-align:right;color:var(--txt2)}
+  .peer-row.me .num{color:var(--inter-cyan);font-weight:700}
+
+  /* ── Deal cards ── */
+  .deals{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px}
+  .deal{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+  .deal .dt{font-family:var(--mono);font-size:9px;color:var(--inter-cyan);letter-spacing:.1em;text-transform:uppercase}
+  .deal .dh{font-size:14px;font-weight:680;margin:8px 0 4px;letter-spacing:-.2px}
+  .deal .dd{font-size:11.5px;color:var(--txt3);line-height:1.5}
+  .deal .dv{font-family:var(--mono);font-size:18px;font-weight:700;margin-top:10px;color:var(--gold)}
+
+  .footnote{margin-top:34px;padding:14px 18px;background:rgba(232,200,122,.06);border:1px solid rgba(232,200,122,.2);border-radius:11px;font-size:11.5px;color:var(--txt2);line-height:1.6}
+  .footnote b{color:var(--gold)}
+
+  .tabs{display:flex;gap:4px;margin:4px 0 0;border-bottom:1px solid var(--line);padding:0 34px}
+  .tab{padding:13px 16px;font-size:13px;font-weight:600;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:.15s;margin-bottom:-1px}
+  .tab:hover{color:var(--txt2)}
+  .tab.active{color:#fff;border-bottom-color:var(--inter-blue)}
+
+  @media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}.kgrid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.deals,.gauges{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════ SIDEBAR ════ -->
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark">VΛ</div>
+      <div>
+        <div class="brand-name">Club Intelligence</div>
+        <div class="brand-sub">by Valore Atteso</div>
+      </div>
+    </div>
+
+    <div class="nav-label">Analisi</div>
+    <div class="nav-item active">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+      Conto economico
+    </div>
+    <div class="nav-item">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>
+      Sostenibilità UEFA
+    </div>
+    <div class="nav-item">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="18" r="1.5"/></svg>
+      Confronto peer
+    </div>
+
+    <div class="nav-label">Altri club</div>
+    <div class="nav-item soon">Juventus</div>
+    <div class="nav-item soon">Milan</div>
+    <div class="nav-item soon">Napoli</div>
+
+    <div class="side-foot">
+      <div class="club-chip">
+        <svg class="badge" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#000" stroke="#0099E5" stroke-width="1.5"/><circle cx="20" cy="20" r="13" fill="none" stroke="#0099E5" stroke-width="2"/><text x="20" y="25" text-anchor="middle" font-family="monospace" font-size="9" font-weight="800" fill="#0099E5">IM</text></svg>
+        <div>
+          <div style="font-size:12px;font-weight:600">FC Internazionale</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--txt3)">Serie A · Milano</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════ MAIN ════ -->
+  <main class="main">
+
+    <!-- topbar -->
+    <div class="topbar">
+      <svg class="crest" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="22" fill="#000"/>
+        <circle cx="24" cy="24" r="22" fill="none" stroke="#0099E5" stroke-width="1.5"/>
+        <circle cx="24" cy="24" r="16" fill="none" stroke="#fff" stroke-width="1"/>
+        <g stroke="#0099E5" stroke-width="2.2">
+          <line x1="24" y1="10" x2="24" y2="38"/><line x1="10" y1="24" x2="38" y2="24"/>
+          <line x1="14" y1="14" x2="34" y2="34"/><line x1="34" y1="14" x2="14" y2="34"/>
+        </g>
+        <circle cx="24" cy="24" r="6" fill="#000" stroke="#0099E5" stroke-width="1.5"/>
+        <text x="24" y="27" text-anchor="middle" font-family="monospace" font-size="6.5" font-weight="800" fill="#0099E5">IM</text>
+      </svg>
+      <div>
+        <div class="club-h1">FC Internazionale Milano</div>
+        <div class="club-meta">
+          <span>SERIE A</span>
+          <span>PROPRIETÀ <b>Oaktree Capital</b></span>
+          <span>STADIO San Siro · 75.817</span>
+          <span>BOND QUOTATO <b>ISIN IT0005466455</b></span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="season-pick">Stagione <b>2024/25</b>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="season-pick"><span class="live-dot"></span> Dati aggiornati</div>
+      </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+      <div class="tab active">Panoramica</div>
+      <div class="tab">Conto economico</div>
+      <div class="tab">Sostenibilità</div>
+      <div class="tab">Confronto peer</div>
+      <div class="tab">Deal &amp; Bond</div>
+    </div>
+
+    <div class="wrap">
+
+      <!-- intro / cos'è -->
+      <div class="intro">
+        <div class="intro-tag">◆ Cos'è questo strumento</div>
+        <h2>La <span class="hl">salute finanziaria</span> di ogni club, leggibile in 30 secondi.</h2>
+        <p>Club Intelligence trasforma i bilanci depositati — centinaia di pagine di numeri — in un profilo finanziario chiaro, comparabile e sempre aggiornato. Stessi dati verificati che alimentano Valore Atteso, ma interattivi: esplori, confronti, capisci.</p>
+        <div class="intro-steps">
+          <div class="step"><div class="n">01</div><div class="t">Fonti verificate</div><div class="d">Solo bilanci depositati, report UEFA e prospetti bond. Ogni numero ha una fonte tracciabile.</div></div>
+          <div class="step"><div class="n">02</div><div class="t">Ratio automatici</div><div class="d">Wage/revenue, net debt/EBITDA, squad cost ratio UEFA. Calcolati, non stimati.</div></div>
+          <div class="step"><div class="n">03</div><div class="t">Confronto peer</div><div class="d">Inter vs Juventus, Milan, Napoli. Stesse metriche, stesso metodo, stesso anno.</div></div>
+        </div>
+      </div>
+
+      <!-- KPI -->
+      <div class="sec-label">Indicatori chiave · esercizio 2024/25</div>
+      <div class="kgrid">
+        <div class="kpi" style="--accent:var(--inter-blue)">
+          <div class="src">i<span class="tip"><b>Fonte:</b> Bilancio consolidato FC Internazionale 2024/25, voce A) Valore della produzione.</span></div>
+          <div class="lab">Ricavi totali</div>
+          <div class="val">€567<span style="font-size:15px;color:var(--txt2)">M</span></div>
+          <div class="sub">esclusi proventi gestione calciatori</div>
+          <div class="delta up">▲ +19,9% vs 2023/24</div>
+        </div>
+        <div class="kpi" style="--accent:var(--green)">
+          <div class="src">i<span class="tip"><b>Fonte:</b> Bilancio consolidato 2024/25, risultato d'esercizio. Primo utile dal 2010/11.</span></div>
+          <div class="lab">Utile netto</div>
+          <div class="val" style="color:var(--green)">+€35,4<span style="font-size:15px;color:var(--txt2)">M</span></div>
+          <div class="sub">primo utile in 14 anni</div>
+          <div class="delta up">▲ +€70,8M vs 2023/24</div>
+        </div>
+        <div class="kpi" style="--accent:var(--inter-cyan)">
+          <div class="src">i<span class="tip"><b>Calcolato:</b> EBITDA = margine operativo lordo prima di ammortamenti e gestione calciatori.</span></div>
+          <div class="lab">EBITDA</div>
+          <div class="val">€152<span style="font-size:15px;color:var(--txt2)">M</span></div>
+          <div class="sub">margine operativo lordo</div>
+          <div class="delta up">▲ +28% vs 2023/24</div>
+        </div>
+        <div class="kpi" style="--accent:var(--gold)">
+          <div class="src">i<span class="tip"><b>Calcolato:</b> Costo del personale ÷ ricavi. Soglia di sostenibilità ~60-70%.</span></div>
+          <div class="lab">Wage / Revenue</div>
+          <div class="val">58<span style="font-size:15px;color:var(--txt2)">%</span></div>
+          <div class="sub">sotto la soglia critica</div>
+          <div class="delta up">▼ -9pp vs 2023/24</div>
+        </div>
+      </div>
+
+      <!-- row: trend + revenue split -->
+      <div class="row">
+        <div class="card">
+          <div class="card-h"><h3>Ricavi &amp; risultato netto</h3><span class="hint">€M · 4 esercizi</span></div>
+          <div class="card-sub">Il percorso dalla gestione in perdita al primo utile dal 2011.</div>
+          <svg class="chart" viewBox="0 0 520 190" preserveAspectRatio="none">
+            <defs><linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0099E5" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#0099E5" stop-opacity="0"/>
+            </linearGradient></defs>
+            <line class="grid-l" x1="40" y1="30" x2="510" y2="30"/>
+            <line class="grid-l" x1="40" y1="80" x2="510" y2="80"/>
+            <line class="grid-l" x1="40" y1="130" x2="510" y2="130"/>
+            <!-- area+line: ricavi 440,425,473,567 normalized -->
+            <path class="area" d="M70,118 L210,124 L350,103 L490,42 L490,160 L70,160 Z"/>
+            <path class="line" d="M70,118 L210,124 L350,103 L490,42"/>
+            <g><circle class="dot" cx="70" cy="118" r="4.5"/><circle class="dot" cx="210" cy="124" r="4.5"/><circle class="dot" cx="350" cy="103" r="4.5"/><circle class="dot" cx="490" cy="42" r="5.5"/></g>
+            <text class="vl" x="70" y="108" text-anchor="middle">440</text>
+            <text class="vl" x="210" y="114" text-anchor="middle">425</text>
+            <text class="vl" x="350" y="93" text-anchor="middle">473</text>
+            <text class="vl" x="490" y="32" text-anchor="middle">567</text>
+            <text class="xl" x="70" y="178" text-anchor="middle">21/22</text>
+            <text class="xl" x="210" y="178" text-anchor="middle">22/23</text>
+            <text class="xl" x="350" y="178" text-anchor="middle">23/24</text>
+            <text class="xl" x="490" y="178" text-anchor="middle">24/25</text>
+          </svg>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Composizione ricavi</h3><span class="hint">2024/25</span></div>
+          <div class="card-sub">Da dove arrivano i €567M.</div>
+          <div class="split">
+            <div class="split-row"><div class="k">Diritti TV / UEFA</div><div class="bar"><div class="fill" style="width:46%"></div></div><div class="v">€261M</div></div>
+            <div class="split-row"><div class="k">Commerciali</div><div class="bar"><div class="fill" style="width:33%"></div></div><div class="v">€187M</div></div>
+            <div class="split-row"><div class="k">Stadio / gare</div><div class="bar"><div class="fill" style="width:15%"></div></div><div class="v">€85M</div></div>
+            <div class="split-row"><div class="k">Altri</div><div class="bar"><div class="fill" style="width:6%"></div></div><div class="v">€34M</div></div>
+          </div>
+          <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line)">
+            <div class="card-h"><h3 style="font-size:13px">Posizione finanziaria netta</h3></div>
+            <div style="display:flex;align-items:baseline;gap:10px;margin-top:6px">
+              <span style="font-size:24px;font-weight:760;color:var(--red);letter-spacing:-1px">-€322M</span>
+              <span class="delta down" style="margin:0">▲ debito in calo -8%</span>
+            </div>
+            <div style="font-size:11px;color:var(--txt3);margin-top:5px">Net debt / EBITDA: <b style="color:var(--txt)">2,1x</b> · in area sostenibile</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- row: compliance + peer -->
+      <div class="row" style="grid-template-columns:1fr 1.3fr">
+        <div class="card">
+          <div class="card-h"><h3>Sostenibilità UEFA</h3><span class="hint">Squad Cost Ratio</span></div>
+          <div class="card-sub">La nuova regola UEFA: costi rosa ≤ 70% dei ricavi entro il 2025/26.</div>
+          <div class="gauges">
+            <div class="gauge">
+              <div class="ring">
+                <svg width="128" height="128" viewBox="0 0 128 128">
+                  <circle cx="64" cy="64" r="54" fill="none" stroke="var(--line)" stroke-width="11"/>
+                  <circle cx="64" cy="64" r="54" fill="none" stroke="var(--green)" stroke-width="11" stroke-linecap="round"
+                    stroke-dasharray="339" stroke-dashoffset="115" transform="rotate(-90 64 64)"/>
+                </svg>
+                <div class="ringval"><div class="big" style="color:var(--green)">66%</div><div class="lim">limite 70%</div></div>
+              </div>
+              <div class="gl">Squad Cost Ratio</div>
+              <div class="gd">Costi rosa + ammortamenti<br>+ agenti su ricavi</div>
+              <span class="status-pill ok">● Compliant</span>
+            </div>
+            <div class="gauge">
+              <div class="ring">
+                <svg width="128" height="128" viewBox="0 0 128 128">
+                  <circle cx="64" cy="64" r="54" fill="none" stroke="var(--line)" stroke-width="11"/>
+                  <circle cx="64" cy="64" r="54" fill="none" stroke="var(--gold)" stroke-width="11" stroke-linecap="round"
+                    stroke-dasharray="339" stroke-dashoffset="180" transform="rotate(-90 64 64)"/>
+                </svg>
+                <div class="ringval"><div class="big" style="color:var(--gold)">€47M</div><div class="lim">margine PSR</div></div>
+              </div>
+              <div class="gl">Break-even UEFA</div>
+              <div class="gd">Margine residuo prima<br>della soglia di perdita</div>
+              <span class="status-pill warn">● Monitorare</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h3>Confronto peer — Ricavi</h3><span class="hint">Serie A · 2024/25 · €M</span></div>
+          <div class="card-sub">Inter vs i principali club italiani, stessa metrica e stesso esercizio.</div>
+          <div class="peer">
+            <div class="peer-row me">
+              <div class="club"><span class="mini" style="background:linear-gradient(135deg,#0099E5,#000)"></span>Inter</div>
+              <div class="track"><div class="pf" style="width:100%">€567M</div></div>
+              <div class="num">1°</div>
+            </div>
+            <div class="peer-row">
+              <div class="club"><span class="mini" style="background:linear-gradient(135deg,#fff,#000)"></span>Juventus</div>
+              <div class="track"><div class="pf" style="width:93%">€527M</div></div>
+              <div class="num">2°</div>
+            </div>
+            <div class="peer-row">
+              <div class="club"><span class="mini" style="background:linear-gradient(135deg,#E60026,#000)"></span>Milan</div>
+              <div class="track"><div class="pf" style="width:71%">€401M</div></div>
+              <div class="num">3°</div>
+            </div>
+            <div class="peer-row">
+              <div class="club"><span class="mini" style="background:linear-gradient(135deg,#12A0D7,#003B7A)"></span>Napoli</div>
+              <div class="track"><div class="pf" style="width:62%">€352M</div></div>
+              <div class="num">4°</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;color:var(--txt3)">
+            Cambia metrica: <span style="color:var(--inter-cyan);cursor:pointer">Wage/Revenue</span> · <span style="color:var(--txt2);cursor:pointer">Utile netto</span> · <span style="color:var(--txt2);cursor:pointer">PFN</span> · <span style="color:var(--txt2);cursor:pointer">Monte ingaggi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- deals -->
+      <div class="sec-label">Deal &amp; struttura del debito</div>
+      <div class="deals">
+        <div class="deal">
+          <div class="dt">◆ Bond · rifinanziamento</div>
+          <div class="dh">Senior Secured Notes</div>
+          <div class="dd">Bond garantito quotato a Vienna, scadenza 2027. Garantito dai ricavi media e sponsor del club.</div>
+          <div class="dv">€350M · 4,52%</div>
+        </div>
+        <div class="deal">
+          <div class="dt">◆ Cambio proprietà</div>
+          <div class="dh">Suning → Oaktree</div>
+          <div class="dd">Escussione del pegno sul mancato rimborso del finanziamento da €395M. Oaktree subentra a maggio 2024.</div>
+          <div class="dv">~€395M</div>
+        </div>
+        <div class="deal">
+          <div class="dt">◆ Sponsor di maglia</div>
+          <div class="dh">Betsson (main) + Qatar Airways</div>
+          <div class="dd">Accordo pluriennale main sponsor. Stimato tra i più alti della Serie A per valore annuo.</div>
+          <div class="dv">~€30M / anno</div>
+        </div>
+        <div class="deal">
+          <div class="dt">◆ Nuovo stadio</div>
+          <div class="dh">Progetto San Siro</div>
+          <div class="dd">Dossier congiunto con Milan per l'acquisto dell'area e nuovo impianto. Impatto futuro su ricavi gare.</div>
+          <div class="dv">in valutazione</div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <b>◆ Preview dimostrativa.</b> I valori mostrati sono rappresentativi a scopo di anteprima del concept. Nella versione reale ogni numero viene estratto automaticamente dal bilancio consolidato che hai caricato e validato — con la stessa logica di tracciabilità delle fonti già usata da Valore Atteso. Prossimo passo: collegare il parser al tuo bilancio Inter 2024/25 e popolare questi campi con i dati reali.
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>
