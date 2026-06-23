@@ -269,8 +269,8 @@
 
     <div class="nav-label">In arrivo</div>
     <div class="nav-item soon">Milan</div>
-    <div class="nav-item soon">Napoli</div>
     <div class="nav-item soon">Roma</div>
+    <div class="nav-item soon">Atalanta</div>
 
     <div class="side-foot">
       <div class="club-chip" id="clubChip"></div>
@@ -342,6 +342,28 @@ let CLUBS = {
        desc:'Stagione 2024/25 iniziata senza sponsor principale dopo la fine di Jeep (12 anni, €45M/anno). DP World firma solo nella seconda metà. Impatto diretto: ricavi commerciali da €160,5M a €115,9M (−27,8%).',
        value:'−€44,6M ricavi commerciali'}
     ]
+  },
+  napoli: {
+    slug:'napoli', name:'Napoli', full:'Società Sportiva Calcio Napoli S.p.A.', short:'NA',
+    league:'Serie A', owner:'Aurelio De Laurentiis (Filmauro S.r.l.)', stadium:'Stadio Diego Armando Maradona',
+    capacity:54726, founded:1926, accent:'#12A0D7', accent2:'#5CC8F2',
+    fin:{
+      season:'2024/25',
+      revenue_total:290.8, broadcast:78.1, commercial:68.1, matchday:24.1,
+      revenue_other:18.0, player_trading:102.6, wages:142.1,
+      amortization:118.2, ebitda:93.5, ebit:-24.7, net_result:-21.4,
+      net_debt:-137.0, equity:190.2, wage_ratio:48.8,
+      source:'Bilancio d\'Esercizio SSC Napoli al 30/06/2025', source_date:'',
+      notes:'Stagione senza coppe europee dopo il 10° posto 2023/24: diritti TV da €142,2M a €78,1M e ricavi da €326,2M a €290,8M, perdita −€21,4M dopo l\'utile record +€63,0M dell\'anno scudetto. Plusvalenze €102,6M a bilanciare. Patrimonio netto €190,2M e cassa netta +€137,0M (liquidità €174,4M vs €37,4M debiti bancari, nessun bond).'
+    },
+    deals:[
+      {type:'transfer', label:'◆ Mercato · Plusvalenze', title:'Plusvalenze record €102,6M',
+       desc:'Le cessioni dei diritti calciatori generano €102,6M di plusvalenze nel 2024/25: la voce ribalta la perdita operativa (EBIT −€24,7M) e contiene il rosso d\'esercizio a −€21,4M dopo l\'anno dello scudetto.',
+       value:'€102,6M'},
+      {type:'financing', label:'◆ Finanziamento · Struttura', title:'Cassa netta +€137,0M — zero bond',
+       desc:'Modello De Laurentiis: €174,4M di liquidità contro €37,4M di soli debiti bancari e nessun prestito obbligazionario. Posizione finanziaria netta positiva, tra le strutture più solide della Serie A.',
+       value:'+€137,0M cassa netta'}
+    ]
   }
 };
 
@@ -364,6 +386,12 @@ function eurSigned(v){ if(v==null) return '<span class="nd">n/d</span>';
   const sign = v>0?'+':(v<0?'−':''); const col = v>0?'var(--green)':(v<0?'var(--red)':'var(--txt)');
   return '<span style="color:'+col+'">'+sign+'€'+num(Math.abs(v))+'M</span>'; }
 function pct(v){ return v==null ? '<span class="nd">n/d</span>' : num(v)+'%'; }
+function pfn(v){ // posizione finanziaria netta: >0 = indebitamento, <0 = cassa netta
+  if(v==null) return '<span class="nd">n/d</span>';
+  if(v>0) return '<span style="color:var(--red)">−€'+num(v)+'M</span>';
+  if(v<0) return '<span style="color:var(--green)">+€'+num(Math.abs(v))+'M</span>';
+  return '€0M';
+}
 function intnum(v){ return Number(v).toLocaleString('it-IT'); }
 
 function crestSVG(c, size){
@@ -446,7 +474,8 @@ function bind(){
 
 /* ════════ VIEWS ════════ */
 function srcLine(f){
-  return '<div class="footnote"><b>◆ Dati verificati.</b> Fonte: '+f.source+' (deposito '+f.source_date+'). '+
+  var dt = f.source_date ? ' (deposito '+f.source_date+')' : '';
+  return '<div class="footnote"><b>◆ Dati verificati.</b> Fonte: '+f.source+dt+'. '+
     'Estratti dal database Valore Atteso, stessa logica di tracciabilità della newsletter. '+f.notes+'</div>';
 }
 
@@ -470,7 +499,7 @@ function viewPanoramica(c){
     kpi('Ricavi totali', eur(f.revenue_total), 'valore della produzione', c.accent, 'Voce A) del conto economico consolidato '+f.season+'.', null)+
     kpi('Risultato netto', eurSigned(f.net_result), f.net_result>0?'utile d’esercizio':'perdita d’esercizio', f.net_result>0?'var(--green)':'var(--red)', 'Risultato netto consolidato '+f.season+'.', null)+
     kpi('Costo personale / Ricavi', pct(f.wage_ratio), 'monte ingaggi €'+num(f.wages)+'M', 'var(--gold)', 'Costo del personale ÷ ricavi totali. Soglia di sostenibilità indicativa ~70%.', f.wage_ratio<=70?'ok':'no')+
-    kpi('Posizione fin. netta', '−'+eur(f.net_debt), 'patrimonio netto '+ (f.equity<0?'−':'+') +'€'+num(Math.abs(f.equity))+'M', 'var(--red)', 'Indebitamento finanziario netto a fine esercizio.', null)+
+    kpi('Posizione fin. netta', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta · liquidità > debito':'patrimonio netto '+ (f.equity<0?'−':'+') +'€'+num(Math.abs(f.equity))+'M'), (f.net_debt!=null&&f.net_debt<0?'var(--green)':'var(--red)'), 'Posizione finanziaria netta a fine esercizio (debito finanziario − liquidità).', null)+
   '</div>'+
 
   '<div class="row">'+
@@ -489,7 +518,7 @@ function viewPanoramica(c){
       '<div class="card-h"><h3>Struttura patrimoniale</h3><span class="hint">a fine esercizio</span></div>'+
       '<div class="card-sub">Debito, equity e leva sul trading.</div>'+
       '<div class="statline" style="grid-template-columns:1fr 1fr;margin-top:6px">'+
-        stat('PFN', '−€'+num(f.net_debt)+'M', 'indebitamento finanziario netto')+
+        stat('PFN', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta (liquidità > debito)':'indebitamento finanziario netto'))+
         stat('Patrimonio netto', (f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M', f.equity<0?'consolidato negativo':'positivo')+
         stat('Plusvalenze', '€'+num(f.player_trading)+'M', 'proventi gestione calciatori')+
         stat('EBITDA', eur(f.ebitda), f.ebitda==null?'non riportato a bilancio':'margine operativo lordo')+
@@ -544,7 +573,7 @@ function viewConto(c){
       '<div class="card-h"><h3>Cascata dei margini</h3><span class="hint">% sui ricavi</span></div>'+
       '<div class="card-sub">Quanto resta scendendo dal fatturato al risultato.</div>'+
       '<div class="casc">'+casc+'</div>'+
-      (c.slug==='inter'?'<div style="margin-top:18px;font-size:11px;color:var(--txt3);line-height:1.5">EBITDA ed EBIT non sono esposti distintamente nel bilancio Inter caricato: mostrati come <span class="nd">n/d</span>.</div>':'')+
+      (f.ebitda==null?'<div style="margin-top:18px;font-size:11px;color:var(--txt3);line-height:1.5">EBITDA ed EBIT non esposti distintamente nel bilancio caricato: mostrati come <span class="nd">n/d</span>.</div>':'')+
     '</div>'+
   '</div>'+
   srcLine(f);
@@ -554,8 +583,15 @@ function viewSosten(c){
   const f=c.fin;
   const wr=f.wage_ratio;
   const wrStatus = wr<=60?'ok':(wr<=70?'warn':'bad');
-  const ndr = f.net_debt/f.revenue_total*100; // net debt su ricavi
-  const ndrStatus = ndr<=100?'ok':(ndr<=150?'warn':'bad');
+  const ndrRaw = (f.net_debt!=null && f.revenue_total) ? f.net_debt/f.revenue_total*100 : null;
+  const ndr = (ndrRaw==null) ? 0 : Math.max(0, ndrRaw); // cassa netta (net_debt<0) -> 0 leva
+  const ndrStatus = (ndrRaw!=null && ndrRaw<=0) ? 'ok' : (ndr<=100?'ok':(ndr<=150?'warn':'bad'));
+  let lettura = 'Costo del personale al <b style="color:'+(wr<=70?'var(--green)':'var(--red)')+'">'+num(wr)+'%</b> dei ricavi'+(wr<=70?', sotto la soglia di sostenibilità.':', sopra la soglia di riferimento.');
+  if(f.net_result!=null) lettura += f.net_result>0
+    ? ' L\'esercizio chiude in <b style="color:var(--green)">utile (+€'+num(f.net_result)+'M)</b>: genera autofinanziamento.'
+    : ' L\'esercizio chiude in <b style="color:var(--red)">perdita (−€'+num(Math.abs(f.net_result))+'M)</b>'+(f.player_trading?', in larga parte coperta dalle plusvalenze (€'+num(f.player_trading)+'M).':'.');
+  if(f.net_debt!=null && f.net_debt<0) lettura += ' <b style="color:var(--green)">Posizione finanziaria netta positiva</b> (cassa > debito): solidità elevata.';
+  else if(f.equity!=null && f.equity<0) lettura += ' Patrimonio netto ancora negativo: equilibrio da ricostruire.';
   return ''+
   '<div class="sec-label">Sostenibilità finanziaria · '+f.season+'</div>'+
   '<div class="row" style="grid-template-columns:1fr 1fr">'+
@@ -564,7 +600,7 @@ function viewSosten(c){
       '<div class="card-sub">Costo del lavoro e leva finanziaria rispetto ai riferimenti UEFA/PSR.</div>'+
       '<div class="gauges">'+
         gauge('Costo personale / Ricavi', wr, 70, '%', wrStatus, 'Monte ingaggi su ricavi.<br>Riferimento sostenibilità ~70%')+
-        gauge('PFN / Ricavi', ndr, 150, '%', ndrStatus, 'Indebitamento netto<br>rapportato ai ricavi annui')+
+        gauge('PFN / Ricavi', ndr, 150, '%', ndrStatus, (f.net_debt!=null&&f.net_debt<0?'Cassa netta:<br>nessuna leva finanziaria':'Indebitamento netto<br>rapportato ai ricavi annui'))+
       '</div>'+
     '</div>'+
     '<div class="card">'+
@@ -573,13 +609,11 @@ function viewSosten(c){
       '<div class="statline" style="grid-template-columns:1fr 1fr;margin-top:6px">'+
         stat('Monte ingaggi', '€'+num(f.wages)+'M', 'costo del personale')+
         stat('Patrimonio netto', (f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M', f.equity<0?'negativo, da monitorare':'positivo')+
-        stat('PFN', '−€'+num(f.net_debt)+'M', 'debito finanziario netto')+
+        stat('PFN', pfn(f.net_debt), (f.net_debt!=null&&f.net_debt<0?'cassa netta':'debito finanziario netto'))+
         stat('Risultato netto', (f.net_result>0?'+':'−')+'€'+num(Math.abs(f.net_result))+'M', f.net_result>0?'autofinanziamento':'assorbe equity')+
       '</div>'+
       '<div style="margin-top:18px;font-size:11.5px;color:var(--txt2);line-height:1.6;border-top:1px solid var(--line);padding-top:14px">'+
-        (c.slug==='inter'
-          ? 'Wage/revenue al <b style="color:var(--green)">44,7%</b>, ben sotto soglia: il monte ingaggi è sostenibile. L’equity è ancora negativo ma il primo utile in 15 anni inverte la rotta.'
-          : 'Wage/revenue al <b style="color:var(--green)">46,1%</b> resta contenuto, ma la perdita d’esercizio è coperta dalle plusvalenze (€89,7M): margine operativo strutturalmente sotto pressione.')+
+        lettura+
       '</div>'+
     '</div>'+
   '</div>'+
@@ -607,7 +641,7 @@ function viewPeer(){
       '<td>€'+num(f.revenue_total)+'M</td>'+
       '<td>'+num(f.wage_ratio)+'%</td>'+
       '<td style="color:'+(f.net_result>0?'var(--green)':'var(--red)')+'">'+(f.net_result>0?'+':'−')+'€'+num(Math.abs(f.net_result))+'M</td>'+
-      '<td>−€'+num(f.net_debt)+'M</td>'+
+      '<td>'+pfn(f.net_debt)+'</td>'+
       '<td>€'+num(f.player_trading)+'M</td>'+
       '<td style="color:'+(f.equity<0?'var(--red)':'var(--txt2)')+'">'+(f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M</td>'+
     '</tr>';
@@ -627,7 +661,7 @@ function viewPeer(){
       '<table class="ptable">'+head+body+'</table>'+
     '</div>'+
   '</div>'+
-  '<div class="footnote"><b>◆ Due storie opposte, stesso campionato.</b> Inter chiude in utile (+€35,4M) con ricavi record e wage ratio al 44,7%. La Juventus, pur con ricavi simili (€529,6M), perde €58,1M: la differenza è la gestione operativa: senza i €89,7M di plusvalenze il rosso bianconero sarebbe stato ben più ampio. <b>Milan, Napoli e Roma in arrivo</b> quando i rispettivi bilanci saranno caricati.</div>';
+  '<div class="footnote"><b>◆ Due storie opposte, stesso campionato.</b> Inter chiude in utile (+€35,4M) con ricavi record e wage ratio al 44,7%. La Juventus, pur con ricavi simili (€529,6M), perde €58,1M: senza i €89,7M di plusvalenze il rosso sarebbe stato ben più ampio. Il <b>Napoli</b> campione perde €21,4M nella stagione senza coppe, ma vanta l’unica <b>cassa netta positiva</b> (+€137,0M) del gruppo. <b>Milan e Roma in arrivo</b> quando i bilanci saranno caricati.</div>';
 }
 
 function viewDeal(c){
@@ -653,14 +687,20 @@ function viewDeal(c){
       '<div style="margin-top:14px;font-size:11.5px;color:var(--txt2);line-height:1.6">Il nuovo bond riduce l’importo (da €415M a €350M) e migliora il costo del debito: segnale che il mercato percepisce l’Inter come meno rischiosa dopo il subentro di Oaktree e il ritorno all’utile.</div>'+
       '</div>';
   } else {
-    terms='<div class="sec-label">Struttura del debito</div>'+
+    const pfnTxt = f.net_debt==null ? 'n/d'
+      : (f.net_debt<0 ? '+€'+num(Math.abs(f.net_debt))+'M · cassa netta' : '−€'+num(f.net_debt)+'M');
+    const eqTxt = f.equity==null ? 'n/d' : ((f.equity<0?'−':'+')+'€'+num(Math.abs(f.equity))+'M');
+    const nota = (f.net_debt!=null && f.net_debt<0)
+      ? 'Liquidità superiore al debito finanziario: posizione finanziaria netta positiva, tra le strutture più solide della categoria.'
+      : 'Patrimonio netto '+(f.equity!=null&&f.equity<0?'sottile/negativo: equilibrio dipendente da aumenti di capitale e plusvalenze':'positivo')+'; sostenibilità legata a gestione operativa e player trading.';
+    terms='<div class="sec-label">Struttura finanziaria · '+f.season+'</div>'+
       '<div class="card"><div class="terms">'+
-        cell('Quotazione','Borsa Italiana · MTA')+
-        cell('PFN 30/06/2025','−€280,2M')+
-        cell('Patrimonio netto','+€13,2M')+
-        cell('Controllo','Exor N.V. (Agnelli)')+
+        cell('Proprietà', c.owner)+
+        cell('Posizione fin. netta', pfnTxt)+
+        cell('Patrimonio netto', eqTxt)+
+        cell('Stadio', c.stadium+' · '+intnum(c.capacity))+
       '</div>'+
-      '<div style="margin-top:14px;font-size:11.5px;color:var(--txt2);line-height:1.6">Patrimonio netto positivo ma sottile (+€13,2M): la Juventus resta dipendente da aumenti di capitale e plusvalenze per restare entro le soglie di sostenibilità.</div>'+
+      '<div style="margin-top:14px;font-size:11.5px;color:var(--txt2);line-height:1.6">'+nota+'</div>'+
       '</div>';
   }
 
