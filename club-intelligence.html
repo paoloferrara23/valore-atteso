@@ -740,6 +740,14 @@ function viewConto(c){
       net=gv('reddito_netto',f.net_result), amm=gv('ammortamenti',f.amortization), pers=gv('costo_personale',f.wages),
       ebt=gv('ebt'), prev=gv('valore_produzione_prev');
   var yoy=(prev!=null && vp!=null && prev)?(vp-prev)/prev*100:null;
+  // EBITDA = Valore della Produzione − costi operativi (materie, servizi, per godimento
+  // di beni di terzi, personale, oneri diversi, accantonamenti). Esclude ammortamenti e
+  // svalutazioni. Calcolato qui se non valorizzato a bilancio, così quadra sempre con le
+  // voci di costo mostrate sopra l'EBITDA.
+  if(ebitda==null && vp!=null && p.costo_materie!=null){
+    var _costiOp=(p.costo_materie||0)+(p.costo_servizi||0)+(p.affitti_noleggi||0)+(pers||0)+(p.oneri_diversi||0)+(p.accantonamenti||0);
+    ebitda=Math.round((vp-_costiOp)*10)/10;
+  }
 
   function mC(v){ return v==null?'<span class="nd">n/d</span>':(v===0?'€0,0M':'−€'+num(v)+'M'); }
   function mR(v){ return v==null?'<span class="nd">n/d</span>':'€'+num(v)+'M'; }
@@ -762,10 +770,10 @@ function viewConto(c){
     RP('% YoY', pSign(yoy))+
     R('Costo delle materie prime', mC(p.costo_materie))+
     R('Servizi', mC(p.costo_servizi))+
+    R('Per godimento di beni di terzi', mC(p.affitti_noleggi))+
     R('Costo del personale', mC(pers))+
     R('Oneri diversi di gestione', mC(p.oneri_diversi))+
     R('Accantonamenti', mC(p.accantonamenti))+
-    R('Costo affitti e noleggi passivi', mC(p.affitti_noleggi))+
     RT('EBITDA', mS(ebitda))+
     RP('EBITDA %', pB(ebitda))+
     R('Ammortamenti', mC(amm))+
