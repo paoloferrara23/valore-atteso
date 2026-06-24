@@ -1,0 +1,11 @@
+{
+  "name": "valore-atteso",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Valore Atteso — newsletter sul business del calcio europeo",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "resend": "^3.2.0"
+  }
+}
