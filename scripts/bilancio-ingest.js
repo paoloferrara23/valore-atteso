@@ -21,7 +21,7 @@ const APPROVAL_EMAIL = (process.env.APPROVAL_EMAIL || '').trim();
 
 const MODEL = 'claude-opus-4-8';
 const MEM_KEY = 'bilancio_ingest_processed';
-const MAX_PDF_BYTES = 30 * 1024 * 1024; // limite document API ~32MB
+const MAX_PDF_BYTES = 20 * 1024 * 1024; // il base64 gonfia ~33%, il limite API e ~32MB sul totale
 
 /* ── Supabase REST (service key, bypassa RLS) ── */
 function sbHeaders(extra) {
@@ -87,6 +87,7 @@ async function downloadDrivePdfBase64(fileId) {
 const EXTRACTION_PROMPT = `Sei un analista M&A. Dal bilancio allegato (PDF, anche scansionato) estrai i dati e restituisci SOLO un oggetto JSON valido, senza markdown, senza commenti.
 
 Regole INDEROGABILI:
+- Se il PDF NON e il bilancio/relazione finanziaria di una societa di calcio, restituisci ESATTAMENTE {"skip":true} e nient'altro.
 - Usa esclusivamente numeri presenti nel documento. Mai stimare. Se una voce non c'e, metti null.
 - Tutti gli importi in MILIONI di euro (€M), arrotondati a 1 decimale (es. 567.0, -29.9).
 - I costi nel conto economico vanno espressi come valori POSITIVI (il segno lo gestisce il tool).
@@ -123,10 +124,12 @@ async function extract(base64) {
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify(body)
   });
+  if (r.status === 413) throw new Error('PDF troppo grande per l\'API (max ~100 pagine / 32MB). Comprimi o carica solo le pagine dei prospetti.');
   if (!r.ok) throw new Error('Anthropic ' + r.status + ': ' + (await r.text()));
   const data = await r.json();
   let text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
   text = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+  if (!text.startsWith('{')) throw new Error('non e un bilancio (risposta non-JSON)');
   return JSON.parse(text);
 }
 
@@ -223,8 +226,9 @@ async function main() {
     try {
       console.log('→ ' + file.name);
       const { base64, bytes } = await downloadDrivePdfBase64(file.id);
-      if (bytes > MAX_PDF_BYTES) { summary.push({ ok: false, file: file.name, error: 'PDF > 30MB, comprimere' }); newProcessed.push(file.id); continue; }
+      if (bytes > MAX_PDF_BYTES) { summary.push({ ok: false, file: file.name, error: 'PDF troppo grande (>20MB), comprimere' }); newProcessed.push(file.id); continue; }
       const data = await extract(base64);
+      if (data && data.skip) { console.log('  – non e un bilancio, ignorato'); newProcessed.push(file.id); continue; }
       if (!data || !data.club || !data.club.slug || !data.financials || data.financials.revenue_total == null) {
         summary.push({ ok: false, file: file.name, error: 'estrazione incompleta' }); newProcessed.push(file.id); continue;
       }
