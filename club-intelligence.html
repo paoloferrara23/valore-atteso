@@ -969,7 +969,8 @@ function buildClub(cl, fin, deals){
       revenue_other:toN(f.revenue_other), player_trading:toN(f.player_trading_income),
       wages:toN(f.wages), amortization:toN(f.amortization), ebitda:toN(f.ebitda),
       ebit:toN(f.ebit), net_result:toN(f.net_result), net_debt:toN(f.net_debt),
-      equity:toN(f.equity), wage_ratio:toN(f.squad_cost_ratio),
+      equity:toN(f.equity),
+      wage_ratio:(f.squad_cost_ratio!=null?toN(f.squad_cost_ratio):(f.wages!=null&&f.revenue_total?Math.round(toN(f.wages)/toN(f.revenue_total)*1000)/10:null)),
       source:f.source||'', source_date:fmtDate(f.source_date), notes:f.notes||'',
       pnl: f.pnl || null
     },
