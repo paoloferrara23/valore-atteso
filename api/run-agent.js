@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
   // "A server error has occurred" e un JSON.parse fallito lato Control Room.
   if (req.query?.action === 'scoutSelect') {
     try {
-      return await require('../lib/scout-select')(req, res);
+      return await require('../lib/scout-select')(req, res, createClient);
     } catch (e) {
       console.error('[run-agent:scoutSelect]', e);
       if (!res.headersSent) return res.status(500).json({ error: 'scoutSelect: ' + (e?.message || String(e)) });
@@ -29,7 +29,7 @@ module.exports = async function handler(req, res) {
   }
   if (req.query?.action === 'bilanci') {
     try {
-      return await require('../lib/bilanci-approval')(req, res);
+      return await require('../lib/bilanci-approval')(req, res, createClient);
     } catch (e) {
       console.error('[run-agent:bilanci]', e);
       if (!res.headersSent) {

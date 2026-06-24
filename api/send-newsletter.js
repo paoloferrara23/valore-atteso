@@ -1,6 +1,7 @@
 // api/send-newsletter.js
 // CommonJS — Vercel serverless function
 const { createClient } = require('@supabase/supabase-js');
+const { Resend } = require('resend');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
 
@@ -14,7 +15,7 @@ const supabase = createClient(
 async function handler(req, res) {
   if (String((req.query && req.query.action) || '') === 'utils') {
     const sendUtilsHandler = require('../lib/send-utils');
-    return sendUtilsHandler(req, res);
+    return sendUtilsHandler(req, res, { createClient, Resend });
   }
 
   if (req.method !== 'POST') {
