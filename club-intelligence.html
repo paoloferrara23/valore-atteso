@@ -756,9 +756,11 @@ function viewConto(c){
 
   var rows=
     '<tr class="cehead"><td class="lbl">Conto economico (€M)</td><td class="amt">'+f.season+'</td></tr>'+
-    R('Ricavi di vendita', mR(p.ricavi_vendita))+
-    R('Variazione prodotti finiti', mR(p.variazione_prodotti))+
-    R('Altri ricavi', mR(p.altri_ricavi))+
+    R('Diritti TV / audiovisivi', mR(f.broadcast))+
+    R('Commerciali / sponsor', mR(f.commercial))+
+    R('Ricavi da gare / stadio', mR(f.matchday))+
+    R('Gestione diritti calciatori', mR(f.player_trading))+
+    R('Altri ricavi', mR(f.revenue_other))+
     RT('Valore della Produzione', mS(vp))+
     RP('% YoY', pSign(yoy))+
     R('Costo delle materie prime', mC(p.costo_materie))+
@@ -769,20 +771,11 @@ function viewConto(c){
     R('Costo affitti e noleggi passivi', mC(p.affitti_noleggi))+
     RT('EBITDA', mS(ebitda))+
     RP('EBITDA %', pB(ebitda))+
-    RI('Ammortamenti immateriali', mC(p.amm_immateriali))+
-    RI('Ammortamenti materiali', mC(p.amm_materiali))+
     R('Ammortamenti', mC(amm))+
-    RI('Svalutazioni immobiliari', mC(p.svalut_immobiliari))+
-    RI('Svalutazioni crediti', mC(p.svalut_crediti))+
     R('Svalutazioni', mC(p.svalutazioni))+
     RT('EBIT', mS(ebit))+
     RP('% su Valore Produzione', pB(ebit))+
-    RI('Proventi finanziari', mR(p.proventi_finanziari))+
-    RI('Oneri finanziari', mC(p.oneri_finanziari))+
-    RI('Utili/perdite su cambi', mS(p.utili_cambi))+
     R('Saldo gestione finanziaria', mS(p.saldo_finanziaria))+
-    RI('Proventi straordinari', mR(p.proventi_straordinari))+
-    RI('Oneri straordinari', mC(p.oneri_straordinari))+
     R('Saldo gestione straordinaria', mS(p.saldo_straordinaria))+
     RT('EBT', mS(ebt))+
     RP('% su Valore Produzione', pB(ebt))+
