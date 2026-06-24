@@ -91,11 +91,11 @@ const EXTRACTION_PROMPT = `Sei un analista M&A. Dal bilancio allegato (PDF, anch
 
 Regole INDEROGABILI:
 - Se il PDF NON e il bilancio/relazione finanziaria di una societa di calcio, restituisci ESATTAMENTE {"skip":true} e nient'altro.
-- Usa esclusivamente numeri presenti nel documento. Mai stimare. Se una voce non c'e, metti null.
+- SOLO INFORMAZIONI CERTE. Includi un valore solo se e ESPLICITAMENTE riportato nel documento e lo leggi con sicurezza. In caso di dubbio (cifra poco leggibile, voce ambigua, anno/colonna incerti) metti null. Meglio un campo vuoto che un dato sbagliato. Mai stimare, mai dedurre, mai ricavare per differenza.
 - Tutti gli importi in MILIONI di euro (€M), arrotondati a 1 decimale (es. 567.0, -29.9).
 - I costi nel conto economico vanno espressi come valori POSITIVI (il segno lo gestisce il tool).
 - net_debt = posizione finanziaria netta: debiti finanziari meno liquidita. Positivo = indebitamento, negativo = cassa netta.
-- I "deals" devono venire SOLO dal bilancio: sezione debiti/strumenti finanziari della nota integrativa (bond: importo, cedola, scadenza), fatti di rilievo, operazioni con parti correlate. NIENTE notizie di stampa o stime.
+- DEALS: includi una voce SOLO se e un'operazione finanziaria precisa e verificabile dal bilancio (es. un bond o un finanziamento nella nota integrativa) con termini ESPLICITI: strumento + importo + almeno uno tra controparte, cedola o scadenza, citando la sezione esatta. Se manca anche solo uno di questi, oppure se e una frase generica/descrittiva, NON includerlo. In dubbio, ometti. Meglio "deals": [] che un deal incerto. NIENTE notizie di stampa, niente stime.
 
 Schema JSON da restituire:
 {
