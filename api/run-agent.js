@@ -18,6 +18,9 @@ module.exports = async function handler(req, res) {
     const scoutSelect = require('../lib/scout-select');
     return scoutSelect(req, res);
   }
+  if (req.query?.action === 'bilanci') {
+    return require('../lib/bilanci-approval')(req, res);
+  }
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');

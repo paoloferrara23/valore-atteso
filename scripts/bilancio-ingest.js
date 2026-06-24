@@ -7,15 +7,18 @@
  * BOZZA (verified=false). Nulla va live finche Paolo non approva.
  *
  * Trigger: workflow_dispatch o schedule (vedi .github/workflows/bilancio-ingest.yml)
- * Env richieste: GOOGLE_DRIVE_API_KEY, GOOGLE_DRIVE_FOLDER_ID, ANTHROPIC_KEY,
- *                SUPABASE_URL, SUPABASE_KEY, RESEND_KEY, APPROVAL_EMAIL
+ * Env richieste: GOOGLE_DRIVE_API_KEY, ANTHROPIC_KEY, SUPABASE_URL,
+ *                SUPABASE_SERVICE_KEY (service role, per scrivere oltre la RLS),
+ *                RESEND_KEY, APPROVAL_EMAIL. Opz: BILANCI_FOLDER_ID (default cartella bilanci).
  */
 
 const DRIVE_API_KEY = process.env.GOOGLE_DRIVE_API_KEY;
-const DRIVE_FOLDER  = process.env.GOOGLE_DRIVE_FOLDER_ID || '17BSJKFDEv6aTll5-kGxb1kxQkEyfVTsr';
+// cartella DEDICATA ai bilanci: NON condivide il secret GOOGLE_DRIVE_FOLDER_ID (usato da Scout per le fonti)
+const DRIVE_FOLDER  = process.env.BILANCI_FOLDER_ID || '17BSJKFDEv6aTll5-kGxb1kxQkEyfVTsr';
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const SUPABASE_URL  = process.env.SUPABASE_URL;
-const SUPABASE_KEY  = process.env.SUPABASE_KEY;
+// service key: le tabelle clubs/club_financials/club_deals hanno RLS (solo lettura pubblica), serve per scrivere
+const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
 const RESEND_KEY    = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = (process.env.APPROVAL_EMAIL || '').trim();
 
@@ -160,9 +163,12 @@ async function upsertFinancials(clubId, f) {
     source: f.source, source_date: f.source_date || null, notes: f.notes || null,
     verified: false
   };
-  const existing = await sbSelect('club_financials?select=id&club_id=eq.' + clubId + '&season=eq.' + encodeURIComponent(f.season) + '&limit=1');
-  if (existing.length) await sbPatch('club_financials', 'id=eq.' + existing[0].id, fin);
-  else await sbInsert('club_financials', fin);
+  const existing = await sbSelect('club_financials?select=id,verified&club_id=eq.' + clubId + '&season=eq.' + encodeURIComponent(f.season) + '&limit=1');
+  // un bilancio gia approvato non si tocca MAI: l'agente non puo de-pubblicare dati live
+  if (existing.length && existing[0].verified === true) return 'skip-verified';
+  if (existing.length) { await sbPatch('club_financials', 'id=eq.' + existing[0].id, fin); return 'draft-updated'; }
+  await sbInsert('club_financials', fin);
+  return 'draft-inserted';
 }
 async function insertDeals(clubId, deals, season) {
   if (!Array.isArray(deals) || !deals.length) return;
@@ -233,7 +239,12 @@ async function main() {
         summary.push({ ok: false, file: file.name, error: 'estrazione incompleta' }); newProcessed.push(file.id); continue;
       }
       const clubId = await upsertClub(data.club);
-      await upsertFinancials(clubId, data.financials);
+      const fres = await upsertFinancials(clubId, data.financials);
+      if (fres === 'skip-verified') {
+        console.log('  – gia pubblicato (verified), non tocco: ' + data.club.name);
+        summary.push({ ok: false, file: file.name, error: 'bilancio gia pubblicato, saltato' });
+        newProcessed.push(file.id); continue;
+      }
       await insertDeals(clubId, data.deals, data.financials.season);
       newProcessed.push(file.id);
       summary.push({ ok: true, name: data.club.name, season: data.financials.season,
