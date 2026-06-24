@@ -96,6 +96,15 @@ Regole INDEROGABILI:
 - I costi nel conto economico vanno espressi come valori POSITIVI (il segno lo gestisce il tool).
 - net_debt = posizione finanziaria netta: debiti finanziari meno liquidita. Positivo = indebitamento, negativo = cassa netta.
 - DEALS: includi una voce SOLO se e un'operazione finanziaria precisa e verificabile dal bilancio (es. un bond o un finanziamento nella nota integrativa) con termini ESPLICITI: strumento + importo + almeno uno tra controparte, cedola o scadenza, citando la sezione esatta. Se manca anche solo uno di questi, oppure se e una frase generica/descrittiva, NON includerlo. In dubbio, ometti. Meglio "deals": [] che un deal incerto. NIENTE notizie di stampa, niente stime.
+- RICAVI (riclassificazione completa): le 5 categorie di ricavo sono la riclassificazione di TUTTO il Valore della Produzione. Classifica OGNI voce esplicita in UNA sola categoria e somma le voci di ciascuna:
+  - revenue_matchday = ricavi da gare + abbonamenti + ricavi da altre competizioni (la sezione "Ricavi delle vendite e delle prestazioni").
+  - revenue_broadcast = proventi da cessione diritti audiovisivi/televisivi.
+  - revenue_commercial = proventi da sponsorizzazioni + proventi commerciali e royalties + proventi pubblicitari (TUTTE e tre, non solo una).
+  - player_trading_income = ricavi da cessione temporanea prestazioni calciatori + plusvalenze da cessione diritti pluriennali prestazioni calciatori + altri proventi da gestione calciatori.
+  - revenue_other = tutte le restanti voci del Valore della Produzione (contributi in conto esercizio, proventi vari, ricavi e proventi diversi, variazioni delle rimanenze, ecc.).
+  Aggregare voci esplicitamente riportate in una categoria NON e "stimare ne dedurre": e richiesto. revenue_total = Totale Valore della Produzione (A).
+  CONTROLLO OBBLIGATORIO: revenue_matchday + revenue_broadcast + revenue_commercial + player_trading_income + revenue_other deve coincidere con revenue_total (tolleranza +/- 0,2M per arrotondamenti). Se non torna, hai dimenticato o classificato male una voce: ricontrolla TUTTE le righe del Valore della Produzione prima di rispondere.
+  Se il bilancio espone gia le categorie (tipico nei club esteri: Matchday / Broadcasting / Commercial / profit on disposal of players), usale direttamente con lo stesso controllo di quadratura.
 
 Schema JSON da restituire:
 {
