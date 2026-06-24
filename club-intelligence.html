@@ -205,6 +205,13 @@
   .pnl tr.sub td{font-size:11.5px;color:var(--txt3);padding:6px 6px 6px 24px;border-bottom:none}
   .pnl tr.sub td.amt{color:var(--txt2)}
   .pnl tr.total td{font-weight:760;color:#fff;font-size:14px;border-top:1px solid var(--line2);border-bottom:none;padding-top:13px}
+  .pnl.ce td{padding:7px 6px;font-size:12.5px}
+  .pnl.ce tr.total td{padding-top:9px;background:rgba(255,255,255,.02)}
+  .pnl.ce tr.sub td{padding:4px 6px 4px 22px}
+  .pnl tr.pctr td{font-style:italic;color:var(--txt3);font-size:11px;padding:2px 6px 7px 18px!important;border-bottom:none}
+  .pnl tr.pctr td.amt{color:var(--txt2)}
+  .pnl tr.cehead td{background:linear-gradient(90deg,#1B4332,#14302a);color:#fff;font-weight:700;font-size:12px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;border:none;padding:10px 8px}
+  .pnl tr.cehead td.amt{color:var(--inter-cyan)}
 
   /* cascade */
   .casc{display:flex;flex-direction:column;gap:13px;margin-top:6px}
@@ -322,7 +329,8 @@ let CLUBS = {
       amortization:null, ebitda:null, ebit:null, net_result:35.4,
       net_debt:279.7, equity:-12.3, wage_ratio:44.7,
       source:'Bilancio Consolidato FC Internazionale 2024/25', source_date:'15 ott 2025',
-      notes:'Primo utile netto in 15 anni. Ricavi media: Serie A €91,4M + UCL €136,6M + FIFA CWC €31,4M. Patrimonio netto consolidato negativo (−€12,3M) ma in forte recupero da −€99,7M.'
+      notes:'Primo utile netto in 15 anni. Ricavi media: Serie A €91,4M + UCL €136,6M + FIFA CWC €31,4M. Patrimonio netto consolidato negativo (−€12,3M) ma in forte recupero da −€99,7M.',
+      pnl:{ricavi_vendita:98.8,altri_ricavi:468.2,valore_produzione:567.0,costo_personale:253.2,reddito_netto:35.4}
     },
     deals:[
       {type:'financing', label:'◆ Finanziamento · Bond', title:'Bond €350M al 4,52% — rifinanziamento debito',
@@ -347,7 +355,8 @@ let CLUBS = {
       amortization:153.9, ebitda:124.0, ebit:-29.9, net_result:-58.1,
       net_debt:280.2, equity:13.2, wage_ratio:46.1,
       source:'Bilancio Consolidato Juventus FC 2024/25', source_date:'26 set 2025',
-      notes:'Assenza sponsor di maglia per gran parte della stagione: ricavi commerciali giù da €160,5M a €115,9M. Ricavi media: Serie A €81,3M + UCL €67,5M + FIFA CWC €27M. Plusvalenze €89,7M = driver principale del miglioramento. Ammortamento cartellini €124,9M su €153,9M totali.'
+      notes:'Assenza sponsor di maglia per gran parte della stagione: ricavi commerciali giù da €160,5M a €115,9M. Ricavi media: Serie A €81,3M + UCL €67,5M + FIFA CWC €27M. Plusvalenze €89,7M = driver principale del miglioramento. Ammortamento cartellini €124,9M su €153,9M totali.',
+      pnl:{ricavi_vendita:65.4,altri_ricavi:464.2,valore_produzione:529.6,costo_personale:244.0,ammortamenti:153.9,ebitda:124.0,ebit:-29.9,reddito_netto:-58.1}
     },
     deals:[
       {type:'financing', label:'◆ Finanziamento · Struttura debito', title:'Bond quotato su Borsa Italiana — struttura debitoria',
@@ -372,7 +381,8 @@ let CLUBS = {
       amortization:118.2, ebitda:93.5, ebit:-24.7, net_result:-21.4,
       net_debt:-137.0, equity:190.2, wage_ratio:48.8,
       source:'Bilancio d\'Esercizio SSC Napoli al 30/06/2025', source_date:'',
-      notes:'Stagione senza coppe europee dopo il 10° posto 2023/24: diritti TV da €142,2M a €78,1M e ricavi da €326,2M a €290,8M, perdita −€21,4M dopo l\'utile record +€63,0M dell\'anno scudetto. Plusvalenze €102,6M a bilanciare. Patrimonio netto €190,2M e cassa netta +€137,0M (liquidità €174,4M vs €37,4M debiti bancari, nessun bond).'
+      notes:'Stagione senza coppe europee dopo il 10° posto 2023/24: diritti TV da €142,2M a €78,1M e ricavi da €326,2M a €290,8M, perdita −€21,4M dopo l\'utile record +€63,0M dell\'anno scudetto. Plusvalenze €102,6M a bilanciare. Patrimonio netto €190,2M e cassa netta +€137,0M (liquidità €174,4M vs €37,4M debiti bancari, nessun bond).',
+      pnl:{ricavi_vendita:24.1,variazione_prodotti:0,altri_ricavi:266.7,valore_produzione:290.8,valore_produzione_prev:326.2,costo_materie:6.5,costo_servizi:36.0,costo_personale:142.1,oneri_diversi:6.2,accantonamenti:0,affitti_noleggi:6.7,ebitda:93.5,amm_immateriali:115.4,amm_materiali:0.2,ammortamenti:115.6,svalut_immobiliari:1.2,svalut_crediti:1.5,svalutazioni:2.7,ebit:-24.7,proventi_finanziari:5.0,oneri_finanziari:0.9,utili_cambi:0,saldo_finanziaria:4.1,proventi_straordinari:0,oneri_straordinari:0,saldo_straordinaria:0,ebt:-20.6,imposte:0.8,reddito_netto:-21.4}
     },
     deals:[
       {type:'transfer', label:'◆ Mercato · Plusvalenze', title:'Plusvalenze record €102,6M',
@@ -727,42 +737,80 @@ function viewPanoramica(c){
 }
 
 function viewConto(c){
-  const f=c.fin;
-  const finGap = (f.net_result!=null && f.ebit!=null) ? (f.net_result - f.ebit) : null;
-  let rows=''+
-    row('Valore della produzione', eur(f.revenue_total), true)+
-    sub('Diritti TV / UEFA', eur(f.broadcast))+
-    sub('Ricavi commerciali / sponsor', eur(f.commercial))+
-    sub('Ricavi stadio / gare', eur(f.matchday))+
-    sub('Gestione calciatori (plusvalenze)', eur(f.player_trading))+
-    sub('Altri ricavi', eur(f.revenue_other))+
-    row('Costo del personale', '−'+eur(f.wages))+
-    row('EBITDA', f.ebitda==null?'<span class="nd">n/d</span>':eur(f.ebitda), false, f.ebitda!=null)+
-    row('Ammortamenti e svalutazioni', f.amortization==null?'<span class="nd">n/d</span>':'−'+eur(f.amortization))+
-    row('EBIT (risultato operativo)', f.ebit==null?'<span class="nd">n/d</span>':eurSigned(f.ebit), false, f.ebit!=null)+
-    row('Gestione finanziaria, straordinaria e fiscale', finGap==null?'<span class="nd">n/d</span>':eurSigned(finGap))+
-    row('Risultato netto', eurSigned(f.net_result), true);
+  var f=c.fin, p=f.pnl||{};
+  function gv(k,fb){ var v=(p[k]!=null)?p[k]:(fb===undefined?null:fb); return v==null?null:v; }
+  var vp=gv('valore_produzione',f.revenue_total), ebitda=gv('ebitda',f.ebitda), ebit=gv('ebit',f.ebit),
+      net=gv('reddito_netto',f.net_result), amm=gv('ammortamenti',f.amortization), pers=gv('costo_personale',f.wages),
+      ebt=gv('ebt'), prev=gv('valore_produzione_prev');
+  var yoy=(prev!=null && vp!=null && prev)?(vp-prev)/prev*100:null;
 
-  const steps=[['Valore produzione', f.revenue_total],['EBITDA', f.ebitda],['EBIT', f.ebit],['Risultato netto', f.net_result]]
-    .filter(function(s){return s[1]!=null;});
-  const base=f.revenue_total;
-  const casc = steps.map(function(s){
-    const v=s[1]; const w=Math.max(2,Math.min(100, Math.abs(v)/base*100));
-    const col = v<0?'var(--red)':'linear-gradient(90deg,color-mix(in srgb,var(--acc) 40%,#000),var(--acc))';
+  function mC(v){ return v==null?'<span class="nd">n/d</span>':(v===0?'—':'−€'+num(v)+'M'); }
+  function mR(v){ return v==null?'<span class="nd">n/d</span>':(v===0?'—':'€'+num(v)+'M'); }
+  function mS(v){ return v==null?'<span class="nd">n/d</span>':eurSigned(v); }
+  function pB(v){ return (v==null||vp==null||!vp)?'<span class="nd">n/d</span>':num(v/vp*100)+'%'; }
+  function pSign(v){ if(v==null) return '<span class="nd">n/d</span>'; var s=v>0?'+':(v<0?'−':''); var col=v>0?'var(--green)':(v<0?'var(--red)':'var(--txt2)'); return '<span style="color:'+col+'">'+s+num(Math.abs(v))+'%</span>'; }
+  function R(l,v){ return '<tr><td class="lbl">'+l+'</td><td class="amt">'+v+'</td></tr>'; }
+  function RI(l,v){ return '<tr class="sub"><td class="lbl">'+l+'</td><td class="amt">'+v+'</td></tr>'; }
+  function RT(l,v){ return '<tr class="total"><td class="lbl">'+l+'</td><td class="amt" style="color:#fff">'+v+'</td></tr>'; }
+  function RP(l,v){ return '<tr class="pctr"><td class="lbl">'+l+'</td><td class="amt">'+v+'</td></tr>'; }
+
+  var rows=
+    '<tr class="cehead"><td class="lbl">Conto economico (€M)</td><td class="amt">'+f.season+'</td></tr>'+
+    R('Ricavi di vendita', mR(p.ricavi_vendita))+
+    R('Variazione prodotti finiti', mR(p.variazione_prodotti))+
+    R('Altri ricavi', mR(p.altri_ricavi))+
+    RT('Valore della Produzione', mS(vp))+
+    RP('% YoY', pSign(yoy))+
+    R('Costo delle materie prime', mC(p.costo_materie))+
+    R('Servizi', mC(p.costo_servizi))+
+    R('Costo del personale', mC(pers))+
+    R('Oneri diversi di gestione', mC(p.oneri_diversi))+
+    R('Accantonamenti', mC(p.accantonamenti))+
+    R('Costo affitti e noleggi passivi', mC(p.affitti_noleggi))+
+    RT('EBITDA', mS(ebitda))+
+    RP('EBITDA %', pB(ebitda))+
+    RI('Ammortamenti immateriali', mC(p.amm_immateriali))+
+    RI('Ammortamenti materiali', mC(p.amm_materiali))+
+    R('Ammortamenti', mC(amm))+
+    RI('Svalutazioni immobiliari', mC(p.svalut_immobiliari))+
+    RI('Svalutazioni crediti', mC(p.svalut_crediti))+
+    R('Svalutazioni', mC(p.svalutazioni))+
+    RT('EBIT', mS(ebit))+
+    RP('% su Valore Produzione', pB(ebit))+
+    RI('Proventi finanziari', mR(p.proventi_finanziari))+
+    RI('Oneri finanziari', mC(p.oneri_finanziari))+
+    RI('Utili/perdite su cambi', mS(p.utili_cambi))+
+    R('Saldo gestione finanziaria', mS(p.saldo_finanziaria))+
+    RI('Proventi straordinari', mR(p.proventi_straordinari))+
+    RI('Oneri straordinari', mC(p.oneri_straordinari))+
+    R('Saldo gestione straordinaria', mS(p.saldo_straordinaria))+
+    RT('EBT', mS(ebt))+
+    RP('% su Valore Produzione', pB(ebt))+
+    R('Imposte', mC(p.imposte))+
+    RT('Reddito netto', mS(net))+
+    RP('% su Valore Produzione', pB(net));
+
+  var steps=[['Valore produzione', vp],['EBITDA', ebitda],['EBIT', ebit],['Reddito netto', net]].filter(function(s){return s[1]!=null;});
+  var casc=steps.map(function(s){ var v=s[1]; var w=Math.max(2,Math.min(100,Math.abs(v)/vp*100));
+    var col=v<0?'var(--red)':'linear-gradient(90deg,color-mix(in srgb,var(--acc) 40%,#000),var(--acc))';
     return '<div class="casc-row"><div class="ct"><span class="cn">'+s[0]+'</span>'+
-      '<span class="cv" style="color:'+(v<0?'var(--red)':'var(--txt)')+'">'+eurSigned(v)+' · '+num(v/base*100)+'%</span></div>'+
-      '<div class="ctrack"><div class="cfill" style="width:'+w+'%;background:'+col+'"></div></div></div>';
-  }).join('');
+      '<span class="cv" style="color:'+(v<0?'var(--red)':'var(--txt)')+'">'+eurSigned(v)+' · '+num(v/vp*100)+'%</span></div>'+
+      '<div class="ctrack"><div class="cfill" style="width:'+w+'%;background:'+col+'"></div></div></div>'; }).join('');
+
+  var detailMissing = (p.costo_materie==null);
+  var note = detailMissing
+    ? '<div class="footnote warn"><b>◆ Dettaglio in arrivo.</b> Per '+c.name+' abbiamo finora i dati di sintesi del bilancio; la riclassifica completa — con tutte le voci di costo, gestione finanziaria e straordinaria — sarà popolata al caricamento del bilancio dettagliato. Le voci mancanti sono marcate <span class="nd">n/d</span>.</div>'
+    : '';
 
   return ''+
   '<div class="sec-label">Conto economico riclassificato · '+f.season+'</div>'+
-  '<div class="row" style="grid-template-columns:1.35fr 1fr">'+
-    '<div class="card"><table class="pnl">'+rows+'</table></div>'+
+  '<div class="row" style="grid-template-columns:minmax(0,1fr) minmax(0,.9fr);align-items:start">'+
+    '<div class="card" style="padding:14px 18px"><table class="pnl ce">'+rows+'</table></div>'+
     '<div class="card">'+
-      '<div class="card-h"><h3>Cascata dei margini</h3><span class="hint">% sui ricavi</span></div>'+
-      '<div class="card-sub">Quanto resta scendendo dal fatturato al risultato.</div>'+
+      '<div class="card-h"><h3>Cascata dei margini</h3><span class="hint">% su valore produzione</span></div>'+
+      '<div class="card-sub">Quanto resta scendendo dal valore della produzione al risultato netto.</div>'+
       '<div class="casc">'+casc+'</div>'+
-      (f.ebitda==null?'<div style="margin-top:18px;font-size:11px;color:var(--txt3);line-height:1.5">EBITDA ed EBIT non esposti distintamente nel bilancio caricato: mostrati come <span class="nd">n/d</span>.</div>':'')+
+      note+
     '</div>'+
   '</div>'+
   srcLine(f);
@@ -924,7 +972,8 @@ function buildClub(cl, fin, deals){
       wages:toN(f.wages), amortization:toN(f.amortization), ebitda:toN(f.ebitda),
       ebit:toN(f.ebit), net_result:toN(f.net_result), net_debt:toN(f.net_debt),
       equity:toN(f.equity), wage_ratio:toN(f.squad_cost_ratio),
-      source:f.source||'', source_date:fmtDate(f.source_date), notes:f.notes||''
+      source:f.source||'', source_date:fmtDate(f.source_date), notes:f.notes||'',
+      pnl: f.pnl || null
     },
     deals:(deals||[]).map(function(d){
       return {type:d.deal_type, label:dealLabel(d.deal_type), title:d.title, desc:d.description, value:d.value_text};
