@@ -390,10 +390,61 @@ function crTab(name,btn){
   if(name==='dashboard')crLoadCtx();
   if(name==='social')crLoadCalendario();
   if(name==='sponsor')crLoadSponsors();
+  if(name==='bilanci')crLoadBilanci();
 }
 async function crInit(){
   await crLoadCtx();
   if(!crAdHistory.length)crAdAdd('ad','Buongiorno. Control Room ripristinata. Puoi controllare iscritti, edizioni, bozze, invio newsletter, AD e biblioteca fonti.');
+}
+
+/* ── Bilanci: approvazione bozze estratte dall'agente (Club Intelligence) ── */
+function crBilM(v){ if(v===null||v===undefined||v==='')return 'n/d'; return '€'+Number(v).toFixed(1).replace('.',',')+'M'; }
+function crBilPfn(v){ if(v===null||v===undefined||v==='')return 'n/d'; const n=Number(v); return n<0?('cassa netta '+crBilM(Math.abs(n))):('debito '+crBilM(n)); }
+function crBilanciMsg(msg,ok){ const s=document.getElementById('cr-bilanci-status'); if(!s)return; s.textContent=msg; s.className='cr-status '+(ok?'ok':'err'); }
+async function crLoadBilanci(){
+  const el=document.getElementById('cr-bilanci-list');
+  const s=document.getElementById('cr-bilanci-status'); if(s){s.className='cr-status';s.textContent='';}
+  el.innerHTML='<div class="cr-box" style="border:1px solid var(--rule)">Caricamento bozze...</div>';
+  try{
+    const r=await fetch('/api/run-agent?action=bilanci&op=list',{headers:{'x-cr-token':CR_PWD}});
+    const d=await r.json();
+    if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    if(!d.bozze.length){el.innerHTML='<div class="cr-box" style="border:1px solid var(--rule)">Nessuna bozza da approvare. Le nuove estrazioni dell\'agente compaiono qui (restano invisibili sul sito finché non le approvi).</div>';return;}
+    el.innerHTML=d.bozze.map(crBilCard).join('');
+  }catch(e){el.innerHTML='<div class="cr-box" style="border:1px solid var(--rule);color:#B93A2F">Errore: '+e.message+'</div>';}
+}
+function crBilCard(b){
+  const resCol=(b.net_result==null?'var(--muted)':(Number(b.net_result)<0?'#B93A2F':'var(--green)'));
+  const kpi=(lab,val,col)=>'<div><div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase">'+lab+'</div><div style="font-family:var(--mn);font-size:1.05rem;color:'+(col||'var(--ink)')+'">'+val+'</div></div>';
+  return '<div class="cr-box" style="border:1px solid var(--rule);background:var(--white)">'+
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">'+
+      '<div><div style="font-family:var(--sf);font-size:1.2rem;font-weight:600">'+b.club+' <span style="font-family:var(--mn);font-size:11px;color:var(--muted)">'+(b.season||'')+'</span></div>'+
+      '<div style="font-family:var(--mn);font-size:10px;color:var(--muted);margin-top:4px">'+(b.source||'fonte n/d')+(b.source_date?(' · deposito '+b.source_date):'')+'</div></div>'+
+      '<div style="display:flex;gap:8px">'+
+        '<button class="cr-btn gold" onclick="crApproveBilancio(\''+b.id+'\',this)">✓ Approva</button>'+
+        '<button class="cr-btn light" onclick="crRejectBilancio(\''+b.id+'\',this)">✕ Rifiuta</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:28px;margin-top:14px;flex-wrap:wrap">'+
+      kpi('Ricavi',crBilM(b.revenue_total))+kpi('Risultato netto',crBilM(b.net_result),resCol)+kpi('Posizione fin. netta',crBilPfn(b.net_debt))+
+    '</div></div>';
+}
+async function crApproveBilancio(id,btn){
+  if(btn){btn.disabled=true;btn.textContent='...';}
+  try{
+    const r=await fetch('/api/run-agent?action=bilanci&op=approve',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({id})});
+    const d=await r.json(); if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    crBilanciMsg(d.message||'Bilancio approvato e pubblicato.',true); crLoadBilanci();
+  }catch(e){crBilanciMsg('Errore: '+e.message,false); if(btn){btn.disabled=false;btn.textContent='✓ Approva';}}
+}
+async function crRejectBilancio(id,btn){
+  if(!confirm('Eliminare definitivamente questa bozza? L\'operazione non è reversibile.'))return;
+  if(btn){btn.disabled=true;btn.textContent='...';}
+  try{
+    const r=await fetch('/api/run-agent?action=bilanci&op=reject',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({id})});
+    const d=await r.json(); if(!r.ok||!d.ok)throw new Error(d.error||'Errore');
+    crBilanciMsg(d.message||'Bozza eliminata.',true); crLoadBilanci();
+  }catch(e){crBilanciMsg('Errore: '+e.message,false); if(btn){btn.disabled=false;btn.textContent='✕ Rifiuta';}}
 }
 
 async function crLoadSponsors(){
@@ -1715,6 +1766,7 @@ loadLatestPreview();
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('sponsor',this)">Sponsor</button>
+        <button class="cr-tab" onclick="crTab('bilanci',this)">Bilanci</button>
         <button class="cr-tab" onclick="crTab('comunicazioni',this)">Comunicazioni</button>
         <button class="cr-tab" onclick="crTab('outreach',this);crLoadOutreach()">Outreach</button>
       </div>
@@ -2040,6 +2092,21 @@ loadLatestPreview();
         </div>
         <div id="cr-sponsor-status" class="cr-status"></div>
         <div id="cr-sponsor-list"></div>
+      </div>
+    </div>
+
+    <div class="cr-panel" id="cr-bilanci">
+      <div style="max-width:820px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px">
+          <div>
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase">Club Intelligence · estrazione automatica</div>
+            <div style="font-family:var(--sf);font-size:1.5rem;font-weight:600">Bozze bilanci da approvare</div>
+            <div style="font-family:var(--sf);font-size:12px;color:var(--ink2);margin-top:6px">L'agente legge i PDF da Drive e crea bozze. Verifica i numeri contro il bilancio: <b>Approva</b> le pubblica sul sito, <b>Rifiuta</b> le elimina. Niente va live senza la tua approvazione.</div>
+          </div>
+          <button class="cr-btn light" onclick="crLoadBilanci()">Aggiorna</button>
+        </div>
+        <div id="cr-bilanci-status" class="cr-status"></div>
+        <div id="cr-bilanci-list"></div>
       </div>
     </div>
 

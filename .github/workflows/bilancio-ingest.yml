@@ -16,10 +16,12 @@ jobs:
       - name: Esegui Bilancio Ingest
         env:
           GOOGLE_DRIVE_API_KEY: ${{ secrets.GOOGLE_DRIVE_API_KEY }}
-          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+          # cartella dedicata ai bilanci: opzionale, l'agente ha un default in codice.
+          # NON si usa GOOGLE_DRIVE_FOLDER_ID (condiviso con Scout per le fonti).
+          BILANCI_FOLDER_ID: ${{ secrets.BILANCI_FOLDER_ID }}
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
         run: node scripts/bilancio-ingest.js
