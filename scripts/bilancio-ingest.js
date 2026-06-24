@@ -105,6 +105,8 @@ Regole INDEROGABILI:
   Aggregare voci esplicitamente riportate in una categoria NON e "stimare ne dedurre": e richiesto. revenue_total = Totale Valore della Produzione (A).
   CONTROLLO OBBLIGATORIO: revenue_matchday + revenue_broadcast + revenue_commercial + player_trading_income + revenue_other deve coincidere con revenue_total (tolleranza +/- 0,2M per arrotondamenti). Se non torna, hai dimenticato o classificato male una voce: ricontrolla TUTTE le righe del Valore della Produzione prima di rispondere.
   Se il bilancio espone gia le categorie (tipico nei club esteri: Matchday / Broadcasting / Commercial / profit on disposal of players), usale direttamente con lo stesso controllo di quadratura.
+- EBITDA (calcolo obbligatorio): ebitda = Valore della Produzione meno TUTTI i costi della produzione operativi, ESCLUSI ammortamenti e svalutazioni. I costi operativi da sottrarre sono: materie prime (costo_materie) + servizi (costo_servizi) + per godimento di beni di terzi/affitti-noleggi-leasing (affitti_noleggi) + personale (costo_personale) + oneri diversi di gestione (oneri_diversi) + accantonamenti. NON sottrarre ammortamenti ne svalutazioni. CONTROLLO: ebitda - ammortamenti - svalutazioni deve dare EBIT (risultato operativo); se non torna, ricontrolla le voci di costo. Calcola ebitda anche se il bilancio non lo espone esplicitamente (e una somma di voci certe, non una stima).
+- VOCE "per godimento di beni di terzi" (campo affitti_noleggi): mappa qui la voce B8 del conto economico "per godimento di beni di terzi" (affitti passivi, noleggi, leasing operativi, canoni). E una voce di costo distinta dai servizi ma le sta accanto.
 
 Schema JSON da restituire:
 {
