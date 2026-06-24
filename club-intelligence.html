@@ -108,39 +108,59 @@
   /* ─── Section labels ─── */
   .sec-term,.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--txt3);text-transform:uppercase;margin:30px 2px 14px;display:flex;align-items:center;gap:10px}
   .sec-term::after,.sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
-  .term-strip{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--inter-cyan);text-transform:uppercase;margin-bottom:18px}
 
-  /* ─── CONFRONTO board ─── */
-  .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid var(--line);border-radius:18px;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2))}
-  .col{position:relative;padding:26px 22px 20px;border-right:1px solid var(--line);cursor:pointer;transition:.2s;overflow:hidden}
-  .col:last-child{border-right:none}
-  .col::before{content:'';position:absolute;left:0;top:0;width:100%;height:3px;background:var(--ca)}
-  .col-glow{position:absolute;right:-50px;top:-50px;width:200px;height:200px;background:radial-gradient(circle,color-mix(in srgb,var(--ca) 26%,transparent),transparent 70%);pointer-events:none;opacity:.5;transition:.25s}
-  .col:hover{background:color-mix(in srgb,var(--ca) 7%,var(--panel))}
-  .col:hover .col-glow{opacity:1;transform:scale(1.15)}
-  .col-crest{filter:drop-shadow(0 8px 22px color-mix(in srgb,var(--ca) 45%,transparent));margin-bottom:14px}
-  .col-name{font-size:22px;font-weight:800;letter-spacing:-.6px;color:var(--ca)}
-  .col-meta{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin:4px 0 18px}
-  .col-block{margin-bottom:14px}
-  .cb-lab{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
-  .cb-val{font-size:clamp(23px,2.5vw,31px);font-weight:820;letter-spacing:-1.2px;margin-top:3px;font-variant-numeric:tabular-nums}
-  .cb-val.acc{color:var(--ca)} .cb-val.pos{color:var(--green)} .cb-val.neg{color:var(--red)}
-  .col-cta{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--txt3);margin-top:18px;transition:.18s}
-  .col:hover .col-cta{color:var(--ca)}
+  /* ─── HOME · hero esplicativo ─── */
+  .hero{position:relative;overflow:hidden;border:1px solid var(--line2);border-radius:22px;padding:38px 36px 30px;margin-bottom:16px;
+    background:linear-gradient(125deg,rgba(0,153,229,.13),rgba(25,224,200,.05) 42%,var(--panel2))}
+  .hero::before{content:'';position:absolute;right:-90px;top:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,153,229,.20),transparent 70%);pointer-events:none}
+  .hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(255,255,255,.014) 40px 41px);pointer-events:none}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;position:relative}
+  .hero-eye{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--inter-cyan)}
+  .hero-clubs{display:flex;gap:8px}
+  .hero-club-chip{cursor:pointer;transition:.18s;filter:drop-shadow(0 5px 14px rgba(0,0,0,.45))}
+  .hero-club-chip:hover{transform:translateY(-3px) scale(1.07)}
+  .hero-h1{font-size:clamp(27px,4.1vw,44px);font-weight:850;letter-spacing:-1.5px;line-height:1.05;max-width:780px;position:relative;margin-top:16px}
+  .hero-h1 .hl{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-p{color:var(--txt2);font-size:14.5px;line-height:1.6;max-width:580px;margin:15px 0 20px;position:relative}
+  .hero-trust{display:flex;gap:9px;flex-wrap:wrap;position:relative;margin-bottom:22px}
+  .trust{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.03em;color:var(--txt2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+  .trust b{color:var(--inter-cyan);font-weight:600}
+  .hero-cta{display:flex;gap:14px;align-items:center;position:relative;flex-wrap:wrap}
+  .btn-primary{font-family:var(--sans);font-size:13.5px;font-weight:700;color:#04121f;background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));border:none;border-radius:11px;padding:12px 20px;cursor:pointer;transition:.16s;box-shadow:0 10px 26px rgba(0,153,229,.3)}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .hero-hint{font-family:var(--mono);font-size:10px;color:var(--txt3)}
+  .insight{position:relative;margin-top:24px;border-top:1px solid var(--line);padding-top:15px;min-height:54px}
+  .insight-lab{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3)}
+  .insight-item{display:flex;align-items:center;gap:12px;margin-top:9px;cursor:pointer;animation:fade .5s ease}
+  .insight-item .ic{font-size:14px}
+  .insight-item b{color:#fff;font-weight:650;font-size:14px}
+  .insight-item .ival{font-family:var(--mono);font-weight:800;margin-left:auto;font-size:16px;font-variant-numeric:tabular-nums}
+  .insight-item:hover b{color:var(--inter-cyan)}
 
-  /* ─── head to head ─── */
-  .h2h{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .h2h-block{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-  .h2h-lab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--txt2);text-transform:uppercase;margin-bottom:13px}
-  .h2h-lab em{color:var(--txt3);font-style:normal;text-transform:none;letter-spacing:0}
-  .h2h-row{display:grid;grid-template-columns:118px 1fr 96px;align-items:center;gap:11px;padding:6px 0;border-radius:8px;cursor:pointer;transition:.15s}
-  .h2h-row:hover{background:rgba(255,255,255,.02)}
-  .h2h-club{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:650;color:var(--txt2)}
-  .h2h-row.lead .h2h-club{color:#fff}
-  .h2h-track{height:10px;background:var(--bg);border-radius:6px;overflow:hidden}
-  .h2h-val{font-family:var(--mono);font-size:12px;text-align:right;color:var(--txt);font-variant-numeric:tabular-nums}
-  .h2h-row.lead .h2h-val{font-weight:700}
-  .lead-i{color:var(--green);font-style:normal;font-size:9px}
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+  .stepc{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:17px 18px}
+  .stepc .sn{font-family:var(--mono);font-size:10px;color:var(--inter-blue);letter-spacing:.1em}
+  .stepc .st{font-weight:720;font-size:13.5px;margin:9px 0 6px}
+  .stepc .sd{font-size:11.5px;color:var(--txt3);line-height:1.5}
+
+  /* ─── PEERS · classifica interattiva ─── */
+  .peers-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+  .chips{display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;color:var(--txt2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 13px;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--line2);color:var(--txt)}
+  .chip.active{color:#04121f;background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));border-color:transparent;font-weight:700}
+  .ptable{display:flex;flex-direction:column;gap:9px}
+  .prow{display:grid;grid-template-columns:46px 156px 1fr 132px;align-items:center;gap:15px;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:13px;padding:14px 18px;cursor:pointer;transition:border-color .15s,background .15s;will-change:transform}
+  .prow:hover{border-color:var(--rc);background:color-mix(in srgb,var(--rc) 6%,var(--panel))}
+  .prow.first{border-color:color-mix(in srgb,var(--rc) 55%,var(--line));box-shadow:0 0 0 1px color-mix(in srgb,var(--rc) 30%,transparent),0 10px 30px rgba(0,0,0,.3)}
+  .prank{font-family:var(--mono);font-weight:800;font-size:17px;color:var(--txt3);text-align:center}
+  .prow.first .prank{color:var(--rc)}
+  .pclub{display:flex;align-items:center;gap:11px;font-weight:750;font-size:15px;letter-spacing:-.2px}
+  .ptrack{height:13px;background:var(--bg);border-radius:7px;overflow:hidden}
+  .pfill{height:100%;border-radius:7px;animation:growW .9s cubic-bezier(.2,.8,.2,1)}
+  .pval{font-family:var(--mono);font-size:15.5px;font-weight:750;text-align:right;font-variant-numeric:tabular-nums}
+  .pmeta{font-family:var(--mono);font-size:9.5px;color:var(--txt3);letter-spacing:.04em}
   .board-note{margin-top:26px;padding:14px 18px;background:rgba(40,224,160,.05);border:1px solid rgba(40,224,160,.18);border-radius:11px;font-size:11.5px;color:var(--txt2);line-height:1.6}
 
   /* ─── club hero ─── */
@@ -248,12 +268,14 @@
     #nav{flex-direction:row;gap:8px}
     .nav-item{white-space:nowrap;padding:7px 11px;border-radius:999px;border:1px solid var(--line)}
     .nav-item.active{box-shadow:none;border-color:var(--acc)}
-    .board{grid-template-columns:1fr 1fr}
-    .h2h{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
     .row{grid-template-columns:1fr!important}
     .deals,.gauges,.terms{grid-template-columns:1fr}
     .jumpgrid,.hero-numbers{grid-template-columns:1fr 1fr}
     .hero-club{flex-direction:column;align-items:flex-start;gap:18px}
+    .hero-top{flex-direction:column}
+    .prow{grid-template-columns:38px 1fr 86px;gap:11px}
+    .prow .ptrack{grid-column:1 / -1;order:5;margin-top:4px}
     .wrap,.thead,.chead,.tabs{padding-left:18px;padding-right:18px}
   }
   @media(max-width:520px){.board{grid-template-columns:1fr}.hero-numbers{grid-template-columns:1fr 1fr}}
@@ -365,10 +387,20 @@ let CLUBS = {
 
 const CLUB_TABS = [['panoramica','Panoramica'],['conto','Conto economico'],['sostenibilita','Sostenibilità'],['deal','Deal & Bond']];
 
-let mode = 'confronto';   // 'confronto' | 'club'
+let mode = 'home';   // 'home' (intro + classifica) | 'club'
 let cur  = 'inter';
 let tab  = 'panoramica';
+let metric = 'revenue_total';
+let insightTimer = null, insightIx = 0;
 const prefersReduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const METRICS = [
+  {key:'revenue_total', short:'Ricavi',      label:'Ricavi totali',                type:'eur', better:'high'},
+  {key:'net_result',    short:'Risultato',   label:'Risultato netto',              type:'sig', better:'high'},
+  {key:'net_debt',      short:'PFN',         label:'Posizione finanziaria netta',  type:'pfn', better:'lowdebt'},
+  {key:'wage_ratio',    short:'Wage/Rev',    label:'Costo personale / Ricavi',     type:'pct', better:'low'},
+  {key:'player_trading',short:'Plusvalenze', label:'Plusvalenze da cessioni',      type:'eur', better:'high'},
+  {key:'equity',        short:'Patrimonio',  label:'Patrimonio netto',             type:'sig', better:'high'}
+];
 
 /* ── helpers numerici ── */
 function num(v,maxDec){ if(v==null) return null;
@@ -453,14 +485,15 @@ function setTheme(a,a2){
   document.documentElement.style.setProperty('--inter-cyan',a2);
 }
 function render(){
+  if(insightTimer){ clearInterval(insightTimer); insightTimer=null; }
   const ks=Object.keys(CLUBS);
   if(!CLUBS[cur]) cur=ks[0];
 
   // sidebar nav
   el('nav').innerHTML =
-    '<div class="nav-item vs'+(mode==='confronto'?' active':'')+'" data-go="confronto">'+
-      '<svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 7l-3 6h6z"/><path d="M19 7l-3 6h6z"/><path d="M5 7l7-2 7 2"/><path d="M4 20h16"/></svg>'+
-      'Confronto</div>'+
+    '<div class="nav-item vs'+(mode==='home'?' active':'')+'" data-go="home">'+
+      '<svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="11"/><line x1="10" y1="20" x2="10" y2="4"/><line x1="16" y1="20" x2="16" y2="8"/><line x1="20" y1="20" x2="20" y2="14"/></svg>'+
+      'Classifica</div>'+
     '<div class="nav-cap">Club · 2024/25</div>'+
     ks.map(function(k){ const cl=CLUBS[k];
       return '<div class="nav-item'+(mode==='club'&&k===cur?' active':'')+'" data-club="'+k+'" style="--acc:'+cl.accent+'">'+crest(cl,22)+'<span>'+cl.name+'</span></div>';
@@ -469,11 +502,13 @@ function render(){
   el('foot').innerHTML='<div class="foot-line"><span class="live-dot"></span>'+(LIVE?'LIVE · SUPABASE':'SNAPSHOT VERIFICATO')+'</div>'+
     '<div class="foot-sub">'+ks.length+' club · Serie A · 2024/25</div>';
 
-  if(mode==='confronto'){
+  if(mode==='home'){
     setTheme('#0099E5','#19E0C8');
     el('head').innerHTML = termHead();
     el('tabs').style.display='none';
-    setStage(renderConfronto(ks));
+    setStage(renderHome(ks));
+    paintPeers(false);
+    startInsight();
   } else {
     const c=CLUBS[cur];
     setTheme(c.accent,c.accent2);
@@ -493,13 +528,15 @@ function bind(){
   document.querySelectorAll('[data-go]').forEach(function(x){ x.onclick=function(){ mode=x.dataset.go; render(); scrollTop(); }; });
   document.querySelectorAll('[data-club]').forEach(function(x){ x.onclick=function(){ mode='club'; cur=x.dataset.club; render(); scrollTop(); }; });
   document.querySelectorAll('[data-tab]').forEach(function(x){ x.onclick=function(){ tab=x.dataset.tab; render(); scrollTop(); }; });
+  document.querySelectorAll('[data-metric]').forEach(function(x){ x.onclick=function(){ metric=x.dataset.metric; paintPeers(true); }; });
+  document.querySelectorAll('[data-scroll]').forEach(function(x){ x.onclick=function(){ var t=el(x.dataset.scroll); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }; });
 }
 function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
 
 /* ── header bars ── */
 function termHead(){
   return '<div class="thead"><div class="thead-l"><span class="live-dot"></span> Valore Atteso · Club Intelligence</div>'+
-    '<div class="thead-c">Confronto — Serie A 2024/25</div>'+
+    '<div class="thead-c">Classifica — Serie A 2024/25</div>'+
     '<div class="thead-r">'+(LIVE?'● Live':'● Verificato')+'</div></div>';
 }
 function clubHead(c){
@@ -507,62 +544,95 @@ function clubHead(c){
     '<div class="chead-crest">'+crest(c,52)+'</div>'+
     '<div class="chead-id"><div class="chead-name">'+c.full+'</div>'+
       '<div class="chead-meta"><span>'+c.league+'</span><span>'+c.owner+'</span><span>'+c.stadium+' · '+intnum(c.capacity)+'</span><span>Fondata '+c.founded+'</span></div></div>'+
-    '<div class="chead-right"><button class="vs-btn" data-go="confronto">⚖ Confronto</button><div class="chead-season">'+c.fin.season+'</div></div>'+
+    '<div class="chead-right"><button class="vs-btn" data-go="home">↩ Classifica</button><div class="chead-season">'+c.fin.season+'</div></div>'+
   '</div>';
 }
 
-/* ════════ VIEW: CONFRONTO (board) ════════ */
-function renderConfronto(ks){
-  const cols = ks.map(function(k){ return clubCol(CLUBS[k]); }).join('');
-  const metrics=[
-    {key:'revenue_total',label:'Ricavi totali',type:'eur',better:'high'},
-    {key:'net_result',label:'Risultato netto',type:'sig',better:'high'},
-    {key:'wage_ratio',label:'Costo personale / Ricavi',type:'pct',better:'low'},
-    {key:'player_trading',label:'Plusvalenze',type:'eur',better:'high'},
-    {key:'net_debt',label:'Posizione finanziaria netta',type:'pfn',better:'lowdebt'},
-    {key:'equity',label:'Patrimonio netto',type:'sig',better:'high'}
-  ];
-  const h2h = metrics.map(function(m){ return h2hRow(m,ks); }).join('');
-  return '<div class="term-strip">▌ Head to head · bilanci '+CLUBS[ks[0]].fin.season+' · fonti ufficiali</div>'+
-    '<div class="board">'+cols+'</div>'+
-    '<div class="sec-term">Confronto metrica per metrica</div>'+
-    '<div class="h2h">'+h2h+'</div>'+
-    '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca un club</b> per la scheda completa. Dati verificati da bilanci depositati ed estratti nel database Valore Atteso, con la stessa tracciabilità della newsletter. <b style="color:var(--inter-cyan)">Milan e Roma in arrivo.</b></div>';
+/* ════════ HOME: intro esplicativo + classifica interattiva ════════ */
+function renderHome(ks){
+  return heroHTML(ks) + '<div class="sec-label">Come funziona</div>' + stepsHTML() + peersShellHTML(ks);
 }
-function clubCol(c){
-  const f=c.fin; const disp=(f.net_debt==null?null:-f.net_debt);
-  return '<div class="col" data-club="'+c.slug+'" style="--ca:'+c.accent+';--ca2:'+c.accent2+'">'+
-    '<div class="col-glow"></div>'+
-    '<div class="col-crest">'+crest(c,86)+'</div>'+
-    '<div class="col-name">'+c.name+'</div>'+
-    '<div class="col-meta">'+c.league+' · '+f.season+'</div>'+
-    '<div class="col-block"><div class="cb-lab">Ricavi</div><div class="cb-val acc">'+dataNum(f.revenue_total,{prefix:'€',suffix:'M'})+'</div></div>'+
-    '<div class="col-block"><div class="cb-lab">Risultato netto</div><div class="cb-val '+(f.net_result>0?'pos':'neg')+'">'+dataNum(f.net_result==null?null:Math.abs(f.net_result),{prefix:(f.net_result>0?'+€':'−€'),suffix:'M'})+'</div></div>'+
-    '<div class="col-block"><div class="cb-lab">Pos. finanziaria netta</div><div class="cb-val '+(disp!=null&&disp>=0?'pos':'neg')+'">'+dataNum(disp==null?null:Math.abs(disp),{prefix:(disp!=null&&disp>=0?'+€':'−€'),suffix:'M'})+'</div></div>'+
-    '<div class="col-cta">Scheda completa →</div>'+
+function heroHTML(ks){
+  const chips = ks.map(function(k){ const c=CLUBS[k];
+    return '<span class="hero-club-chip" data-club="'+k+'" title="Apri '+c.name+'">'+crest(c,48)+'</span>'; }).join('');
+  return '<div class="hero">'+
+    '<div class="hero-top">'+
+      '<div class="hero-eye">◆ by Valore Atteso · Club Intelligence</div>'+
+      '<div class="hero-clubs">'+chips+'</div>'+
+    '</div>'+
+    '<h1 class="hero-h1">La <span class="hl">salute finanziaria</span> del calcio, leggibile in 30 secondi.</h1>'+
+    '<p class="hero-p">Trasformiamo i bilanci depositati — centinaia di pagine di numeri — in profili chiari e comparabili. Gli stessi dati verificati che alimentano la newsletter Valore Atteso, ora interattivi: confronta, esplora, capisci.</p>'+
+    '<div class="hero-trust">'+
+      '<span class="trust">📄 <b>Bilanci ufficiali</b> depositati</span>'+
+      '<span class="trust">🔍 Ogni numero <b>tracciabile</b></span>'+
+      '<span class="trust">⚖ <b>'+ks.length+' club</b> · Serie A 2024/25</span>'+
+    '</div>'+
+    '<div class="hero-cta">'+
+      '<button class="btn-primary" data-scroll="peersAnchor">Esplora la classifica ↓</button>'+
+      '<span class="hero-hint">oppure scegli un club qui sopra ↗</span>'+
+    '</div>'+
+    '<div class="insight"><div class="insight-lab">Lo sapevi che…</div><div id="insightSlot"></div></div>'+
   '</div>';
 }
-function fmtMetric(m,v){
-  if(v==null) return '<span class="nd">n/d</span>';
-  if(m.type==='eur') return '€'+fmt(v,1)+'M';
-  if(m.type==='pct') return fmt(v,1)+'%';
-  if(m.type==='sig'){ var s=v>0?'+':(v<0?'−':''); return s+'€'+fmt(Math.abs(v),1)+'M'; }
-  if(m.type==='pfn'){ var d=-v; var s2=d>0?'+':(d<0?'−':''); return s2+'€'+fmt(Math.abs(d),1)+'M'; }
-  return fmt(v,1);
+function stepsHTML(){
+  return '<div class="steps">'+
+    '<div class="stepc"><div class="sn">01 · COS’È</div><div class="st">Un raggio X finanziario</div><div class="sd">Ricavi, costi, debito e plusvalenze di ogni club, riassunti in pochi indicatori leggibili.</div></div>'+
+    '<div class="stepc"><div class="sn">02 · FONTI</div><div class="st">Solo dati verificati</div><div class="sd">Numeri estratti dai bilanci depositati. Niente stime: ogni voce ha una fonte tracciabile.</div></div>'+
+    '<div class="stepc"><div class="sn">03 · COME SI USA</div><div class="st">Confronta o approfondisci</div><div class="sd">Ordina la classifica per qualsiasi metrica, poi apri un club per il dettaglio completo.</div></div>'+
+    '<div class="stepc"><div class="sn">04 · CHI</div><div class="st">by Valore Atteso</div><div class="sd">La newsletter italiana sul business del calcio europeo. <a href="/" style="color:var(--inter-cyan)">Scopri →</a></div></div>'+
+  '</div>';
 }
-function bestKey(m,ks){
-  var best=null,bs=-Infinity;
-  ks.forEach(function(k){ var v=CLUBS[k].fin[m.key]; if(v==null) return;
-    var s = (m.better==='high') ? v : -v; // low / lowdebt → minore è meglio
-    if(s>bs){ bs=s; best=k; }
+function peersShellHTML(ks){
+  const chips = METRICS.map(function(m){ return '<span class="chip'+(m.key===metric?' active':'')+'" data-metric="'+m.key+'">'+m.short+'</span>'; }).join('');
+  return '<div id="peersAnchor"></div>'+
+    '<div class="sec-label">Classifica Serie A · scegli la metrica</div>'+
+    '<div class="peers-head"><div class="chips">'+chips+'</div><div class="pmeta" id="metricNote"></div></div>'+
+    '<div class="ptable" id="peersBody"></div>'+
+    '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca una metrica</b> per riordinare la classifica, o <b style="color:var(--inter-cyan)">un club</b> per la scheda completa. Dati da bilanci depositati ufficiali, estratti nel database Valore Atteso. <b style="color:var(--inter-cyan)">Milan e Roma in arrivo.</b></div>';
+}
+function insights(){
+  return Object.keys(CLUBS).map(function(k){
+    var c=CLUBS[k], f=c.fin;
+    if(f.net_debt!=null && f.net_debt<0) return {k:k,ic:'💰',t:c.name+' · unica cassa netta positiva',v:'+€'+num(Math.abs(f.net_debt))+'M'};
+    if(f.net_result!=null && f.net_result>0) return {k:k,ic:'📈',t:c.name+' · chiude in utile d’esercizio',v:'+€'+num(f.net_result)+'M'};
+    if(f.net_result!=null && f.net_result<0) return {k:k,ic:'📉',t:c.name+' · perdita, plusvalenze a bilanciare',v:'−€'+num(Math.abs(f.net_result))+'M'};
+    return {k:k,ic:'⚽',t:c.name+' · ricavi',v:'€'+num(f.revenue_total)+'M'};
   });
-  return best;
 }
-function h2hRow(m,ks){
-  var vals=ks.map(function(k){return CLUBS[k].fin[m.key];});
-  var maxAbs=Math.max.apply(null, vals.map(function(v){return v==null?0:Math.abs(v);}))||1;
-  var best=bestKey(m,ks);
-  var rows=ks.map(function(k){
+function startInsight(){
+  if(insightTimer){ clearInterval(insightTimer); insightTimer=null; }
+  var slot=el('insightSlot'); if(!slot) return;
+  var arr=insights(); if(!arr.length) return; insightIx=0;
+  function show(){
+    var it=arr[insightIx%arr.length];
+    var col = /\+/.test(it.v) ? 'var(--green)' : (/−/.test(it.v) ? 'var(--red)' : 'var(--inter-cyan)');
+    slot.innerHTML='<div class="insight-item" data-club="'+it.k+'"><span class="ic">'+it.ic+'</span><b>'+it.t+'</b><span class="ival" style="color:'+col+'">'+it.v+'</span></div>';
+    var node=slot.querySelector('[data-club]');
+    if(node) node.onclick=function(){ mode='club'; cur=it.k; render(); scrollTop(); };
+    insightIx++;
+  }
+  show();
+  if(!prefersReduced) insightTimer=setInterval(show,3200);
+}
+function dataNumMetric(m,v){
+  if(v==null) return '<span class="nd">n/d</span>';
+  if(m.type==='eur') return dataNum(v,{prefix:'€',suffix:'M'});
+  if(m.type==='pct') return dataNum(v,{suffix:'%'});
+  if(m.type==='sig'){ var col=v>0?'var(--green)':(v<0?'var(--red)':'var(--txt)'); return '<span style="color:'+col+'">'+dataNum(Math.abs(v),{prefix:(v>0?'+€':'−€'),suffix:'M'})+'</span>'; }
+  if(m.type==='pfn'){ var d=-v; var c2=d>=0?'var(--green)':'var(--red)'; return '<span style="color:'+c2+'">'+dataNum(Math.abs(d),{prefix:(d>=0?'+€':'−€'),suffix:'M'})+'</span>'; }
+  return dataNum(v,{});
+}
+function peerRows(mk){
+  var m = METRICS.filter(function(x){return x.key===mk;})[0] || METRICS[0];
+  var ks = Object.keys(CLUBS).slice();
+  ks.sort(function(a,b){
+    var va=CLUBS[a].fin[m.key], vb=CLUBS[b].fin[m.key];
+    va=(va==null)?-Infinity:va; vb=(vb==null)?-Infinity:vb;
+    var sa=(m.better==='high')?va:-va, sb=(m.better==='high')?vb:-vb;
+    return sb-sa;
+  });
+  var maxAbs=Math.max.apply(null, ks.map(function(k){ var v=CLUBS[k].fin[m.key]; return v==null?0:Math.abs(v); }))||1;
+  return ks.map(function(k,i){
     var c=CLUBS[k], v=c.fin[m.key];
     var w=v==null?0:Math.abs(v)/maxAbs*100;
     var neg=(v!=null&&v<0);
@@ -570,13 +640,31 @@ function h2hRow(m,ks){
     if(m.key==='net_debt') fill=(v<0?'var(--green)':'var(--red)');
     else if(m.key==='net_result'||m.key==='equity') fill=(neg?'var(--red)':'linear-gradient(90deg,'+c.accent+'66,'+c.accent+')');
     else fill='linear-gradient(90deg,'+c.accent+'66,'+c.accent+')';
-    return '<div class="h2h-row'+(k===best?' lead':'')+'" data-club="'+k+'">'+
-      '<div class="h2h-club">'+crest(c,20)+'<span>'+c.name+'</span></div>'+
-      '<div class="h2h-track"><div class="barfill" style="width:'+w.toFixed(1)+'%;background:'+fill+'"></div></div>'+
-      '<div class="h2h-val">'+fmtMetric(m,v)+(k===best?' <i class="lead-i">●</i>':'')+'</div>'+
+    return '<div class="prow'+(i===0?' first':'')+'" data-row="'+k+'" data-club="'+k+'" style="--rc:'+c.accent+'">'+
+      '<div class="prank">'+(i+1)+'°</div>'+
+      '<div class="pclub">'+crest(c,28)+'<span>'+c.name+'</span></div>'+
+      '<div class="ptrack"><div class="pfill" style="width:'+w.toFixed(1)+'%;background:'+fill+'"></div></div>'+
+      '<div class="pval">'+dataNumMetric(m,v)+'</div>'+
     '</div>';
   }).join('');
-  return '<div class="h2h-block"><div class="h2h-lab">'+m.label+(m.better==='low'?' <em>· meglio se basso</em>':'')+'</div>'+rows+'</div>';
+}
+function paintPeers(flip){
+  var body=el('peersBody'); if(!body) return;
+  var m = METRICS.filter(function(x){return x.key===metric;})[0] || METRICS[0];
+  var prev={};
+  if(flip && !prefersReduced){ body.querySelectorAll('[data-row]').forEach(function(r){ prev[r.dataset.row]=r.getBoundingClientRect().top; }); }
+  body.innerHTML = peerRows(metric);
+  document.querySelectorAll('[data-metric]').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.metric===metric); });
+  var note=el('metricNote'); if(note) note.textContent = m.label + (m.better==='low'?' · meglio se basso' : (m.better==='lowdebt'?' · cassa netta in verde' : ' · meglio se alto'));
+  if(flip && !prefersReduced){
+    body.querySelectorAll('[data-row]').forEach(function(r){
+      var now=r.getBoundingClientRect().top; var d=(prev[r.dataset.row]!=null?prev[r.dataset.row]:now)-now;
+      if(d){ r.style.transform='translateY('+d+'px)'; r.style.transition='none';
+        requestAnimationFrame(function(){ r.style.transition='transform .5s cubic-bezier(.2,.8,.2,1)'; r.style.transform=''; }); }
+    });
+  }
+  animateCounts(body);
+  body.querySelectorAll('[data-club]').forEach(function(x){ x.onclick=function(){ mode='club'; cur=x.dataset.club; render(); scrollTop(); }; });
 }
 
 /* ════════ VIEW: club ════════ */
