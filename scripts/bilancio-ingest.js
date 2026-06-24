@@ -12,7 +12,7 @@
  */
 
 const DRIVE_API_KEY = process.env.GOOGLE_DRIVE_API_KEY;
-const DRIVE_FOLDER  = process.env.GOOGLE_DRIVE_FOLDER_ID;
+const DRIVE_FOLDER  = process.env.GOOGLE_DRIVE_FOLDER_ID || '17BSJKFDEv6aTll5-kGxb1kxQkEyfVTsr';
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const SUPABASE_URL  = process.env.SUPABASE_URL;
 const SUPABASE_KEY  = process.env.SUPABASE_KEY;
