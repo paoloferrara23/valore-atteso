@@ -336,9 +336,6 @@ let CLUBS = {
       {type:'financing', label:'◆ Finanziamento · Bond', title:'Bond €350M al 4,52%: rifinanziamento debito',
        desc:'Giugno 2025: Inter emette un nuovo high-yield bond da €350M con cedola 4,52% e scadenza 2030, sostituendo il precedente bond da €415M emesso nel 2022. Tasso più basso = migliorata percezione di rischio dal mercato.',
        value:'€350M · cedola 4,52%'},
-      {type:'commercial', label:'◆ Commerciale · Sponsor', title:'Betsson: nuovo main sponsor da €40M+/anno',
-       desc:'Betsson nuovo main sponsor jersey dalla stagione 2024/25 (estate 2024), in sostituzione di Paramount+. Valore stimato oltre €40M/anno, con progressione su 3 anni.',
-       value:'€40M+/anno stimato'},
       {type:'ownership', label:'◆ Proprietà', title:'Oaktree Capital prende il controllo',
        desc:'Maggio 2024: Zhang Jindong non rimborsa il prestito da $395M garantito sul 99,6% delle azioni Inter. Oaktree, già creditore, acquisisce la proprietà esecutiva, da hedge fund a proprietario calcistico.',
        value:'$395M · debito originario'}
@@ -977,16 +974,18 @@ async function loadLive(){
   try{
     const [clubs, fins, deals] = await Promise.all([
       sb('clubs?select=*&order=sort_order.asc'),
-      sb('club_financials?select=*&order=season.desc'),
+      sb('club_financials?select=*&order=season.desc&verified=eq.true'),
       sb('club_deals?select=*&order=sort_order.asc')
     ]);
     if(!Array.isArray(clubs) || !clubs.length) return;
     const out = {};
     clubs.forEach(function(cl){
       const fin = (fins||[]).find(function(x){ return x.club_id===cl.id; });
+      if(!fin) return; // niente bilancio verificato -> il club non compare finche non e approvato
       const dl  = (deals||[]).filter(function(x){ return x.club_id===cl.id; });
       out[cl.slug] = buildClub(cl, fin, dl);
     });
+    if(!Object.keys(out).length) return;
     CLUBS = out;
     LIVE = true;
     if(!CLUBS[cur]) cur = Object.keys(CLUBS)[0];
