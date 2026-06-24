@@ -14,12 +14,31 @@ const AGENT_MAP = {
 const REPO = 'paoloferrara23/valore-atteso';
 
 module.exports = async function handler(req, res) {
+  // Le deleghe sono protette: se il modulo delegato lancia in fase di load
+  // (o di esecuzione async), restituiamo un JSON con l'errore reale invece
+  // di lasciare crashare la function — che produrrebbe la pagina HTML
+  // "A server error has occurred" e un JSON.parse fallito lato Control Room.
   if (req.query?.action === 'scoutSelect') {
-    const scoutSelect = require('../lib/scout-select');
-    return scoutSelect(req, res);
+    try {
+      return await require('../lib/scout-select')(req, res);
+    } catch (e) {
+      console.error('[run-agent:scoutSelect]', e);
+      if (!res.headersSent) return res.status(500).json({ error: 'scoutSelect: ' + (e?.message || String(e)) });
+      return;
+    }
   }
   if (req.query?.action === 'bilanci') {
-    return require('../lib/bilanci-approval')(req, res);
+    try {
+      return await require('../lib/bilanci-approval')(req, res);
+    } catch (e) {
+      console.error('[run-agent:bilanci]', e);
+      if (!res.headersSent) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-cr-token');
+        return res.status(500).json({ error: 'bilanci: ' + (e?.message || String(e)) });
+      }
+      return;
+    }
   }
 
   res.setHeader('Access-Control-Allow-Origin', '*');
