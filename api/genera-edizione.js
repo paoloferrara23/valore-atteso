@@ -125,6 +125,7 @@ Rispondi SOLO JSON: {"label":"${sezLabels[sezIdx]}","title":"...","body":"...","
 2. Incoerenze con il tema
 3. Linguaggio non professionale
 4. KPI con valori inventati
+5. Leggibilità ("make it simple"): spezza le frasi troppo lunghe, sciogli le subordinate annidate, spiega ogni tecnicismo in 3-5 parole, togli il tono da report. Mantieni il rigore e i dati: semplice = chiaro, non superficiale.
 
 SEZIONE DA REVISIONARE:
 ${writerRaw}
@@ -132,7 +133,7 @@ ${writerRaw}
 Rispondi SOLO JSON migliorato con stessa struttura.`;
 
       const editorRaw = await callClaude([{ role: 'user', content: editorPrompt }],
-        `Sei il direttore editoriale di Valore Atteso. Il tuo compito è trovare errori e migliorare la qualità.\n${wikiContext}`,
+        `Sei il direttore editoriale di Valore Atteso. Il tuo compito è trovare errori e rendere il testo più chiaro e leggibile (frasi brevi, niente gergo non spiegato) senza perdere rigore.\n${wikiContext}`,
         'claude-sonnet-4-6');
 
       const newSez = parseJSON(editorRaw);
@@ -147,14 +148,23 @@ Rispondi SOLO JSON migliorato con stessa struttura.`;
 
     console.log('Generazione bozza...');
     const genSystem = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
-Pubblico: professionisti M&A, PE, consulenza, finanza.
+Pubblico: professionisti M&A, PE, consulenza, finanza — gente competente ma con poco tempo.
+
+PRINCIPIO GUIDA — "MAKE IT SIMPLE" (è il nostro tratto distintivo: i lettori ci scelgono perché ci capiscono in 8 minuti col caffè):
+Far capire in fretta cose complesse è il valore di Valore Atteso. Scrivi SEMPLICE senza diventare semplicistico:
+- Frasi brevi, una idea per frase. Evita subordinate annidate e incisi lunghi.
+- Italiano piano e voce attiva. Vai dritto al punto: prima la conclusione, poi i numeri che la reggono.
+- Spiega ogni tecnicismo (EBITDA, plusvalenza, PFN, multiplo, player trading) con 3-5 parole tra parentesi la prima volta che compare.
+- Parla come a un collega competente, non come un comunicato stampa o una nota di ricerca.
+- Ogni numero seguito dal "quindi": cosa significa, perché conta.
+Resta comunque Valore Atteso: rigoroso, analitico, basato su fonti. Semplice = chiaro, non superficiale.
 
 REGOLE ASSOLUTE:
 1. Usa SOLO i dati forniti dallo Scout — ZERO dati inventati
 2. I KPI devono venire esclusivamente dai "DATI VERIFICATI SCOUT"
 3. Le fonti devono corrispondere alle "FONTI PRIMARIE" dello Scout
 4. Se un dato non è nei dati Scout scrivi [dato da verificare]
-5. Scrivi in modo analitico ma leggibile — non un report, non un comunicato stampa
+5. Scrivi analitico ma LEGGIBILE (vedi "Make it simple"): frasi corte, nessun gergo non spiegato, mai tono da report o da comunicato
 6. I dati finanziari devono avere contesto — ogni numero deve spiegare perché conta
 7. Le tre sezioni non devono contraddirsi né ripetere gli stessi dati
 8. Non citare mai Calcio e Finanza — usa sempre le fonti primarie (bilanci, UEFA, FIGC, Deloitte)

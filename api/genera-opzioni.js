@@ -90,7 +90,7 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
     }
 
     const system = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
-Pubblico: professionisti M&A, PE, consulenza, finanza. Tono: analitico, diretto, dati verificabili.
+Pubblico: professionisti M&A, PE, consulenza, finanza. Tono: analitico, diretto, dati verificabili — e soprattutto CHIARO E SEMPLICE (il tratto distintivo di Valore Atteso: si capisce in 8 minuti). Frasi brevi, niente gergo non spiegato, semplice senza essere superficiale.
 
 REGOLE ASSOLUTE:
 1. Ogni dato/numero DEVE avere una fonte reale (bilancio club, comunicato ufficiale, UEFA, Deloitte, calcioefinanza.it, SwissRamble, FT, Reuters)
