@@ -10,6 +10,7 @@
 // - Ogni informazione deve avere URL della fonte.
 
 const { logRun, supaFetch } = require('./memory');
+const { logUsage } = require('../lib/ai-usage');
 const gmail = require('./gmail');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY;
@@ -60,6 +61,7 @@ async function callClaude(system, userMsg, useWebSearch = false, maxTokens = 400
   });
   if (!r.ok) throw new Error(`Anthropic ${r.status}: ${(await r.text()).slice(0, 300)}`);
   const d = await r.json();
+  logUsage('sponsor-outreach', MODEL, d.usage);
   return (d.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
 }
 

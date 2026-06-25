@@ -1,6 +1,7 @@
 // scripts/growth-agent.js — Growth Agent v3 con nuovo design email
 const { memGet, memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
+const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -18,14 +19,16 @@ async function supaFetch(path) {
 }
 
 async function callClaude(prompt) {
+  const model = 'claude-haiku-4-5-20251001';
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600,
+    body: JSON.stringify({ model, max_tokens: 600,
       messages: [{ role: 'user', content: prompt }] })
   });
   if (!r.ok) throw new Error(`Anthropic ${r.status}`);
   const d = await r.json();
+  logUsage('growth', model, d.usage);
   return d.content[0].text;
 }
 

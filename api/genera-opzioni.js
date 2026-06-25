@@ -2,15 +2,18 @@
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+const { logUsage } = require('../lib/ai-usage');
 
 async function callClaude(messages, system) {
+  const model = 'claude-sonnet-4-6';
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 4000, system, messages })
+    body: JSON.stringify({ model, max_tokens: 4000, system, messages })
   });
   if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic: ${r.status} ${t}`); }
   const data = await r.json();
+  logUsage('genera-opzioni', model, data.usage);
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
