@@ -91,6 +91,7 @@ const EXTRACTION_PROMPT = `Sei un analista M&A. Dal bilancio allegato (PDF, anch
 
 Regole INDEROGABILI:
 - Se il PDF NON e il bilancio/relazione finanziaria di una societa di calcio, restituisci ESATTAMENTE {"skip":true} e nient'altro.
+- BILANCIO CONSOLIDATO (priorita assoluta sulla fonte): se il documento contiene sia il bilancio d'esercizio (separato/civilistico della singola societa) sia il bilancio CONSOLIDATO di gruppo, usa SEMPRE ed esclusivamente i dati del CONSOLIDATO (valore della produzione, costi, EBITDA, posizione finanziaria netta, patrimonio netto di gruppo). I prospetti consolidati sono di norma intitolati "Bilancio consolidato" / "Stato patrimoniale consolidato" / "Conto economico consolidato". Nel campo source scrivi esplicitamente che e il bilancio CONSOLIDATO di gruppo. Solo se nel documento esiste UNICAMENTE il bilancio d'esercizio separato usa quello, segnalandolo nel source.
 - SOLO INFORMAZIONI CERTE. Includi un valore solo se e ESPLICITAMENTE riportato nel documento e lo leggi con sicurezza. In caso di dubbio (cifra poco leggibile, voce ambigua, anno/colonna incerti) metti null. Meglio un campo vuoto che un dato sbagliato. Mai stimare, mai dedurre, mai ricavare per differenza.
 - Tutti gli importi in MILIONI di euro (€M), arrotondati a 1 decimale (es. 567.0, -29.9).
 - I costi nel conto economico vanno espressi come valori POSITIVI (il segno lo gestisce il tool).
