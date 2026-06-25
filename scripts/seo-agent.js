@@ -1,5 +1,6 @@
 // scripts/seo-agent.js — SEO Agent v3 con parse robusto
 const { memSet, logRun } = require('./memory');
+const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -24,6 +25,7 @@ async function callClaude(messages, system, useSearch = false) {
   });
   if (!r.ok) throw new Error(`Anthropic ${r.status}`);
   const d = await r.json();
+  logUsage('seo', body.model, d.usage);
   return d.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 

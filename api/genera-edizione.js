@@ -2,6 +2,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
+const { logUsage } = require('../lib/ai-usage');
 
 // ── Chiamata Claude ───────────────────────────────────────────────────────────
 async function callClaude(messages, system, model = 'claude-sonnet-4-6') {
@@ -12,6 +13,7 @@ async function callClaude(messages, system, model = 'claude-sonnet-4-6') {
   });
   if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic ${r.status}: ${t.slice(0,200)}`); }
   const d = await r.json();
+  logUsage('genera-edizione', model, d.usage);
   return d.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 

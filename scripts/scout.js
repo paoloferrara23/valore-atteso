@@ -4,6 +4,7 @@
 const crypto = require('crypto');
 const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
+const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -34,8 +35,9 @@ a livello internazionale, purché la notizia sia verificabile e la fonte citabil
 NON accettate: blog personali, forum, social media, siti senza firma editoriale.`;
 
 async function callClaude(messages, system, useSearch = false) {
+  const model = 'claude-sonnet-4-6';
   const body = {
-    model: 'claude-opus-4-5',
+    model,
     max_tokens: 5000,
     system,
     messages
@@ -56,6 +58,7 @@ async function callClaude(messages, system, useSearch = false) {
   });
   if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic ${r.status}: ${t.slice(0,300)}`); }
   const data = await r.json();
+  logUsage('scout', model, data.usage);
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 

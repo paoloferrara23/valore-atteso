@@ -5,6 +5,7 @@
 
 const { memGet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
+const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -40,6 +41,7 @@ async function callClaude(messages, system, model = 'claude-sonnet-4-6') {
   });
   if (!r.ok) throw new Error(`Anthropic ${r.status}`);
   const d = await r.json();
+  logUsage('content-agent', model, d.usage);
   return d.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 
@@ -137,7 +139,7 @@ Rispondi SOLO in JSON:
   ]
 }`;
 
-  const raw = await callClaude([{ role: 'user', content: prompt }], SONNET_SYSTEM, 'claude-opus-4-8');
+  const raw = await callClaude([{ role: 'user', content: prompt }], SONNET_SYSTEM, 'claude-sonnet-4-6');
   const clean = raw.replace(/```json|```/g, '').trim();
   const match = clean.match(/\{[\s\S]*\}/);
   if (!match) throw new Error('JSON calendario non trovato');

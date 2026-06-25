@@ -1,6 +1,7 @@
 // scripts/agent.js — Editoriale Agent v2 con nuovo template email
 const { memGet, memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
+const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const RESEND_KEY    = process.env.RESEND_KEY;
@@ -17,13 +18,15 @@ async function httpRequest(url, opts = {}) {
 }
 
 async function callClaude(messages, system) {
+  const model = 'claude-sonnet-4-6';
   const r = await httpRequest('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-opus-4-5', max_tokens: 6000, system, messages })
+    body: JSON.stringify({ model, max_tokens: 6000, system, messages })
   });
   if (!r.ok) throw new Error(`Anthropic: ${r.status} ${r.text}`);
   const data = r.json();
+  logUsage('editoriale', model, data.usage);
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
 }
 

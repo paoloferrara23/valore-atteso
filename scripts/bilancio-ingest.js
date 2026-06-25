@@ -23,6 +23,7 @@ const RESEND_KEY    = process.env.RESEND_KEY;
 const APPROVAL_EMAIL = (process.env.APPROVAL_EMAIL || '').trim();
 
 const MODEL = 'claude-opus-4-8';
+const { logUsage } = require('../lib/ai-usage');
 const MEM_KEY = 'bilancio_ingest_processed';
 const MAX_PDF_BYTES = 20 * 1024 * 1024; // il base64 gonfia ~33%, il limite API e ~32MB sul totale
 
@@ -142,6 +143,7 @@ async function extract(base64) {
   if (r.status === 413) throw new Error('PDF troppo grande per l\'API (max ~100 pagine / 32MB). Comprimi o carica solo le pagine dei prospetti.');
   if (!r.ok) throw new Error('Anthropic ' + r.status + ': ' + (await r.text()));
   const data = await r.json();
+  logUsage('bilancio-ingest', MODEL, data.usage);
   let text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
   text = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
   if (!text.startsWith('{')) throw new Error('non e un bilancio (risposta non-JSON)');

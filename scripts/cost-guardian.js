@@ -76,13 +76,26 @@ async function main() {
 
   const runPerAgente = {};
   const errorPerAgente = {};
-  let costoAnthropicStimato = 0;
-
   runsArr.forEach(r => {
     runPerAgente[r.agent] = (runPerAgente[r.agent] || 0) + 1;
     if (r.status === 'error') errorPerAgente[r.agent] = (errorPerAgente[r.agent] || 0) + 1;
-    costoAnthropicStimato += stimaCostoRun(r.agent, r.data?.duration_ms);
   });
+
+  // ── Costo Anthropic REALE dai token loggati (tabella ai_usage) ────────────
+  const usage = await supaFetch(`/rest/v1/ai_usage?created_at=gte.${inizioMese.toISOString()}&select=agent,model,cost_eur,input_tokens,output_tokens&limit=20000`).catch(() => []);
+  const usageArr = Array.isArray(usage) ? usage : [];
+  const costoPerAgente = {}; // agent -> { eur, in, out, calls }
+  let costoAnthropicStimato = 0; // ora è REALE, non più una stima da durata
+  usageArr.forEach(u => {
+    const a = u.agent || 'sconosciuto';
+    if (!costoPerAgente[a]) costoPerAgente[a] = { eur: 0, in: 0, out: 0, calls: 0 };
+    costoPerAgente[a].eur += Number(u.cost_eur) || 0;
+    costoPerAgente[a].in  += u.input_tokens || 0;
+    costoPerAgente[a].out += u.output_tokens || 0;
+    costoPerAgente[a].calls += 1;
+    costoAnthropicStimato += Number(u.cost_eur) || 0;
+  });
+  const trackingAttivo = usageArr.length > 0;
 
   // Agenti con errori frequenti
   Object.entries(errorPerAgente).forEach(([agent, count]) => {
@@ -140,6 +153,8 @@ async function main() {
     nuovi_settimana: nuoviSett,
     email_inviate_mese: emailInviateMese,
     costo_anthropic_stimato: parseFloat(costoAnthropicStimato.toFixed(2)),
+    costo_per_agente: Object.fromEntries(Object.entries(costoPerAgente).map(([a, c]) => [a, parseFloat(c.eur.toFixed(4))])),
+    tracking_token_attivo: trackingAttivo,
     costo_resend: costoResend,
     costo_totale_stimato: parseFloat(costoTotaleStimato.toFixed(2)),
     proiezione_mese: parseFloat(costoTotaleMese.toFixed(2)),
@@ -158,18 +173,21 @@ async function main() {
   // ── 6. Email con nuovo template ───────────────────────────────────────────
   const status = alerts.some(a => a.gravita === 'alta') ? 'warning' : 'success';
 
-  // Tabella run per agente
-  const runRows = Object.entries(runPerAgente)
-    .sort((a,b) => b[1]-a[1])
-    .map(([agent, count]) => {
-      const errori = errorPerAgente[agent] || 0;
-      return [
-        { value: agent, mono: true },
-        { value: String(count), mono: true, bold: true, align: 'center', color: '#1A1A1A' },
-        { value: errori > 0 ? `${errori} ✗` : '—', mono: true, align: 'center', color: errori > 0 ? '#C8251D' : '#9A9690' },
-        { value: `€${stimaCostoRun(agent, 5000).toFixed(3)}×${count}`, mono: true, align: 'right', color: '#9A9690' },
-      ];
-    });
+  // Tabella per agente: costo REALE + token, ordinata per spesa
+  const fmtTok = t => t >= 1000 ? (t/1000).toFixed(t >= 10000 ? 0 : 1) + 'k' : String(t);
+  const runRows = Array.from(new Set([...Object.keys(runPerAgente), ...Object.keys(costoPerAgente)]))
+    .map(agent => {
+      const c = costoPerAgente[agent] || { eur: 0, in: 0, out: 0, calls: 0 };
+      return { agent, runs: runPerAgente[agent] || 0, errori: errorPerAgente[agent] || 0, eur: c.eur, tok: c.in + c.out };
+    })
+    .sort((a,b) => b.eur - a.eur || b.runs - a.runs)
+    .map(x => [
+      { value: x.agent, mono: true },
+      { value: String(x.runs), mono: true, align: 'center', color: '#1A1A1A' },
+      { value: x.errori > 0 ? `${x.errori} ✗` : '—', mono: true, align: 'center', color: x.errori > 0 ? '#C8251D' : '#9A9690' },
+      { value: x.tok ? fmtTok(x.tok) : '—', mono: true, align: 'right', color: '#9A9690' },
+      { value: x.eur > 0 ? `€${x.eur.toFixed(3)}` : '—', mono: true, bold: true, align: 'right', color: x.eur > 0 ? '#1A1A1A' : '#9A9690' },
+    ]);
 
   const html = agentEmail({
     agentName: 'Cost Guardian',
@@ -191,7 +209,7 @@ async function main() {
           label: 'Anthropic API',
           value: `€${costoAnthropicStimato.toFixed(2)}`,
           color: '#1A1A1A',
-          sub: `${runsArr.length} run · stima`,
+          sub: trackingAttivo ? `${usageArr.length} chiamate · da token reali` : 'tracking appena attivato',
           subColor: '#9A9690'
         },
         {
@@ -245,15 +263,19 @@ async function main() {
       })),
 
       // Run per agente
-      ...(runRows.length ? [{ type: 'table', label: `Run agenti questo mese (${runsArr.length} totali)`, headers: [
+      ...(runRows.length ? [{ type: 'table', label: `Costi per agente questo mese · €${costoAnthropicStimato.toFixed(2)} totali Anthropic`, headers: [
         { label: 'Agente' },
         { label: 'Run', align: 'center' },
         { label: 'Errori', align: 'center' },
-        { label: 'Costo stimato', align: 'right' },
+        { label: 'Token', align: 'right' },
+        { label: 'Costo reale', align: 'right' },
       ], rows: runRows }] : []),
 
       // Note fisse
-      { type: 'alert', text: 'I costi Anthropic sono <strong>stime</strong> basate su durata run — verifica il dato esatto su <a href="https://console.anthropic.com/settings/billing" style="color:#1B3A6B">console.anthropic.com</a>', type: 'info' },
+      { type: 'alert', text: (trackingAttivo
+          ? 'Costi Anthropic <strong>reali</strong>, calcolati dai token effettivi di ogni chiamata. Non include le ricerche web (addebito a parte ~$10/1000).'
+          : 'Tracking dei token <strong>appena attivato</strong>: i costi reali per agente si popolano dai prossimi run.')
+        + ' Saldo esatto su <a href="https://console.anthropic.com/settings/billing" style="color:#1B3A6B">console.anthropic.com</a>', type: 'info' },
     ]
   });
 
