@@ -287,15 +287,15 @@
   .ci-signup h3{margin:0 0 6px;font-size:20px;color:#fff;font-weight:700;letter-spacing:-.2px}
   .ci-signup p{margin:0 0 16px;font-size:13.5px;color:rgba(220,228,236,.66);line-height:1.55}
   .ci-signup .row{display:flex;gap:8px;max-width:430px;margin:0 auto}
-  .ci-signup input{flex:1;height:44px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.28);color:#fff;font-size:14px;outline:none}
+  .ci-signup input{flex:1;min-width:0;box-sizing:border-box;height:46px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.28);color:#fff;font-size:16px;outline:none}
   .ci-signup input:focus{border-color:#0099E5}
-  .ci-signup button{height:44px;padding:0 18px;border:none;border-radius:10px;background:#0099E5;color:#04121f;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .ci-signup button{flex:none;box-sizing:border-box;height:46px;padding:0 18px;border:none;border-radius:10px;background:#0099E5;color:#04121f;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s}
   .ci-signup button:hover{background:#19E0C8}
   .ci-signup button:disabled{opacity:.6;cursor:default}
   .ci-signup .note{margin-top:11px;font-size:10.5px;color:rgba(220,228,236,.44)}
   .ci-signup .ok{display:none;color:#19E0C8;font-size:14px;font-weight:600;margin-top:10px}
   .ci-signup .ok.show{display:block}
-  @media(max-width:520px){.ci-signup .row{flex-direction:column}}
+  @media(max-width:520px){.ci-signup{padding:22px 16px}.ci-signup .row{flex-direction:column;gap:10px;max-width:none}.ci-signup input,.ci-signup button{width:100%}}
 </style>
 </head>
 <body>
