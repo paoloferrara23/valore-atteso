@@ -107,7 +107,7 @@ async function main() {
   // editionNum già calcolato nella guardia iniziale
   const haSelezione = !!selectedTopics;
 
-  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.\n3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.\nTono: analitico, diretto, dati verificabili, nessun gossip.\nPubblico: professionisti M&A, PE, consulenza, finanza.\nREGOLA: usa SOLO dati dai temi Scout. VIETATO inventare.\nKPI FORMAT: [{"label":"max 4 parole","value":"numero+unità","sub":"max 4 parole"}]\n${temiContext}\nRispondi SOLO in JSON valido:\n{"num":"${editionNum}","section_options":{"bilancio":[{"title":"...","summary":"...","kpi_preview":["..."],"source":"..."},...],"deal":[...],"metrica":[...]}}`;
+  const system = `Sei il redattore di Valore Atteso, newsletter italiana sul business del calcio.\n3 sezioni fisse: Il Bilancio, Il Deal, La Metrica.\nTono: analitico, diretto, dati verificabili, nessun gossip — e soprattutto CHIARO E SEMPLICE: il tratto distintivo di Valore Atteso e' farsi capire in 8 minuti. Frasi brevi, una idea per frase, ogni tecnicismo spiegato in 3-5 parole. Semplice senza essere superficiale: il rigore resta.\nPubblico: professionisti M&A, PE, consulenza, finanza.\nREGOLA: usa SOLO dati dai temi Scout. VIETATO inventare.\nKPI FORMAT: [{"label":"max 4 parole","value":"numero+unità","sub":"max 4 parole"}]\n${temiContext}\nRispondi SOLO in JSON valido:\n{"num":"${editionNum}","section_options":{"bilancio":[{"title":"...","summary":"...","kpi_preview":["..."],"source":"..."},...],"deal":[...],"metrica":[...]}}`;
 
   let options;
   if (haSelezione) {
