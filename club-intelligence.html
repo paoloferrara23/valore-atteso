@@ -116,9 +116,6 @@
   .hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 40px,rgba(255,255,255,.014) 40px 41px);pointer-events:none}
   .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;position:relative}
   .hero-eye{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--inter-cyan)}
-  .hero-clubs{display:flex;gap:8px}
-  .hero-club-chip{cursor:pointer;transition:.18s;filter:drop-shadow(0 5px 14px rgba(0,0,0,.45))}
-  .hero-club-chip:hover{transform:translateY(-3px) scale(1.07)}
   .hero-h1{font-size:clamp(27px,4.1vw,44px);font-weight:850;letter-spacing:-1.5px;line-height:1.05;max-width:780px;position:relative;margin-top:16px}
   .hero-h1 .hl{background:linear-gradient(90deg,var(--inter-blue),var(--inter-cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
   .hero-p{color:var(--txt2);font-size:14.5px;line-height:1.6;max-width:580px;margin:15px 0 20px;position:relative}
@@ -468,7 +465,18 @@ const CREST = {
     '<circle cx="50" cy="50" r="47" fill="url(#gnc)" stroke="url(#gn)" stroke-width="3.5"/>'+
     '<circle cx="50" cy="50" r="40" fill="none" stroke="#12A0D7" stroke-width="1.3" opacity=".5"/>'+
     '<path d="M50 17 l2.2 4.6 5.1 .7 -3.7 3.6 .9 5.1 -4.5-2.4 -4.5 2.4 .9-5.1 -3.7-3.6 5.1-.7 Z" fill="#E8C87A"/>'+
-    '<text x="50" y="67" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="34" fill="url(#gn)">N</text>'; }
+    '<text x="50" y="67" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="34" fill="url(#gn)">N</text>'; },
+  'ac-milan':function(c){ return ''+
+    '<defs><clipPath id="mcl"><path d="M50 7 L86 19 V50 C86 76 50 93 50 93 C50 93 14 76 14 50 V19 Z"/></clipPath>'+
+    '<linearGradient id="gmr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0203A"/><stop offset="1" stop-color="#9E0B22"/></linearGradient></defs>'+
+    '<g clip-path="url(#mcl)">'+
+      '<rect x="14" y="5" width="72" height="90" fill="#0b0b0b"/>'+
+      '<rect x="14" y="5" width="12" height="90" fill="url(#gmr)"/>'+
+      '<rect x="38" y="5" width="12" height="90" fill="url(#gmr)"/>'+
+      '<rect x="62" y="5" width="12" height="90" fill="url(#gmr)"/>'+
+    '</g>'+
+    '<path d="M50 7 L86 19 V50 C86 76 50 93 50 93 C50 93 14 76 14 50 V19 Z" fill="none" stroke="#E2B53C" stroke-width="3.5"/>'+
+    '<text x="50" y="65" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="36" fill="#fff" stroke="#0b0b0b" stroke-width="1.1" paint-order="stroke">M</text>'; }
 };
 function crestGeneric(c){
   var id='g_'+c.slug;
@@ -560,12 +568,9 @@ function renderHome(ks){
   return heroHTML(ks) + '<div class="sec-label">Come funziona</div>' + stepsHTML() + peersShellHTML(ks);
 }
 function heroHTML(ks){
-  const chips = ks.map(function(k){ const c=CLUBS[k];
-    return '<span class="hero-club-chip" data-club="'+k+'" title="Apri '+c.name+'">'+crest(c,48)+'</span>'; }).join('');
   return '<div class="hero">'+
     '<div class="hero-top">'+
       '<div class="hero-eye">◆ by Valore Atteso · Club Intelligence</div>'+
-      '<div class="hero-clubs">'+chips+'</div>'+
     '</div>'+
     '<h1 class="hero-h1">La <span class="hl">salute finanziaria</span> del calcio, leggibile in 30 secondi.</h1>'+
     '<p class="hero-p">Trasformiamo i bilanci depositati, centinaia di pagine di numeri, in profili chiari e comparabili. Gli stessi dati verificati che alimentano la newsletter Valore Atteso, ora interattivi: confronta, esplora, capisci.</p>'+
@@ -576,7 +581,7 @@ function heroHTML(ks){
     '</div>'+
     '<div class="hero-cta">'+
       '<button class="btn-primary" data-scroll="peersAnchor">Esplora la classifica ↓</button>'+
-      '<span class="hero-hint">oppure scegli un club qui sopra ↗</span>'+
+      '<span class="hero-hint">ogni club è cliccabile nella classifica</span>'+
     '</div>'+
     '<div class="insight"><div class="insight-lab">Lo sapevi che…</div><div id="insightSlot"></div></div>'+
   '</div>';
