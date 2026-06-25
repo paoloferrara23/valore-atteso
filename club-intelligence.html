@@ -494,6 +494,8 @@ const CREST = {
     '<path d="M50 7 L86 19 V50 C86 76 50 93 50 93 C50 93 14 76 14 50 V19 Z" fill="none" stroke="#E2B53C" stroke-width="3.5"/>'+
     '<text x="50" y="65" text-anchor="middle" font-family="Georgia,serif" font-weight="800" font-size="36" fill="#fff" stroke="#0b0b0b" stroke-width="1.1" paint-order="stroke">M</text>'; }
 };
+// alias: il bilancio puo produrre slug 'milan' o 'ac-milan' — stesso crest rossonero
+CREST['milan'] = CREST['ac-milan'];
 function crestGeneric(c){
   var id='g_'+c.slug;
   return '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c.accent+'"/><stop offset="1" stop-color="'+c.accent2+'"/></linearGradient></defs>'+
