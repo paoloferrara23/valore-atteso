@@ -287,15 +287,16 @@
   .ci-signup h3{margin:0 0 6px;font-size:20px;color:#fff;font-weight:700;letter-spacing:-.2px}
   .ci-signup p{margin:0 0 16px;font-size:13.5px;color:rgba(220,228,236,.66);line-height:1.55}
   .ci-signup .row{display:flex;gap:8px;max-width:430px;margin:0 auto}
-  .ci-signup input{flex:1;min-width:0;box-sizing:border-box;height:46px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.28);color:#fff;font-size:16px;outline:none}
+  .ci-signup input{flex:1;min-width:0;box-sizing:border-box;height:48px;padding:0 15px;border-radius:11px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.30);color:#fff;font-size:16px;outline:none;transition:border-color .15s}
+  .ci-signup input::placeholder{color:rgba(255,255,255,.5)}
   .ci-signup input:focus{border-color:#0099E5}
-  .ci-signup button{flex:none;box-sizing:border-box;height:46px;padding:0 18px;border:none;border-radius:10px;background:#0099E5;color:#04121f;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .ci-signup button{flex:none;box-sizing:border-box;height:48px;padding:0 20px;border:none;border-radius:11px;background:#0099E5;color:#04121f;font-weight:700;font-size:14.5px;cursor:pointer;white-space:nowrap;transition:.15s}
   .ci-signup button:hover{background:#19E0C8}
   .ci-signup button:disabled{opacity:.6;cursor:default}
   .ci-signup .note{margin-top:11px;font-size:10.5px;color:rgba(220,228,236,.44)}
   .ci-signup .ok{display:none;color:#19E0C8;font-size:14px;font-weight:600;margin-top:10px}
   .ci-signup .ok.show{display:block}
-  @media(max-width:520px){.ci-signup{padding:22px 16px}.ci-signup .row{flex-direction:column;gap:10px;max-width:none}.ci-signup input,.ci-signup button{width:100%}}
+  @media(max-width:520px){.ci-signup{padding:22px 16px}.ci-signup .row{flex-direction:column;gap:11px;max-width:none}.ci-signup input,.ci-signup button{width:100%;height:52px}.ci-signup button{font-size:15.5px}}
 </style>
 </head>
 <body>
@@ -642,7 +643,7 @@ function peersShellHTML(ks){
     '<div class="sec-label">Classifica Serie A · scegli la metrica</div>'+
     '<div class="peers-head"><div class="chips">'+chips+'</div><div class="pmeta" id="metricNote"></div></div>'+
     '<div class="ptable" id="peersBody"></div>'+
-    '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca una metrica</b> per riordinare la classifica, o <b style="color:var(--inter-cyan)">un club</b> per la scheda completa. Dati da bilanci depositati ufficiali, estratti nel database Valore Atteso. <b style="color:var(--inter-cyan)">Milan e Roma in arrivo.</b></div>';
+    '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca una metrica</b> per riordinare la classifica, o <b style="color:var(--inter-cyan)">un club</b> per la scheda completa. Dati da bilanci consolidati depositati, estratti nel database Valore Atteso.</div>';
 }
 function insights(){
   return Object.keys(CLUBS).map(function(k){
