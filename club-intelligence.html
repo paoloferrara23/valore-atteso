@@ -769,6 +769,7 @@ function viewPanoramica(c){
         stat('Plusvalenze', '€'+num(f.player_trading)+'M', 'proventi gestione calciatori')+
         stat('EBITDA', eur(f.ebitda), f.ebitda==null?'non riportato a bilancio':'margine operativo lordo')+
       '</div>'+
+      '<div class="footnote" style="margin-top:10px">PFN (Posizione Finanziaria Netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. <b style="color:var(--green)">+€ = cassa netta</b> (più liquidità che debiti) · <b style="color:var(--red)">−€ = indebitamento netto</b>.</div>'+
     '</div>'+
   '</div>'+
 
@@ -898,7 +899,7 @@ function viewSosten(c){
       '<div style="margin-top:18px;font-size:11.5px;color:var(--txt2);line-height:1.6;border-top:1px solid var(--line);padding-top:14px">'+lettura+'</div>'+
     '</div>'+
   '</div>'+
-  '<div class="footnote warn"><b>◆ Nota metodologica.</b> Lo Squad Cost Ratio UEFA completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. Qui mostriamo il rapporto <b>costo del personale / ricavi</b>, voce verificata e comparabile.</div>'+
+  '<div class="footnote warn"><b>◆ Nota metodologica.</b> Lo Squad Cost Ratio UEFA completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. Qui mostriamo il rapporto <b>costo del personale / ricavi</b>, voce verificata e comparabile. <b>PFN</b>: <b style="color:var(--green)">+€ = cassa netta</b>, <b style="color:var(--red)">−€ = indebitamento netto</b>.</div>'+
   srcLine(f);
 }
 
