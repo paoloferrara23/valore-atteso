@@ -1,5 +1,6 @@
 {
   "cleanUrls": true,
+  "github": { "silent": true },
   "functions": {
     "api/genera-edizione.js": { "maxDuration": 60 }
   },
