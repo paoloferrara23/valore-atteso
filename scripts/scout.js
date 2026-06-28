@@ -141,20 +141,28 @@ function generateToken() {
   return crypto.randomBytes(24).toString('hex');
 }
 
-// ── Leggi storico edizioni da editorial_wiki ──────────────────────────────
+// ── Leggi lo storico dei temi dalle edizioni gia pubblicate (tabella editions) ──
 async function leggiWiki() {
   if (!SUPA_URL || !SUPA_KEY) return '';
   try {
-    const r = await fetch(`${SUPA_URL}/rest/v1/editorial_wiki?categoria=in.(edizione,club_analizzato)&select=categoria,valore,edizione_ref&order=edizione_ref.asc.nullslast`, {
+    const r = await fetch(`${SUPA_URL}/rest/v1/editions?published=eq.true&select=num,title,subtitle,sections&order=num.desc&limit=20`, {
       headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
     });
     if (!r.ok) return '';
     const rows = await r.json();
-    const edizioni = rows.filter(r => r.categoria === 'edizione').map(r => r.valore).join('\n');
-    if (!edizioni) return '';
-    return `\n\nEDIZIONI GIÀ PUBBLICATE — TEMI DA NON RIPETERE:\nPuoi riprendere un tema solo se hai dati nuovi e un angolo editoriale completamente diverso. Mai ripetere la stessa azienda/deal/metrica.\n${edizioni}`;
+    if (!Array.isArray(rows) || !rows.length) return '';
+    const lista = rows.map(e => {
+      let temi = '';
+      try {
+        if (Array.isArray(e.sections)) {
+          temi = e.sections.map(s => ((s.label ? s.label + ': ' : '') + (s.title || ''))).filter(Boolean).join(' · ');
+        }
+      } catch (_) {}
+      return `#${e.num} — ${e.title}${e.subtitle ? ' | ' + e.subtitle : ''}${temi ? '\n   (' + temi + ')' : ''}`;
+    }).join('\n');
+    return `\n\nEDIZIONI GIÀ PUBBLICATE — TEMI/CLUB/DEAL DA NON RIPETERE:\nNON riproporre nessun club, deal, operazione, metrica o angolo gia trattato qui sotto. Un tema si puo riprendere SOLO se questa settimana e successo qualcosa di NUOVO, con dati nuovi e datati. Mai la stessa notizia.\n${lista}`;
   } catch(e) {
-    console.warn('Wiki fetch error:', e.message);
+    console.warn('Storico edizioni fetch error:', e.message);
     return '';
   }
 }
@@ -208,6 +216,7 @@ async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const settimana = new Date().toLocaleDateString('it-IT');
+  const setteGiorniFa = new Date(Date.now() - 7*86400000).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
   console.log('Scout v2.1 avviato:', new Date().toISOString());
 
   // ── Fase 1: Leggi biblioteca Drive + wiki storico + contesto stagionale ─
@@ -230,6 +239,12 @@ COMPITO QUESTA SETTIMANA:
 1. Cerca con web search le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo
 2. Per ogni dato finanziario trovato online, verifica se c'è conferma nei documenti della Biblioteca VA
 3. Genera un brief con raccomandazione singola forte + brief narrativo per Paolo
+
+FRESCHEZZA E NON-RIDONDANZA — REGOLA INDEROGABILE:
+- Ogni tema DEVE essere ancorato a un evento SPECIFICO e DATATO degli ULTIMI 7 GIORNI (dal ${setteGiorniFa} a oggi ${oggi}). Vietati i temi sempreverdi (es. "il debito della Juventus", "i ricavi del Real") senza una notizia NUOVA di questa settimana.
+- VIETATO riproporre club, deal, operazioni o metriche gia trattati nelle edizioni passate (elenco in fondo al prompt). Se non c'e una novita fresca su un club, NON proporlo.
+- Spazia oltre i soliti top club: cerca anche club minori, leghe, fondi, normativa, diritti TV, sponsor, stadi, naming rights — purche con angolo finanziario e data recente.
+- Se la settimana e davvero povera di notizie finanziarie, dillo nel brief: meglio un solo tema solido che tre riciclati.
 
 FONTI WEB:
 ${SITI_PRIORITARI}
