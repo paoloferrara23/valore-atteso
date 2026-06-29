@@ -60,7 +60,7 @@ Le rotte `/api/send-utils`, `/api/list-sponsor-requests`, `/api/approve-sponsor`
 | Editoriale | Lunedì | 08:00 | scripts/agent.js |
 | Deliverability | Martedì | 14:00 | scripts/deliverability-agent.js |
 | Growth | Mercoledì | 08:00 | scripts/growth-agent.js |
-| Content | Giovedì | 08:00 | scripts/content-agent.js |
+| Content (Social) | Lunedì | 09:00 | scripts/content-agent.js |
 | Sponsor Outreach | Venerdì | 07:00 | scripts/sponsor-outreach-agent.js |
 | Cost Guardian | Venerdì | 09:00 | scripts/cost-guardian.js |
 | Security | Ogni giorno | 10:00 | scripts/security-agent.js |
