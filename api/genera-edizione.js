@@ -5,11 +5,11 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const { logUsage } = require('../lib/ai-usage');
 
 // ── Chiamata Claude ───────────────────────────────────────────────────────────
-async function callClaude(messages, system, model = 'claude-sonnet-4-6') {
+async function callClaude(messages, system, model = 'claude-sonnet-4-6', maxTokens = 4000) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model, max_tokens: 4000, system, messages })
+    body: JSON.stringify({ model, max_tokens: maxTokens, system, messages })
   });
   if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic ${r.status}: ${t.slice(0,200)}`); }
   const d = await r.json();
@@ -77,6 +77,19 @@ Sommario Scout: ${scelta.sommario || scelta.summary}
 DATI VERIFICATI SCOUT (usa SOLO questi):
 ${(scelta.dati_chiave || scelta.kpi_preview || []).map(d => '• ' + d).join('\n')}
 FONTE PRIMARIA: ${scelta.fonte_principale || scelta.source}`;
+}
+
+// ── Genera una singola sezione (chiamata breve, parallelizzabile) ──────────────
+async function generaSezione(label, scelta, genSystem) {
+  const prompt = `Genera la sezione "${label}" dell'edizione di Valore Atteso.
+
+${sezionePrompt(label, scelta)}
+
+Scrivi 180-250 parole, tono Valore Atteso "make it simple".
+Rispondi SOLO JSON (nessun testo prima o dopo):
+{"label":"${label}","title":"...","body":"...","kpis":[{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."}],"verdict":"...","sources":["fonte reale"]}`;
+  const raw = await callClaude([{ role: 'user', content: prompt }], genSystem, 'claude-sonnet-4-6', 1600);
+  return parseJSON(raw);
 }
 
 // ── HANDLER ───────────────────────────────────────────────────────────────────
@@ -174,41 +187,39 @@ REGOLE ASSOLUTE:
 
 ${wikiContext}`;
 
-    const genPrompt = `Genera l'edizione #${draft.num} di Valore Atteso.
+    const sysConHint = hint ? `${genSystem}\n\nNOTA EDITORIALE PER QUESTA EDIZIONE: ${hint}` : genSystem;
 
-SEZIONI:
-${sezionePrompt('IL BILANCIO', bilancio)}
+    // Le tre sezioni in parallelo: chiamate brevi → restano sotto i 60s del piano Hobby
+    const [secBilancio, secDeal, secMetrica] = await Promise.all([
+      generaSezione('Il Bilancio', bilancio, sysConHint),
+      generaSezione('Il Deal',     deal,     sysConHint),
+      generaSezione('La Metrica',  metrica,  sysConHint),
+    ]);
+    const sections = [secBilancio, secDeal, secMetrica];
+    console.log('3 sezioni generate.');
 
-${sezionePrompt('IL DEAL', deal)}
+    // Meta (titolo/sottotitolo/opener): chiamata breve a valle delle sezioni
+    const metaPrompt = `Genera titolo, sottotitolo e opener per l'edizione #${draft.num} di Valore Atteso.
 
-${sezionePrompt('LA METRICA', metrica)}
+I tre temi dell'edizione:
+- Il Bilancio: ${secBilancio.title}
+- Il Deal: ${secDeal.title}
+- La Metrica: ${secMetrica.title}
 
-${hint ? `NOTA EDITORIALE: ${hint}` : ''}
-
-Rispondi SOLO JSON:
-{
-  "title": "...",
-  "subtitle": "...",
-  "opener": "...",
-  "sections": [
-    {"label":"Il Bilancio","title":"...","body":"...","kpis":[{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."}],"verdict":"...","sources":["fonte reale"]},
-    {"label":"Il Deal",...},
-    {"label":"La Metrica",...}
-  ]
-}`;
-
-    const genRaw = await callClaude([{ role: 'user', content: genPrompt }], genSystem);
-    console.log('Generazione completata, lunghezza:', genRaw.length);
-
-    // ── Parse ───────────────────────────────────────────────────────────────
-    const generated = parseJSON(genRaw);
+L'opener è 2-3 frasi che legano i tre temi e invogliano a leggere, tono Valore Atteso "make it simple".
+Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
+    let meta = { title: `Edizione #${draft.num}`, subtitle: '', opener: '' };
+    try {
+      const metaRaw = await callClaude([{ role: 'user', content: metaPrompt }], genSystem, 'claude-sonnet-4-6', 600);
+      meta = parseJSON(metaRaw);
+    } catch (e) { console.warn('Meta non generata:', e.message); }
 
     // ── Salva bozza ──────────────────────────────────────────────────────────
     await supabase.from('editions').update({
-      title:    generated.title,
-      subtitle: generated.subtitle || '',
-      opener:   generated.opener || '',
-      sections: generated.sections,
+      title:    meta.title || `Edizione #${draft.num}`,
+      subtitle: meta.subtitle || '',
+      opener:   meta.opener || '',
+      sections,
       date:     date || draft.date,
     }).eq('id', editionId);
 
@@ -216,7 +227,7 @@ Rispondi SOLO JSON:
     return res.status(200).json({
       ok: true,
       id: editionId,
-      title: generated.title
+      title: meta.title
     });
 
   } catch (e) {
