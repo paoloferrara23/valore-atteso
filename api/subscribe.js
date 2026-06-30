@@ -4,7 +4,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// ── Rate limiting: max 3 iscrizioni per IP per ora ───────────────────────────
+// ── Rate limiting: max 5 iscrizioni per IP per ora ───────────────────────────
 async function checkRateLimit(ip) {
   if (!ip) return true; // se non c'è IP, lascia passare
   try {
@@ -20,7 +20,7 @@ async function checkRateLimit(ip) {
       .single();
 
     const count = data?.count || 0;
-    if (count >= 3) return false; // bloccato
+    if (count >= 5) return false; // bloccato
 
     // Aggiorna o crea record
     await supabase.from('rate_limits').upsert({
