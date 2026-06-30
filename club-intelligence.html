@@ -8,7 +8,7 @@
   :root{
     --bg:#06070C; --bg2:#0A0C14; --panel:#0E1018; --panel2:#12141E;
     --line:#1E2230; --line2:#2A3040;
-    --txt:#EAEDF5; --txt2:#9AA2B6; --txt3:#5A6175;
+    --txt:#EAEDF5; --txt2:#B4BCCF; --txt3:#8A92A8;
     --green:#28E0A0; --red:#FF5C6C; --gold:#E8C87A;
     /* dinamici per club (mantenuti per le viste legacy) */
     --inter-blue:#0099E5; --inter-cyan:#19E0C8; --inter-navy:#0A1A4A;
@@ -61,7 +61,7 @@
   .nav-item:hover{background:var(--panel);color:var(--txt)}
   .nav-item.active{background:linear-gradient(90deg,color-mix(in srgb,var(--acc) 20%,transparent),transparent);color:#fff;box-shadow:inset 2px 0 0 var(--acc)}
   .nav-item.vs.active{--acc:var(--inter-cyan)}
-  .nav-item.soon{opacity:.36;cursor:not-allowed}
+  .nav-item.soon{opacity:.5;cursor:not-allowed}
   .nav-item.soon::after{content:'PRESTO';font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;margin-left:auto;color:var(--txt3);border:1px solid var(--line2);padding:1px 5px;border-radius:5px}
   .side-foot{margin-top:auto;border-top:1px solid var(--line);padding:13px 8px 2px}
   .foot-line{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--green);display:flex;align-items:center;gap:7px}
