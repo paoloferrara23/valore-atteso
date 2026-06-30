@@ -2,7 +2,7 @@ name: Content Agent
 
 on:
   schedule:
-    - cron: '0 7 * * 4'  # Giovedì 08:00 IT (7 UTC)
+    - cron: '0 8 * * 1'  # Lunedì 09:00 IT (8 UTC) — dopo la bozza newsletter (editoriale gira alle 08:00)
   workflow_dispatch:
 
 jobs:

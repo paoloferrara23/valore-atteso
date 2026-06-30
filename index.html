@@ -64,6 +64,8 @@ button,input,textarea,select{font:inherit}
 .check input{margin-top:3px;accent-color:var(--ink)}
 .check a{text-decoration:underline}
 .success{display:none;margin-bottom:12px;padding:11px 13px;background:#E4EDE7;color:var(--green);border-left:3px solid var(--green);font-family:var(--mn);font-size:10px;letter-spacing:.04em;border-radius:8px}
+.success.err{background:#F4E2DF;color:#B93A2F;border-left-color:#B93A2F}
+.success.info{background:#F1EAD9;color:#8E6B33;border-left-color:#C8A97A}
 .btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
 .preview-inline{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--cream);padding:11px 16px;border-radius:999px;font-family:var(--mn);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);transition:.16s}
 .preview-inline:hover{background:transparent;color:var(--ink)}
@@ -364,10 +366,23 @@ async function doSignup(emailId,btnId,okId,checkId){
   btn.disabled=true;
   const old=btn.textContent;
   btn.textContent='Iscrizione...';
+  ok.className='success';
   try{
     const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'homepage'})});
     const d=await r.json().catch(()=>({}));
+    if(r.status===429){
+      ok.className='success info';
+      ok.textContent='Troppi tentativi ravvicinati. Riprova tra qualche minuto: il link di conferma è in arrivo.';
+      ok.style.display='block';btn.disabled=false;btn.textContent=old;return;
+    }
     if(!r.ok||!d.ok)throw new Error(d.error||'Errore iscrizione');
+    if(d.already){
+      ok.className='success';
+      ok.textContent='✓ Sei già iscritto e confermato. Sei a posto, niente da fare.';
+      ok.style.display='block';emailEl.value='';btn.textContent='Fatto ✓';return;
+    }
+    ok.className='success';
+    ok.textContent='✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma. Se non lo vedi, guarda in spam o promozioni.';
     ok.style.display='block';
     emailEl.value='';
     btn.textContent='Fatto ✓';
@@ -375,6 +390,9 @@ async function doSignup(emailId,btnId,okId,checkId){
     btn.disabled=false;
     btn.textContent=old;
     emailEl.style.borderColor='#B93A2F';
+    ok.className='success err';
+    ok.textContent='Iscrizione non riuscita. Controlla l\'email e riprova, oppure scrivici a info@valoreatteso.com';
+    ok.style.display='block';
   }
 }
 
