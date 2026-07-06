@@ -11,7 +11,13 @@ async function callClaude(messages, system, model = 'claude-sonnet-4-6', maxToke
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model, max_tokens: maxTokens, system, messages })
   });
-  if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic ${r.status}: ${t.slice(0,200)}`); }
+  if (!r.ok) {
+    const t = await r.text();
+    if (/credit balance is too low|Plans & Billing|billing/i.test(t)) {
+      throw new Error('Credito Anthropic esaurito. Ricarica su console.anthropic.com → Plans & Billing, poi riprova.');
+    }
+    throw new Error(`Anthropic ${r.status}: ${t.slice(0,200)}`);
+  }
   const d = await r.json();
   logUsage('genera-edizione', model, d.usage);
   return d.content.filter(b => b.type === 'text').map(b => b.text).join('');

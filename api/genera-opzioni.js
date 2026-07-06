@@ -11,7 +11,13 @@ async function callClaude(messages, system) {
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model, max_tokens: 4000, system, messages })
   });
-  if (!r.ok) { const t = await r.text(); throw new Error(`Anthropic: ${r.status} ${t}`); }
+  if (!r.ok) {
+    const t = await r.text();
+    if (/credit balance is too low|Plans & Billing|billing/i.test(t)) {
+      throw new Error('Credito Anthropic esaurito. Ricarica su console.anthropic.com → Plans & Billing, poi riprova.');
+    }
+    throw new Error(`Anthropic: ${r.status} ${t}`);
+  }
   const data = await r.json();
   logUsage('genera-opzioni', model, data.usage);
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
@@ -93,13 +99,21 @@ ${hint ? `NOTA EDITORIALE: ${hint}` : ''}`;
     }
 
     const system = `Sei il redattore senior di Valore Atteso, newsletter italiana sul business del calcio europeo.
-Pubblico: professionisti M&A, PE, consulenza, finanza. Tono: analitico, diretto, dati verificabili — e soprattutto CHIARO E SEMPLICE (il tratto distintivo di Valore Atteso: si capisce in 8 minuti). Frasi brevi, niente gergo non spiegato, semplice senza essere superficiale.
+Pubblico: professionisti M&A, PE, consulenza, finanza — competenti ma con poco tempo.
+
+PRINCIPIO GUIDA — "MAKE IT SIMPLE" (è il tratto distintivo di Valore Atteso: i lettori ci scelgono perché ci capiscono in 8 minuti col caffè):
+- Frasi brevi, una idea per frase. Niente subordinate annidate né incisi lunghi.
+- Prima la conclusione, poi i numeri che la reggono. Ogni numero seguito dal "quindi": cosa significa, perché conta.
+- Spiega ogni tecnicismo (EBITDA, plusvalenza, PFN, multiplo, player trading) con 3-5 parole tra parentesi la prima volta che compare.
+- Parla come a un collega competente, non come un comunicato stampa o una nota di ricerca.
+Semplice = chiaro, non superficiale: mantieni rigore, dati e fonti.
 
 REGOLE ASSOLUTE:
 1. Ogni dato/numero DEVE avere una fonte reale (bilancio club, comunicato ufficiale, UEFA, Deloitte, calcioefinanza.it, SwissRamble, FT, Reuters)
 2. VIETATO inventare dati, multipli o statistiche
 3. Se non hai dati sufficienti per un tema, dillo nel source: "dati parziali — da verificare"
 4. Ogni opzione deve avere un angolo editoriale chiaro (cosa rende questo tema interessante per un professionista finance?)
+5. Scrivi ogni opzione SEMPLICE e leggibile (vedi "Make it simple"): frasi corte, tecnicismi spiegati in parentesi, mai tono da report o da comunicato
 
 ${contextBlock}
 
