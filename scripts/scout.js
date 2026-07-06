@@ -34,11 +34,10 @@ qualsiasi testata giornalistica o istituzione finanziaria/sportiva riconosciuta
 a livello internazionale, purché la notizia sia verificabile e la fonte citabile.
 NON accettate: blog personali, forum, social media, siti senza firma editoriale.`;
 
-async function callClaude(messages, system, useSearch = false) {
-  const model = 'claude-sonnet-4-6';
+async function callClaude(messages, system, useSearch = false, model = 'claude-sonnet-4-6') {
   const body = {
     model,
-    max_tokens: 5000,
+    max_tokens: 6000,
     system,
     messages
   };
@@ -331,36 +330,54 @@ Rispondi SOLO in JSON valido:
   "note_editoriali": "temi da evitare, angoli da considerare, contesto stagionale"
 }`;
 
-  // FASE 1: Ricerca web — output testo libero (no JSON)
+  // FASE 1: Ricerca web — output testo libero (no JSON) — modello forte + web search
   const testoRicerca = await callClaude([{
     role: 'user',
-    content: `Oggi è ${oggi}.${stagionale ? '\n\nEVENTI PRIORITARI ORA:\n' + stagionale.replace(/\n\nCONTESTO STAGIONALE ATTUALE[^\n]*\n/,'') : ''}\n\nCerca le notizie più rilevanti degli ultimi 7 giorni sul business del calcio europeo. Priorità: eventi stagionali in corso (vedi sopra), poi notizie di bilancio/deal/metrica da Serie A, Premier, Liga, Bundesliga, Ligue 1. Per ogni tema: titolo, fonte con URL diretto, dati finanziari chiave, sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, formato testo semplice, NON JSON.`
-  }], system, true);
+    content: `Oggi è ${oggi}.${stagionale ? '\n\nEVENTI PRIORITARI ORA:\n' + stagionale.replace(/\n\nCONTESTO STAGIONALE ATTUALE[^\n]*\n/,'') : ''}
+
+Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 notizie DISTINTE e fresche degli ultimi 7 giorni sul business del calcio europeo. Devono bastare per riempire con qualità 3 sezioni (Bilancio, Deal, Metrica) con più opzioni ciascuna, quindi non fermarti alle prime 3-4 che trovi: scava.
+
+COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
+- Angolo NON ovvio: il "follow the money" dietro una notizia che il tifoso medio legge come cronaca sportiva.
+- Struttura finanziaria: come è fatto un deal (equity/debito/earn-out/clausole), non solo la cifra.
+- Contabilità nascosta: plusvalenze, ammortamenti, player trading, svalutazioni, gestione FFP/PSR.
+- Soldi dei fondi: PE/private credit/sovereign che entrano nel calcio, multipli pagati, tesi di investimento.
+- Arbitraggio normativo e regolatorio: chi sfrutta o subisce UEFA/FIGC/leghe.
+- Club minori, leghe emergenti, diritti TV, naming rights, stadi, sponsor: non solo i soliti top club.
+- Storie di distress: club in crisi di liquidità, ristrutturazioni, cessioni forzate.
+
+Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre. Evita i temi già usati nelle edizioni passate (in fondo al system) salvo novità fresche e datate.
+
+Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), fonte con URL diretto, 2-3 dati finanziari chiave, la lettura CF (multipli/ratios/implicazione per un advisor M&A/PE), e la sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, testo semplice discorsivo, NON JSON.`
+  }], system, true, 'claude-opus-4-8');
 
   console.log('Fase 1 completata, testo:', testoRicerca.slice(0, 200));
 
   // FASE 2: Conversione in JSON — chiamata separata senza web search
-  const testoRicercaShort = testoRicerca.slice(0, 8000); // limita per sicurezza
-  const jsonPrompt = `Converti questo brief in JSON valido. REGOLE STRINGENTI:
-- Ogni stringa MAX 120 caratteri
-- Nessun apostrofo nelle stringhe (usa virgola o riscrivi)
-- Nessuna virgoletta dentro le stringhe
-- Solo caratteri ASCII standard
+  const testoRicercaShort = testoRicerca.slice(0, 16000); // contesto ampio per non perdere temi
+  const jsonPrompt = `Converti questo brief Scout in JSON valido, SENZA perdere ricchezza: riporta più opzioni possibili (idealmente 4 per sezione) tra quelle presenti nel brief.
+
+REGOLE JSON:
+- Italiano naturale con accenti e apostrofi: sono ammessi (in JSON l'apostrofo NON va escapato).
+- L'UNICA cosa vietata dentro una stringa è la virgoletta doppia " non escapata e gli a-capo: se servono, riscrivi la frase.
+- Il "sommario" deve essere ricco e specifico (1-2 frasi, ~200-280 caratteri): angolo di analisi + perché è rilevante ORA. Niente riassunti generici.
+- Ogni tema deve avere dati_chiave concreti (numeri con contesto) e fonte_principale con URL.
+- Non inventare: usa solo temi e dati presenti nel brief. Se una sezione ha meno di 4 temi validi nel brief, mettine meno (meglio 2 solidi che 4 riempitivi).
 
 BRIEF:
 ${testoRicercaShort}
 
-JSON richiesto:
+JSON richiesto (fino a 4 oggetti per sezione):
 {
   "settimana": "${settimana}",
   "temi_per_sezione": {
-    "bilancio": [{"titolo":"max120char","sommario":"max120char","dati_chiave":["dato1"],"fonte_principale":"testata - titolo - url","angolo":"max60char"},{"titolo":"..."},{"titolo":"..."}],
-    "deal": [{"titolo":"..."},{"titolo":"..."},{"titolo":"..."}],
-    "metrica": [{"titolo":"..."},{"titolo":"..."},{"titolo":"..."}]
+    "bilancio": [{"titolo":"titolo incisivo","sommario":"1-2 frasi ricche sull'angolo di analisi e perché conta ora","dati_chiave":["dato con contesto","dato2"],"fonte_principale":"testata - titolo - data - url","angolo":"es. redditività / player trading / indebitamento"},{"...":"..."}],
+    "deal": [{"...":"..."}],
+    "metrica": [{"...":"..."}]
   },
-  "brief_narrativo": "max200char",
-  "raccomandazione": {"tema":"max100char","sezione":"bilancio","perche":"max200char","angolo_editoriale":"max80char"},
-  "note_editoriali": "max100char"
+  "brief_narrativo": "3-4 frasi: cosa ha dominato la settimana e il fil rouge",
+  "raccomandazione": {"tema":"il tema più forte","sezione":"bilancio","perche":"2-3 frasi","angolo_editoriale":"l'angolo preciso"},
+  "note_editoriali": "temi da evitare / contesto"
 }`;
 
   // ── Fase 2b: Genera JSON ─────────────────────────────────────────────────
@@ -403,7 +420,7 @@ JSON richiesto:
   if (!brief) brief = {};
   if (!brief.temi_per_sezione) brief.temi_per_sezione = { bilancio: [], deal: [], metrica: [] };
   ['bilancio','deal','metrica'].forEach(s => {
-    brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 3);
+    brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 4);
   });
   console.log(`Temi: bilancio=${brief.temi_per_sezione.bilancio.length}, deal=${brief.temi_per_sezione.deal.length}, metrica=${brief.temi_per_sezione.metrica.length}`);
 
