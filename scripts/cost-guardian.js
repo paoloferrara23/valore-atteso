@@ -27,36 +27,6 @@ async function supaFetch(path) {
   return r.json();
 }
 
-// ── Stima costo Anthropic da token usati nei run ──────────────────────────────
-// Prezzi aggiornati giugno 2026:
-// claude-opus-4-8:   $5/1M input, $25/1M output
-// claude-sonnet-4-6: $3/1M input, $15/1M output
-// claude-haiku-4-5:  $1/1M input,  $5/1M output
-function stimaCostoRun(agent, durationMs) {
-  const agentiOpus   = ['scout', 'editoriale', 'genera-edizione', 'genera-opzioni'];
-  const agentiSonnet = ['content', 'content-agent'];
-  const isOpus   = agentiOpus.some(a => agent.includes(a));
-  const isSonnet = agentiSonnet.some(a => agent.includes(a));
-  const secs = (durationMs || 5000) / 1000;
-  // Stima token: ~300 tok/sec input, ~200 output per Opus; ~200/100 Sonnet; ~150/80 Haiku
-  let costoUSD;
-  if (isOpus) {
-    const tokInput  = secs * 300;
-    const tokOutput = secs * 200;
-    costoUSD = (tokInput * 5 + tokOutput * 25) / 1_000_000;
-  } else if (isSonnet) {
-    const tokInput  = secs * 200;
-    const tokOutput = secs * 100;
-    costoUSD = (tokInput * 3 + tokOutput * 15) / 1_000_000;
-  } else {
-    // Haiku — growth, seo, security, deliverability, cost-guardian, incident-response
-    const tokInput  = secs * 150;
-    const tokOutput = secs * 80;
-    costoUSD = (tokInput * 1 + tokOutput * 5) / 1_000_000;
-  }
-  return costoUSD * 0.92; // USD → EUR approssimativo
-}
-
 async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -96,6 +66,22 @@ async function main() {
     costoAnthropicStimato += Number(u.cost_eur) || 0;
   });
   const trackingAttivo = usageArr.length > 0;
+
+  // ── Costo REALE ultimi 7 giorni per agente (vista settimanale) ────────────
+  const usageSett = await supaFetch(`/rest/v1/ai_usage?created_at=gte.${inizioSettimana.toISOString()}&select=agent,cost_eur,input_tokens,output_tokens&limit=20000`).catch(() => []);
+  const usageSettArr = Array.isArray(usageSett) ? usageSett : [];
+  const costoSettPerAgente = {}; // agent -> { eur, tok, calls }
+  let costoAnthropicSett = 0;
+  usageSettArr.forEach(u => {
+    const a = u.agent || 'sconosciuto';
+    if (!costoSettPerAgente[a]) costoSettPerAgente[a] = { eur: 0, tok: 0, calls: 0 };
+    costoSettPerAgente[a].eur += Number(u.cost_eur) || 0;
+    costoSettPerAgente[a].tok += (u.input_tokens || 0) + (u.output_tokens || 0);
+    costoSettPerAgente[a].calls += 1;
+    costoAnthropicSett += Number(u.cost_eur) || 0;
+  });
+  const rankSett = Object.entries(costoSettPerAgente).sort((a, b) => b[1].eur - a[1].eur);
+  const topAgente = rankSett[0] ? { nome: rankSett[0][0], ...rankSett[0][1] } : null;
 
   // Agenti con errori frequenti
   Object.entries(errorPerAgente).forEach(([agent, count]) => {
@@ -154,6 +140,9 @@ async function main() {
     email_inviate_mese: emailInviateMese,
     costo_anthropic_stimato: parseFloat(costoAnthropicStimato.toFixed(2)),
     costo_per_agente: Object.fromEntries(Object.entries(costoPerAgente).map(([a, c]) => [a, parseFloat(c.eur.toFixed(4))])),
+    costo_anthropic_settimana: parseFloat(costoAnthropicSett.toFixed(2)),
+    top_agente_settimana: topAgente ? { agente: topAgente.nome, eur: parseFloat(topAgente.eur.toFixed(4)) } : null,
+    costo_settimana_per_agente: Object.fromEntries(rankSett.map(([n, c]) => [n, parseFloat(c.eur.toFixed(4))])),
     tracking_token_attivo: trackingAttivo,
     costo_resend: costoResend,
     costo_totale_stimato: parseFloat(costoTotaleStimato.toFixed(2)),
@@ -162,13 +151,7 @@ async function main() {
   };
   await memSet('cost_report', report, 'cost-guardian');
 
-  // Manda email solo se: ci sono alert, è fine mese, o è la prima settimana del mese
-  const primaSettimana = new Date().getDate() <= 7;
-  if (alerts.length === 0 && !isFineMese && !primaSettimana) {
-    await logRun('cost-guardian', 'success', `Tutto nella norma. Costo stimato: €${costoTotaleStimato.toFixed(2)}`, report, Date.now()-start);
-    console.log('Cost Guardian: nessun alert, email non inviata.');
-    return;
-  }
+  // Report costi settimanale: inviato sempre (è lo scopo dell'agente — visibilità spesa)
 
   // ── 6. Email con nuovo template ───────────────────────────────────────────
   const status = alerts.some(a => a.gravita === 'alta') ? 'warning' : 'success';
@@ -196,7 +179,37 @@ async function main() {
     date: oggi,
     runTime: `${((Date.now()-start)/1000).toFixed(1)}s`,
     sections: [
-      // KPI costi
+      // ── VISTA SETTIMANALE — la domanda diretta: chi spende e quanto a settimana ──
+      { type: 'dark_cards', label: 'Questa settimana · ultimi 7 giorni', cards: [
+        {
+          label: 'Spesa AI settimana',
+          value: `€${costoAnthropicSett.toFixed(2)}`,
+          valueColor: costoAnthropicSett < 2 ? '#4ADE80' : costoAnthropicSett < 5 ? '#FCD34D' : '#FCA5A5',
+          sub: `${usageSettArr.length} chiamate AI`,
+          labelColor: '#9A9690'
+        },
+        {
+          label: 'Agente piu costoso',
+          value: topAgente ? topAgente.nome : '—',
+          valueColor: '#C8A97A',
+          sub: topAgente ? `€${topAgente.eur.toFixed(2)} · ${fmtTok(topAgente.tok)} token` : 'nessun dato ancora',
+          labelColor: '#C8A97A',
+          accent: '200,169,122'
+        },
+      ]},
+      ...(rankSett.length ? [{ type: 'table', label: 'Costo per agente · ultimi 7 giorni', headers: [
+        { label: 'Agente' },
+        { label: 'Chiamate', align: 'center' },
+        { label: 'Token', align: 'right' },
+        { label: 'Costo settimana', align: 'right' },
+      ], rows: rankSett.map(([nome, c]) => [
+        { value: nome, mono: true },
+        { value: String(c.calls), mono: true, align: 'center', color: '#1A1A1A' },
+        { value: c.tok ? fmtTok(c.tok) : '—', mono: true, align: 'right', color: '#9A9690' },
+        { value: c.eur > 0 ? `€${c.eur.toFixed(3)}` : '—', mono: true, bold: true, align: 'right', color: c.eur > 0 ? '#1A1A1A' : '#9A9690' },
+      ]) }] : [{ type: 'alert', level: 'info', text: 'Nessuna chiamata AI registrata negli ultimi 7 giorni (o tracking appena attivato per alcuni agenti).' }]),
+
+      // KPI costi (mese)
       { type: 'kpi_grid', kpis: [
         {
           label: 'Costo stimato mese',
@@ -258,8 +271,8 @@ async function main() {
       // Alert
       ...alerts.map(a => ({
         type: 'alert',
-        text: `<strong>${a.tipo.replace(/_/g,' ')}</strong>${a.link ? ` — <a href="${a.link}" style="color:#C8251D">${a.link.replace('https://','')}</a>` : ''}<br>${a.msg}`,
-        type: a.gravita === 'alta' ? 'warning' : 'info'
+        level: a.gravita === 'alta' ? 'warning' : 'info',
+        text: `<strong>${a.tipo.replace(/_/g,' ')}</strong>${a.link ? ` — <a href="${a.link}" style="color:#C8251D">${a.link.replace('https://','')}</a>` : ''}<br>${a.msg}`
       })),
 
       // Run per agente
@@ -272,10 +285,10 @@ async function main() {
       ], rows: runRows }] : []),
 
       // Note fisse
-      { type: 'alert', text: (trackingAttivo
-          ? 'Costi Anthropic <strong>reali</strong>, calcolati dai token effettivi di ogni chiamata. Non include le ricerche web (addebito a parte ~$10/1000).'
+      { type: 'alert', level: 'info', text: (trackingAttivo
+          ? 'Costi Anthropic <strong>reali</strong>, calcolati dai token effettivi di ogni chiamata. Non include le ricerche web dello Scout (addebito a parte ~$10/1000). La chat AD della Control Room non e ancora tracciata.'
           : 'Tracking dei token <strong>appena attivato</strong>: i costi reali per agente si popolano dai prossimi run.')
-        + ' Saldo esatto su <a href="https://console.anthropic.com/settings/billing" style="color:#1B3A6B">console.anthropic.com</a>', type: 'info' },
+        + ' Saldo esatto su <a href="https://console.anthropic.com/settings/billing" style="color:#1B3A6B">console.anthropic.com</a>' },
     ]
   });
 
@@ -284,7 +297,7 @@ async function main() {
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
     body: JSON.stringify({
       from: FROM, to: APPROVAL_EMAIL,
-      subject: `Cost Guardian VA · €${costoTotaleStimato.toFixed(2)} stimati · ${alerts.length > 0 ? `⚠ ${alerts.length} alert` : '✓ OK'} · ${oggiShort}`,
+      subject: `Cost Guardian VA · €${costoAnthropicSett.toFixed(2)} questa settimana${topAgente ? ` · top: ${topAgente.nome}` : ''} · ${alerts.length > 0 ? `⚠ ${alerts.length} alert` : '✓ OK'}`,
       html
     })
   });

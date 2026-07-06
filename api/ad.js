@@ -38,12 +38,15 @@ export default async function handler(req, res) {
   const data = await r.json();
   
   if (!r.ok) {
-    return res.status(r.status).json({ 
-      error: data.error?.message || 'Errore API',
-      type: data.error?.type,
-      key_prefix: ANTHROPIC_KEY.substring(0, 20)
-    });
+    const raw = data.error?.message || 'Errore API';
+    const msg = /credit balance is too low|Plans & Billing|billing/i.test(raw)
+      ? 'Credito Anthropic esaurito. Ricarica su console.anthropic.com → Plans & Billing, poi riprova.'
+      : raw;
+    return res.status(r.status).json({ error: msg, type: data.error?.type });
   }
-  
+
+  // Tracking costi (best-effort: non deve mai rompere la chat)
+  try { const m = await import('../lib/ai-usage.js'); (m.logUsage || m.default?.logUsage)?.('ad-controlroom', payload.model, data.usage); } catch {}
+
   return res.status(200).json({ text: data.content?.[0]?.text || '' });
 }

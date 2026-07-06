@@ -21,5 +21,6 @@ jobs:
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
         run: node scripts/agent.js

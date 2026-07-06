@@ -131,13 +131,15 @@ function sActions({ label, items }) {
   </td></tr>`;
 }
 
-function sAlert({ text, type = 'warning' }) {
+function sAlert({ text, type = 'warning', level }) {
   const cfg = {
     warning: { bg: '#FEF3F2', border: '#FECACA', accent: '#C8251D', emoji: '⚠', label: 'Rischio da monitorare' },
     info:    { bg: '#EFF6FF', border: '#BFDBFE', accent: '#1B3A6B', emoji: 'ℹ', label: 'Nota' },
     success: { bg: '#F0FDF4', border: '#BBF7D0', accent: '#1B4332', emoji: '✓', label: 'Positivo' },
   };
-  const c = cfg[type] || cfg.warning;
+  // severità: 'level' se passato, altrimenti 'type' (ma 'alert' e il tipo di routing → default warning)
+  const sev = level || (type && type !== 'alert' ? type : 'warning');
+  const c = cfg[sev] || cfg.warning;
   return `<tr><td style="background:#F5F2EB;padding:0 32px 20px">
     <div style="background:${c.bg};border:1px solid ${c.border};border-left:3px solid ${c.accent};padding:13px 16px">
       <div style="font-family:'Courier New',monospace;font-size:7px;color:${c.accent};letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px">${c.emoji} ${c.label}</div>
