@@ -82,10 +82,13 @@ async function handler(req, res) {
     // Usa subs.length come valore garantito se Resend non ritorna data correttamente
     const finalSent = sent > 0 ? sent : subs.length;
     const sentEmails = subs.map(s => s.email);
-    await supabase
+    const { error: updErr } = await supabase
       .from('editions')
       .update({ sent_at: new Date().toISOString(), sent_count: finalSent, sent_to: sentEmails })
       .eq('id', edition.id);
+    // Non far fallire l'invio (gia avvenuto), ma NON ingoiare l'errore in silenzio:
+    // un update fallito qui e la ragione per cui sent_count restava 0.
+    if (updErr) console.error('[send-newsletter] update editions (sent_count) fallito:', updErr.message);
 
     try {
       await supabase.from('editorial_wiki').upsert({
