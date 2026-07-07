@@ -53,8 +53,13 @@ async function main() {
   }
 
   // ── 3. Calcola metriche ──────────────────────────────────────────────────
-  // Usa sent_count da Supabase come totale reale — più affidabile di Resend tracking
-  const totale     = ed.sent_count > 0 ? ed.sent_count : emails.length;
+  // inviate  = totale REALE della spedizione (sent_count salvato da send-newsletter)
+  // tracciate = campione realmente restituito da Resend (max 100/pagina): base dei tassi
+  // I tassi si calcolano SEMPRE sul campione tracciato, cosi numeratore e denominatore
+  // sono coerenti (altrimenti open-rate tra due dataset diversi = numero falso).
+  const tracciate  = emails.length;
+  const inviate    = ed.sent_count > 0 ? ed.sent_count : tracciate;
+  const campioneParziale = tracciate < inviate; // Resend ha restituito meno record del reale
   const consegnate = emails.filter(e => ['delivered','opened','clicked'].includes(e.last_event)).length;
   const aperte     = emails.filter(e => ['opened','clicked'].includes(e.last_event)).length;
   const cliccate   = emails.filter(e => e.last_event === 'clicked').length;
@@ -63,28 +68,30 @@ async function main() {
   const pending    = emails.filter(e => ['queued','sending'].includes(e.last_event)).length;
 
   const pct = (n, d) => d > 0 ? ((n/d)*100).toFixed(1) : 'N/D';
-  const tassoConsegna = pct(consegnate, totale);
+  const tassoConsegna = pct(consegnate, tracciate);
   const tassoApertura = pct(aperte, consegnate);
   const tassoClick    = pct(cliccate, aperte);
-  const tassoBounce   = pct(bounced, totale);
-  const tassoSpam     = pct(spam, totale);
+  const tassoBounce   = pct(bounced, tracciate);
+  const tassoSpam     = pct(spam, tracciate);
 
   // ── 4. Alert ────────────────────────────────────────────────────────────
   const alerts = [];
-  if (parseFloat(tassoApertura) < 20 && totale > 10)
+  if (parseFloat(tassoApertura) < 20 && tracciate > 10)
     alerts.push(`Tasso apertura basso: ${tassoApertura}% — ottimale B2B >30%`);
-  if (parseFloat(tassoBounce) > 2 && totale > 5)
+  if (parseFloat(tassoBounce) > 2 && tracciate > 5)
     alerts.push(`Bounce rate alto: ${tassoBounce}% — massimo accettabile 2%`);
   if (spam > 0)
     alerts.push(`${spam} segnalazione spam — controllare immediatamente gli indirizzi`);
-  if (parseFloat(tassoConsegna) < 95 && totale > 5)
+  if (parseFloat(tassoConsegna) < 95 && tracciate > 5)
     alerts.push(`Deliverability bassa: ${tassoConsegna}% — verificare reputazione dominio`);
 
   // ── 5. Salva report ─────────────────────────────────────────────────────
   const report = {
     data: new Date().toISOString(),
     edizione: ed.num,
-    email_analizzate: totale,
+    email_inviate: inviate,
+    email_tracciate: tracciate,
+    campione_parziale: campioneParziale,
     consegnate, aperte, cliccate, bounced, spam,
     tasso_consegna: tassoConsegna,
     tasso_apertura: tassoApertura,
@@ -110,11 +117,11 @@ async function main() {
     runTime: `${((Date.now()-start)/1000).toFixed(1)}s`,
     sections: [
       // Edizione analizzata
-      { type: 'narrative', label: 'Edizione analizzata', text: `<strong>#${ed.num}</strong> — ${ed.title}<br><span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${totale} email analizzate · dati Resend in tempo reale</span>`, dark: true },
+      { type: 'narrative', label: 'Edizione analizzata', text: `<strong>#${ed.num}</strong> — ${ed.title}<br><span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${inviate} email inviate${campioneParziale ? ` · tassi su ${tracciate} tracciate da Resend` : ' · dati Resend in tempo reale'}</span>`, dark: true },
 
       // KPI principali
       { type: 'kpi_grid', kpis: [
-        { label: 'Consegnate',   value: `${tassoConsegna}%`, color: sc(tassoConsegna, 97, 95),  sub: `${consegnate}/${totale}`,   subColor: '#9A9690' },
+        { label: 'Consegnate',   value: `${tassoConsegna}%`, color: sc(tassoConsegna, 97, 95),  sub: `${consegnate}/${tracciate}`,   subColor: '#9A9690' },
         { label: 'Apertura',     value: `${tassoApertura}%`, color: sc(tassoApertura, 30, 20),  sub: 'benchmark >30%',            subColor: '#9A9690' },
         { label: 'Click rate',   value: `${tassoClick}%`,    color: sc(tassoClick, 5, 2),       sub: 'benchmark 3-7%',            subColor: '#9A9690' },
         { label: 'Bounce',       value: `${tassoBounce}%`,   color: sc(2-parseFloat(tassoBounce||0), 0, -2), sub: 'max 2%', subColor: '#9A9690' },
@@ -167,7 +174,7 @@ async function main() {
 
       // Dettaglio numeri
       { type: 'dark_cards', label: 'Dettaglio invio', cards: [
-        { label: 'Email inviate',   value: String(totale),     labelColor: '#9A9690', valueColor: '#FFFDF8' },
+        { label: 'Email inviate',   value: String(inviate),    labelColor: '#9A9690', valueColor: '#FFFDF8' },
         { label: 'Aperte',          value: String(aperte),     labelColor: '#9A9690', valueColor: '#4ADE80' },
         { label: 'Cliccate',        value: String(cliccate),   labelColor: '#9A9690', valueColor: '#C8A97A' },
         { label: 'Bounce + Spam',   value: String(bounced + spam), labelColor: '#9A9690', valueColor: bounced+spam > 0 ? '#FCA5A5' : '#FFFDF8' },
