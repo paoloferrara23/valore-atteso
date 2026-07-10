@@ -1,8 +1,10 @@
 name: Sponsor Outreach Agent
 
 on:
-  schedule:
-    - cron: '0 5 * * 5'  # Ogni venerdì alle 07:00 ora italiana (estate; 06:00 inverno)
+  # PAUSA: agente Sponsor Outreach sospeso su richiesta di Paolo (luglio 2026).
+  # Per riattivarlo: togliere il commento alle due righe 'schedule' qui sotto.
+  # schedule:
+  #   - cron: '0 5 * * 5'  # Ogni venerdì alle 07:00 ora italiana (estate; 06:00 inverno)
   workflow_dispatch:
 
 jobs:
