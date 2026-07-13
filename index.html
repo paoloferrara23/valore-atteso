@@ -319,7 +319,7 @@ const AGENT_SCHEDULE=[
   {key:'approval',name:'Paolo',day:'Martedì',time:'Manuale',group:'gate',desc:'Revisione inline, approvazione, verifica gate e invio a tutti gli iscritti.'},
   {key:'deliverability',name:'Deliverability',day:'Martedì',time:'14:00',group:'operativo',desc:'Controlla invii, bounce, engagement e reputazione dominio dopo ogni send.'},
   {key:'growth',name:'Growth',day:'Mercoledì',time:'08:00',group:'operativo',desc:'Analizza crescita iscritti, canali, conversioni e opportunità distribuzione settimanale.'},
-  {key:'content',name:'Content',day:'Giovedì',time:'08:00',group:'operativo',desc:'Genera idee post LinkedIn e caption Instagram da ogni edizione pubblicata.'},
+  {key:'content',name:'Content',day:'Lunedì',time:'09:00',group:'operativo',desc:'Genera il calendario social (LinkedIn/Instagram) dall\'ultima bozza. Rigenerabile a mano dal tab Social.'},
   {key:'cost-guardian',name:'Cost Guardian',day:'Venerdì',time:'08:00',group:'operativo',desc:'Monitora costi API Anthropic, Resend, Vercel. Alert se superano soglie.'},
   {key:'security',name:'Security',day:'Ogni giorno',time:'10:00',group:'operativo',desc:'Controlla endpoint, chiavi API, configurazioni critiche e accessi anomali.'},
   {key:'incident-response',name:'Incident Response',day:'Ogni giorno',time:'09:00',group:'operativo',desc:'Verifica errori, anomalie nei log e incidenti operativi. Notifica Paolo se critico.'}
@@ -888,6 +888,25 @@ function crCalRenderDetail(idx){
   det.appendChild(makeSection('💼 LinkedIn',p.linkedin_post,'Copia LinkedIn',false));
   if(p.chatgpt_prompt){
     det.appendChild(makeSection('🎨 Prompt ChatGPT → immagine Instagram',p.chatgpt_prompt,'Copia prompt → ChatGPT',true));
+  }
+}
+
+async function crAggiornaCalendario(){
+  const st=document.getElementById('cr-social-stato');
+  st.style.display='block';st.className='cr-status';
+  st.textContent='Rigenerazione dall\'ultima bozza salvata in corso...';
+  try{
+    const r=await fetch('/api/trigger-content',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD}});
+    const d=await r.json().catch(function(){return {};});
+    if(r.ok&&d.ok){
+      st.className='cr-status ok';
+      st.innerHTML='✓ Content Agent avviato sull\'ultima bozza. Il calendario si aggiorna tra 2-3 minuti: poi clicca ↻ Ricarica per vederlo.';
+    }else{
+      st.className='cr-status err';
+      st.textContent='Errore avvio Content Agent: '+(d.error||('HTTP '+r.status));
+    }
+  }catch(e){
+    st.className='cr-status err';st.textContent='Errore: '+e.message;
   }
 }
 
@@ -1836,7 +1855,10 @@ loadLatestPreview();
             <div style="font-family:var(--mn);font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Strategia di comunicazione</div>
             <div style="font-family:var(--sf);font-size:1.4rem;font-weight:700;color:var(--ink)">Calendario social settimanale</div>
           </div>
-          <button class="cr-btn" onclick="crLoadCalendario()">↻ Aggiorna</button>
+          <div style="display:flex;gap:8px">
+            <button class="cr-btn light" onclick="crLoadCalendario()">↻ Ricarica</button>
+            <button class="cr-btn" onclick="crAggiornaCalendario()">✦ Rigenera dall'ultima bozza</button>
+          </div>
         </div>
         <div id="cr-social-stato" class="cr-status" style="margin-bottom:16px"></div>
         <div id="cr-social-calendario"></div>
