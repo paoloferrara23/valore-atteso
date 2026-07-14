@@ -114,6 +114,7 @@ REGOLE ASSOLUTE:
 3. Se non hai dati sufficienti per un tema, dillo nel source: "dati parziali — da verificare"
 4. Ogni opzione deve avere un angolo editoriale chiaro (cosa rende questo tema interessante per un professionista finance?)
 5. Scrivi ogni opzione SEMPLICE e leggibile (vedi "Make it simple"): frasi corte, tecnicismi spiegati in parentesi, mai tono da report o da comunicato
+6. KPI CORTI: ogni voce di kpi_preview è una cifra compatta con unità (es. "Ricavi: €13 mld", "Tetto UEFA: 70%"), mai una frase. Il numero deve essere breve; il contesto sta nell'etichetta, non nel valore
 
 ${contextBlock}
 
