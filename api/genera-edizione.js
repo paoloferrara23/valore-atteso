@@ -190,6 +190,7 @@ REGOLE ASSOLUTE:
 7. Le tre sezioni non devono contraddirsi né ripetere gli stessi dati
 8. Non citare mai Calcio e Finanza — usa sempre le fonti primarie (bilanci, UEFA, FIGC, Deloitte)
 9. Ogni sezione: 180-250 parole, 3 KPI dai dati Scout, verdict incisivo, fonti reali
+10. FORMATO KPI — i "key financials" devono essere CORTI. Il campo "value" è SOLO una cifra compatta con unità (es. "€13 mld", "70%", "£100M", "3,3 mld $", "104"), MAI una frase, max ~12 caratteri. Il contesto va nel "sub" (max ~30 caratteri). Il "label" è breve (max ~24 caratteri). Se un dato non è esprimibile in cifra breve, non usarlo come KPI.
 
 ${wikiContext}`;
 
