@@ -96,11 +96,11 @@ async function main() {
   const report = { data: oggi, incidents: incidents.length, warnings: warnings.length, dettaglio_incidents: incidents, dettaglio_warnings: warnings };
   await memSet('incident_report', report, 'incident-response');
 
-  // Manda email solo se ci sono problemi o lunedì
+  // Manda email SOLO se c'è effettivamente qualcosa da segnalare (incident o warning).
+  // Niente report "va tutto bene": nessuna notizia è una buona notizia.
   const haProblemi = incidents.length > 0 || warnings.length > 0;
-  const isLunedi   = new Date().getDay() === 1;
-  if (!haProblemi && !isLunedi) {
-    await logRun('incident-response', 'success', 'Tutto OK — nessun problema.', report, Date.now()-start);
+  if (!haProblemi) {
+    await logRun('incident-response', 'success', 'Tutto OK — nessun problema, email non inviata.', report, Date.now()-start);
     console.log('Incident Response: tutto OK, email non inviata.');
     return;
   }
