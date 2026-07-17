@@ -424,12 +424,18 @@ let metric = 'revenue_total';
 let insightTimer = null, insightIx = 0;
 const prefersReduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const METRICS = [
-  {key:'revenue_total', short:'Ricavi',      label:'Ricavi totali',                type:'eur', better:'high'},
-  {key:'net_result',    short:'Risultato',   label:'Risultato netto',              type:'sig', better:'high'},
-  {key:'net_debt',      short:'PFN',         label:'Posizione finanziaria netta',  type:'pfn', better:'lowdebt'},
-  {key:'wage_ratio',    short:'Wage/Rev',    label:'Costo personale / Ricavi',     type:'pct', better:'low'},
-  {key:'player_trading',short:'Plusvalenze', label:'Plusvalenze da cessioni',      type:'eur', better:'high'},
-  {key:'equity',        short:'Patrimonio',  label:'Patrimonio netto',             type:'sig', better:'high'}
+  {key:'revenue_total', short:'Ricavi',      label:'Ricavi totali',                type:'eur', better:'high',
+   verdetto:'Il motore economico del club. Più ricavi = più spazio per competere restando nei vincoli UEFA. In vetta chi genera di più, al netto delle plusvalenze.'},
+  {key:'net_result',    short:'Risultato',   label:'Risultato netto',              type:'sig', better:'high',
+   verdetto:'Utile o perdita dell\'esercizio. Nel calcio la perdita è la norma: conta la tendenza nel tempo e chi la copre (soci o plusvalenze). Verde = utile, rosso = perdita.'},
+  {key:'net_debt',      short:'PFN',         label:'Posizione finanziaria netta',  type:'pfn', better:'lowdebt',
+   verdetto:'Quanto il club dipende dai finanziamenti. Cassa netta (verde, +€) = più liquidità che debiti; debito netto (rosso, −€) = esposizione finanziaria da servire.'},
+  {key:'wage_ratio',    short:'Wage/Rev',    label:'Costo personale / Ricavi',     type:'pct', better:'low',
+   verdetto:'Sostenibilità del monte ingaggi. Riferimento UEFA per la Squad Cost Rule: sotto il 70% dei ricavi. Più è basso, più margine ha il club per investire e restare in regola.'},
+  {key:'player_trading',short:'Plusvalenze', label:'Plusvalenze da cessioni',      type:'eur', better:'high',
+   verdetto:'Ricavi dalla vendita dei cartellini. Utili ma volatili: chi ne dipende troppo ha un modello fragile, perché non si ripetono ogni anno.'},
+  {key:'equity',        short:'Patrimonio',  label:'Patrimonio netto',             type:'sig', better:'high',
+   verdetto:'Il cuscinetto di capitale che assorbe le perdite. Se scende o va in negativo servono ricapitalizzazioni dei soci per continuare a operare.'}
 ];
 
 /* ── helpers numerici ── */
@@ -651,6 +657,7 @@ function peersShellHTML(ks){
   return '<div id="peersAnchor"></div>'+
     '<div class="sec-label">Classifica Serie A · scegli la metrica</div>'+
     '<div class="peers-head"><div class="chips">'+chips+'</div><div class="pmeta" id="metricNote"></div></div>'+
+    '<div id="metricVerdict" style="font-family:var(--sans);font-size:13px;color:var(--txt2);line-height:1.55;margin:2px 0 16px;padding:11px 14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--inter-cyan);border-radius:8px"></div>'+
     '<div class="ptable" id="peersBody"></div>'+
     '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca una metrica</b> per riordinare la classifica, o <b style="color:var(--inter-cyan)">un club</b> per la scheda completa. Dati da bilanci consolidati depositati, estratti nel database Valore Atteso.</div>';
 }
@@ -720,6 +727,7 @@ function paintPeers(flip){
   body.innerHTML = peerRows(metric);
   document.querySelectorAll('[data-metric]').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.metric===metric); });
   var note=el('metricNote'); if(note) note.textContent = m.label + (m.better==='low'?' · meglio se basso' : (m.better==='lowdebt'?' · cassa netta in verde' : ' · meglio se alto'));
+  var vd=el('metricVerdict'); if(vd) vd.innerHTML = m.verdetto ? ('<b style="color:var(--inter-cyan)">◆ Come leggerla — </b>'+m.verdetto) : '';
   if(flip && !prefersReduced){
     body.querySelectorAll('[data-row]').forEach(function(r){
       var now=r.getBoundingClientRect().top; var d=(prev[r.dataset.row]!=null?prev[r.dataset.row]:now)-now;
