@@ -176,9 +176,10 @@ function contestoStagionale() {
 
   // Mondiale 2026 (giugno–luglio 2026)
   if (y === 2026 && (m === 6 || m === 7)) {
-    eventi.push(`MONDIALE 2026 IN CORSO (giugno–luglio 2026) — PRIORITÀ MASSIMA:
-  Cerca attivamente angoli business sul Mondiale: ricavi FIFA (target $11 miliardi), diritti TV per area geografica, deal sponsorizzazione (Adidas, Coca-Cola, Hyundai, ecc.), hospitality e ticketing (USA/Canada/Messico), compensazione club UEFA/FIFA per cessione giocatori, impatto sui bilanci dei club con giocatori in nazionale, stadium economics delle sedi ospitanti.
-  L'ANGOLO VA: come il Mondiale trasforma l'economia del calcio mondiale — non la cronaca sportiva, ma l'implicazione finanziaria per club, investitori e advisor.`);
+    eventi.push(`MONDIALE 2026 (giugno–luglio 2026) — PRIORITÀ MASSIMA, È L'EVENTO DEL MOMENTO:
+  Il torneo è nel vivo (fase a eliminazione diretta / finale): è ciò di cui parla il mondo intero ADESSO. I lettori si aspettano da noi la LETTURA ECONOMICA di quello che stanno guardando — se è appena stata giocata la finale, l'angolo money della finale è quasi obbligato.
+  Angoli business: montepremi FIFA e premio al vincitore (e impatto sui bilanci dei club di appartenenza dei giocatori), ricavi FIFA record del ciclo, Club Benefits Programme (compenso ai club per il rilascio dei nazionali), diritti TV per area geografica, attivazioni e ROI degli sponsor (Adidas, Coca-Cola, Visa, ecc.), economia delle città ospitanti e della finale, uplift commerciale e valore di mercato dei protagonisti, biglietteria e hospitality USA/Canada/Messico.
+  L'ANGOLO VA: non la cronaca della partita, ma cosa significa in soldi — per club, investitori, sponsor, advisor.`);
   }
 
   // Mercato trasferimenti estivo
@@ -337,6 +338,8 @@ Rispondi SOLO in JSON valido:
 
 Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 notizie DISTINTE e fresche degli ultimi 7 giorni sul business del calcio europeo. Devono bastare per riempire con qualità 3 sezioni (Bilancio, Deal, Metrica) con più opzioni ciascuna, quindi non fermarti alle prime 3-4 che trovi: scava.
 
+PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — una finale (es. la finale del Mondiale), un big match decisivo, un annuncio o un'operazione di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
+
 COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
 - Angolo NON ovvio: il "follow the money" dietro una notizia che il tifoso medio legge come cronaca sportiva.
 - Struttura finanziaria: come è fatto un deal (equity/debito/earn-out/clausole), non solo la cifra.
@@ -346,7 +349,9 @@ COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
 - Club minori, leghe emergenti, diritti TV, naming rights, stadi, sponsor: non solo i soliti top club.
 - Storie di distress: club in crisi di liquidità, ristrutturazioni, cessioni forzate.
 
-Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre. Evita i temi già usati nelle edizioni passate (in fondo al system) salvo novità fresche e datate.
+Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre.
+
+FILTRO ANTI-RIDONDANZA (OBBLIGATORIO — è il problema n.1 da risolvere): in fondo al system c'è l'elenco delle EDIZIONI GIÀ PUBBLICATE. Per OGNI tema candidato confrontalo con quell'elenco: se lo stesso club, deal, operazione, persona o metrica è già stato trattato e NON c'è una novità concreta e DATATA in questi 7 giorni, SCARTALO. In caso di dubbio, scarta. Per ogni tema che tocca un'entità già vista, scrivi esplicitamente "NOVITÀ DI QUESTA SETTIMANA: [fatto nuovo + data]"; se non riesci a scriverla, il tema è ridondante e va eliminato. Meglio pochi temi davvero nuovi che tanti riciclati.
 
 Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), fonte con URL diretto, 2-3 dati finanziari chiave, la lettura CF (multipli/ratios/implicazione per un advisor M&A/PE), e la sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, testo semplice discorsivo, NON JSON.`
   }], system, true, 'claude-opus-4-8');
