@@ -1263,8 +1263,10 @@ async function crGeneraOpzioni(){
       if(cb||cd||cm)customSez={bilancio:cb||null,deal:cd||null,metrica:cm||null};
     }
     var r=await fetch('/api/genera-opzioni',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD},body:JSON.stringify({hint:hint,editionNum:editionNum,oggi:new Date().toLocaleDateString('it-IT'),tematiche:tematicheLibere,custom_sections:customSez})});
-    var d=await r.json();
-    if(!r.ok||d.error)throw new Error(d.error||'Errore');
+    if(!r.ok){var et=await r.text().catch(function(){return '';});var em='';try{em=(JSON.parse(et)||{}).error||'';}catch(_){}
+      throw new Error(em||('Errore server ('+r.status+'). La generazione opzioni potrebbe aver superato il tempo limite: riprova.'));}
+    var d=await r.json().catch(function(){return null;});
+    if(!d||d.error)throw new Error((d&&d.error)||'Risposta non valida dal server.');
     st.className='cr-status ok';st.textContent='Opzioni generate.';
     crLoadBozze();
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}

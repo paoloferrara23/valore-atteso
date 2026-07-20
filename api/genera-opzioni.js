@@ -4,12 +4,12 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const { logUsage } = require('../lib/ai-usage');
 
-async function callClaude(messages, system) {
+async function callClaude(messages, system, maxTokens = 4000) {
   const model = 'claude-sonnet-4-6';
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model, max_tokens: 4000, system, messages })
+    body: JSON.stringify({ model, max_tokens: maxTokens, system, messages })
   });
   if (!r.ok) {
     const t = await r.text();
@@ -116,33 +116,24 @@ REGOLE ASSOLUTE:
 5. Scrivi ogni opzione SEMPLICE e leggibile (vedi "Make it simple"): frasi corte, tecnicismi spiegati in parentesi, mai tono da report o da comunicato
 6. KPI CORTI: ogni voce di kpi_preview è una cifra compatta con unità (es. "Ricavi: €13 mld", "Tetto UEFA: 70%"), mai una frase. Il numero deve essere breve; il contesto sta nell'etichetta, non nel valore
 
-${contextBlock}
+${contextBlock}`;
 
-Rispondi SOLO in JSON valido:
-{
-  "section_options": {
-    "bilancio": [
-      {"title": "titolo editoriale preciso","summary": "2-3 righe: angolo di analisi, perché è rilevante ora, cosa si può misurare","kpi_preview": ["metrica1: valore","metrica2: valore"],"source": "fonte principale verificabile","angolo": "es. redditività / indebitamento / player trading"},
-      {...opzione 2...},
-      {...opzione 3...}
-    ],
-    "deal": [...3 opzioni...],
-    "metrica": [...3 opzioni...]
-  }
-}`;
+    const LABELS = { bilancio: 'IL BILANCIO', deal: 'IL DEAL', metrica: 'LA METRICA' };
+    async function generaSezioneOpzioni(sez) {
+      const prompt = `Genera 3 opzioni editoriali DIVERSE (angoli diversi) SOLO per la sezione "${LABELS[sez]}" dell'edizione #${editionNum} di Valore Atteso (${oggi}).
+Modalità: ${modeLabel}. Solo dati verificabili e fonti reali. Stile "make it simple".
+Rispondi SOLO JSON (nessun testo prima o dopo):
+{"options":[{"title":"...","summary":"1-2 frasi: angolo e perché è rilevante ora","kpi_preview":["metrica: valore","metrica: valore"],"source":"fonte verificabile","angolo":"es. redditività / player trading"},{"title":"..."},{"title":"..."}]}`;
+      const raw = await callClaude([{ role: 'user', content: prompt }], system, 1600);
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('JSON non valido dalla AI (' + sez + ')');
+      return [sez, (JSON.parse(match[0]).options || []).slice(0, 3)];
+    }
 
-    const testo = await callClaude([{
-      role: 'user',
-      content: `Genera le opzioni editoriali per l'edizione #${editionNum} di Valore Atteso (${oggi}).
-Modalità: ${modeLabel}.
-Per ogni sezione proponi 3 opzioni con angoli diversi. Solo dati verificabili e fonti reali.`
-    }], system);
-
-    let opts;
-    try {
-      const match = testo.match(/\{[\s\S]*\}/);
-      opts = JSON.parse(match[0]);
-    } catch { throw new Error('JSON non valido dalla AI'); }
+    // 3 sezioni in parallelo: chiamate brevi -> resta sotto i 60s del piano Hobby
+    const risultati = await Promise.all(['bilancio', 'deal', 'metrica'].map(generaSezioneOpzioni));
+    const opts = { section_options: { bilancio: [], deal: [], metrica: [] } };
+    risultati.forEach(([sez, arr]) => { opts.section_options[sez] = arr; });
 
     // Salva bozza su Supabase
     const { data: saved, error } = await supabase
