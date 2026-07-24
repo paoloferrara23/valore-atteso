@@ -9,7 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE = 'https://valoreatteso.com';
+const SITE = 'https://www.valoreatteso.com';
 const ROOT = path.resolve(__dirname, '..');
 const PREVIEW_CHARS = 320;
 
