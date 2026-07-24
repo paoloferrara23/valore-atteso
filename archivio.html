@@ -462,9 +462,16 @@ async function loadList(){
     }
     el.innerHTML = '';
     eds.forEach(e => {
-      const row = document.createElement('div');
+      // Anchor reale verso la pagina statica /edizione-N (crawlabile da Google),
+      // ma il click normale resta in-page (SPA); cmd/ctrl/click centrale aprono la pagina.
+      const row = document.createElement('a');
       row.className = 'ed-row';
-      row.onclick = () => openArt(e.num);
+      row.href = '/edizione-' + parseInt(e.num, 10);
+      row.onclick = (ev) => {
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button === 1) return;
+        ev.preventDefault();
+        openArt(e.num);
+      };
 
       const numEl = document.createElement('div');
       numEl.className = 'ed-num';
