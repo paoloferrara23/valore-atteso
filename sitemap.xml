@@ -2,50 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://valoreatteso.com/</loc>
-    <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/archivio.html</loc>
-    <lastmod>2026-05-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://valoreatteso.com/club-intelligence</loc>
-    <lastmod>2026-06-30</lastmod>
+    <loc>https://valoreatteso.com/archivio</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/about.html</loc>
-    <lastmod>2026-05-26</lastmod>
+    <loc>https://valoreatteso.com/club-intelligence</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/glossario.html</loc>
-    <lastmod>2026-05-26</lastmod>
+    <loc>https://valoreatteso.com/glossario</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/privacy.html</loc>
-    <lastmod>2026-05-26</lastmod>
+    <loc>https://valoreatteso.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/cookie-policy.html</loc>
-    <lastmod>2026-05-26</lastmod>
+    <loc>https://valoreatteso.com/cookie-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://valoreatteso.com/disclaimer.html</loc>
-    <lastmod>2026-05-26</lastmod>
+    <loc>https://valoreatteso.com/disclaimer</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-12</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-11</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-10</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-9</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-8</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-7</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-6</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-5</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-4</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-3</loc>
+    <lastmod>19 maggio 2026</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-2</loc>
+    <lastmod>12 maggio 2026</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://valoreatteso.com/edizione-1</loc>
+    <lastmod>5 maggio 2026</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
