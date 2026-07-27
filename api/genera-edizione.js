@@ -147,6 +147,7 @@ Rispondi SOLO JSON: {"label":"${sezLabels[sezIdx]}","title":"...","body":"...","
 3. Linguaggio non professionale
 4. KPI con valori inventati
 5. Leggibilità ("make it simple"): spezza le frasi troppo lunghe, sciogli le subordinate annidate, spiega ogni tecnicismo in 3-5 parole, togli il tono da report. Mantieni il rigore e i dati: semplice = chiaro, non superficiale.
+6. Competizioni europee e regole UEFA: se il testo afferma che un club è in Champions/Europa/Conference League o che è soggetto alle regole UEFA (Squad Cost Ratio 70%), verifica la coerenza con la stagione reale. Le regole UEFA valgono solo per i club nelle coppe UEFA; per gli altri valgono le regole domestiche (es. Premier League SCR 85%, PSR). Nel dubbio, sostituisci con [da verificare] o riformula senza l'affermazione.
 
 SEZIONE DA REVISIONARE:
 ${writerRaw}
@@ -191,6 +192,7 @@ REGOLE ASSOLUTE:
 8. Non citare mai Calcio e Finanza — usa sempre le fonti primarie (bilanci, UEFA, FIGC, Deloitte)
 9. Ogni sezione: 180-250 parole, 3 KPI dai dati Scout, verdict incisivo, fonti reali
 10. FORMATO KPI — i "key financials" devono essere CORTI. Il campo "value" è SOLO una cifra compatta con unità (es. "€13 mld", "70%", "£100M", "3,3 mld $", "104"), MAI una frase, max ~12 caratteri. Il contesto va nel "sub" (max ~30 caratteri). Il "label" è breve (max ~24 caratteri). Se un dato non è esprimibile in cifra breve, non usarlo come KPI.
+11. COMPETIZIONI EUROPEE E REGOLE APPLICABILI — verifica prima di affermare: NON dare per scontato che un club giochi in Champions/Europa/Conference League. Le regole finanziarie UEFA (Fair Play Finanziario, Squad Cost Ratio 70%) valgono SOLO per i club iscritti alle competizioni UEFA di quella stagione. Per i club fuori dall'Europa valgono le regole domestiche (es. Premier League: Squad Cost Ratio 85%, PSR). Se lo status europeo di un club per la stagione in corso non è tra i DATI VERIFICATI SCOUT, NON affermarlo e non dedurne conseguenze regolamentari: scrivi [da verificare] oppure ometti.
 
 ${wikiContext}`;
 

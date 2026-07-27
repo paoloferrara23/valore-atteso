@@ -115,6 +115,7 @@ REGOLE ASSOLUTE:
 4. Ogni opzione deve avere un angolo editoriale chiaro (cosa rende questo tema interessante per un professionista finance?)
 5. Scrivi ogni opzione SEMPLICE e leggibile (vedi "Make it simple"): frasi corte, tecnicismi spiegati in parentesi, mai tono da report o da comunicato
 6. KPI CORTI: ogni voce di kpi_preview è una cifra compatta con unità (es. "Ricavi: €13 mld", "Tetto UEFA: 70%"), mai una frase. Il numero deve essere breve; il contesto sta nell'etichetta, non nel valore
+7. COMPETIZIONI EUROPEE: non dare per scontato che un club sia in una competizione europea né soggetto alle regole UEFA. Le regole UEFA valgono solo per chi gioca le coppe UEFA; per gli altri valgono quelle domestiche (es. Premier League Squad Cost Ratio 85%). Nel dubbio sullo status europeo di un club per la stagione in corso, non fondarci sopra l'angolo editoriale.
 
 ${contextBlock}`;
 
