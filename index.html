@@ -1227,10 +1227,29 @@ async function crLoadScoutSelection(){
     return true;
   }catch(e){if(st){st.textContent='Errore caricamento selezione Scout.';st.style.color='#9B3027';}return false}
 }
+async function crLoadScoutPending(){
+  var banner=document.getElementById('cr-scout-pending-banner');
+  if(!banner)return;
+  try{
+    var rp=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_pending&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    var dp=await rp.json();
+    var pend=dp&&dp.length?dp[0].value:null;
+    if(!pend||!pend.selection_token||!pend.brief_id){banner.style.display='none';return;}
+    var rs=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_selezione&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    var ds=await rs.json();
+    var sel=ds&&ds.length?ds[0].value:null;
+    if(sel&&sel.stato==='approved'&&sel.brief_id===pend.brief_id){banner.style.display='none';return;}
+    var tema=(pend.raccomandazione&&pend.raccomandazione.tema)||'';
+    var quando=pend.settimana||'';
+    document.getElementById('cr-scout-pending-tema').textContent=(quando?'('+quando+') ':'')+'Consigliato: '+(tema||'brief pronto');
+    document.getElementById('cr-scout-pending-link').href='/scout-select?token='+encodeURIComponent(pend.selection_token);
+    banner.style.display='block';
+  }catch(e){banner.style.display='none';}
+}
 function crSetMode(m){
   crRedazioneMode=m;
   document.getElementById('cr-mode-auto-panel').style.display=m==='auto'?'block':'none';
-  if(m==='auto')crLoadScoutSelection();
+  if(m==='auto'){crLoadScoutSelection();crLoadScoutPending();}
   document.getElementById('cr-mode-manual-panel').style.display=m==='manual'?'block':'none';
   document.getElementById('cr-mode-auto').style.opacity=m==='auto'?'1':'0.5';
   document.getElementById('cr-mode-manual').style.opacity=m==='manual'?'1':'0.5';
@@ -2047,6 +2066,11 @@ loadLatestPreview();
             <input class="cr-input" id="cr-hint" placeholder="Hint opzionale: club, tema, deal..." style="width:100%;box-sizing:border-box">
             <div style="font-family:var(--mn);font-size:10px;color:#9A9690;margin-top:6px">Usa i tre temi che hai confermato dal link Scout. Puoi aggiungere un hint editoriale.</div>
             <div id="cr-scout-selection-status" style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:9px">Caricamento selezione Scout...</div>
+            <div id="cr-scout-pending-banner" style="display:none;margin-top:12px;padding:12px 14px;background:#FBF6EC;border:1px solid #C8A97A;border-radius:6px">
+              <div style="font-family:var(--mn);font-size:9px;letter-spacing:.08em;color:#8E6B33;margin-bottom:6px">BRIEF SCOUT IN ATTESA DI SELEZIONE</div>
+              <div id="cr-scout-pending-tema" style="font-family:var(--sf);font-size:13px;color:var(--ink2);line-height:1.5;margin-bottom:10px"></div>
+              <a id="cr-scout-pending-link" href="#" target="_blank" rel="noopener" style="display:inline-block;font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:#1C1914;color:#F0EBE1;padding:9px 18px;border-radius:999px;text-decoration:none">&rarr; Seleziona i temi Scout</a>
+            </div>
             <div style="font-family:var(--mn);font-size:9px;color:#9A9690;margin-top:14px;margin-bottom:6px;letter-spacing:.08em">TEMI SCOUT SELEZIONATI</div>
             <div style="display:flex;flex-direction:column;gap:6px">
               <div style="display:flex;gap:8px;align-items:center">
