@@ -174,12 +174,13 @@ function contestoStagionale() {
 
   const eventi = [];
 
-  // Mondiale 2026 (giugno–luglio 2026)
-  if (y === 2026 && (m === 6 || m === 7)) {
-    eventi.push(`MONDIALE 2026 (giugno–luglio 2026) — PRIORITÀ MASSIMA, È L'EVENTO DEL MOMENTO:
-  Il torneo è nel vivo (fase a eliminazione diretta / finale): è ciò di cui parla il mondo intero ADESSO. I lettori si aspettano da noi la LETTURA ECONOMICA di quello che stanno guardando — se è appena stata giocata la finale, l'angolo money della finale è quasi obbligato.
-  Angoli business: montepremi FIFA e premio al vincitore (e impatto sui bilanci dei club di appartenenza dei giocatori), ricavi FIFA record del ciclo, Club Benefits Programme (compenso ai club per il rilascio dei nazionali), diritti TV per area geografica, attivazioni e ROI degli sponsor (Adidas, Coca-Cola, Visa, ecc.), economia delle città ospitanti e della finale, uplift commerciale e valore di mercato dei protagonisti, biglietteria e hospitality USA/Canada/Messico.
-  L'ANGOLO VA: non la cronaca della partita, ma cosa significa in soldi — per club, investitori, sponsor, advisor.`);
+  // Mondiale 2026 — finestra torneo: 11 giugno – 19 luglio 2026
+  const mondialeInizio = new Date('2026-06-11T00:00:00');
+  const mondialeFine   = new Date('2026-07-19T23:59:59');
+  if (now >= mondialeInizio && now <= mondialeFine) {
+    eventi.push(`MONDIALE 2026 in corso — leggilo in chiave economica (montepremi FIFA e impatto sui bilanci dei club, ricavi di ciclo, Club Benefits Programme, diritti TV, ROI sponsor, valore di mercato dei protagonisti). L'angolo è "cosa significa in soldi", non la cronaca.`);
+  } else if (y === 2026 && now > mondialeFine && m <= 9) {
+    eventi.push(`MONDIALE 2026 CONCLUSO (finale giocata il 19 luglio 2026) — FILONE SATURO: ricavi FIFA, montepremi, Club Benefits Programme, ticketing, sponsor e "valore dei protagonisti" del Mondiale sono GIÀ STATI TRATTATI a fondo (edizioni #007, #008, #011, #012). NON riproporli. Riprendi il Mondiale SOLO per un fatto nuovo, specifico e datato di questi 7 giorni. L'attualità ORA è il mercato estivo e la costruzione delle rose per la nuova stagione.`);
   }
 
   // Mercato trasferimenti estivo
@@ -338,7 +339,7 @@ Rispondi SOLO in JSON valido:
 
 Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 notizie DISTINTE e fresche degli ultimi 7 giorni sul business del calcio europeo. Devono bastare per riempire con qualità 3 sezioni (Bilancio, Deal, Metrica) con più opzioni ciascuna, quindi non fermarti alle prime 3-4 che trovi: scava.
 
-PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — una finale (es. la finale del Mondiale), un big match decisivo, un annuncio o un'operazione di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
+PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — un'operazione di mercato rilevante, un annuncio societario, una decisione regolatoria o un big match di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
 
 COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
 - Angolo NON ovvio: il "follow the money" dietro una notizia che il tifoso medio legge come cronaca sportiva.
@@ -351,7 +352,13 @@ COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
 
 Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre.
 
+FILONI SATURI — NON riproporre salvo novità eccezionale e datata di questi 7 giorni: (a) ricavi/montepremi/commerciale di Mondiale 2026 e FIFA; (b) macro-bilanci aggregati di lega (ricavi o debito totali della Serie A); (c) il tetto UEFA/Squad Cost Ratio come tema generale. Sono già usciti più volte: i lettori non vogliono riletture.
+
+ARCHETIPO DI TEMA FORTE (le nostre edizioni migliori — es. #002 Sheffield distressed M&A, #008 playbook Oaktree-Inter, #009 PSG-Ramos exit e Nico Paz, #010 Clara Vista-Frosinone): parti da UN soggetto NOMINATO (un club, un fondo, una singola operazione) e raccontane l'ingegneria finanziaria — struttura del deal, valutazione e multipli, exit, distressed M&A, modello di ownership. Preferisci SEMPRE questo a un tema macro o a un evento globale generico.
+
 FILTRO ANTI-RIDONDANZA (OBBLIGATORIO — è il problema n.1 da risolvere): in fondo al system c'è l'elenco delle EDIZIONI GIÀ PUBBLICATE. Per OGNI tema candidato confrontalo con quell'elenco: se lo stesso club, deal, operazione, persona o metrica è già stato trattato e NON c'è una novità concreta e DATATA in questi 7 giorni, SCARTALO. In caso di dubbio, scarta. Per ogni tema che tocca un'entità già vista, scrivi esplicitamente "NOVITÀ DI QUESTA SETTIMANA: [fatto nuovo + data]"; se non riesci a scriverla, il tema è ridondante e va eliminato. Meglio pochi temi davvero nuovi che tanti riciclati.
+
+SOGLIA DATI (obbligatoria — risolve il problema dei temi con dati deboli): ogni tema deve poggiare su almeno 2 numeri concreti, specifici e DATATI, con fonte primaria o autorevole verificabile (bilancio, comunicato ufficiale, UEFA/FIGC/Deloitte/KPMG, testata di riferimento con URL). Se per un tema non hai numeri solidi e recenti — o solo cifre tonde e generiche — NON proporlo. Meglio 3 temi con dati veri che 7 vaghi.
 
 Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), fonte con URL diretto, 2-3 dati finanziari chiave, la lettura CF (multipli/ratios/implicazione per un advisor M&A/PE), e la sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, testo semplice discorsivo, NON JSON.`
   }], system, true, 'claude-opus-4-8');
