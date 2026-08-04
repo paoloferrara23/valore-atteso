@@ -341,24 +341,27 @@ Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 no
 
 PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — un'operazione di mercato rilevante, un annuncio societario, una decisione regolatoria o un big match di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
 
-COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi):
-- Angolo NON ovvio: il "follow the money" dietro una notizia che il tifoso medio legge come cronaca sportiva.
-- Struttura finanziaria: come è fatto un deal (equity/debito/earn-out/clausole), non solo la cifra.
-- Contabilità nascosta: plusvalenze, ammortamenti, player trading, svalutazioni, gestione FFP/PSR.
-- Soldi dei fondi: PE/private credit/sovereign che entrano nel calcio, multipli pagati, tesi di investimento.
-- Arbitraggio normativo e regolatorio: chi sfrutta o subisce UEFA/FIGC/leghe.
-- Club minori, leghe emergenti, diritti TV, naming rights, stadi, sponsor: non solo i soliti top club.
-- Storie di distress: club in crisi di liquidità, ristrutturazioni, cessioni forzate.
+COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi, dall'alto in basso):
+- Ricavi e commerciale: sponsor di maglia, naming rights, diritti TV, merchandising, tournee e mercati esteri, crescita dei ricavi. Sono i temi piu' facili e piacevoli da leggere.
+- Deal con nomi: acquisizioni, quote di club, ingressi di fondi, con la struttura dell'operazione spiegata in modo semplice.
+- Il "follow the money" dietro una notizia che il tifoso legge come cronaca sportiva, con un angolo chiaro e non ovvio.
+- Club minori, leghe emergenti, storie curiose con un numero dietro: non solo i soliti top club.
+- Valutazioni e multipli di club, quando c'e' un dato fresco e comparabile.
+Usa con PARSIMONIA (solo con un fatto nuovo e datato, e mai come filone dominante): contabilita' tecnica FFP/PSR, arbitraggio normativo UEFA, multe e sanzioni, distress e contenziosi. Sono angoli "duri": vanno bene ogni tanto, non come tema principale del brief.
 
 Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre.
 
-FILONI SATURI — NON riproporre salvo novità eccezionale e datata di questi 7 giorni: (a) ricavi/montepremi/commerciale di Mondiale 2026 e FIFA; (b) macro-bilanci aggregati di lega (ricavi o debito totali della Serie A); (c) il tetto UEFA/Squad Cost Ratio come tema generale. Sono già usciti più volte: i lettori non vogliono riletture.
+REGISTRO PREFERITO — TONO SOFT E PIACEVOLE (istruzione dell'editore, prioritaria): privilegia temi COMMERCIALI, concreti e in positivo. EVITA di puntare tutto su multe, sanzioni, sforamenti PSR/Squad Cost Rule, settlement UEFA, carve-out complessi, contenziosi e distress: sono temi duri, spesso ripetuti e difficili da rendere piacevoli.
+
+TEST DEL CAFFE (filtro obbligatorio sulla scelta dei temi): il lettore ci legge in 8 minuti, col caffe. Se un tema non lo puoi spiegare in modo semplice e piacevole, con un esempio concreto, a un professionista che non e' specialista di quella nicchia, SCARTALO e scegline un altro. La leggibilita' del tema conta piu' della sua complessita' tecnica.
+
+FILONI SATURI — NON riproporre salvo novità eccezionale e datata di questi 7 giorni: (a) ricavi/montepremi/commerciale di Mondiale 2026 e FIFA; (b) macro-bilanci aggregati di lega (ricavi o debito totali della Serie A); (c) UEFA / PSR / Squad Cost Rule / Financial Fair Play. Sono già usciti più volte: i lettori non vogliono riletture. CAP RIGIDO: al massimo UN tema su tutto il brief può toccare UEFA/PSR/Squad Cost Rule, e solo con un fatto nuovo e datato di questi 7 giorni. Se ne trovi di più, tienine uno solo e scarta gli altri.
 
 ARCHETIPO DI TEMA FORTE (le nostre edizioni migliori — es. #002 Sheffield distressed M&A, #008 playbook Oaktree-Inter, #009 PSG-Ramos exit e Nico Paz, #010 Clara Vista-Frosinone): parti da UN soggetto NOMINATO (un club, un fondo, una singola operazione) e raccontane l'ingegneria finanziaria — struttura del deal, valutazione e multipli, exit, distressed M&A, modello di ownership. Preferisci SEMPRE questo a un tema macro o a un evento globale generico.
 
 FILTRO ANTI-RIDONDANZA (OBBLIGATORIO — è il problema n.1 da risolvere): in fondo al system c'è l'elenco delle EDIZIONI GIÀ PUBBLICATE. Per OGNI tema candidato confrontalo con quell'elenco: se lo stesso club, deal, operazione, persona o metrica è già stato trattato e NON c'è una novità concreta e DATATA in questi 7 giorni, SCARTALO. In caso di dubbio, scarta. Per ogni tema che tocca un'entità già vista, scrivi esplicitamente "NOVITÀ DI QUESTA SETTIMANA: [fatto nuovo + data]"; se non riesci a scriverla, il tema è ridondante e va eliminato. Meglio pochi temi davvero nuovi che tanti riciclati.
 
-SOGLIA DATI (obbligatoria — risolve il problema dei temi con dati deboli): ogni tema deve poggiare su almeno 2 numeri concreti, specifici e DATATI, con fonte primaria o autorevole verificabile (bilancio, comunicato ufficiale, UEFA/FIGC/Deloitte/KPMG, testata di riferimento con URL). Se per un tema non hai numeri solidi e recenti — o solo cifre tonde e generiche — NON proporlo. Meglio 3 temi con dati veri che 7 vaghi.
+SOGLIA DATI (obbligatoria — risolve il problema dei temi con dati deboli): ogni tema deve poggiare su almeno 2 numeri concreti, specifici e DATATI, con fonte primaria o autorevole verificabile (bilancio, comunicato ufficiale, UEFA/FIGC/Deloitte/KPMG, testata di riferimento con URL). Se per un tema non hai numeri solidi e recenti — o solo cifre tonde e generiche — NON proporlo. Meglio 3 temi con dati veri che 7 vaghi. Le fonti devono essere VERITIERE e verificabili: comunicati ufficiali, bilanci, UEFA/FIGC/Deloitte, testate di riferimento con URL. Non dare per FATTO cio' che e' solo una trattativa o un'indiscrezione non confermata (es. un deal solo "annunciato dai media"): se non e' ufficiale, dillo chiaramente.
 
 Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), fonte con URL diretto, 2-3 dati finanziari chiave, la lettura CF (multipli/ratios/implicazione per un advisor M&A/PE), e la sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, testo semplice discorsivo, NON JSON.`
   }], system, true, 'claude-opus-4-8');
