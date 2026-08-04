@@ -341,7 +341,7 @@ Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 no
 
 PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — un'operazione di mercato rilevante, un annuncio societario, una decisione regolatoria o un big match di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
 
-COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (privilegia questi, dall'alto in basso):
+COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (sono tutti angoli validi; scegli in base a cosa e' successo davvero questa settimana):
 - Ricavi e commerciale: sponsor di maglia, naming rights, diritti TV, merchandising, tournee e mercati esteri, crescita dei ricavi. Sono i temi piu' facili e piacevoli da leggere.
 - Deal con nomi: acquisizioni, quote di club, ingressi di fondi, con la struttura dell'operazione spiegata in modo semplice.
 - Il "follow the money" dietro una notizia che il tifoso legge come cronaca sportiva, con un angolo chiaro e non ovvio.
@@ -351,7 +351,7 @@ Usa con PARSIMONIA (solo con un fatto nuovo e datato, e mai come filone dominant
 
 Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre.
 
-REGISTRO PREFERITO — TONO SOFT E PIACEVOLE (istruzione dell'editore, prioritaria): privilegia temi COMMERCIALI, concreti e in positivo. EVITA di puntare tutto su multe, sanzioni, sforamenti PSR/Squad Cost Rule, settlement UEFA, carve-out complessi, contenziosi e distress: sono temi duri, spesso ripetuti e difficili da rendere piacevoli.
+SCELTA DEI TEMI — attualita' della settimana, non temi artificialmente leggeri: scegli le notizie piu' importanti e interessanti di questi 7 giorni. Deal, acquisizioni, proprieta', valutazioni e M&A sono BENVENUTI: sono il cuore di Valore Atteso. La regola NON e' preferire temi "commerciali" o "leggeri", ma scegliere temi che si possano poi RACCONTARE in modo semplice e piacevole (vedi TEST DEL CAFFE). La semplicita' sta nella SCRITTURA, non nell'evitare i temi seri. Evita solo gli angoli cosi' tecnici da non poter essere spiegati con piacere col caffe (meccanismi contabili astrusi, cavilli legali).
 
 TEST DEL CAFFE (filtro obbligatorio sulla scelta dei temi): il lettore ci legge in 8 minuti, col caffe. Se un tema non lo puoi spiegare in modo semplice e piacevole, con un esempio concreto, a un professionista che non e' specialista di quella nicchia, SCARTALO e scegline un altro. La leggibilita' del tema conta piu' della sua complessita' tecnica.
 
