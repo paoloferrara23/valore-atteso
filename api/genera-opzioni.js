@@ -109,7 +109,7 @@ PRINCIPIO GUIDA — "MAKE IT SIMPLE" (è il tratto distintivo di Valore Atteso: 
 Semplice = chiaro, non superficiale: mantieni rigore, dati e fonti.
 
 REGOLE ASSOLUTE:
-1. Ogni dato/numero DEVE avere una fonte reale (bilancio club, comunicato ufficiale, UEFA, Deloitte, calcioefinanza.it, SwissRamble, FT, Reuters)
+1. Ogni dato/numero DEVE avere una fonte reale e verificabile. Gerarchia obbligatoria: preferisci sempre le fonti primarie e istituzionali (bilanci ufficiali, organi di governo UEFA/FIFA/FIGC/leghe/ECA, report pubblicati di Deloitte/KPMG/PwC, comunicati ufficiali); in mancanza, secondarie autorevoli (Reuters, FT, Bloomberg, The Athletic, BBC, SportsPro, Sportcal, SwissRamble). MAI blog di tifosi, aggregatori, Transfermarkt per le cifre dei trasferimenti, tabloid, né Calcio e Finanza.
 2. VIETATO inventare dati, multipli o statistiche
 3. Se non hai dati sufficienti per un tema, dillo nel source: "dati parziali — da verificare"
 4. Ogni opzione deve avere un angolo editoriale chiaro (cosa rende questo tema interessante per un professionista finance?)
