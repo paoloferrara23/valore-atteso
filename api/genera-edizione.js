@@ -202,6 +202,7 @@ REGOLE ASSOLUTE:
 10. FORMATO KPI — i "key financials" devono essere CORTI. Il campo "value" è SOLO una cifra compatta con unità (es. "€13 mld", "70%", "£100M", "3,3 mld $", "104"), MAI una frase, max ~12 caratteri. Il contesto va nel "sub" (max ~30 caratteri). Il "label" è breve (max ~24 caratteri). Se un dato non è esprimibile in cifra breve, non usarlo come KPI.
 11. COMPETIZIONI EUROPEE E REGOLE APPLICABILI — verifica prima di affermare: NON dare per scontato che un club giochi in Champions/Europa/Conference League. Le regole finanziarie UEFA (Fair Play Finanziario, Squad Cost Ratio 70%) valgono SOLO per i club iscritti alle competizioni UEFA di quella stagione. Per i club fuori dall'Europa valgono le regole domestiche (es. Premier League: Squad Cost Ratio 85%, PSR). Se lo status europeo di un club per la stagione in corso non è tra i DATI VERIFICATI SCOUT, NON affermarlo e non dedurne conseguenze regolamentari: scrivi [da verificare] oppure ometti.
 12. PUNTEGGIATURA: VIETATO usare trattini lunghi (i caratteri long dash e en dash). Vale per corpo, titoli, KPI e verdict. Al loro posto usa virgole, due punti, punti o parentesi. Sono ammessi solo i trattini brevi dentro le parole o negli intervalli (es. post-Mondiale, 10-15M).
+13. IMPAGINAZIONE DEL BODY: dividi ogni body in paragrafi brevi (2-4 frasi ciascuno), separati da una riga vuota (doppio a-capo tra un paragrafo e l'altro). Mai un unico blocco compatto: la spaziatura tra paragrafi rende la lettura più leggera e scorrevole.
 
 ${wikiContext}`;
 
