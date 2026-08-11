@@ -25,7 +25,12 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Parametro edition_num o edition_id obbligatorio' });
     }
 
-    const { data: editions, error } = await query.limit(1);
+    // Con eventuali duplicati (es. una bozza vuota con lo stesso num) scegli
+    // in modo deterministico: prima l'edizione pubblicata, poi la più recente.
+    const { data: editions, error } = await query
+      .order('published', { ascending: false })
+      .order('created_at', { ascending: false })
+      .limit(1);
     if (error) throw new Error('Supabase: ' + error.message);
     if (!editions || !editions.length) throw new Error('Edizione non trovata');
 
