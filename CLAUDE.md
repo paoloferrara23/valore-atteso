@@ -34,7 +34,7 @@ Se Paolo cita un numero diverso da quello che leggi live, il numero live vince. 
 
 M&A Manager con background in sport advisory. Ha fondato Valore Atteso ispirandosi a due modelli editoriali italiani: **Calcio e Finanza** (giornalismo finanziario applicato al calcio) e **SpiegameloFacile** (concetti complessi resi accessibili, format visivo pulito). Obiettivo di lungo periodo: fondare un'azienda in cui l'M&A resta un'attività, affiancata da un prodotto scalabile. Il ruolo di Paolo tende all'editoriale e strategico; l'operatività è progressivamente automatizzata via agenti.
 
-Nota: Calcio e Finanza è modello di riferimento e competitor di categoria, **non una fonte citabile nei testi pubblicati**.
+Nota: Calcio e Finanza è modello di riferimento e competitor di categoria. **Non è una fonte vietata**: si può usare (come Transfermarkt) per reperire informazioni. La regola vera è **non replicare i loro articoli** (struttura o testo) in modo contestabile come plagio: ogni pezzo va rielaborato con analisi originale VA e, dove possibile, i dati vanno riscontrati su una fonte indipendente.
 
 ---
 
@@ -105,6 +105,8 @@ Sequenza: verifica `CR_PASSWORD` su Vercel → segreto forte 32+ char → rimuov
 
 Pipeline: Opus Writer → Opus Editor (intercetta errori/dati inventati) → Sonnet Adapter (social). `editorial_wiki` si aggiorna dopo ogni invio.
 
+**Barriera pre-invio (`lib/preflight.js`).** Controlli deterministici condivisi tra `publisher-gate` (anteprima Control Room), `send-newsletter` (blocco reale) e `send-test` (informativo). Un *blocker* impedisce l'invio massivo: segnaposto non risolti (`[da verificare]`, TODO), trattino lungo `—`, sezione senza corpo/KPI/fonti, titolo mancante. Sono *warning* (non bloccano): KPI il cui numero non compare nel corpo, sezione con una sola fonte (proxy anti-plagio), URL nella riga fonti, fonte sospetta, verdetto assente, corpo troppo lungo. Override d'emergenza: `force:true` nel body di `send-newsletter`. È la "barriera 2" del percorso verso una redazione più autonoma (barriera 1 = fonti verificate a monte; barriera 3 = agente fact-check).
+
 ---
 
 ## Architettura agenti
@@ -135,7 +137,7 @@ Ruoli previsti: Scout, SEO, Editoriale, Growth, Content/LinkedIn, Sponsor-outrea
 ## Note editoriali
 
 - Tono: analitico, diretto, dati verificabili. Nessun gossip/rumor.
-- Fonti: solo primarie (bilanci ufficiali, UEFA, FIGC, Lega Serie A, Deloitte, KPMG, comunicati). **Calcio e Finanza non citabile nei testi.** Nessun dato inventato. Esplicitare la base di calcolo delle percentuali.
+- Fonti: priorità alle primarie (bilanci ufficiali, UEFA, FIGC, Lega Serie A, Deloitte/KPMG/PwC solo report, comunicati); secondarie autorevoli (Reuters, FT, Bloomberg, The Athletic, BBC) quando la primaria manca. **Calcio e Finanza e Transfermarkt sono ammesse come fonti** (non citarle a sproposito, ma si possono usare), a patto di **non replicarne gli articoli** (rischio plagio) e di riscontrare i dati altrove. Vietati solo blog di tifosi, forum, aggregatori di rumor. Nessun dato inventato. Esplicitare la base di calcolo delle percentuali.
 - Stile LinkedIn: numeri secchi su righe separate; pivot "ma il numero non è la storia"; parallelo finanziario naturale; domanda aperta per i commenti; link nei commenti; chiusura "con il caffè, 8 minuti". Evitare "genio", "secondo voi".
 - KPI format: `{"label":"max 4 parole","value":"numero con unità","sub":"max 4 parole"}`
 - Benvenuto: rimanda all'archivio. Claim: "Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione."

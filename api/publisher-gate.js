@@ -1,7 +1,9 @@
 // api/publisher-gate.js
 // Verifica pre-pubblicazione prima dell'invio newsletter
-// Checks: dedup temi, KPI presenti, fonti pulite, verdict presenti
+// Checks di contenuto delegati a lib/preflight (condivisi con send-newsletter/send-test).
+// Qui restano i check che richiedono il DB: dedup temi, stato pubblicazione, sponsor.
 const { createClient } = require('@supabase/supabase-js');
+const { contentPreflight } = require('../lib/preflight');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -40,90 +42,13 @@ module.exports = async function handler(req, res) {
     const edition = editions[0];
     const sections = edition.sections || [];
 
-    const checks = [];
-    let blockers = 0; // errori critici che bloccano l'invio
+    // ── 1-3. CONTENUTO (placeholder, trattini, KPI, fonti, verdetto, corpo) ──
+    // Delegato al validatore condiviso: stessa logica usata al momento dell'invio.
+    const preflight = contentPreflight(edition);
+    const checks = [...preflight.checks];
+    let blockers = preflight.blockers;
 
-    // ── 1. KPI PRESENTI ────────────────────────────────────────────────────
     const sectionLabels = ['Il Bilancio', 'Il Deal', 'La Metrica'];
-    sections.forEach((sec, i) => {
-      const label = sectionLabels[i] || `Sezione ${i + 1}`;
-      const kpis = sec.kpis || sec.kpi_rows || [];
-      if (!kpis || kpis.length === 0) {
-        checks.push({
-          type: 'error',
-          code: 'missing_kpi',
-          message: `${label}: nessun KPI presente`,
-          section: i
-        });
-        blockers++;
-      } else {
-        const invalidKpi = kpis.find(k => !k.value || !k.label);
-        if (invalidKpi) {
-          checks.push({
-            type: 'warning',
-            code: 'incomplete_kpi',
-            message: `${label}: KPI con label o value mancante`,
-            section: i
-          });
-        } else {
-          checks.push({
-            type: 'ok',
-            code: 'kpi_ok',
-            message: `${label}: ${kpis.length} KPI presenti`
-          });
-        }
-      }
-    });
-
-    // ── 2. DATO DA VERIFICARE ───────────────────────────────────────────────
-    let daVerificareCount = 0;
-    sections.forEach((sec, i) => {
-      const label = sectionLabels[i] || `Sezione ${i + 1}`;
-      const body = Array.isArray(sec.body)
-        ? sec.body.join(' ')
-        : String(sec.body || '');
-      const verdict = String(sec.verdict || '');
-      const fullText = body + ' ' + verdict + ' ' + (sec.title || '');
-
-      const matches = (fullText.match(/\[dato da verificare\]/gi) || []).length;
-      if (matches > 0) {
-        daVerificareCount += matches;
-        checks.push({
-          type: 'warning',
-          code: 'unverified_data',
-          message: `${label}: ${matches} dato/i non verificato/i`,
-          section: i
-        });
-      }
-    });
-
-    if (daVerificareCount === 0) {
-      checks.push({
-        type: 'ok',
-        code: 'sources_clean',
-        message: 'Nessun [dato da verificare] nel testo'
-      });
-    }
-
-    // ── 3. VERDICT PRESENTI ─────────────────────────────────────────────────
-    sections.forEach((sec, i) => {
-      const label = sectionLabels[i] || `Sezione ${i + 1}`;
-      const verdict = String(sec.verdict || '').trim();
-      if (!verdict || verdict.length < 20) {
-        checks.push({
-          type: 'warning',
-          code: 'missing_verdict',
-          message: `${label}: verdetto assente o troppo breve`,
-          section: i
-        });
-      } else {
-        checks.push({
-          type: 'ok',
-          code: 'verdict_ok',
-          message: `${label}: verdetto presente`
-        });
-      }
-    });
 
     // ── 4. DEDUP — tema già trattato? ───────────────────────────────────────
     const { data: wikiEntries } = await supabase
@@ -187,11 +112,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // ── 5. METADATI BASE ────────────────────────────────────────────────────
-    if (!edition.title || edition.title.trim().length < 5) {
-      checks.push({ type: 'error', code: 'missing_title', message: 'Titolo edizione mancante' });
-      blockers++;
-    }
+    // ── 5. STATO PUBBLICAZIONE ──────────────────────────────────────────────
     if (!edition.published) {
       checks.push({ type: 'error', code: 'not_published', message: 'Edizione non marcata come pubblicata' });
       blockers++;
