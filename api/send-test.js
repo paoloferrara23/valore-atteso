@@ -2,6 +2,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
+const { contentPreflight } = require('../lib/preflight');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -35,6 +36,11 @@ module.exports = async function handler(req, res) {
     if (!editions || !editions.length) throw new Error('Edizione non trovata');
 
     const edition = editions[0];
+
+    // Controlli pre-invio: nel test NON bloccano (serve a Paolo per vedere la bozza),
+    // ma vengono riportati in risposta così si sistemano prima dell'invio reale.
+    const preflight = contentPreflight(edition);
+
     edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
     const toEmail = (process.env.APPROVAL_EMAIL || 'info@valoreatteso.com').trim();
@@ -69,6 +75,12 @@ module.exports = async function handler(req, res) {
       sent_to: toEmail,
       id: result.id || null,
       sponsors: edition.sponsors.length,
+      preflight: {
+        can_send: preflight.can_send,
+        blockers: preflight.blockers,
+        warnings: preflight.warnings,
+        issues: preflight.checks.filter(c => c.type !== 'ok'),
+      },
     });
 
   } catch (err) {

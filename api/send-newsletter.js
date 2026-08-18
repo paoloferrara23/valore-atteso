@@ -4,6 +4,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Resend } = require('resend');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
+const { contentPreflight } = require('../lib/preflight');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -38,6 +39,28 @@ async function handler(req, res) {
     if (edErr) throw new Error('Supabase: ' + edErr.message);
     if (!editions || !editions.length) throw new Error('Edizione non trovata o non pubblicata');
     const edition = editions[0];
+
+    // ── BARRIERA PRE-INVIO ──────────────────────────────────────────────────
+    // Controlli deterministici sul contenuto. Un blocker (placeholder, trattino
+    // lungo, sezione senza corpo/KPI/fonti) impedisce l'invio massivo.
+    // Override d'emergenza consapevole: { force: true } nel body.
+    const preflight = contentPreflight(edition);
+    if (!preflight.can_send && req.body.force !== true) {
+      await supabase.from('agent_runs').insert({
+        agent: 'send-newsletter',
+        status: 'blocked',
+        summary: `Invio #${edition.num} bloccato dai controlli pre-invio (${preflight.blockers} blocker).`,
+        data: { edition_num: edition.num, blockers: preflight.blockers },
+      }).catch(() => {});
+      return res.status(422).json({
+        error: 'Invio bloccato dai controlli pre-invio',
+        can_send: false,
+        blockers: preflight.blockers,
+        checks: preflight.checks.filter(c => c.type === 'error'),
+        hint: 'Correggi i blocker in Control Room, oppure invia con force:true solo se sai cosa stai facendo.',
+      });
+    }
+
     edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
     const { data: subs, error: subErr } = await supabase
