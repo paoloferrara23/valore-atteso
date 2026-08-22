@@ -42,7 +42,10 @@ async function callClaude(messages, system, useSearch = false, model = 'claude-s
     messages
   };
   if (useSearch) {
-    body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+    // max_uses limita i giri di ricerca: ogni ricerca aggiunge i risultati come
+    // input token e vengono rimandati a ogni turno del loop, quindi è la leva
+    // principale sul costo. 5 query mirate bastano per 8-10 temi.
+    body.tools = [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }];
     body.tool_choice = { type: 'auto' };
   }
   const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -144,7 +147,7 @@ function generateToken() {
 async function leggiWiki() {
   if (!SUPA_URL || !SUPA_KEY) return '';
   try {
-    const r = await fetch(`${SUPA_URL}/rest/v1/editions?published=eq.true&select=num,title,subtitle,sections&order=num.desc&limit=20`, {
+    const r = await fetch(`${SUPA_URL}/rest/v1/editions?published=eq.true&select=num,title,subtitle,sections&order=num.desc&limit=8`, {
       headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
     });
     if (!r.ok) return '';
@@ -332,7 +335,7 @@ Rispondi SOLO in JSON valido:
   "note_editoriali": "temi da evitare, angoli da considerare, contesto stagionale"
 }`;
 
-  // FASE 1: Ricerca web — output testo libero (no JSON) — modello forte + web search
+  // FASE 1: Ricerca web — output testo libero (no JSON) — Sonnet + web search (max 5 query)
   const testoRicerca = await callClaude([{
     role: 'user',
     content: `Oggi è ${oggi}.${stagionale ? '\n\nEVENTI PRIORITARI ORA:\n' + stagionale.replace(/\n\nCONTESTO STAGIONALE ATTUALE[^\n]*\n/,'') : ''}
@@ -369,7 +372,7 @@ Usa SEMPRE la fonte più alta disponibile:
 Se un dato esiste solo su fonti Tier 3, non usarlo. Non dare per FATTO ciò che è solo una trattativa o un'indiscrezione non confermata: se non è ufficiale, dillo chiaramente.
 
 Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), fonte con URL diretto, 2-3 dati finanziari chiave, la lettura CF (multipli/ratios/implicazione per un advisor M&A/PE), e la sezione suggerita (bilancio/deal/metrica). Scrivi in italiano, testo semplice discorsivo, NON JSON.`
-  }], system, true, 'claude-opus-4-8');
+  }], system, true, 'claude-sonnet-4-6');
 
   console.log('Fase 1 completata, testo:', testoRicerca.slice(0, 200));
 
