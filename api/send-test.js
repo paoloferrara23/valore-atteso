@@ -3,6 +3,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
 const { contentPreflight } = require('../lib/preflight');
+const { provider, sendViaBrevo } = require('../lib/mailer');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -50,30 +51,34 @@ module.exports = async function handler(req, res) {
       .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
 
     const subject = `[TEST] #${edition.num} - ${edition.title}`;
+    const from = 'Valore Atteso <info@valoreatteso.com>';
 
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.RESEND_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'Valore Atteso <info@valoreatteso.com>',
-        to: toEmail,
-        subject,
-        html,
-      }),
-    });
-
-    const raw = await response.text();
-    let result;
-    try { result = JSON.parse(raw); } catch(e) { throw new Error('Resend risposta non JSON: ' + raw.slice(0, 200)); }
-    if (!response.ok) throw new Error('Resend ' + response.status + ': ' + (result.message || JSON.stringify(result)));
+    // Piano B: se EMAIL_PROVIDER=brevo, invia il test via Brevo; altrimenti Resend.
+    let sendId = null;
+    if (provider() === 'brevo') {
+      const okCount = await sendViaBrevo([{ from, to: toEmail, subject, html }]);
+      if (!okCount) throw new Error('Brevo: invio test non riuscito (verifica BREVO_KEY e dominio autenticato)');
+    } else {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.RESEND_KEY}`,
+        },
+        body: JSON.stringify({ from, to: toEmail, subject, html }),
+      });
+      const raw = await response.text();
+      let result;
+      try { result = JSON.parse(raw); } catch(e) { throw new Error('Resend risposta non JSON: ' + raw.slice(0, 200)); }
+      if (!response.ok) throw new Error('Resend ' + response.status + ': ' + (result.message || JSON.stringify(result)));
+      sendId = result.id || null;
+    }
 
     return res.status(200).json({
       ok: true,
       sent_to: toEmail,
-      id: result.id || null,
+      id: sendId,
+      provider: provider(),
       sponsors: edition.sponsors.length,
       preflight: {
         can_send: preflight.can_send,

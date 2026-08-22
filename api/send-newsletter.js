@@ -5,6 +5,7 @@ const { Resend } = require('resend');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
 const { contentPreflight } = require('../lib/preflight');
+const { provider, sendViaBrevo } = require('../lib/mailer');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -98,9 +99,14 @@ async function handler(req, res) {
       return Array.isArray(result.data) ? result.data.length : arr.length;
     }
 
-    const mid = Math.ceil(subs.length / 2);
-    sent += await sendBatch(subs.slice(0, mid));
-    sent += await sendBatch(subs.slice(mid));
+    // Piano B: se EMAIL_PROVIDER=brevo, invia via Brevo; altrimenti Resend (default).
+    if (provider() === 'brevo') {
+      sent += await sendViaBrevo(makeBatch(subs));
+    } else {
+      const mid = Math.ceil(subs.length / 2);
+      sent += await sendBatch(subs.slice(0, mid));
+      sent += await sendBatch(subs.slice(mid));
+    }
 
     // Usa subs.length come valore garantito se Resend non ritorna data correttamente
     const finalSent = sent > 0 ? sent : subs.length;
