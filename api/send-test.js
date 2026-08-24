@@ -3,7 +3,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
 const { buildHtml } = require('../lib/build-html');
 const { contentPreflight } = require('../lib/preflight');
-const { provider, sendViaBrevo } = require('../lib/mailer');
+const { provider, brevoRequest } = require('../lib/mailer');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -56,8 +56,9 @@ module.exports = async function handler(req, res) {
     // Piano B: se EMAIL_PROVIDER=brevo, invia il test via Brevo; altrimenti Resend.
     let sendId = null;
     if (provider() === 'brevo') {
-      const okCount = await sendViaBrevo([{ from, to: toEmail, subject, html }]);
-      if (!okCount) throw new Error('Brevo: invio test non riuscito (verifica BREVO_KEY e dominio autenticato)');
+      const r = await brevoRequest({ from, to: toEmail, subject, html });
+      if (!r.ok) throw new Error(`Brevo ${r.status}: ${String(r.body || '').slice(0, 300)}`);
+      sendId = 'brevo';
     } else {
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
