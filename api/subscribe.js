@@ -1,5 +1,6 @@
 // api/subscribe.js — Con rate limiting per IP
 const { createClient } = require('@supabase/supabase-js');
+const { sendEmail } = require('../lib/mailer');
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -87,12 +88,8 @@ module.exports = async function handler(req, res) {
 </table></td></tr></table>
 </body></html>`;
 
-      const r = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-        body: JSON.stringify({ from: FROM, to: sub.email, subject: 'Hai dimenticato di confermare la tua iscrizione a Valore Atteso', html })
-      });
-      if (r.ok) sent++;
+      const ok = await sendEmail({ from: FROM, to: sub.email, subject: 'Hai dimenticato di confermare la tua iscrizione a Valore Atteso', html });
+      if (ok) sent++;
     }
     return res.status(200).json({ ok: true, sent, total: pending.length });
   }
@@ -143,11 +140,7 @@ module.exports = async function handler(req, res) {
 </table></td></tr></table>
 </body></html>`;
 
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({ from: FROM, to: userEmail, subject: 'Benvenuto in Valore Atteso', html: welcomeHtml })
-    });
+    await sendEmail({ from: FROM, to: userEmail, subject: 'Benvenuto in Valore Atteso', html: welcomeHtml });
 
     return res.status(200).json({ ok: true });
   }
@@ -195,12 +188,7 @@ module.exports = async function handler(req, res) {
 </table></td></tr></table>
 </body></html>`;
 
-  const mailRes = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({ from: FROM, to: email, subject: 'Conferma la tua iscrizione a Valore Atteso', html: confirmHtml })
-  });
-
-  if (!mailRes.ok) { const err = await mailRes.json(); return res.status(502).json({ error: 'Errore email: ' + (err.message || mailRes.status) }); }
+  const ok = await sendEmail({ from: FROM, to: email, subject: 'Conferma la tua iscrizione a Valore Atteso', html: confirmHtml });
+  if (!ok) return res.status(502).json({ error: 'Errore invio email di conferma. Riprova tra poco.' });
   return res.status(200).json({ ok: true });
 };
