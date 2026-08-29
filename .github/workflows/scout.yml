@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 7 * * 6'  # Sabato 08:00 IT (7 UTC)
   workflow_dispatch:
+    inputs:
+      notify_only:
+        description: "Solo re-invio email dal brief già salvato (nessun costo Anthropic)"
+        type: boolean
+        default: false
 
 jobs:
   scout:
@@ -25,4 +30,5 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SCOUT_NOTIFY_ONLY: ${{ github.event.inputs.notify_only == 'true' && '1' || '0' }}
         run: node scripts/scout.js
