@@ -217,12 +217,86 @@ function contestoStagionale() {
 }
 
 // ── MAIN ────────────────────────────────────────────────────────────────────
+// ── Notifica: costruisce e invia l'email del brief Scout ─────────────────────
+// Estratta da main() così può essere richiamata anche in modalità solo-notifica
+// (re-invio dal brief già salvato su scout_pending, senza rifare la ricerca web).
+async function inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start) {
+  const selectUrl = `${SITE_URL}/scout-select?token=${selectionToken}`;
+
+  const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
+
+  const html = agentEmail({
+    agentName: 'Scout Agent',
+    agentKey: 'scout',
+    status: 'pending_approval',
+    date: oggi,
+    sections: [
+      { type: 'narrative', label: 'Brief della settimana', text: brief.brief_narrativo || '', dark: true },
+      ...(brief.raccomandazione ? [
+        { type: 'dark_cards', label: 'Raccomandazione', cards: [
+          { label: (brief.raccomandazione.sezione||'') + ' - ' + (brief.raccomandazione.angolo_editoriale||''), value: brief.raccomandazione.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690' }
+        ]},
+        { type: 'narrative', label: 'Perche questa settimana', text: brief.raccomandazione.perche || '' }
+      ] : []),
+      ...(tuttiTemi.length > 0 ? [{ type: 'topics', label: 'Temi (' + tuttiTemi.length + ')', topics: tuttiTemi }] : []),
+      ...(brief.note_editoriali ? [{ type: 'alert', text: brief.note_editoriali, type: 'info' }] : []),
+      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Seleziona i temi</a></td></tr></table>' }
+    ]
+  });
+
+  if (!APPROVAL_EMAIL) {
+    console.error('EMAIL NON INVIATA: APPROVAL_EMAIL mancante. Brief disponibile al link:', selectUrl);
+  } else {
+    const ok = await sendEmail({
+      from: FROM, to: APPROVAL_EMAIL,
+      subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
+      html
+    });
+    if (ok) {
+      console.log('Email Scout inviata a', APPROVAL_EMAIL);
+    } else {
+      console.error('ERRORE invio email Scout | brief al link:', selectUrl);
+    }
+  }
+
+  await logRun('scout', 'pending_approval',
+    `${tuttiTemi.length} temi. Drive: ${(driveFiles||[]).length} file. In attesa selezione temi.`,
+    { drive: driveFiles||[], raccomandazione: brief.raccomandazione },
+    Date.now() - start
+  );
+
+  console.log(`Scout completato in ${Date.now()-start}ms. Temi: ${tuttiTemi.length}, Drive: ${(driveFiles||[]).length} file.`);
+}
+
+// ── Modalità solo-notifica: re-invia l'email dal brief già salvato ───────────
+// Attivata con SCOUT_NOTIFY_ONLY=1. Non tocca Anthropic/web search: legge
+// scout_pending da Supabase e re-invia la notifica (utile se l'invio originale
+// è fallito, es. secret email mancante al momento del run).
+async function notificaDaSalvato(oggi, start) {
+  const r = await fetch(`${SUPA_URL}/rest/v1/agent_memory?key=eq.scout_pending&select=value`, {
+    headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+  });
+  const rows = await r.json();
+  const rec = rows && rows[0] && rows[0].value;
+  if (!rec || !rec.selection_token) {
+    throw new Error('Nessun brief salvato in scout_pending (o senza selection_token). Rilancia lo Scout normale.');
+  }
+  console.log('Modalità solo-notifica: re-invio brief salvato', rec.brief_id || '');
+  await inviaNotificaScout(rec, rec.drive_files || [], rec.selection_token, oggi, start);
+}
+
 async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   const settimana = new Date().toLocaleDateString('it-IT');
   const setteGiorniFa = new Date(Date.now() - 7*86400000).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
   console.log('Scout v2.1 avviato:', new Date().toISOString());
+
+  // Solo re-invio della notifica dal brief già salvato (nessun costo Anthropic).
+  if (process.env.SCOUT_NOTIFY_ONLY === '1') {
+    await notificaDaSalvato(oggi, start);
+    return;
+  }
 
   // ── Fase 1: Leggi biblioteca Drive + wiki storico + contesto stagionale ─
   const [{ files: driveFiles, context: driveContext }, wikiContext] = await Promise.all([leggiDrive(), leggiWiki()]);
@@ -467,80 +541,7 @@ JSON richiesto (fino a 4 oggetti per sezione):
   }, 'scout');
 
   // ── Fase 5: Email con approvazione ───────────────────────────────────────
-  const selectUrl = `${SITE_URL}/scout-select?token=${selectionToken}`;
-
-  const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
-  const temasHTML = tuttiTemi.map((t, i) => {
-    const colors = { bilancio: ['#1B4332','#E4EDE7'], deal: ['#1B3A6B','#E4ECF7'], metrica: ['#6B1B1B','#F7E4E4'] };
-    const [fg, bg] = colors[t.sezione_suggerita] || ['#4A4845','#EDE9E0'];
-    const fontiHtml = (t.fonti||[]).map(f => {
-      const url = f.match(/https?:\/\/[^\s"]+/)?.[0];
-      const label = f.replace(/\s*—\s*https?:\/\/[^\s"]+/,'').trim();
-      return url ? `<a href="${url}" style="color:${fg};font-size:9px;text-decoration:underline">${label}</a>` : `<span style="font-size:9px;color:#9A9690">${label}</span>`;
-    }).join(' · ');
-    const verificaHtml = t.verifica_biblioteca && t.verifica_biblioteca !== 'N/A'
-      ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B6B3A;margin-top:5px">📚 ${t.verifica_biblioteca}</div>` : '';
-    return `<tr><td style="padding:16px 20px;border-bottom:2px solid #E2DDD4;vertical-align:top">
-      <div style="margin-bottom:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <span style="font-family:'Courier New',monospace;font-size:8px;font-weight:700;color:#fff;background:#1A1A1A;padding:2px 7px">#${i+1}</span>
-        <span style="font-family:'Courier New',monospace;font-size:8px;color:#fff;background:${fg};padding:2px 8px;text-transform:uppercase">${t.sezione_suggerita}</span>
-        <span style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690">priorità ${t.priorita}/5</span>
-      </div>
-      <div style="font-family:Georgia,serif;font-size:15px;font-weight:700;color:#1A1A1A;margin-bottom:6px;line-height:1.3">${t.titolo}</div>
-      <div style="font-family:Georgia,serif;font-size:13px;color:#4A4845;line-height:1.65;margin-bottom:10px">${t.sommario||t.notizia||t.summary||''}</div>
-      ${t.angolo ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:${fg};background:${bg};padding:6px 10px;margin-bottom:8px">Angolo: ${t.angolo}</div>` : ''}
-      ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#4A4845;margin-bottom:6px">${t.dati_chiave.join(' · ')}</div>` : ''}
-      ${verificaHtml}
-      <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;border-top:1px solid #E2DDD4;padding-top:6px;margin-top:6px">${fontiHtml}</div>
-    </td></tr>`;
-  }).join('');
-
-  const driveHtml = driveFiles.length
-    ? `<tr><td style="padding:10px 20px;background:#E4EDE7;border-bottom:1px solid #C8DDD0">
-        <span style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332">📚 Biblioteca VA usata per verifica: ${driveFiles.join(', ')}</span>
-      </td></tr>` : '';
-
-  const html = agentEmail({
-    agentName: 'Scout Agent',
-    agentKey: 'scout',
-    status: 'pending_approval',
-    date: oggi,
-    sections: [
-      { type: 'narrative', label: 'Brief della settimana', text: brief.brief_narrativo || '', dark: true },
-      ...(brief.raccomandazione ? [
-        { type: 'dark_cards', label: 'Raccomandazione', cards: [
-          { label: (brief.raccomandazione.sezione||'') + ' - ' + (brief.raccomandazione.angolo_editoriale||''), value: brief.raccomandazione.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690' }
-        ]},
-        { type: 'narrative', label: 'Perche questa settimana', text: brief.raccomandazione.perche || '' }
-      ] : []),
-      ...(tuttiTemi.length > 0 ? [{ type: 'topics', label: 'Temi (' + tuttiTemi.length + ')', topics: tuttiTemi }] : []),
-      ...(brief.note_editoriali ? [{ type: 'alert', text: brief.note_editoriali, type: 'info' }] : []),
-      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Seleziona i temi</a></td></tr></table>' }
-    ]
-  });
-
-  if (!APPROVAL_EMAIL) {
-    console.error('EMAIL NON INVIATA: APPROVAL_EMAIL mancante. Brief disponibile al link:', selectUrl);
-  } else {
-    const ok = await sendEmail({
-      from: FROM, to: APPROVAL_EMAIL,
-      subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
-      html
-    });
-    if (ok) {
-      console.log('Email Scout inviata a', APPROVAL_EMAIL);
-    } else {
-      console.error('ERRORE invio email Scout | brief al link:', selectUrl);
-    }
-  }
-
-  await logRun('scout', 'pending_approval',
-    `${tuttiTemi.length} temi. Drive: ${(driveFiles||[]).length} file. In attesa selezione temi.`,
-    { drive: driveFiles||[], raccomandazione: brief.raccomandazione },
-    Date.now() - start
-  );
-
-  console.log(`Scout completato in ${Date.now()-start}ms. Temi: ${tuttiTemi.length}, Drive: ${(driveFiles||[]).length} file.`);
+  await inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start);
 }
 
 main().catch(async e => {
