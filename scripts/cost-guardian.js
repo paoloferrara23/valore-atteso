@@ -6,6 +6,7 @@ const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
 
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const SUPA_URL       = process.env.SUPABASE_URL;
@@ -292,14 +293,10 @@ async function main() {
     ]
   });
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({
-      from: FROM, to: APPROVAL_EMAIL,
-      subject: `Cost Guardian VA · €${costoAnthropicSett.toFixed(2)} questa settimana${topAgente ? ` · top: ${topAgente.nome}` : ''} · ${alerts.length > 0 ? `⚠ ${alerts.length} alert` : '✓ OK'}`,
-      html
-    })
+  await sendEmail({
+    from: FROM, to: APPROVAL_EMAIL,
+    subject: `Cost Guardian VA · €${costoAnthropicSett.toFixed(2)} questa settimana${topAgente ? ` · top: ${topAgente.nome}` : ''} · ${alerts.length > 0 ? `⚠ ${alerts.length} alert` : '✓ OK'}`,
+    html
   });
 
   await logRun('cost-guardian', status,

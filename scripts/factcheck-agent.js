@@ -12,6 +12,7 @@ const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const MODEL          = 'claude-opus-4-8';
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';
@@ -149,11 +150,7 @@ async function sendAlert(edition, factcheck) {
     <div style="padding:14px 20px;font-family:'Courier New',monospace;font-size:10px;color:#9A9690">Verificate ${factcheck.totals.claims} affermazioni: ${factcheck.totals.verified} ok, ${factcheck.totals.contradicted} smentite, ${factcheck.totals.unverifiable} non verificabili.</div>
   </div>`;
   try {
-    await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `Fact-Check #${edition.num}: ${factcheck.contradictions.length} da correggere`, html })
-    });
+    await sendEmail({ from: FROM, to: APPROVAL_EMAIL, subject: `Fact-Check #${edition.num}: ${factcheck.contradictions.length} da correggere`, html });
   } catch (e) { console.warn('Alert email fallita:', e.message); }
 }
 

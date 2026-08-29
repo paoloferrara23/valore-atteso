@@ -9,6 +9,7 @@ const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
 const SUPA_KEY       = process.env.SUPABASE_KEY;
@@ -259,15 +260,11 @@ async function main() {
     sections
   });
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({
-      from: FROM,
-      to: APPROVAL_EMAIL,
-      subject: `📱 Content VA · Calendario settimana · ${oggi}`,
-      html
-    })
+  await sendEmail({
+    from: FROM,
+    to: APPROVAL_EMAIL,
+    subject: `📱 Content VA · Calendario settimana · ${oggi}`,
+    html
   });
 
   await logRun('content', 'success',

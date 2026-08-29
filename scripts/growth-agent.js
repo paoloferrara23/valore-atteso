@@ -5,6 +5,7 @@ const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
 const SUPA_KEY       = process.env.SUPABASE_KEY;
@@ -110,11 +111,7 @@ Dammi JSON: {"valutazione":"max 20 parole dirette","azioni":["azione concreta 1"
     ]
   });
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `Growth VA · ${confermati.length} iscritti · +${nuoviSett} questa settimana`, html })
-  });
+  await sendEmail({ from: FROM, to: APPROVAL_EMAIL, subject: `Growth VA · ${confermati.length} iscritti · +${nuoviSett} questa settimana`, html });
 
   await logRun('growth', 'success', `${confermati.length} confermati (+${deltaAss}), +${nuoviSett} nuovi, conv. ${tassoConv}%`, report, Date.now()-start);
   console.log(`Growth Agent completato. Iscritti: ${confermati.length}`);
