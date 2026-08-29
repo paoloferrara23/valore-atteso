@@ -20,6 +20,7 @@ const SUPABASE_URL  = process.env.SUPABASE_URL;
 // service key: le tabelle clubs/club_financials/club_deals hanno RLS (solo lettura pubblica), serve per scrivere
 const SUPABASE_KEY  = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
 const RESEND_KEY    = process.env.RESEND_KEY;
+const { sendEmail } = require('../lib/mailer');
 const APPROVAL_EMAIL = (process.env.APPROVAL_EMAIL || '').trim();
 
 const MODEL = 'claude-opus-4-8';
@@ -218,12 +219,9 @@ async function emailReview(summary) {
       <ul>${rows}</ul>
       <p style="font-size:12px;color:#555">Verifica i numeri contro il bilancio, poi approva. Le bozze NON sono pubblicate automaticamente.</p>
     </div></div>`;
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + RESEND_KEY },
-    body: JSON.stringify({ from: 'Club Intelligence <info@valoreatteso.com>', to: [APPROVAL_EMAIL],
-      subject: 'Bilanci estratti — ' + summary.filter(s => s.ok).length + ' bozze da approvare', html })
-  }).catch(e => console.warn('email:', e.message));
+  await sendEmail({ from: 'Club Intelligence <info@valoreatteso.com>', to: APPROVAL_EMAIL,
+    subject: 'Bilanci estratti — ' + summary.filter(s => s.ok).length + ' bozze da approvare', html })
+    .catch(e => console.warn('email:', e.message));
 }
 
 async function logRun(status, detail) {

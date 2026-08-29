@@ -8,6 +8,7 @@ const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
 const SUPA_KEY       = process.env.SUPABASE_KEY;
@@ -518,23 +519,18 @@ JSON richiesto (fino a 4 oggetti per sezione):
     ]
   });
 
-  if (!RESEND_KEY || !APPROVAL_EMAIL) {
-    console.error('EMAIL NON INVIATA: RESEND_KEY o APPROVAL_EMAIL mancante. Brief disponibile al link:', selectUrl);
+  if (!APPROVAL_EMAIL) {
+    console.error('EMAIL NON INVIATA: APPROVAL_EMAIL mancante. Brief disponibile al link:', selectUrl);
   } else {
-    const emailRes = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-      body: JSON.stringify({
-        from: FROM, to: APPROVAL_EMAIL,
-        subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
-        html
-      })
+    const ok = await sendEmail({
+      from: FROM, to: APPROVAL_EMAIL,
+      subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
+      html
     });
-    const emailJson = await emailRes.json().catch(() => ({}));
-    if (emailRes.ok) {
-      console.log('Email Scout inviata a', APPROVAL_EMAIL, '— Resend id:', emailJson.id);
+    if (ok) {
+      console.log('Email Scout inviata a', APPROVAL_EMAIL);
     } else {
-      console.error('ERRORE invio email Scout — Resend', emailRes.status, ':', JSON.stringify(emailJson), '| brief al link:', selectUrl);
+      console.error('ERRORE invio email Scout | brief al link:', selectUrl);
     }
   }
 

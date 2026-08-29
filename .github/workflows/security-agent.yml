@@ -13,6 +13,8 @@ jobs:
       - name: Controlla anomalie sicurezza
         env:
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          EMAIL_PROVIDER: brevo
+          BREVO_KEY: ${{ secrets.BREVO_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}

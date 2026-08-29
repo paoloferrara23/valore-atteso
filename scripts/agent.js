@@ -5,6 +5,7 @@ const { logUsage } = require('../lib/ai-usage');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const RESEND_KEY    = process.env.RESEND_KEY;
+const { sendEmail } = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL      = process.env.SUPABASE_URL;
 const SUPA_KEY      = process.env.SUPABASE_KEY;
@@ -164,11 +165,7 @@ async function main() {
             ]
           });
 
-          await httpRequest('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-            body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `✓ Bozza VA #${options.num || editionNum} pronta — revisiona e approva`, html })
-          });
+          await sendEmail({ from: FROM, to: APPROVAL_EMAIL, subject: `✓ Bozza VA #${options.num || editionNum} pronta — revisiona e approva`, html });
 
           await logRun('editoriale', 'success', `Bozza #${options.num || editionNum} generata automaticamente.`, { editionId, num: options.num || editionNum }, Date.now()-start);
           console.log('Editoriale completato — modalità diretta.');
@@ -211,11 +208,7 @@ async function main() {
     ]
   });
 
-  await httpRequest('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `Scegli i temi VA #${options.num}`, html })
-  });
+  await sendEmail({ from: FROM, to: APPROVAL_EMAIL, subject: `Scegli i temi VA #${options.num}`, html });
 
   await logRun('editoriale', 'success', `Opzioni #${options.num} generate. Attende selezione.`, { editionId, num: options.num }, Date.now()-start);
   console.log('Editoriale completato — modalità opzioni.');

@@ -3,6 +3,7 @@ const { memSet, logRun, supaFetch } = require('./memory');
 const { agentEmail } = require('./email-template');
 
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SITE_URL       = process.env.SITE_URL || 'https://valoreatteso.com';
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';
@@ -136,11 +137,7 @@ async function main() {
     ]
   });
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({ from: FROM, to: APPROVAL_EMAIL, subject: `${incidents.length > 0 ? '🔴' : warnings.length > 0 ? '🟡' : '✓'} Incident Response VA · ${incidents.length} incidents · ${oggi}`, html })
-  });
+  await sendEmail({ from: FROM, to: APPROVAL_EMAIL, subject: `${incidents.length > 0 ? '🔴' : warnings.length > 0 ? '🟡' : '✓'} Incident Response VA · ${incidents.length} incidents · ${oggi}`, html });
 
   await logRun('incident-response', status, `${incidents.length} incidents, ${warnings.length} warnings`, report, Date.now()-start);
   console.log(`Incident Response completato. ${incidents.length} incidents, ${warnings.length} warnings.`);

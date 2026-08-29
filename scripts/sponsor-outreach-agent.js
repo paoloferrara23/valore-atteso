@@ -20,6 +20,7 @@ const DRAFT_LIMIT = parseInt(process.env.SPONSOR_OUTREACH_DRAFT_LIMIT || '5', 10
 const SIGNATURE = process.env.SPONSOR_OUTREACH_SIGNATURE ||
   'Paolo Ferrara\nFondatore, Valore Atteso\nvaloreatteso.com · info@valoreatteso.com';
 const RESEND_KEY = process.env.RESEND_KEY;
+const { sendEmail } = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const TRIGGER = process.env.TRIGGER_TYPE === 'manual' ? 'manual' : 'scheduled';
 
@@ -249,14 +250,10 @@ async function notifyNewRequests() {
   const rows = reqs.map(r =>
     `<tr><td style="padding:8px 14px;font-family:'Courier New',monospace;font-size:11px">${r.company}</td><td style="padding:8px 14px;font-family:'Courier New',monospace;font-size:11px">${r.name} · ${r.email}</td><td style="padding:8px 14px;font-family:'Courier New',monospace;font-size:11px">${r.format}${r.requested_date ? ' · ' + r.requested_date : ''}</td></tr>`
   ).join('');
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({
-      from: 'Valore Atteso <info@valoreatteso.com>', to: APPROVAL_EMAIL,
-      subject: `Sponsor VA · ${reqs.length} nuova/e richiesta/e dal sito`,
-      html: `<table width="560" style="margin:0 auto;background:#F5F2EB;border:1px solid #D0CBC0;font-family:Georgia,serif"><tr><td style="padding:20px 24px;background:#1A1A1A"><h1 style="font-size:20px;font-weight:900;color:#fff;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Richieste sponsor dal sito</p></td></tr><tr><td><table width="100%" style="border-collapse:collapse">${rows}</table></td></tr><tr><td style="padding:12px 24px;border-top:1px solid #D0CBC0;font-family:'Courier New',monospace;font-size:8px;color:#9A9690">Gestiscile dalla Control Room → tab Outreach</td></tr></table>`
-    })
+  await sendEmail({
+    from: 'Valore Atteso <info@valoreatteso.com>', to: APPROVAL_EMAIL,
+    subject: `Sponsor VA · ${reqs.length} nuova/e richiesta/e dal sito`,
+    html: `<table width="560" style="margin:0 auto;background:#F5F2EB;border:1px solid #D0CBC0;font-family:Georgia,serif"><tr><td style="padding:20px 24px;background:#1A1A1A"><h1 style="font-size:20px;font-weight:900;color:#fff;margin:0">Valore Atteso</h1><p style="font-family:'Courier New',monospace;font-size:9px;color:#C8A97A;letter-spacing:.14em;text-transform:uppercase;margin:4px 0 0">Richieste sponsor dal sito</p></td></tr><tr><td><table width="100%" style="border-collapse:collapse">${rows}</table></td></tr><tr><td style="padding:12px 24px;border-top:1px solid #D0CBC0;font-family:'Courier New',monospace;font-size:8px;color:#9A9690">Gestiscile dalla Control Room → tab Outreach</td></tr></table>`
   });
   return reqs.length;
 }

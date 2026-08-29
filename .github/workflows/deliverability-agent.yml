@@ -18,6 +18,8 @@ jobs:
       - name: Esegui Deliverability Agent
         env:
           RESEND_KEY: ${{ secrets.RESEND_KEY }}
+          EMAIL_PROVIDER: brevo
+          BREVO_KEY: ${{ secrets.BREVO_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}

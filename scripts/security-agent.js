@@ -6,6 +6,7 @@ const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
 
 const RESEND_KEY     = process.env.RESEND_KEY;
+const { sendEmail }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
 const SUPA_KEY       = process.env.SUPABASE_KEY;
@@ -219,14 +220,10 @@ async function main() {
     ]
   });
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${RESEND_KEY}` },
-    body: JSON.stringify({
-      from: FROM, to: APPROVAL_EMAIL,
-      subject: `${hasCritica ? '🔴 CRITICO' : hasAlta ? '🟡 ALERT' : '🔵 INFO'} Security VA · ${alerts.length} alert · ${new Date().toLocaleDateString('it-IT')}`,
-      html
-    })
+  await sendEmail({
+    from: FROM, to: APPROVAL_EMAIL,
+    subject: `${hasCritica ? '🔴 CRITICO' : hasAlta ? '🟡 ALERT' : '🔵 INFO'} Security VA · ${alerts.length} alert · ${new Date().toLocaleDateString('it-IT')}`,
+    html
   });
 
   console.log(`Security Agent completato. ${alerts.length} alerts — email inviata.`);
