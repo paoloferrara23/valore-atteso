@@ -204,6 +204,18 @@ function sTopics({ label, topics }) {
     }).join(' · ');
     const verificaHTML = t.verifica_biblioteca && t.verifica_biblioteca !== 'N/A'
       ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:#1B4332;margin-top:5px">📚 ${t.verifica_biblioteca}</div>` : '';
+    // Esito verifica fatti (web search): badge per tema.
+    const statiVerifica = {
+      ok:         { c: '#1B6B3A', bg: '#E4EDE7', icona: '✓', testo: 'Verificato' },
+      stale:      { c: '#8A6D1B', bg: '#F7EFD9', icona: '⚠', testo: 'Stagione da controllare' },
+      unverified: { c: '#8A6D1B', bg: '#F7EFD9', icona: '⚠', testo: 'Da verificare' },
+      wrong:      { c: '#8A1B1B', bg: '#F7E4E4', icona: '✗', testo: 'Risulta errato' },
+    };
+    const vf = t.verifica && statiVerifica[t.verifica.stato];
+    const dettaglioVf = t.verifica ? (t.verifica.correzione || t.verifica.nota || '') : '';
+    const verificaFattiHTML = vf
+      ? `<div style="font-family:'Courier New',monospace;font-size:8px;color:${vf.c};background:${vf.bg};padding:5px 8px;margin-top:5px">${vf.icona} ${vf.testo}${dettaglioVf ? ' — ' + dettaglioVf : ''}</div>`
+      : '';
     return `<div style="margin-bottom:${i<topics.length-1?'12px':'0'};border-left:3px solid ${fg}">
       <div style="background:${fg};padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span style="font-family:'Courier New',monospace;font-size:8px;font-weight:700;color:#fff;background:rgba(255,255,255,0.15);padding:2px 7px">#${i+1}</span>
@@ -218,6 +230,7 @@ function sTopics({ label, topics }) {
         </div>
         ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#4A4845;margin-bottom:5px">${t.dati_chiave.join(' · ')}</div>` : ''}
         ${verificaHTML}
+        ${verificaFattiHTML}
         <div style="font-family:'Courier New',monospace;font-size:8px;color:#9A9690;border-top:1px solid #E8E3DC;padding-top:6px;margin-top:6px">${fontiHTML}</div>
       </div>
     </div>`;
