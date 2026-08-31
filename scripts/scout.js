@@ -295,6 +295,81 @@ async function notificaDaSalvato(oggi, start) {
   await inviaNotificaScout(rec, rec.drive_files || [], rec.selection_token, oggi, start);
 }
 
+// ── Fase 3.5: verifica fatti del brief ──────────────────────────────────────
+// Controlla con web search i fatti concreti di ogni tema (soprattutto
+// trasferimenti e cifre) e li marca: ok / stale (vero ma stagione sbagliata) /
+// wrong (attribuzione o dato errato) / unverified. I temi "wrong" vengono
+// RIMOSSI dal brief, così non arrivano a Paolo come fatti (era il caso di
+// "Openda alla Juventus", in realtà trasferimento della stagione precedente).
+async function verificaBrief(brief, oggi) {
+  const sezioni = ['bilancio', 'deal', 'metrica'];
+  const claims = [];
+  sezioni.forEach(sez => {
+    (brief.temi_per_sezione[sez] || []).forEach((t, i) => {
+      claims.push({
+        id: `${sez}:${i}`,
+        titolo: t.titolo || '',
+        dati: (t.dati_chiave || []).join(' | '),
+        fonte: t.fonte_principale || ''
+      });
+    });
+  });
+  if (!claims.length) return { rimossi: 0 };
+
+  const sys = `Sei un fact-checker del business del calcio. Verifichi con web search se le affermazioni fattuali di un brief sono VERE e ATTUALI. Oggi è ${oggi}; la stagione in corso è la 2026/27 (la precedente, chiusa, è la 2025/26). Rispondi SOLO con JSON valido.`;
+  const prompt = `Per ciascun tema verifica con web search i FATTI CONCRETI, in particolare:
+- Trasferimenti: il giocatore è DAVVERO passato al club indicato, in QUESTA finestra (estate 2026, stagione 26/27)? Attenzione a non confondere un trasferimento della stagione PRECEDENTE (25/26) spacciato come attuale.
+- Cifre/numeri: sono corretti e riferiti alla stagione giusta?
+
+Assegna a ogni id uno "stato":
+- "ok": il fatto principale è confermato da fonte recente e riferito alla stagione/finestra giusta.
+- "stale": il fatto è vero ma appartiene alla stagione PRECEDENTE (25/26) o comunque non è l'attualità di questi giorni.
+- "wrong": l'attribuzione o il dato principale è ERRATO (es. il giocatore è a un altro club, la cifra è materialmente sbagliata). Usa "wrong" SOLO quando la ricerca lo contraddice chiaramente.
+- "unverified": non trovi conferma sufficiente.
+Per "stale" e "wrong" scrivi in "correzione" il fatto corretto (breve, senza virgolette doppie). In "nota" una riga con la fonte.
+
+TEMI:
+${JSON.stringify(claims, null, 1)}
+
+JSON richiesto:
+{"verdicts": {"sezione:indice": {"stato":"ok|stale|wrong|unverified","nota":"...","correzione":"..."}}}`;
+
+  let out = '';
+  try {
+    out = await callClaude([{ role: 'user', content: prompt }], sys, true, 'claude-sonnet-4-6');
+  } catch (e) {
+    console.warn('Verifica brief fallita (non bloccante):', e.message);
+    return { rimossi: 0 };
+  }
+
+  let verdicts = {};
+  try {
+    const m = out.replace(/```json|```/g, '').match(/\{[\s\S]*\}/);
+    const parsed = m ? JSON.parse(m[0].replace(/,(\s*[}\]])/g, '$1')) : {};
+    verdicts = parsed.verdicts || {};
+  } catch (e) {
+    console.warn('Verifica: JSON non parsabile, nessuna annotazione:', e.message);
+    return { rimossi: 0 };
+  }
+
+  // Applica: annota ogni tema e rimuovi i "wrong". filter fornisce l'indice
+  // originale, quindi la chiave "sez:i" resta allineata durante il filtraggio.
+  let rimossi = 0;
+  sezioni.forEach(sez => {
+    brief.temi_per_sezione[sez] = (brief.temi_per_sezione[sez] || []).filter((t, i) => {
+      const v = verdicts[`${sez}:${i}`];
+      if (v && v.stato === 'wrong') {
+        console.log(`Verifica: RIMOSSO ${sez}:${i} "${t.titolo}" — ${v.correzione || v.nota || 'errato'}`);
+        rimossi++;
+        return false;
+      }
+      if (v && v.stato) t.verifica = { stato: v.stato, nota: v.nota || '', correzione: v.correzione || '' };
+      return true;
+    });
+  });
+  return { rimossi };
+}
+
 async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -531,6 +606,11 @@ JSON richiesto (fino a 4 oggetti per sezione):
     brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 4);
   });
   console.log(`Temi: bilancio=${brief.temi_per_sezione.bilancio.length}, deal=${brief.temi_per_sezione.deal.length}, metrica=${brief.temi_per_sezione.metrica.length}`);
+
+  // ── Fase 3.5: verifica fatti — rimuove attribuzioni errate, marca gli altri
+  console.log('Fase 3.5: verifica fatti (web search)...');
+  const verifica = await verificaBrief(brief, oggi);
+  console.log(`Verifica fatti completata: ${verifica.rimossi} tema/i rimosso/i perché errato/i.`);
 
   // ── Fase 4: Salva pending con token approvazione ─────────────────────────
   const selectionToken = generateToken();
