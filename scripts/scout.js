@@ -548,13 +548,13 @@ Fai una ricerca web APPROFONDITA (usa più query diverse) e trova ALMENO 8-10 no
 
 PARTI DALL'ATTUALITÀ — CATTURA IL MOMENTO (regola prioritaria): identifica prima di tutto gli eventi che DOMINANO la conversazione calcistica di questi 7 giorni — un'operazione di mercato rilevante, un annuncio societario, una decisione regolatoria o un big match di cui parlano tutti — e trovane l'angolo FINANZIARIO. I lettori vogliono l'analisi economica di ciò che stanno GIÀ seguendo: un grande evento di attualità con un buon angolo money vale più di una notizia di nicchia. Chiediti: "di cosa parla il calcio questa settimana?" e portaci il numero dietro.
 
-COSA RENDE UN TEMA "INTERESSANTE" PER VALORE ATTESO (sono tutti angoli validi; scegli in base a cosa e' successo davvero questa settimana):
-- Ricavi e commerciale: sponsor di maglia, naming rights, diritti TV, merchandising, tournee e mercati esteri, crescita dei ricavi. Sono i temi piu' facili e piacevoli da leggere.
-- Deal con nomi: acquisizioni, quote di club, ingressi di fondi, con la struttura dell'operazione spiegata in modo semplice.
-- Il "follow the money" dietro una notizia che il tifoso legge come cronaca sportiva, con un angolo chiaro e non ovvio.
-- Club minori, leghe emergenti, storie curiose con un numero dietro: non solo i soliti top club.
-- Valutazioni e multipli di club, quando c'e' un dato fresco e comparabile.
-Usa con PARSIMONIA (solo con un fatto nuovo e datato, e mai come filone dominante): contabilita' tecnica FFP/PSR, arbitraggio normativo UEFA, multe e sanzioni, distress e contenziosi. Sono angoli "duri": vanno bene ogni tanto, non come tema principale del brief.
+COSA CERCARE — LE 4 DIREZIONI PRIORITARIE (scegli i temi PRIMA DI TUTTO tra queste; sono cio' che Paolo vuole leggere):
+1. STORIE CON UN PROTAGONISTA: parti da UN nome — un club, una persona (presidente, proprietario, dirigente, giocatore), un fondo — e una sua mossa con un colpo di scena. "Perche' X ha fatto questa scelta e cosa ci guadagna". Il lettore deve poter tifare o indignarsi, non solo capire.
+2. SOLDI CONCRETI E QUOTIDIANI: cifre che il lettore "sente" sulla propria pelle — sponsor di maglia, stipendi, prezzo di biglietti e abbonamenti, diritti TV, quanto incassa/guadagna un club, quanto costa un giocatore rispetto a quanto rende. Numeri tangibili, non ratios astratti.
+3. GRANDI DEAL E PROPRIETA': chi compra chi, fondi che entrano, cambi di proprieta', valutazioni di club — ma raccontati COME UNA STORIA (chi, perche', quanto, cosa cambia), non come un report.
+4. NUMERI SORPRENDENTI (stile SpiegameloFacile): un dato controintuitivo o curioso che fa dire "non ci crederesti, ma...". La sorpresa e l'esempio concreto vengono PRIMA del tecnicismo. Per la sezione Metrica preferisci SEMPRE un numero sorprendente raccontato semplice, MAI una percentuale aggregata di lega o un indice regolatorio.
+
+VIETATO COME TEMA PRINCIPALE (troppo complicati/gergali — Paolo li trova noiosi e incomprensibili): Squad Cost Ratio / SCR, PSR / FFP, "red zone", wage ratio, "cliff effect", percentuali aggregate di lega (es. "il 52% dei deal", "il 73% della spesa"), arbitraggio normativo UEFA, contabilita' tecnica. Se un tema si REGGE su uno di questi concetti per essere capito, e' troppo complicato: scartalo o riscrivilo attorno a un protagonista e a soldi concreti. CAP ASSOLUTO: al massimo UN tema in tutto il brief puo' avere un angolo regolatorio/contabile, e solo se lo sai rendere semplice con un esempio.
 
 Spazia tra Serie A, Premier, Liga, Bundesliga, Ligue 1 e oltre.
 
@@ -564,7 +564,7 @@ TEST DEL CAFFE (filtro obbligatorio sulla scelta dei temi): il lettore ci legge 
 
 FILONI SATURI — NON riproporre salvo novità eccezionale e datata di questi 7 giorni: (a) ricavi/montepremi/commerciale di Mondiale 2026 e FIFA; (b) macro-bilanci aggregati di lega (ricavi o debito totali della Serie A); (c) UEFA / PSR / Squad Cost Rule / Financial Fair Play. Sono già usciti più volte: i lettori non vogliono riletture. CAP RIGIDO: al massimo UN tema su tutto il brief può toccare UEFA/PSR/Squad Cost Rule, e solo con un fatto nuovo e datato di questi 7 giorni. Se ne trovi di più, tienine uno solo e scarta gli altri.
 
-ARCHETIPO DI TEMA FORTE (le nostre edizioni migliori — es. #002 Sheffield distressed M&A, #008 playbook Oaktree-Inter, #009 PSG-Ramos exit e Nico Paz, #010 Clara Vista-Frosinone): parti da UN soggetto NOMINATO (un club, un fondo, una singola operazione) e raccontane l'ingegneria finanziaria — struttura del deal, valutazione e multipli, exit, distressed M&A, modello di ownership. Preferisci SEMPRE questo a un tema macro o a un evento globale generico.
+ARCHETIPO DI TEMA FORTE (le nostre edizioni migliori — es. #002 Sheffield, #008 Oaktree-Inter, #009 PSG-Ramos e Nico Paz, #010 Clara Vista-Frosinone): parti da UN soggetto NOMINATO (un club, un fondo, una persona, una singola operazione) e racconta la sua STORIA di soldi in modo semplice — chi e', cosa ha fatto, quanto vale/costa/rende, cosa ci guadagna e perche' e' sorprendente. L'angolo finanziario deve emergere dalla storia, spiegato come lo spiegheresti a un amico non del settore, NON con il lessico da report (evita "multipli", "EV/EBITDA", "engineering", "carve-out" nel titolo e nell'attacco). Preferisci SEMPRE questo a un tema macro, regolatorio o a un evento globale generico.
 
 FILTRO ANTI-RIDONDANZA (OBBLIGATORIO — è il problema n.1 da risolvere): in fondo al system c'è l'elenco delle EDIZIONI GIÀ PUBBLICATE. Per OGNI tema candidato confrontalo con quell'elenco: se lo stesso club, deal, operazione, persona o metrica è già stato trattato e NON c'è una novità concreta e DATATA in questi 7 giorni, SCARTALO. In caso di dubbio, scarta. Per ogni tema che tocca un'entità già vista, scrivi esplicitamente "NOVITÀ DI QUESTA SETTIMANA: [fatto nuovo + data]"; se non riesci a scriverla, il tema è ridondante e va eliminato. Meglio pochi temi davvero nuovi che tanti riciclati.
 
