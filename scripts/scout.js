@@ -174,9 +174,15 @@ async function leggiWiki() {
 function contestoStagionale() {
   const now = new Date();
   const m = now.getMonth() + 1; // 1-12
+  const d = now.getDate();      // 1-31
   const y = now.getFullYear();
 
   const eventi = [];
+
+  // Ancora temporale esplicito: la stagione in corso è la 26/27 (la precedente
+  // è la 25/26). Serve a evitare l'errore ricorrente di confondere le stagioni
+  // e di trattare come "attuali" dati della stagione passata.
+  eventi.push(`STAGIONE IN CORSO: 2026/27 (la stagione precedente, ormai chiusa, è la 2025/26). Quando citi bilanci o dati riferiti a una stagione, esplicita SEMPRE a quale stagione si riferiscono e non spacciare la 25/26 come attualità.`);
 
   // Mondiale 2026 — finestra torneo: 11 giugno – 19 luglio 2026
   const mondialeInizio = new Date('2026-06-11T00:00:00');
@@ -188,8 +194,12 @@ function contestoStagionale() {
   }
 
   // Mercato trasferimenti estivo
-  if (m === 6 || m === 7 || m === 8) {
-    eventi.push(`MERCATO ESTIVO APERTO (1 luglio – 31 agosto): cerca deal in corso o attesi, multipli EV/ricavi pagati, struttura equity/earn-out, ruolo fondi PE nel finanziamento acquisti.`);
+  if ((m === 8 && d >= 25) || (m === 9 && d <= 5)) {
+    // Ultimi giorni + chiusura: il momento più "caldo" e attuale.
+    eventi.push(`DEADLINE DAY / CHIUSURA MERCATO ESTIVO (finestra fino al 1 settembre): è il momento clou. Cerca i colpi last-minute e i loro numeri (importo, struttura equity/earn-out/prestito con obbligo, multipli EV/ricavi), la spesa netta e il saldo di mercato dei club, le plusvalenze registrate per far quadrare il PSR/FFP entro la chiusura. L'attualità NON è più "chi arriva" in astratto ma il consuntivo economico della sessione appena chiusa.`);
+    eventi.push(`AVVIO STAGIONE 2026/27: prime giornate dei campionati. Angoli economici freschi: monte ingaggi delle rose costruite, ammortamento dei nuovi acquisti spalmato sui contratti, ricavi attesi (abbonamenti/stagionali venduti, botteghino, sponsor di maglia della nuova stagione), impatto della qualificazione/mancata qualificazione alle coppe sui conti.`);
+  } else if (m === 6 || m === 7 || m === 8) {
+    eventi.push(`MERCATO ESTIVO APERTO (1 luglio – 1 settembre): cerca deal in corso o attesi, multipli EV/ricavi pagati, struttura equity/earn-out, ruolo fondi PE nel finanziamento acquisti.`);
   }
 
   // Fine stagione / bilanci annuali
