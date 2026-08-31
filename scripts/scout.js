@@ -35,10 +35,10 @@ qualsiasi testata giornalistica o istituzione finanziaria/sportiva riconosciuta
 a livello internazionale, purché la notizia sia verificabile e la fonte citabile.
 NON accettate: blog personali, forum, social media, siti senza firma editoriale.`;
 
-async function callClaude(messages, system, useSearch = false, model = 'claude-sonnet-4-6') {
+async function callClaude(messages, system, useSearch = false, model = 'claude-sonnet-4-6', maxTokens = 6000) {
   const body = {
     model,
-    max_tokens: 6000,
+    max_tokens: maxTokens,
     system,
     messages
   };
@@ -63,6 +63,50 @@ async function callClaude(messages, system, useSearch = false, model = 'claude-s
   const data = await r.json();
   logUsage('scout', model, data.usage);
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+}
+
+// Ripara un JSON troncato/malformato: chiude stringhe e parentesi rimaste
+// aperte, toglie virgole pendenti, chiavi senza valore -> null. Best-effort:
+// se non basta, il chiamante ricade sul retry.
+function riparaJsonTroncato(s) {
+  let inStr = false, esc = false;
+  const stack = [];
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === '\\') esc = true;
+      else if (ch === '"') inStr = false;
+      continue;
+    }
+    if (ch === '"') inStr = true;
+    else if (ch === '{') stack.push('}');
+    else if (ch === '[') stack.push(']');
+    else if (ch === '}' || ch === ']') stack.pop();
+  }
+  let cut = s;
+  if (inStr) cut += '"';                  // chiudi stringa aperta
+  cut = cut.replace(/,\s*$/, '');         // togli virgola pendente
+  cut = cut.replace(/:\s*$/, ': null');   // chiave senza valore -> null
+  cut = cut.replace(/,\s*$/, '');
+  while (stack.length) cut += stack.pop();
+  return cut;
+}
+
+// Sanifica ed effettua il parse del JSON del brief; se troncato, tenta il
+// recupero. Ritorna l'oggetto o null (mai lancia).
+function parseBriefJson(text) {
+  const raw = String(text || '').replace(/```json|```/g, '').trim();
+  const match = raw.match(/\{[\s\S]*\}/);
+  if (!match) return null;
+  const sanitize = (s) => s
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
+    .replace(/\t/g, ' ')
+    .replace(/,(\s*[}\]])/g, '$1')
+    .replace(/"((?:[^"\\]|\\.)*)"/g, (m, x) => '"' + x.replace(/\n/g, ' ').replace(/\r/g, '') + '"');
+  const candidate = sanitize(match[0]);
+  try { return JSON.parse(candidate); } catch (_) { /* prova il recupero */ }
+  try { return JSON.parse(riparaJsonTroncato(candidate)); } catch (_) { return null; }
 }
 
 async function supaUpsert(key, value, writtenBy) {
@@ -567,36 +611,24 @@ JSON richiesto (fino a 4 oggetti per sezione):
   const jsonSystemSimple = 'Sei un convertitore JSON. Rispondi SOLO con JSON valido. Nessun testo aggiuntivo.';
   let jsonPrompt_result = '';
   try {
-    jsonPrompt_result = await callClaude([{ role: 'user', content: jsonPrompt }], jsonSystemSimple, false);
+    jsonPrompt_result = await callClaude([{ role: 'user', content: jsonPrompt }], jsonSystemSimple, false, 'claude-sonnet-4-6', 12000);
     console.log('JSON generato, length:', jsonPrompt_result.length);
   } catch(e) {
     console.error('Generazione JSON fallita:', e.message);
     jsonPrompt_result = '{}';
   }
 
-    // ── Fase 3: Parse ────────────────────────────────────────────────────────
-  let brief;
-  try {
-    const raw = jsonPrompt_result.replace(/```json|```/g, '').trim();
-    const match = raw.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Nessun JSON');
-    brief = JSON.parse(
-      match[0]
-        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ')
-        .replace(/\t/g, ' ')
-        .replace(/,(\s*[}\]])/g, '$1')
-        .replace(/"((?:[^"\\]|\\.)*)"/g, (m, s) => '"' + s.replace(/\n/g, ' ').replace(/\r/g, '') + '"')
-    );
-  } catch (e) {
-    console.warn('Retry JSON...', e.message);
+  // ── Fase 3: Parse (con recupero JSON troncato) ───────────────────────────
+  let brief = parseBriefJson(jsonPrompt_result);
+  if (!brief) {
+    console.warn('JSON non valido, retry con budget token ampio...');
     const retry = await callClaude([
       { role: 'user', content: `Oggi è ${oggi}. Brief Scout per Valore Atteso in JSON valido.` },
       { role: 'assistant', content: testoRicerca },
       { role: 'user', content: 'JSON malformato. Rispondi SOLO con JSON valido, nessun testo aggiuntivo.' }
-    ], system);
-    const m2 = retry.replace(/```json|```/g, '').match(/\{[\s\S]*\}/);
-    if (!m2) throw new Error('JSON non valido dopo retry');
-    brief = JSON.parse(m2[0].replace(/[\x00-\x1F\x7F]/g, ' ').replace(/,(\s*[}\]])/g, '$1'));
+    ], jsonSystemSimple, false, 'claude-sonnet-4-6', 12000);
+    brief = parseBriefJson(retry);
+    if (!brief) throw new Error('JSON non valido dopo retry');
   }
 
   // Valida temi_per_sezione
