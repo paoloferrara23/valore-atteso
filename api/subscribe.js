@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
   const RESEND_KEY = process.env.RESEND_KEY;
   const SITE = process.env.SITE_URL || 'https://valoreatteso.com';
   const FROM = 'Valore Atteso <info@valoreatteso.com>';
-  const { email, action, token } = req.body || {};
+  const { email, action, token, source } = req.body || {};
 
   // ── REMINDER — rimanda conferma a non confermati ─────────────────────────
   if (action === 'reminder') {
@@ -162,7 +162,10 @@ module.exports = async function handler(req, res) {
   if (existing.data) {
     if (!existing.data.token) await supabase.from('subscribers').update({ token: tok }).eq('email', email);
   } else {
-    const ins = await supabase.from('subscribers').insert({ email, token: tok, confirmed: false });
+    // Il canale (source) arriva dal client: utm della URL + form che ha convertito.
+    // È dato non fidato -> sanifica: stringa breve, solo caratteri sicuri, fallback 'direct'.
+    const cleanSource = String(source || 'direct').slice(0, 120).replace(/[^A-Za-z0-9_.:|-]/g, '_') || 'direct';
+    const ins = await supabase.from('subscribers').insert({ email, token: tok, confirmed: false, source: cleanSource });
     if (ins.error) return res.status(500).json({ error: ins.error.message });
   }
 

@@ -312,6 +312,20 @@ const CR_PWD='valopro2025';
 let crAdHistory=[];
 let crCtx={};
 
+// Tracking canale iscrizioni: cattura gli utm dalla URL al caricamento pagina.
+// Fallback 'direct' se non ci sono utm. Formato: utm_source[:utm_medium[:utm_campaign]].
+// Usato in doSignup per sapere da quale canale (e quale form) arriva ogni iscritto.
+var VA_SOURCE=(function(){
+  try{
+    var p=new URLSearchParams(window.location.search);
+    var s=(p.get('utm_source')||'').trim()||'direct';
+    var parts=[s];
+    var m=(p.get('utm_medium')||'').trim();if(m)parts.push(m);
+    var c=(p.get('utm_campaign')||'').trim();if(c)parts.push(c);
+    return parts.join(':').slice(0,100);
+  }catch(e){return 'direct';}
+})();
+
 const AGENT_SCHEDULE=[
   {key:'scout',name:'Scout',day:'Sabato',time:'08:00',group:'editoriale',desc:'Web search su calcioefinanza.it, Swiss Ramble, UEFA, Deloitte, FT. Genera brief temi con scoring rilevanza.'},
   {key:'seo',name:'SEO',day:'Domenica',time:'08:00',group:'editoriale',desc:'Keyword research football finance. Salva parole chiave per ottimizzare visibilità organica dell\'edizione.'},
@@ -368,7 +382,9 @@ async function doSignup(emailId,btnId,okId,checkId){
   btn.textContent='Iscrizione...';
   ok.className='success';
   try{
-    const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source:'homepage'})});
+    const formPos=(emailId==='cta-email')?'cta':'hero';
+    const source=VA_SOURCE+'__'+formPos;
+    const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source})});
     const d=await r.json().catch(()=>({}));
     if(r.status===429){
       ok.className='success info';
