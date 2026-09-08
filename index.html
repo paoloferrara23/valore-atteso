@@ -1140,10 +1140,11 @@ async function crLoadBozze(){
     const r=await fetch(SURL+'/rest/v1/editions?published=eq.false&order=created_at.desc&select=*',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const bozze=await r.json();
     if(!Array.isArray(bozze)||!bozze.length){el.innerHTML='<div class="cr-box">Nessuna bozza in attesa.</div>';return}
-    el.innerHTML=bozze.map(e=>`<div class="cr-bozza" id="bozza-${e.id}"><div class="cr-bozza-head"><div><div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #${esc(e.num)}</div><div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-${e.id}">${esc(e.title||'')}</div></div><div class="cr-bozza-actions"><button class="cr-btn light" onclick="crToggleBozza('${e.id}')">Preview</button><button class="cr-btn gold" onclick="crApproveBozza('${e.id}','${e.num}')">Approva</button><button class="cr-btn" onclick="crInviaBozza('${e.num}','${e.id}')">Invia</button></div></div><div class="cr-bozza-body" id="bb-${e.id}">${(e.sections||[]).map((s,i)=>`<div style="padding:14px 0;border-bottom:1px solid var(--rule)"><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);letter-spacing:.12em;text-transform:uppercase">${esc(s.label||'Sezione')}</div><h3 class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-title" style="font-family:var(--sf);font-size:1.3rem;letter-spacing:-.4px;margin:6px 0">${esc(s.title||'')}</h3><div class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-body" style="font-size:15px;line-height:1.7;color:var(--ink2);white-space:pre-wrap">${esc(s.body||'')}</div></div>`).join('')}<div class="cr-status" id="bst-${e.id}"></div></div></div>`).join('');
+    el.innerHTML=bozze.map(e=>`<div class="cr-bozza" id="bozza-${e.id}"><div class="cr-bozza-head"><div><div style="font-family:var(--mn);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase">Bozza #${esc(e.num)}</div><div class="cr-bozza-title cr-edit" contenteditable="true" id="bt-${e.id}">${esc(e.title||'')}</div></div><div class="cr-bozza-actions"><button class="cr-btn light" onclick="crToggleBozza('${e.id}')">Preview</button><button class="cr-btn gold" onclick="crApproveBozza('${e.id}','${e.num}')">Approva</button><button class="cr-btn" onclick="crInviaBozza('${e.num}','${e.id}')">Invia</button></div></div><div class="cr-bozza-body" id="bb-${e.id}">${(e.sections||[]).map((s,i)=>`<div style="padding:14px 0;border-bottom:1px solid var(--rule)"><div style="font-family:var(--mn);font-size:8px;color:var(--deepgold);letter-spacing:.12em;text-transform:uppercase">${esc(s.label||'Sezione')}</div><h3 class="cr-edit" contenteditable="true" id="bs-${e.id}-${i}-title" style="font-family:var(--sf);font-size:1.3rem;letter-spacing:-.4px;margin:6px 0">${esc(s.title||'')}</h3><textarea class="cr-edit" id="bs-${e.id}-${i}-body" style="font-size:15px;line-height:1.7;color:var(--ink2);width:100%;box-sizing:border-box;min-height:220px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--white);font-family:var(--sf)">${esc(s.body||'')}</textarea></div>`).join('')}<div class="cr-status" id="bst-${e.id}"></div></div></div>`).join('');
   }catch(e){el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>'}
 }
 function crToggleBozza(id){document.getElementById('bb-'+id).classList.toggle('open')}
+function crBodyVal(id){var el=document.getElementById(id);if(!el)return null;return (typeof el.value==="string")?el.value:el.innerText;}
 async function crApproveBozza(id,num){
   const st=document.getElementById('bst-'+id);
   st.className='cr-status';
@@ -1151,7 +1152,7 @@ async function crApproveBozza(id,num){
   st.textContent='Approvazione...';
   try{
     const ed=await crFetchEdition(id);
-    const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(document.getElementById(`bs-${id}-${i}-body`)?.innerText||s.body).trim()}));
+    const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
     const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
@@ -1189,7 +1190,7 @@ function crLeggiSezioniDom(edId,sections){
   return sections.map(function(s,i){
     var sid=edId+'-'+i;
     var title=(document.getElementById('bs-'+sid+'-title')||{innerText:s.title}).innerText.trim();
-    var body=(document.getElementById('bs-'+sid+'-body')||{innerText:s.body}).innerText.trim();
+    var body=(crBodyVal('bs-'+sid+'-body')||s.body).trim();
     var verdict=(document.getElementById('bs-'+sid+'-verdict')||{innerText:s.verdict||''}).innerText.trim();
     // Leggi KPI dal DOM se disponibili, altrimenti da Supabase
     var kpisBase=s.kpis||[];
@@ -1696,7 +1697,7 @@ async function crApproveBozza(id,num){
   st.textContent='Approvazione...';
   try{
     const ed=await crFetchEdition(id);
-    const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(document.getElementById(`bs-${id}-${i}-body`)?.innerText||s.body).trim()}));
+    const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
     const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
