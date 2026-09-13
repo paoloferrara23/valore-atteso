@@ -2,7 +2,7 @@ name: Incident Response Agent
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # Ogni giorno alle 9:00 ora italiana
+    - cron: '0 8 * * 1'  # Ogni lunedì alle 9:00 ora italiana (settimanale)
   workflow_dispatch:
 
 jobs:

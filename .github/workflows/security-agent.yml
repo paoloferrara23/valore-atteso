@@ -2,7 +2,7 @@ name: Security Agent
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # Ogni giorno alle 10:00 ora italiana
+    - cron: '0 9 * * 1'  # Ogni lunedì alle 10:00 ora italiana (settimanale)
   workflow_dispatch:
 
 jobs:
