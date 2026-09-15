@@ -1643,7 +1643,7 @@ async function crLoadBozze(){
           return '<div style="margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid var(--rule)">'+
             '<div style="font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px">'+esc(s.label||'')+'</div>'+
             '<div contenteditable="true" id="bs-'+sid+'-title" style="font-family:var(--sf);font-size:1.5rem;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;outline:none;border-bottom:1px dashed var(--rule);padding-bottom:4px">'+esc(s.title||'')+'</div>'+
-            '<div contenteditable="true" id="bs-'+sid+'-body" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:14px;outline:none;border-bottom:1px dashed var(--rule);padding-bottom:8px">'+esc(s.body||'')+'</div>'+
+            '<textarea id="bs-'+sid+'-body" class="cr-edit" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:14px;width:100%;box-sizing:border-box;min-height:240px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--white);font-family:var(--sf);outline:none">'+esc(s.body||'')+'</textarea>'+
             (kHtml?'<div style="background:var(--cream2);border:1px solid var(--rule);border-radius:14px;padding:12px 16px;margin-bottom:10px">'+
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'+
                 '<span style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">KPI</span>'+
