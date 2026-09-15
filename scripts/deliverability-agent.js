@@ -6,7 +6,8 @@ const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
 
 const RESEND_KEY     = process.env.RESEND_KEY;
-const { sendEmail }  = require('../lib/mailer');
+const BREVO_KEY      = process.env.BREVO_KEY;
+const { sendEmail, provider }  = require('../lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
 const SUPA_KEY       = process.env.SUPABASE_KEY;
@@ -28,6 +29,14 @@ async function resendFetch(path) {
   return r.json();
 }
 
+async function brevoFetch(path) {
+  const r = await fetch(`https://api.brevo.com${path}`, {
+    headers: { 'api-key': BREVO_KEY, 'Accept': 'application/json' }
+  });
+  if (!r.ok) throw new Error(`Brevo ${r.status}: ${await r.text()}`);
+  return r.json();
+}
+
 async function main() {
   const start = Date.now();
   const oggi = new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -39,39 +48,67 @@ async function main() {
   if (!ed) throw new Error('Nessuna edizione pubblicata trovata');
   console.log(`Analisi edizione #${ed.num}: ${ed.title}`);
 
-  // ── 2. Email Resend ultime 100 (filtrate per newsletter reale) ───────────
-  let emails = [];
-  try {
-    const data = await resendFetch('/emails?limit=100');
-    // Filtra solo email inviate a indirizzi reali (non @valoreatteso.com, non test)
-    emails = (data.data || []).filter(e =>
-      e.from?.includes('info@valoreatteso.com') &&
-      !e.to?.some(t => t.includes('valoreatteso.com') || t.includes('test'))
-    );
-    console.log(`Email Resend filtrate: ${emails.length} su ${data.data?.length || 0}`);
-  } catch(e) {
-    console.warn('Resend API non disponibile:', e.message);
+  // ── 2. Metriche di invio dal provider realmente usato ────────────────────
+  // La newsletter ora parte da Brevo (EMAIL_PROVIDER=brevo): le statistiche di
+  // recapito/apertura vanno lette da Brevo, non da Resend (che avrebbe 0 record
+  // e restituirebbe tutto N/D). Fallback su Resend se il provider è ancora quello.
+  const useBrevo = provider() === 'brevo' || (!RESEND_KEY && !!BREVO_KEY);
+  const fonte = useBrevo ? 'Brevo' : 'Resend';
+  let tracciate = 0, consegnate = 0, aperte = 0, cliccate = 0, bounced = 0, spam = 0, pending = 0;
+  let trackingOff = false;
+
+  if (useBrevo) {
+    // Finestra: dal giorno d'invio dell'edizione a oggi. La newsletter domina il
+    // volume transazionale del periodo, quindi l'aggregato è una proxy affidabile.
+    const sendISO = ed.sent_at || ed.date || new Date().toISOString();
+    const startDate = new Date(sendISO).toISOString().slice(0, 10);
+    const endDate   = new Date().toISOString().slice(0, 10);
+    try {
+      const rep = await brevoFetch(`/v3/smtp/statistics/aggregatedReport?startDate=${startDate}&endDate=${endDate}`);
+      const requests = rep.requests || 0;
+      consegnate = rep.delivered || 0;
+      aperte     = rep.uniqueOpens || 0;
+      cliccate   = rep.uniqueClicks || 0;
+      bounced    = (rep.hardBounces || 0) + (rep.softBounces || 0);
+      spam       = rep.spamReports || 0;
+      tracciate  = requests || consegnate;
+      // Consegne presenti ma zero aperture/click ⇒ tracking Brevo verosimilmente spento.
+      trackingOff = consegnate > 0 && aperte === 0 && cliccate === 0;
+      console.log(`Brevo aggregated ${startDate}..${endDate}: req=${requests} del=${consegnate} open=${aperte} click=${cliccate} bounce=${bounced} spam=${spam}`);
+    } catch (e) {
+      console.warn('Brevo stats non disponibili:', e.message);
+    }
+  } else {
+    // Percorso storico Resend: ultime 100 email filtrate per newsletter reale.
+    let emails = [];
+    try {
+      const data = await resendFetch('/emails?limit=100');
+      emails = (data.data || []).filter(e =>
+        e.from?.includes('info@valoreatteso.com') &&
+        !e.to?.some(t => t.includes('valoreatteso.com') || t.includes('test'))
+      );
+      console.log(`Email Resend filtrate: ${emails.length} su ${data.data?.length || 0}`);
+    } catch (e) {
+      console.warn('Resend API non disponibile:', e.message);
+    }
+    tracciate  = emails.length;
+    consegnate = emails.filter(e => ['delivered','opened','clicked'].includes(e.last_event)).length;
+    aperte     = emails.filter(e => ['opened','clicked'].includes(e.last_event)).length;
+    cliccate   = emails.filter(e => e.last_event === 'clicked').length;
+    bounced    = emails.filter(e => e.last_event === 'bounced').length;
+    spam       = emails.filter(e => e.last_event === 'complained').length;
+    pending    = emails.filter(e => ['queued','sending'].includes(e.last_event)).length;
   }
 
-  // ── 3. Calcola metriche ──────────────────────────────────────────────────
-  // inviate  = totale REALE della spedizione (sent_count salvato da send-newsletter)
-  // tracciate = campione realmente restituito da Resend (max 100/pagina): base dei tassi
-  // I tassi si calcolano SEMPRE sul campione tracciato, cosi numeratore e denominatore
-  // sono coerenti (altrimenti open-rate tra due dataset diversi = numero falso).
-  const tracciate  = emails.length;
+  // ── 3. Calcola tassi ─────────────────────────────────────────────────────
+  // inviate = totale REALE della spedizione (sent_count salvato da send-newsletter);
+  // tracciate = base su cui il provider ha dati; i tassi restano coerenti su di essa.
   const inviate    = ed.sent_count > 0 ? ed.sent_count : tracciate;
-  const campioneParziale = tracciate < inviate; // Resend ha restituito meno record del reale
-  const consegnate = emails.filter(e => ['delivered','opened','clicked'].includes(e.last_event)).length;
-  const aperte     = emails.filter(e => ['opened','clicked'].includes(e.last_event)).length;
-  const cliccate   = emails.filter(e => e.last_event === 'clicked').length;
-  const bounced    = emails.filter(e => e.last_event === 'bounced').length;
-  const spam       = emails.filter(e => e.last_event === 'complained').length;
-  const pending    = emails.filter(e => ['queued','sending'].includes(e.last_event)).length;
-
+  const campioneParziale = tracciate < inviate;
   const pct = (n, d) => d > 0 ? ((n/d)*100).toFixed(1) : 'N/D';
   const tassoConsegna = pct(consegnate, tracciate);
   const tassoApertura = pct(aperte, consegnate);
-  const tassoClick    = pct(cliccate, aperte);
+  const tassoClick    = pct(cliccate, consegnate); // CTR su consegnate (benchmark B2B 3-7%)
   const tassoBounce   = pct(bounced, tracciate);
   const tassoSpam     = pct(spam, tracciate);
 
@@ -85,6 +122,8 @@ async function main() {
     alerts.push(`${spam} segnalazione spam — controllare immediatamente gli indirizzi`);
   if (parseFloat(tassoConsegna) < 95 && tracciate > 5)
     alerts.push(`Deliverability bassa: ${tassoConsegna}% — verificare reputazione dominio`);
+  if (trackingOff)
+    alerts.push(`Brevo: ${consegnate} email consegnate ma 0 aperture/click tracciate — attiva il tracking (Brevo → Impostazioni → Trasmissione: apri "Open/Click tracking"), altrimenti apertura e click restano a zero.`);
 
   // ── 5. Salva report ─────────────────────────────────────────────────────
   const report = {
@@ -118,7 +157,7 @@ async function main() {
     runTime: `${((Date.now()-start)/1000).toFixed(1)}s`,
     sections: [
       // Edizione analizzata
-      { type: 'narrative', label: 'Edizione analizzata', text: `<strong>#${ed.num}</strong> — ${ed.title}<br><span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${inviate} email inviate${campioneParziale ? ` · tassi su ${tracciate} tracciate da Resend` : ' · dati Resend in tempo reale'}</span>`, dark: true },
+      { type: 'narrative', label: 'Edizione analizzata', text: `<strong>#${ed.num}</strong> — ${ed.title}<br><span style="font-family:'Courier New',monospace;font-size:9px;color:#9A9690">${inviate} email inviate${campioneParziale ? ` · tassi su ${tracciate} tracciate da ${fonte}` : ` · dati ${fonte} in tempo reale`}</span>`, dark: true },
 
       // KPI principali
       { type: 'kpi_grid', kpis: [
