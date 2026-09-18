@@ -160,13 +160,6 @@ function buildEditionHtml(ed, isLatest) {
     </section>`;
   };
 
-  // CTA contestuale a metà lettura.
-  const midCta = `<div class="midcta">
-    <div class="vaform-h">Ricevi la prossima edizione</div>
-    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
-    ${inlineForm('edizione-' + ed.num + '__mid', 'Iscriviti gratis')}
-  </div>`;
-
   let secHtml;
   if (isLatest) {
     // Soft-gate sull'ultima edizione: prima sezione aperta, le altre in anteprima.
@@ -179,8 +172,8 @@ function buildEditionHtml(ed, isLatest) {
     </section>`).join('');
     secHtml = first + rest;
   } else {
-    // Edizioni non più recenti: testo completo aperto (SEO + fiducia) con CTA a metà.
-    secHtml = sections.map((s, i) => (i === 0 ? secFull(s, 1) + midCta : secFull(s, i + 1))).join('');
+    // Edizioni non più recenti: testo completo aperto (SEO + fiducia).
+    secHtml = sections.map((s, i) => secFull(s, i + 1)).join('');
   }
 
   // Blocco finale: su ultima edizione è il gate, sulle altre un invito a ricevere il prossimo numero.

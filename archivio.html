@@ -892,11 +892,6 @@ async function openArt(num){
 
       sec.appendChild(grid);
       card.appendChild(sec);
-
-      // CTA contestuale dopo la prima sezione (solo edizioni aperte).
-      if(!gated && i === 0){
-        card.appendChild(vaMidCta(e.num));
-      }
     });
 
     sponsors.filter(s=>s.slot_type==='secondary').forEach(appendSponsor);
@@ -1004,14 +999,6 @@ function vaCapture(source){
   row.appendChild(inp); row.appendChild(btn); f.appendChild(row);
   var st = document.createElement('div'); st.className = 'va-cap-status'; st.setAttribute('aria-live','polite'); f.appendChild(st);
   return f;
-}
-
-function vaMidCta(num){
-  var d = document.createElement('div'); d.className = 'va-mid';
-  var h = document.createElement('div'); h.className = 'va-mid-h'; h.textContent = 'Ricevi la prossima edizione';
-  var p = document.createElement('div'); p.className = 'va-mid-p'; p.textContent = 'Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.';
-  d.appendChild(h); d.appendChild(p); d.appendChild(vaCapture(vaArchSource(num, 'mid')));
-  return d;
 }
 
 // Prompt su scroll ~70%, una volta per visitatore.
