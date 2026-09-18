@@ -196,6 +196,29 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .art-cta{padding:32px;background:var(--cream2);border-top:1px solid var(--rule);text-align:center;border-radius:0 0 16px 16px}
 .art-cta p{font-family:var(--sf);font-size:22px;font-weight:600;letter-spacing:-.3px;margin-bottom:16px;color:var(--ink)}
 .art-cta a{display:inline-flex!important;align-items:center;justify-content:center;height:44px;padding:0 24px!important;background:var(--ink)!important;color:var(--cream)!important;border-radius:999px!important;font-family:var(--mn)!important;font-size:10px!important;letter-spacing:.12em!important;text-transform:uppercase!important}
+.va-cap{max-width:460px;margin:0 auto}
+.va-cap-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.va-cap input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.va-cap button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.va-cap button:disabled{opacity:.6;cursor:default}
+.va-cap-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.va-cap-status.ok{color:#2F6B3F}.va-cap-status.err{color:#B3402F}
+.va-mid{margin:36px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.va-mid-h{font-family:var(--sf);font-size:1.15rem;font-weight:600;letter-spacing:-.3px;margin-bottom:6px}
+.va-mid-p{color:var(--ink2);font-size:14px;line-height:1.5;margin:0 auto 14px;max-width:460px}
+.va-locked{color:var(--muted);font-style:italic}
+.va-gate-k{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:8px}
+.va-gate-sub{color:var(--ink2);font-size:14px;line-height:1.5;margin:0 auto 16px;max-width:460px}
+.va-ci{max-width:var(--max,760px);margin:22px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.va-ci a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold);text-decoration:none}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .va-cap{margin:0}
+#va-scroll-cta .va-cap-row{justify-content:flex-start}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .va-cap-status{color:#9BE3B0}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
 
 /* WRAPPER per raggruppare tutti gli elementi dell'articolo in un'unica card */
 .art-card{border:1px solid var(--rule);border-radius:16px;overflow:hidden;margin-top:0}
@@ -341,6 +364,7 @@ let currentEditionId = null;
 let currentEditionNum = null;
 let currentEditionData = null;
 let isEditing = false;
+let latestNum = null;
 
 function checkAdmin(){
   isAdmin = localStorage.getItem('va_admin') === 'yes';
@@ -468,6 +492,7 @@ async function loadList(){
       el.innerHTML = '<div class="arch-empty">Prima edizione in arrivo martedì.<br>Iscriviti per non perderla.</div>';
       return;
     }
+    latestNum = String(eds[0].num); // ordinate num.desc: la prima è l'ultima edizione
     el.innerHTML = '';
     eds.forEach(e => {
       // Anchor reale verso la pagina statica /edizione-N (crawlabile da Google),
@@ -535,6 +560,9 @@ async function openArt(num){
     if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
     currentEditionId = e.id;
     currentEditionData = e;
+    // Soft-gate solo sull'ultima edizione; le più vecchie restano aperte.
+    // Gli admin vedono sempre tutto (per editare). Fail-open se latestNum ignoto.
+    const gated = !isAdmin && latestNum != null && String(e.num) === String(latestNum);
     const secs = e.sections||[];
     const tesi = e.tesi||null;
     const monitoring = e.monitoring||[];
@@ -657,6 +685,23 @@ async function openArt(num){
 
     // SEZIONI
     secs.forEach((s, i) => {
+      // Sull'ultima edizione, dalla 2ª sezione in poi mostra solo anteprima (gate).
+      if(gated && i >= 1){
+        const lock = document.createElement('div');
+        lock.className = 'art-sec';
+        const lh = document.createElement('div'); lh.className = 'art-sec-header';
+        const ln = document.createElement('div'); ln.className = 'art-sec-num'; ln.textContent = i + 1;
+        const lt = document.createElement('div'); lt.className = 'art-sec-tag'; lt.textContent = txt(s.label || s.section_label || '');
+        const ld = document.createElement('div'); ld.className = 'art-sec-divider';
+        lh.appendChild(ln); lh.appendChild(lt); lh.appendChild(ld); lock.appendChild(lh);
+        const lti = document.createElement('h2'); lti.className = 'art-sec-title'; lti.textContent = txt(s.title || ''); lock.appendChild(lti);
+        const lp = document.createElement('p'); lp.className = 'art-body va-locked';
+        const rawB = Array.isArray(s.body) ? s.body.join(' ') : (s.body || '');
+        lp.textContent = txt(String(rawB).slice(0, 150).trim() + '… — continua qui sotto');
+        lock.appendChild(lp);
+        card.appendChild(lock);
+        return;
+      }
       const sec = document.createElement('div');
       sec.className = 'art-sec edit-sec';
 
@@ -847,12 +892,17 @@ async function openArt(num){
 
       sec.appendChild(grid);
       card.appendChild(sec);
+
+      // CTA contestuale dopo la prima sezione (solo edizioni aperte).
+      if(!gated && i === 0){
+        card.appendChild(vaMidCta(e.num));
+      }
     });
 
     sponsors.filter(s=>s.slot_type==='secondary').forEach(appendSponsor);
 
-    // TESI
-    if(tesi && (tesi.headline || tesi.top?.length)){
+    // TESI (nascosta sull'ultima edizione: fa parte del contenuto gated)
+    if(!gated && tesi && (tesi.headline || tesi.top?.length)){
       const tesiEl = document.createElement('div');
       tesiEl.className = 'art-tesi';
       const tesiLabel = document.createElement('div'); tesiLabel.className = 'art-tesi-label'; tesiLabel.textContent = 'La tesi di Valore Atteso';
@@ -884,11 +934,30 @@ async function openArt(num){
       card.appendChild(tesiEl);
     }
 
-    // CTA
+    // CTA — cattura email inline (sul pezzo, niente redirect), source per-edizione
     const ctaEl = document.createElement('div');
     ctaEl.className = 'art-cta';
-    ctaEl.innerHTML = '<p>Ricevi ogni edizione il martedì mattina</p><a href="/">Iscriviti gratis →</a>';
+    if(gated){
+      const gk = document.createElement('div'); gk.className = 'va-gate-k'; gk.textContent = 'Anteprima';
+      const gp = document.createElement('p'); gp.textContent = 'Leggi Il Deal e La Metrica';
+      const gs = document.createElement('div'); gs.className = 'va-gate-sub'; gs.textContent = 'Il resto di questa edizione — e ogni nuova analisi — arriva via email. Gratis, ogni martedì in 8 minuti, con il caffè.';
+      ctaEl.appendChild(gk); ctaEl.appendChild(gp); ctaEl.appendChild(gs);
+    } else {
+      const cp = document.createElement('p'); cp.textContent = 'Ricevi ogni edizione il martedì mattina';
+      ctaEl.appendChild(cp);
+    }
+    ctaEl.appendChild(vaCapture(vaArchSource(e.num, gated ? 'gate' : 'fine')));
     card.appendChild(ctaEl);
+
+    // Ponte verso la monetizzazione: dati completi dei bilanci.
+    const ciEl = document.createElement('div');
+    ciEl.className = 'va-ci';
+    ciEl.appendChild(document.createTextNode('Ti servono i bilanci completi dei club? '));
+    const ciA = document.createElement('a');
+    ciA.href = '/club-intelligence';
+    ciA.textContent = 'Esplora la Club Intelligence →';
+    ciEl.appendChild(ciA);
+    card.appendChild(ciEl);
 
     el.appendChild(card);
 
@@ -902,6 +971,79 @@ function backToList(){
   document.getElementById('list-wrap').classList.remove('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// ── Cattura email inline (condivisa da tutte le CTA dell'archivio) ──────────
+function vaArchSource(num, pos){ return 'archivio-' + num + '__' + pos; }
+
+function vaSub(form){
+  var input = form.querySelector('input[type=email]');
+  var btn = form.querySelector('button[type=submit]') || form.querySelector('button');
+  var st = form.querySelector('.va-cap-status');
+  var email = (input.value || '').trim();
+  if(!email || email.indexOf('@') < 1){ st.textContent = "Inserisci un'email valida."; st.className = 'va-cap-status err'; return false; }
+  var source = form.getAttribute('data-source') || 'archivio';
+  var old = btn.textContent; btn.disabled = true; btn.textContent = '...'; st.textContent = ''; st.className = 'va-cap-status';
+  fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: email, source: source }) })
+    .then(function(r){ return r.json().then(function(d){ return {s:r.status, d:d}; }).catch(function(){ return {s:r.status, d:{}}; }); })
+    .then(function(res){
+      if(res.s === 429){ st.textContent = 'Troppi tentativi ravvicinati. Riprova tra qualche minuto.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old; return; }
+      if(res.d && res.d.already){ st.textContent = '✓ Sei già iscritto. Sei a posto.'; st.className = 'va-cap-status ok'; input.value = ''; btn.textContent = 'Fatto ✓'; return; }
+      if(res.d && res.d.ok){ st.textContent = "✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam)."; st.className = 'va-cap-status ok'; input.value = ''; btn.textContent = 'Fatto ✓'; return; }
+      st.textContent = (res.d && res.d.error) || 'Iscrizione non riuscita. Riprova.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old;
+    })
+    .catch(function(){ st.textContent = 'Errore di rete. Riprova.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old; });
+  return false;
+}
+
+function vaCapture(source){
+  var f = document.createElement('form'); f.className = 'va-cap'; f.setAttribute('data-source', source); f.setAttribute('novalidate','');
+  f.onsubmit = function(){ return vaSub(f); };
+  var row = document.createElement('div'); row.className = 'va-cap-row';
+  var inp = document.createElement('input'); inp.type = 'email'; inp.name = 'email'; inp.required = true; inp.placeholder = 'La tua email'; inp.setAttribute('autocomplete','email'); inp.setAttribute('aria-label','Email');
+  var btn = document.createElement('button'); btn.type = 'submit'; btn.textContent = 'Iscriviti gratis';
+  row.appendChild(inp); row.appendChild(btn); f.appendChild(row);
+  var st = document.createElement('div'); st.className = 'va-cap-status'; st.setAttribute('aria-live','polite'); f.appendChild(st);
+  return f;
+}
+
+function vaMidCta(num){
+  var d = document.createElement('div'); d.className = 'va-mid';
+  var h = document.createElement('div'); h.className = 'va-mid-h'; h.textContent = 'Ricevi la prossima edizione';
+  var p = document.createElement('div'); p.className = 'va-mid-p'; p.textContent = 'Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.';
+  d.appendChild(h); d.appendChild(p); d.appendChild(vaCapture(vaArchSource(num, 'mid')));
+  return d;
+}
+
+// Prompt su scroll ~70%, una volta per visitatore.
+(function(){
+  var bar = null, shown = false;
+  try{ if(localStorage.getItem('va_prompted') === '1') return; }catch(e){}
+  function ensureBar(){
+    if(bar) return bar;
+    bar = document.createElement('div'); bar.id = 'va-scroll-cta';
+    var inr = document.createElement('div'); inr.className = 'sc-in';
+    var t = document.createElement('div'); t.className = 'sc-t'; t.textContent = 'Ti sta piacendo? Ricevila ogni martedì, con il caffè.';
+    inr.appendChild(t);
+    inr.appendChild(vaCapture('archivio__scroll'));
+    var cl = document.createElement('button'); cl.className = 'sc-close'; cl.setAttribute('aria-label','Chiudi'); cl.textContent = '×';
+    cl.onclick = function(){ bar.style.display = 'none'; };
+    inr.appendChild(cl); bar.appendChild(inr);
+    document.body.appendChild(bar);
+    return bar;
+  }
+  function onScroll(){
+    if(shown) return;
+    var h = document.documentElement;
+    var max = (h.scrollHeight - h.clientHeight) || 1;
+    var pct = (h.scrollTop || document.body.scrollTop) / max;
+    if(pct < 0.7) return;
+    shown = true;
+    try{ localStorage.setItem('va_prompted','1'); }catch(e){}
+    ensureBar().style.display = 'block';
+    window.removeEventListener('scroll', onScroll);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+})();
 
 loadList();
 
