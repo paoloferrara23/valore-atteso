@@ -133,7 +133,7 @@ function slug(num) {
 
 // ---------- template pagina ----------
 
-function buildEditionHtml(ed, isLatest) {
+function buildEditionHtml(ed) {
   const url = SITE + '/' + slug(ed.num);
   const desc = metaDescription(ed);
   const sections = Array.isArray(ed.sections) ? ed.sections : [];
@@ -160,40 +160,15 @@ function buildEditionHtml(ed, isLatest) {
     </section>`;
   };
 
-  let secHtml;
-  if (isLatest) {
-    // Soft-gate sull'ultima edizione: prima sezione aperta, le altre in anteprima.
-    const first = sections[0] ? secFull(sections[0], 1) : '';
-    const rest = sections.slice(1).map((s, i) => {
-      const kps = (Array.isArray(s.kpis) ? s.kpis : []).filter(k => k && (k.value || k.label)).slice(0, 3);
-      const kpiRow = kps.length
-        ? `<div class="lock-kpis">${kps.map(k => `<div class="lock-kpi"><div class="lock-kpi-v">${esc(k.value || '')}</div><div class="lock-kpi-l">${esc(k.label || k.key || '')}</div></div>`).join('')}</div>`
-        : '';
-      return `<section class="sec">
-      <div class="sec-head"><span class="sec-num">${i + 2}</span><span class="sec-tag">${esc(s.label || '')}</span></div>
-      <h2 class="sec-title">${esc(s.title || '')}</h2>
-      ${kpiRow}
-      <div class="sec-fade"><p class="sec-body">${esc(teaser(s.body, 340))}</p></div>
-    </section>`;
-    }).join('');
-    secHtml = first + rest;
-  } else {
-    // Edizioni non più recenti: testo completo aperto (SEO + fiducia).
-    secHtml = sections.map((s, i) => secFull(s, i + 1)).join('');
-  }
+  // Nessun gate: tutte le edizioni, inclusa l'ultima, si leggono per intero.
+  const secHtml = sections.map((s, i) => secFull(s, i + 1)).join('');
 
-  // Blocco finale: su ultima edizione è il gate, sulle altre un invito a ricevere il prossimo numero.
-  const bottomSource = 'edizione-' + ed.num + (isLatest ? '__gate' : '__fine');
-  const lockedLabels = sections.slice(1).map(s => (s && s.label) || '').filter(Boolean);
-  const gateHeading = isLatest
-    ? (lockedLabels.length ? 'Leggi ' + lockedLabels.join(' e ') : "Leggi l'edizione completa")
-    : 'Ricevila ogni martedì';
+  // Blocco finale: invito a ricevere il prossimo numero, uguale su tutte le edizioni.
+  const bottomSource = 'edizione-' + ed.num + '__fine';
   const bottom = `<div class="gate">
-    <div class="gate-k">${isLatest ? 'Anteprima' : 'Newsletter'}</div>
-    <h3>${esc(gateHeading)}</h3>
-    <p>${isLatest
-      ? 'Ricevi questa edizione completa e ogni nuovo numero. Gratis, ogni martedì in 8 minuti, con il caffè.'
-      : 'Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.'}</p>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
     ${inlineForm(bottomSource, 'Iscriviti gratis')}
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
   </div>`;
@@ -209,7 +184,7 @@ function buildEditionHtml(ed, isLatest) {
     datePublished: ed.date || undefined,
     dateModified: ed.date || undefined,
     inLanguage: 'it',
-    isAccessibleForFree: !isLatest,
+    isAccessibleForFree: true,
     author: { '@type': 'Organization', name: 'Valore Atteso' },
     publisher: {
       '@type': 'Organization', name: 'Valore Atteso',
@@ -275,12 +250,6 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
-.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
-.lock-kpis{display:flex;gap:26px;flex-wrap:wrap;margin:12px 0 14px}
-.lock-kpi-v{font-size:22px;font-weight:600;letter-spacing:-.4px;color:var(--ink)}
-.lock-kpi-l{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.sec-fade{position:relative;max-height:118px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
-.sec-fade .sec-body{margin:0}
 .gate-fine{font-family:var(--mn);font-size:10px;letter-spacing:.02em;color:#B8AC98;margin-top:14px;line-height:1.5}
 .vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
 .vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
@@ -328,7 +297,7 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   ${bottom}
 </article>
 ${ciCta}
-${isLatest ? '' : scrollBar('edizione-' + ed.num + '__scroll')}
+${scrollBar('edizione-' + ed.num + '__scroll')}
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -376,14 +345,10 @@ async function main() {
   const valid = editions.filter(e => e && e.num && e.title);
   valid.sort((a, b) => parseInt(b.num, 10) - parseInt(a.num, 10));
 
-  // L'edizione con num più alto è l'ultima: soft-gate. Tutte le altre: aperte.
-  const latestNum = valid.length ? Math.max(...valid.map(e => parseInt(e.num, 10) || 0)) : -1;
-
   let written = 0;
   for (const ed of valid) {
-    const isLatest = (parseInt(ed.num, 10) || 0) === latestNum;
     const file = path.join(ROOT, slug(ed.num) + '.html');
-    fs.writeFileSync(file, buildEditionHtml(ed, isLatest));
+    fs.writeFileSync(file, buildEditionHtml(ed));
     written++;
   }
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
