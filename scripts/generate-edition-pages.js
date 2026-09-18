@@ -49,6 +49,77 @@ function teaser(body, maxChars = PREVIEW_CHARS) {
   return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trim() + '…';
 }
 
+// Corpo completo diviso in paragrafi <p> (preserva i doppi a-capo).
+function bodyParas(body) {
+  const paras = Array.isArray(body)
+    ? body
+    : String(body || '').split(/\n{2,}/);
+  return paras.map(p => p.trim()).filter(Boolean)
+    .map(p => `<p class="sec-body">${esc(p)}</p>`).join('');
+}
+
+// Form di cattura email inline (un solo campo, nessun redirect). Il source
+// per-edizione permette di sapere quale contenuto converte (es. edizione-020__fine).
+function inlineForm(source, cta) {
+  return `<form class="vaform" data-source="${esc(source)}" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">${esc(cta || 'Iscriviti gratis')}</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>`;
+}
+
+// Barra fissa che compare a ~70% di scroll (una volta per visitatore).
+function scrollBar(source) {
+  return `<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    ${inlineForm(source, 'Iscriviti')}
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>`;
+}
+
+const SUBSCRIBE_JS = `<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>`;
+
 function metaDescription(ed) {
   const base = ed.subtitle || bodyToText(ed.opener) || ed.title || '';
   const clean = String(base).replace(/\s+/g, ' ').trim();
@@ -62,7 +133,7 @@ function slug(num) {
 
 // ---------- template pagina ----------
 
-function buildEditionHtml(ed) {
+function buildEditionHtml(ed, isLatest) {
   const url = SITE + '/' + slug(ed.num);
   const desc = metaDescription(ed);
   const sections = Array.isArray(ed.sections) ? ed.sections : [];
@@ -79,15 +150,52 @@ function buildEditionHtml(ed) {
     </div>`;
   }).filter(Boolean).join('');
 
-  const secHtml = sections.map((s, i) => {
+  const secFull = (s, n) => {
     const srcs = Array.isArray(s.sources) ? s.sources.filter(Boolean) : [];
     return `<section class="sec">
-      <div class="sec-head"><span class="sec-num">${i + 1}</span><span class="sec-tag">${esc(s.label || '')}</span></div>
+      <div class="sec-head"><span class="sec-num">${n}</span><span class="sec-tag">${esc(s.label || '')}</span></div>
       <h2 class="sec-title">${esc(s.title || '')}</h2>
-      <p class="sec-body">${esc(teaser(s.body))}</p>
+      ${bodyParas(s.body)}
       ${srcs.length ? `<div class="sec-src">Fonti: ${srcs.map(esc).join(' · ')}</div>` : ''}
     </section>`;
-  }).join('');
+  };
+
+  // CTA contestuale a metà lettura.
+  const midCta = `<div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    ${inlineForm('edizione-' + ed.num + '__mid', 'Iscriviti gratis')}
+  </div>`;
+
+  let secHtml;
+  if (isLatest) {
+    // Soft-gate sull'ultima edizione: prima sezione aperta, le altre in anteprima.
+    const first = sections[0] ? secFull(sections[0], 1) : '';
+    const rest = sections.slice(1).map((s, i) => `<section class="sec">
+      <div class="sec-head"><span class="sec-num">${i + 2}</span><span class="sec-tag">${esc(s.label || '')}</span></div>
+      <h2 class="sec-title">${esc(s.title || '')}</h2>
+      <p class="sec-body">${esc(teaser(s.body, 180))}</p>
+      <p class="sec-locked">Continua nell'edizione completa ↓</p>
+    </section>`).join('');
+    secHtml = first + rest;
+  } else {
+    // Edizioni non più recenti: testo completo aperto (SEO + fiducia) con CTA a metà.
+    secHtml = sections.map((s, i) => (i === 0 ? secFull(s, 1) + midCta : secFull(s, i + 1))).join('');
+  }
+
+  // Blocco finale: su ultima edizione è il gate, sulle altre un invito a ricevere il prossimo numero.
+  const bottomSource = 'edizione-' + ed.num + (isLatest ? '__gate' : '__fine');
+  const bottom = `<div class="gate">
+    <div class="gate-k">${isLatest ? 'Anteprima' : 'Newsletter'}</div>
+    <h3>${isLatest ? 'Leggi Il Deal e La Metrica' : 'Ricevila ogni martedì'}</h3>
+    <p>${isLatest
+      ? 'Il resto di questa edizione — e ogni nuova analisi — arriva via email. Gratis, ogni martedì in 8 minuti, con il caffè.'
+      : 'Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.'}</p>
+    ${inlineForm(bottomSource, 'Iscriviti gratis')}
+  </div>`;
+
+  // Ponte verso la monetizzazione: dati completi dei bilanci.
+  const ciCta = `<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -97,7 +205,7 @@ function buildEditionHtml(ed) {
     datePublished: ed.date || undefined,
     dateModified: ed.date || undefined,
     inLanguage: 'it',
-    isAccessibleForFree: false,
+    isAccessibleForFree: !isLatest,
     author: { '@type': 'Organization', name: 'Valore Atteso' },
     publisher: {
       '@type': 'Organization', name: 'Valore Atteso',
@@ -129,7 +237,7 @@ function buildEditionHtml(ed) {
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -163,6 +271,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -185,13 +315,10 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   ${ed.opener ? `<p class="opener">${esc(teaser(ed.opener, 420))}</p>` : ''}
   ${kpiCells ? `<div class="kpi-bar">${kpiCells}</div>` : ''}
   ${secHtml}
-  <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
-  </div>
+  ${bottom}
 </article>
+${ciCta}
+${isLatest ? '' : scrollBar('edizione-' + ed.num + '__scroll')}
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -201,6 +328,7 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+${SUBSCRIBE_JS}
 </body>
 </html>
 `;
@@ -238,10 +366,14 @@ async function main() {
   const valid = editions.filter(e => e && e.num && e.title);
   valid.sort((a, b) => parseInt(b.num, 10) - parseInt(a.num, 10));
 
+  // L'edizione con num più alto è l'ultima: soft-gate. Tutte le altre: aperte.
+  const latestNum = valid.length ? Math.max(...valid.map(e => parseInt(e.num, 10) || 0)) : -1;
+
   let written = 0;
   for (const ed of valid) {
+    const isLatest = (parseInt(ed.num, 10) || 0) === latestNum;
     const file = path.join(ROOT, slug(ed.num) + '.html');
-    fs.writeFileSync(file, buildEditionHtml(ed));
+    fs.writeFileSync(file, buildEditionHtml(ed, isLatest));
     written++;
   }
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
