@@ -207,6 +207,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .va-mid-h{font-family:var(--sf);font-size:1.15rem;font-weight:600;letter-spacing:-.3px;margin-bottom:6px}
 .va-mid-p{color:var(--ink2);font-size:14px;line-height:1.5;margin:0 auto 14px;max-width:460px}
 .va-locked{color:var(--muted);font-style:italic}
+.va-lock-kpis{display:flex;gap:26px;flex-wrap:wrap;margin:10px 0 12px}
+.va-lock-kpi-v{font-size:22px;font-weight:600;letter-spacing:-.4px;color:var(--ink)}
+.va-lock-kpi-l{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.va-fade{position:relative;max-height:118px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 100%);mask-image:linear-gradient(to bottom,#000 30%,transparent 100%)}
+.va-fade .art-body{margin:0}
+.va-gate-fine{font-family:var(--mn);font-size:10px;color:#8A8072;margin-top:12px;line-height:1.5}
 .va-gate-k{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:8px}
 .va-gate-sub{color:var(--ink2);font-size:14px;line-height:1.5;margin:0 auto 16px;max-width:460px}
 .va-ci{max-width:var(--max,760px);margin:22px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
@@ -695,10 +701,24 @@ async function openArt(num){
         const ld = document.createElement('div'); ld.className = 'art-sec-divider';
         lh.appendChild(ln); lh.appendChild(lt); lh.appendChild(ld); lock.appendChild(lh);
         const lti = document.createElement('h2'); lti.className = 'art-sec-title'; lti.textContent = txt(s.title || ''); lock.appendChild(lti);
-        const lp = document.createElement('p'); lp.className = 'art-body va-locked';
+        // KPI in evidenza: il numero è l'aggancio, l'analisi resta gated.
+        const lkpis = (s.kpis && s.kpis.length ? s.kpis : (s.kpi_rows || [])).filter(function(k){ return k && (k.value || k.label || k.key); }).slice(0, 3);
+        if(lkpis.length){
+          const kr = document.createElement('div'); kr.className = 'va-lock-kpis';
+          lkpis.forEach(function(k){
+            const c = document.createElement('div');
+            const v = document.createElement('div'); v.className = 'va-lock-kpi-v'; v.textContent = txt(k.value || '');
+            const l = document.createElement('div'); l.className = 'va-lock-kpi-l'; l.textContent = txt(k.label || k.key || '');
+            c.appendChild(v); c.appendChild(l); kr.appendChild(c);
+          });
+          lock.appendChild(kr);
+        }
+        // Anteprima del corpo che sfuma verso il basso.
+        const fade = document.createElement('div'); fade.className = 'va-fade';
+        const lp = document.createElement('p'); lp.className = 'art-body';
         const rawB = Array.isArray(s.body) ? s.body.join(' ') : (s.body || '');
-        lp.textContent = txt(String(rawB).slice(0, 150).trim() + '… — continua qui sotto');
-        lock.appendChild(lp);
+        lp.textContent = txt(String(rawB).slice(0, 340).trim());
+        fade.appendChild(lp); lock.appendChild(fade);
         card.appendChild(lock);
         return;
       }
@@ -933,15 +953,18 @@ async function openArt(num){
     const ctaEl = document.createElement('div');
     ctaEl.className = 'art-cta';
     if(gated){
+      const lockedLabels = secs.slice(1).map(function(s){ return (s && s.label) || ''; }).filter(Boolean);
       const gk = document.createElement('div'); gk.className = 'va-gate-k'; gk.textContent = 'Anteprima';
-      const gp = document.createElement('p'); gp.textContent = 'Leggi Il Deal e La Metrica';
-      const gs = document.createElement('div'); gs.className = 'va-gate-sub'; gs.textContent = 'Il resto di questa edizione — e ogni nuova analisi — arriva via email. Gratis, ogni martedì in 8 minuti, con il caffè.';
+      const gp = document.createElement('p'); gp.textContent = lockedLabels.length ? ('Leggi ' + lockedLabels.join(' e ')) : "Leggi l'edizione completa";
+      const gs = document.createElement('div'); gs.className = 'va-gate-sub'; gs.textContent = 'Ricevi questa edizione completa e ogni nuovo numero. Gratis, ogni martedì in 8 minuti, con il caffè.';
       ctaEl.appendChild(gk); ctaEl.appendChild(gp); ctaEl.appendChild(gs);
     } else {
       const cp = document.createElement('p'); cp.textContent = 'Ricevi ogni edizione il martedì mattina';
       ctaEl.appendChild(cp);
     }
     ctaEl.appendChild(vaCapture(vaArchSource(e.num, gated ? 'gate' : 'fine')));
+    const fine = document.createElement('p'); fine.className = 'va-gate-fine'; fine.textContent = 'Una email a settimana. Niente spam, disiscrizione in un clic.';
+    ctaEl.appendChild(fine);
     card.appendChild(ctaEl);
 
     // Ponte verso la monetizzazione: dati completi dei bilanci.
