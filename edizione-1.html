@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Bilanci Serie A 2024/25 · PE nel calcio europeo · Stadium yield">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Serie A, Private Equity e lo Stadio come Bancomat","description":"Bilanci Serie A 2024/25 · PE nel calcio europeo · Stadium yield","datePublished":"5 maggio 2026","dateModified":"5 maggio 2026","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-1"},"articleSection":"Bilanci Serie A, PE nel calcio, Stadium yield"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Serie A, Private Equity e lo Stadio come Bancomat","description":"Bilanci Serie A 2024/25 · PE nel calcio europeo · Stadium yield","datePublished":"5 maggio 2026","dateModified":"5 maggio 2026","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-1"},"articleSection":"Bilanci Serie A, PE nel calcio, Stadium yield"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Serie A 2024/25: ricavi record, perdite costanti.</h2>
-      <p class="sec-body">I venti club della Serie A 2024/25 hanno registrato ricavi aggregati per €4,04 miliardi — il massimo storico del campionato. Il problema è quello che viene subito dopo: i costi aggregati hanno raggiunto €4,2 miliardi, con una perdita netta complessiva di circa €349 milioni.</p>
+      <p class="sec-body">I venti club della Serie A 2024/25 hanno registrato ricavi aggregati per €4,04 miliardi — il massimo storico del campionato. Il problema è quello che viene subito dopo: i costi aggregati hanno raggiunto €4,2 miliardi, con una perdita netta complessiva di circa €349 milioni.</p><p class="sec-body">Il costo del personale è pari a €1,9 miliardi — il 49% dei ricavi. A questo si aggiungono ammortamenti sui cartellini per quasi €918 milioni. Solo Inter e Milan hanno chiuso in utile, rispettivamente con +€35,4 e +€3 milioni. Juventus e Roma sono le più in difficoltà, con rossi di €58,1 e €53,9 milioni.</p><p class="sec-body">La crescita dei ricavi è stata spinta da voci una tantum: premi FIFA del Mondiale per Club, finale di Champions League dell&#39;Inter. Se togli queste voci, il fatturato operativo è sostanzialmente fermo.</p>
       <div class="sec-src">Fonti: Calcio e Finanza, febbraio 2026 · Gazzetta dello Sport, aprile 2026</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-001__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">PE e calcio: perché i fondi comprano club in perdita.</h2>
-      <p class="sec-body">Oggi oltre un terzo dei club nelle cinque principali leghe europee ha un legame con un fondo di private equity. Inter è controllata da Oaktree, Milan da RedBird, Atletico Madrid valutato oltre €2 miliardi con Apollo. Perché comprare un asset in perdita?</p>
+      <p class="sec-body">Oggi oltre un terzo dei club nelle cinque principali leghe europee ha un legame con un fondo di private equity. Inter è controllata da Oaktree, Milan da RedBird, Atletico Madrid valutato oltre €2 miliardi con Apollo.</p><p class="sec-body">Perché comprare un asset in perdita? I top club europei scambiano a 4-5× i ricavi, contro 15-18× di una franchigia NBA. Il Manchester United pagato £900M nel 2005 è stato rivenduto £4,9Mrd nel 2025: +444% in 20 anni. Il rendimento non viene dai dividendi — viene dalla rivalutazione.</p><p class="sec-body">Il vero driver è immobiliare. Per Oaktree e RedBird il via libera su San Siro vale un progetto da €1,3 miliardi. Non stanno comprando una squadra — stanno comprando un brand globale con un progetto immobiliare nel cuore di Milano.</p>
       <div class="sec-src">Fonti: Oaklins report 2025</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Stadium yield: vent&#39;anni di ritardo in tre numeri.</h2>
-      <p class="sec-body">Revenue per seat: ricavi da stadio diviso capienza. Nel 2024/25 il Real Madrid guida con €232,6M di matchday revenue. Nel top 20 europeo: Inter nona con €103,6M, Milan 17ª con €69,5M, Juventus 19ª con €65,4M. Il Bernabéu incassa €137 a spettatore. La Juventus €66, l&#39;Inter €40, il Milan €36, il Napoli €25.</p>
+      <p class="sec-body">Revenue per seat: ricavi da stadio diviso capienza. Nel 2024/25 il Real Madrid guida con €232,6M di matchday revenue. Nel top 20 europeo: Inter nona con €103,6M, Milan 17ª con €69,5M, Juventus 19ª con €65,4M.</p><p class="sec-body">Il Bernabéu incassa €137 a spettatore. La Juventus €66, l&#39;Inter €40, il Milan €36, il Napoli €25. Il gap non è nei totali — è nell&#39;efficienza per posto.</p><p class="sec-body">In Italia lo stadio di proprietà è prerogativa di Juventus, Atalanta, Sassuolo e Udinese. Milan, Inter e Roma giocano in impianti comunali su cui non possono ottimizzare naming rights, eventi, hospitality. Il Tottenham lavora 365 giorni l&#39;anno. San Siro 20.</p>
       <div class="sec-src">Fonti: Deloitte Football Money League 2026 · Football Benchmark</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-001__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-001__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

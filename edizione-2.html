@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Sheffield Wednesday, il laboratorio del distressed M&amp;A inglese">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Prestiti, Premi Champions e Distressed M&A: il vero stato finanziario del calcio europeo","description":"Sheffield Wednesday, il laboratorio del distressed M&A inglese","datePublished":"12 maggio 2026","dateModified":"12 maggio 2026","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-2"},"articleSection":"IL BILANCIO, IL DEAL, LA METRICA"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Prestiti, Premi Champions e Distressed M&A: il vero stato finanziario del calcio europeo","description":"Sheffield Wednesday, il laboratorio del distressed M&A inglese","datePublished":"12 maggio 2026","dateModified":"12 maggio 2026","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-2"},"articleSection":"IL BILANCIO, IL DEAL, LA METRICA"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Serie A: €172 milioni di bomba a orologeria sui prestiti</h2>
-      <p class="sec-body">I calciatori che rientreranno dai prestiti pesano complessivamente €172 milioni sui bilanci dei club di Serie A, tra ammortamenti residui e stipendi da riassorbire. Il Napoli guida questa classifica ombra con quasi €60 milioni di esposizione, un dato che spiega molto delle difficoltà di mercato del club partenopeo.</p>
+      <p class="sec-body">I calciatori che rientreranno dai prestiti pesano complessivamente €172 milioni sui bilanci dei club di Serie A, tra ammortamenti residui e stipendi da riassorbire. Il Napoli guida questa classifica ombra con quasi €60 milioni di esposizione, un dato che spiega molto delle difficoltà di mercato del club partenopeo.</p><p class="sec-body">Il prestito, strumento nato per gestire esuberi e sviluppare giovani, si è trasformato in una forma di finanziamento implicito: cedere temporaneamente un giocatore significa spostare costi senza generare plusvalenza, creando una bolla che prima o poi esplode.</p><p class="sec-body">Il contesto è quello delle regole UEFA di sostenibilità finanziaria, che prevedono limiti sempre più stringenti alle perdite aggregate dei club. In questo scenario, le società italiane si trovano strette tra la necessità di restare competitive sul piano sportivo e una crescente pressione finanziaria.</p><p class="sec-body">La gestione dei rientri dai prestiti diventa quindi una leva strategica cruciale: riscatto, cessione definitiva o reintegro in rosa sono scelte che incidono direttamente su conto economico, struttura dei costi e compliance UEFA.</p>
       <div class="sec-src">Fonti: Calcio News 24 — Serie A, il &#39;peso&#39; dei rientri dai prestiti: 172 milioni sui bilanci dei club — 7 maggio 2026 · Calcio e Finanza — Classifica debiti Serie A — 3 febbraio 2026</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-002__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Sheffield Wednesday: il distressed M&amp;A arriva nel calcio inglese</h2>
-      <p class="sec-body">Arise Capital Partners ha chiuso l&#39;acquisizione dello Sheffield Wednesday, ponendo fine a sei mesi di amministrazione controllata. Il deal, ratificato dalla EFL il 2 maggio, segna la fine dell&#39;era Chansiri e offre un caso studio di distressed M&amp;A nel calcio pre-IFR.</p>
+      <p class="sec-body">Arise Capital Partners ha chiuso l&#39;acquisizione dello Sheffield Wednesday, ponendo fine a sei mesi di amministrazione controllata. Il deal, ratificato dalla EFL il 2 maggio, segna la fine dell&#39;era Chansiri e offre un caso studio di distressed M&amp;A nel calcio pre-IFR.</p><p class="sec-body">Il consorzio americano guidato da David Storch, Michael Storch e Tom Costin rileva un club con 18 punti di penalizzazione nella stagione, la retrocessione in League One è matematica. Ma il vero valore dell&#39;operazione sta altrove: Tom Costin è affiliato a Blue Crow Sports Group, proprietario di quote in Leganés, Le Havre e Cancun FC. L&#39;accesso a un network multi-club diventa la leva strategica per ricostruire.</p><p class="sec-body">La EFL ha imposto restrizioni di budget per le prossime due stagioni, un vincolo che paradossalmente protegge i nuovi proprietari da tentazioni di spending eccessivo. È il modello che vedremo replicato con l&#39;arrivo dell&#39;Independent Football Regulator: acquisizioni a sconto, governance imposta dall&#39;alto, risalita programmata. Sheffield Wednesday come laboratorio del calcio inglese post-crisi.</p>
       <div class="sec-src">Fonti: Insider Sport — Sheffield Wednesday seal crucial £47m Arise Capital takeover — 6 maggio 2026</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">€142 milioni: il prezzo di una finale Champions</h2>
-      <p class="sec-body">L&#39;Arsenal ha già incassato oltre €142 milioni di premi UEFA prima ancora di giocare la finale contro il PSG a Budapest il 30 maggio. La scomposizione del numero racconta come funziona il nuovo formato a 36 squadre: €18,62 milioni di fee di partecipazione, €40,6 milioni di premi performance nella fase a gironi, circa…</p>
+      <p class="sec-body">L&#39;Arsenal ha già incassato oltre €142 milioni di premi UEFA prima ancora di giocare la finale contro il PSG a Budapest il 30 maggio.</p><p class="sec-body">La scomposizione del numero racconta come funziona il nuovo formato a 36 squadre: €18,62 milioni di fee di partecipazione, €40,6 milioni di premi performance nella fase a gironi, circa €37 milioni dal &#39;value pillar&#39; (il meccanismo che premia il coefficiente storico), €12,5 milioni per i quarti, €15 milioni per le semifinali, €18,5 milioni per la finale.</p><p class="sec-body">In caso di vittoria, ulteriori €10,5 milioni. Il PSG ha incassato €121,8 milioni, inferiore rispetto all&#39; Arsenal, principalmente per un value pillar inferiore.</p><p class="sec-body">Il pot totale UEFA per la Champions 2025/26 è di €2,47 miliardi. Il value pillar, con €853 milioni complessivi, è il meccanismo che cristallizza le disuguaglianze: premia chi ha vinto in passato, rendendo più difficile per outsider come lo Sporting CP (€65,8 milioni totali) colmare il gap. La Champions League come macchina di redistribuzione regressiva.</p>
       <div class="sec-src">Fonti: Goal.com — Revealed: How much Arsenal&#39;s run to 2026 Champions League final has banked them — 6 maggio 2026 · Calcio e Finanza — Champions, Arsenal e PSG in finale: premi UEFA milionari — 7 maggio 2026</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-002__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-002__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

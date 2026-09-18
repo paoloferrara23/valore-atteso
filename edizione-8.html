@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Dal debito al salary cap, la finanza governa il futuro dello sport.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Oaktree, FIFA e il salary cap: tre lenti per leggere il futuro del calcio come asset class","description":"Dal debito al salary cap, la finanza governa il futuro dello sport.","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-8"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Oaktree, FIFA e il salary cap: tre lenti per leggere il futuro del calcio come asset class","description":"Dal debito al salary cap, la finanza governa il futuro dello sport.","datePublished":"2026-06-23","dateModified":"2026-06-23","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-8"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Il Playbook Oaktree: la valorizzazione dell&#39;asset Inter.</h2>
-      <p class="sec-body">Inter e Milan hanno formalizzato un&#39;offerta vincolante congiunta da 197 milioni di euro per l&#39;acquisto di San Siro e delle aree circostanti. Parallelamente, l&#39;Inter ha avviato un importante piano di ampliamento immobiliare del Konami Youth Development Centre.</p>
+      <p class="sec-body">Inter e Milan hanno formalizzato un&#39;offerta vincolante congiunta da 197 milioni di euro per l&#39;acquisto di San Siro e delle aree circostanti. Parallelamente, l&#39;Inter ha avviato un importante piano di ampliamento immobiliare del Konami Youth Development Centre.</p><p class="sec-body">Per chi conosce il playbook del private equity, il segnale è preciso: Oaktree non sta gestendo un club di calcio, sta ottimizzando un asset con potenziale di rivalutazione patrimoniale. Il capex su strutture fisiche diventa, nella logica PE, la premessa per aumentare l&#39;Enterprise Value prima di un eventuale exit. Il contesto finanziario supporta questa lettura. Il club chiude l&#39;esercizio 2024/25 con un utile netto di 35,4 milioni di euro, rompendo anni di rosso strutturale.</p><p class="sec-body">Parallelamente, per stabilizzare la cassa, il fondo ha emesso un nuovo bond da 350 milioni di euro (tasso 4,52%), estinguendo il precedente debito più oneroso. La combinazione di redditività operativa e capex immobiliare richiama i modelli dell&#39;Atalanta (Gewiss Stadium) e della Juventus (J-Village).</p><p class="sec-body">La differenza è il soggetto: Oaktree è un creditore diventato proprietario, con una logica che rende l&#39;infrastruttura attuale un investimento in multiplo di valorizzazione. Il rischio è che le opere fisiche, nel calcio italiano, abbiano tempi di ritorno più lunghi dell&#39;orizzonte del fondo.</p>
       <div class="sec-src">Fonti: Bilancio Consolidato F.C. Internazionale Milano S.p.A. (30.06.2025)</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-008__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Il nuovo modello FIFA da 355 milioni per il Mondiale 2026</h2>
-      <p class="sec-body">Con il Mondiale 2026, la FIFA introduce un salto quantitativo nel meccanismo di compensazione per i club che cedono giocatori alle nazionali: 355M totali, contro i 209M distribuiti per Qatar 2022.</p>
+      <p class="sec-body">Con il Mondiale 2026, la FIFA introduce un salto quantitativo nel meccanismo di compensazione per i club che cedono giocatori alle nazionali: 355M totali, contro i 209M distribuiti per Qatar 2022.</p><p class="sec-body">Un aumento del 70% che non è solo generosità istituzionale, è il riconoscimento formale che i club sono creditori strutturali del sistema Mondiale, avendo formato e contrattualizzato i giocatori che rendono il torneo vendibile a livello globale.</p><p class="sec-body">Per i club italiani, il programma rappresenta un revenue stream non operativo ma sempre più rilevante nella costruzione del conto economico. In un campionato dove i margini EBITDA restano compressi, ogni flusso aggiuntivo strutturato migliora la capacità di servizio del debito e la bankability del club verso finanziatori istituzionali.</p><p class="sec-body">L&#39;aspetto più interessante per un lettore M&amp;A è la progressiva formalizzazione del rapporto FIFA-club in logica contrattuale: non più contributi discrezionali, ma diritti con parametri codificati, più vicini a un meccanismo di royalty che a un sussidio.</p>
       
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">MLS vs Big-5 europee: salary cap contro mercato libero. Chi vince sul lungo periodo?</h2>
-      <p class="sec-body">Il divario tra gli sport nordamericani e il calcio europeo risiede nell&#39;architettura istituzionale. Il modello USA opera in un sistema chiuso a franchigie: l&#39;assenza di retrocessioni azzera il rischio sportivo e protegge il capitale degli investitori.</p>
+      <p class="sec-body">Il divario tra gli sport nordamericani e il calcio europeo risiede nell&#39;architettura istituzionale. Il modello USA opera in un sistema chiuso a franchigie: l&#39;assenza di retrocessioni azzera il rischio sportivo e protegge il capitale degli investitori.</p><p class="sec-body">A questa stabilità si unisce il controllo ferreo dei costi garantito dal salary cap e dalla luxury tax, meccanismi che assicurano bilanci prevedibili e limitano le disuguaglianze. In Europa, il sistema aperto si basa sul merito sportivo, ma genera un&#39;estrema volatilità finanziaria: il costante rischio di retrocessione e l&#39;assenza di un rigido tetto salariale (sostituito dalla Squad Cost Rule UEFA al 70% dei ricavi) spingono i club a sovraspendere, generando perdite strutturali.</p><p class="sec-body">Perché, allora, i fondi USA investono in club italiani come Milan, Inter, Roma, Atalanta o Genoa? La risposta è nel value investing.</p><p class="sec-body">I club europei sono percepiti dagli investitori d&#39;oltreoceano come asset &quot;sotto-gestiti&quot;. L&#39;ottimizzazione degli stadi e dei diritti media è vista come un low-hanging fruit per moltiplicare l&#39;Enterprise Value. La vera sfida sarà conciliare i cicli di exit di Wall Street (5-7 anni) con le dinamiche di un sistema aperto, dove una retrocessione può svalutare l&#39;asset overnight.</p>
       
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-008__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-008__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

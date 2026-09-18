@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Proprietà fragile, strutture vuote, multipli ingannatori nel calcio italiano e globale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Stadi senza proprietà, spin-off senza struttura, multipli senza contesto","description":"Proprietà fragile, strutture vuote, multipli ingannatori nel calcio italiano e globale.","datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-14"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Stadi senza proprietà, spin-off senza struttura, multipli senza contesto","description":"Proprietà fragile, strutture vuote, multipli ingannatori nel calcio italiano e globale.","datePublished":"2026-08-04","dateModified":"2026-08-04","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-14"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">Il Bilancio</span></div>
       <h2 class="sec-title">Maradona 2032: chi paga per uno stadio che non è del Napoli?</h2>
-      <p class="sec-body">Euro 2032 si gioca in Italia e Turchia. Il Napoli vuole esserci. Ma c&#39;è un problema strutturale che viene prima di tutto: il Maradona è di proprietà del Comune di Napoli, non del club. Questo cambia tutto nella logica del project finance (cioè di come si struttura il finanziamento di un&#39;opera grande).</p>
+      <p class="sec-body">Euro 2032 si gioca in Italia e Turchia. Il Napoli vuole esserci. Ma c&#39;è un problema strutturale che viene prima di tutto: il Maradona è di proprietà del Comune di Napoli, non del club. Questo cambia tutto nella logica del project finance (cioè di come si struttura il finanziamento di un&#39;opera grande). Chi mette i soldi per ristrutturare un impianto che non possiede ha bisogno di garanzie chiare: diritti d&#39;uso di lungo periodo, canoni d&#39;affitto certi, governance sull&#39;impianto. Senza questi elementi, nessuna banca finanzia il progetto e nessun investitore privato ci mette un euro. Il costo stimato della ristrutturazione è tra 150 e 200 milioni di euro. Non è una cifra impossibile per un club come il Napoli, ma è una cifra che nessuno spende su un asset che non controlla. Lo scenario più realistico è una partnership pubblico-privata: il Comune resta proprietario, il Napoli ottiene una concessione lunga (almeno 30-40 anni) e finanzia i lavori in cambio di ricavi esclusivi sullo stadio. Il modello non è nuovo in Europa. Ma in Italia, dove i club storicamente non hanno mai gestito direttamente gli impianti, è ancora un territorio complicato.</p>
       <div class="sec-src">Fonti: UEFA Euro 2032 Host City Requirements (uefa.com) · Il Sole 24 Ore, costi ristrutturazione Maradona</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-014__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">Il Deal</span></div>
       <h2 class="sec-title">Come si struttura (e come si distrugge) uno spin-off da $20 mld: la checklist che FIFA non ha completato</h2>
-      <p class="sec-body">La logica era solida. FIFA voleva isolare i ricavi commerciali del Mondiale in un veicolo separato, vendere una minoranza a investitori istituzionali e mantenere il controllo. Un&#39;operazione classica: si chiama spin-off di asset commerciali, e i fondi la conoscono bene.</p>
+      <p class="sec-body">La logica era solida. FIFA voleva isolare i ricavi commerciali del Mondiale in un veicolo separato, vendere una minoranza a investitori istituzionali e mantenere il controllo. Un&#39;operazione classica: si chiama spin-off di asset commerciali, e i fondi la conoscono bene. L&#39;asset sottostante genera circa $15 miliardi di ricavi. La valutazione implicita era circa 1,3 volte i ricavi (multiplo EV/Revenue). A quel multiplo, cedere il 20-21% a investitori istituzionali avrebbe portato nelle casse FIFA fino a $4,2 miliardi. Il problema non era finanziario. Era di governance, cioè di chi ha voce in capitolo sulle decisioni. I Mondiali non sono un asset di FIFA soltanto. Le confederazioni continentali, come UEFA e CONMEBOL, sono socie di fatto di quell&#39;asset: portano le squadre, i diritti, il prodotto. Uno spin-off che cambia la struttura proprietaria di quei ricavi le riguarda direttamente. FIFA non ha ottenuto il loro consenso prima di annunciare l&#39;operazione. Risultato: il deal è crollato in quattro giorni. Per chi struttura operazioni su asset condivisi, la sequenza conta più della valutazione. Prima si chiude la governance, poi si annuncia. Annunciare prima espone il deal al veto di chi non è ancora a bordo. FIFA ha fatto il contrario.</p>
       <div class="sec-src">Fonti: NBC News · Financial Times</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">La Metrica</span></div>
       <h2 class="sec-title">EV/Revenue nel calcio: stesso multiplo, rischio diverso</h2>
-      <p class="sec-body">Tre valutazioni, tre storie diverse, e un solo numero che le mette a confronto: il multiplo EV/Revenue, cioè quanto vale un&#39;azienda rispetto a quello che incassa in un anno. Sembra una classifica di qualità. In realtà è una classifica di rischio. Il Liverpool tratta intorno a 6 volte i ricavi.</p>
+      <p class="sec-body">Tre valutazioni, tre storie diverse, e un solo numero che le mette a confronto: il multiplo EV/Revenue, cioè quanto vale un&#39;azienda rispetto a quello che incassa in un anno. Sembra una classifica di qualità. In realtà è una classifica di rischio. Il Liverpool tratta intorno a 6 volte i ricavi. È il multiplo più alto dei tre, e la ragione è semplice: i suoi ricavi, oltre 700 milioni di sterline l&#39;anno, sono solidi. Arrivano da tre fonti diverse, stadio, diritti TV e commerciale, e crescono da quasi dieci anni senza fermarsi. Chi compra paga di più perché compra una certezza. Il West Ham vale circa 2,6 volte i ricavi. Non perché sia un club scadente, ma perché la sua base di ricavi è più fragile: meno Champions League, meno sponsor globali, meno forza commerciale. Meno prevedibilità, multiplo più basso. Poi c&#39;è il caso estremo. Il veicolo commerciale del Mondiale, la FIFA Forward Enterprise, era valutato intorno ai 20 miliardi di dollari. Sembra enorme, ed è enorme. Ma quei ricavi arrivano una volta ogni quattro anni, concentrati in un solo evento. Entrata gigantesca, ma discontinua. Per questo, rapportato ai ricavi, il suo multiplo è basso: il mercato sconta la volatilità. La lezione per chi fa M&amp;A nel calcio è questa. Il multiplo da solo non dice niente. Prima di usarlo come paragone, bisogna guardare cosa c&#39;è sotto, cioè quanto sono stabili e ricorrenti i ricavi. Un numero alto non è per forza un affare, e uno basso non è per forza un rischio.</p>
       <div class="sec-src">Fonti: Deloitte Football Money League 2026 · Thisisanfield.com</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-014__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-014__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

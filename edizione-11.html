@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Mondiali, mercato e biglietti: come il calcio trasforma sport in asset finanziari globali.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Mondiali, Mercato e Biglietti: il valore nascosto dietro i grandi numeri del calcio","description":"Mondiali, mercato e biglietti: come il calcio trasforma sport in asset finanziari globali.","datePublished":"2026-07-14","dateModified":"2026-07-14","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-11"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Mondiali, Mercato e Biglietti: il valore nascosto dietro i grandi numeri del calcio","description":"Mondiali, mercato e biglietti: come il calcio trasforma sport in asset finanziari globali.","datePublished":"2026-07-14","dateModified":"2026-07-14","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-11"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Semifinale Mondiale 2026: quanto vale giocarsi la finale al MetLife</h2>
-      <p class="sec-body">Arrivare in semifinale al Mondiale 2026 non è solo un traguardo sportivo. È la vetta sportiva di una macchina industriale che genera un giro d&#39;affari globale certificato in 13 miliardi.</p>
+      <p class="sec-body">Arrivare in semifinale al Mondiale 2026 non è solo un traguardo sportivo. È la vetta sportiva di una macchina industriale che genera un giro d&#39;affari globale certificato in 13 miliardi. Questi fondi rappresentano una fetta significativa di una torta che la FIFA ha costruito per redistribuire valore lungo tutta la filiera del calcio mondiale. Ma quanto rimane davvero sul conto della federazione? La dinamica è complessa. La FIFA gestisce un fondo parallelo di club compensation. A differenza di quanto ipotizzato, la ripartizione esatta per il 2026 è già ufficiale e certificata: il Club Benefits Programme stanzia un fondo separato di 250 milioni sono destinati ai club che rilasciano i giocatori per la fase finale, retribuiti con una metrica rigida calcolata per player, per day. Non si tratta di una decurtazione, ma di un&#39;allocazione indipendente a monte. Per una federazione di medie dimensioni, con budget annuali stimati tra 150M, ricevere il premio in un&#39;unica tranche è un evento di bilancio rilevante. Cambia la capacità di investimento in infrastrutture, settori giovanili e staff tecnico per il ciclo successivo.</p>
       <div class="sec-src">Fonti: Circular no. 1965 - FIFA World Cup 2026 (Club Benefits Programme)</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-011__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">L&#39;operazione Tonali: la logica dell&#39;earn-out e l&#39;ingegneria del bilancio</h2>
-      <p class="sec-body">Questo trasferimento non nasce dal calciomercato classico. Nasce dai regolamenti. Newcastle ha la necessità di ottimizzare lo Squad Cost Ratio (SCR), il rapporto tra costo della rosa e ricavi che dal 2026/27 vincola i club inglesi: 70% per chi gioca le coppe UEFA, 85% (regola domestica della Premier League) per chi ne…</p>
+      <p class="sec-body">Questo trasferimento non nasce dal calciomercato classico. Nasce dai regolamenti. Newcastle ha la necessità di ottimizzare lo Squad Cost Ratio (SCR), il rapporto tra costo della rosa e ricavi che dal 2026/27 vincola i club inglesi: 70% per chi gioca le coppe UEFA, 85% (regola domestica della Premier League) per chi ne resta fuori, come il Newcastle. Vendere Tonali alleggerisce il numeratore: meno ammortamenti a bilancio, più margine per il mercato estivo senza rischiare sanzioni. Il Tottenham ha l&#39;esigenza opposta: rinforzare il centrocampo con un profilo internazionale già rodato, capace di alzare subito il livello della rosa. Tonali spunta molte caselle in una sola operazione. La struttura del deal sposta il rischio in modo elegante: 92,5 milioni di sterline garantite e 7,5 milioni in add-on. È un vero earn-out applicato al calciomercato: chi compra si protegge, chi vende ottimizza il timing contabile. Sul fronte plusvalenza l&#39;incertezza è risolta: acquisito dal Milan nel 2023 per 55 milioni di sterline, oggi il suo valore residuo a bilancio è pari a 22 milioni. L&#39;incasso base genera quindi per il Newcastle una plusvalenza netta monstre di 70,5 milioni di sterline.</p>
       <div class="sec-src">Fonti: The Guardian: Sandro Tonali seals £92.5m move to Tottenham on back of &#39;magic&#39; sales pitch · UEFA Financial Sustainability Regulations 2025/26</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Il ticketing FIFA come asset class: dove funziona e dove no</h2>
-      <p class="sec-body">Il Mondiale 2026 non è solo una competizione sportiva. È l&#39;apice di una macchina industriale che, per dare una scala dell&#39;evento, genererà un impatto economico stimato ufficialmente in 3,3 miliardi di dollari solo per la regione di New York e New Jersey. Vale la pena guardarlo con gli occhi di un operatore.</p>
+      <p class="sec-body">Il Mondiale 2026 non è solo una competizione sportiva. È l&#39;apice di una macchina industriale che, per dare una scala dell&#39;evento, genererà un impatto economico stimato ufficialmente in 3,3 miliardi di dollari solo per la regione di New York e New Jersey. Vale la pena guardarlo con gli occhi di un operatore. Le 104 partite in programma rappresentano un esperimento di monetizzazione del live entertainment senza precedenti. Su questa base si innesta la complessa gestione del mercato secondario. Le dinamiche di settore e le stime esterne indicano l&#39;uso di dynamic pricing e piattaforme proprietarie per internalizzare doppie fee (su acquirente e venditore), generando margini enormi a costo zero. Il confronto con gli altri eventi premium è netto: il Super Bowl, pur registrando ricavi storicamente altissimi, lascia il mercato secondario a operatori terzi. La FIFA ha invece internalizzato la catena per assorbire il mercato grigio. Il rischio sistemico è evidente. Un ecosistema chiuso, con prezzi in forte rialzo e commissioni elevate, comprime l&#39;accessibilità e spinge la domanda verso canali non ufficiali, sfidando l&#39;obiettivo stesso del modello.</p>
       <div class="sec-src">Fonti: FIFA World Cup 2026™ New York New Jersey Host Committee</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-011__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-011__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

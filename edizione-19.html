@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Napoli con tesoreria record, PIF cede asset calcistici, Premier domina mercato con 3,5 miliardi di spesa estiva.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Il tesoretto del Napoli, il primo addio del PIF, il muro dei 3,5 miliardi della Premier","description":"Napoli con tesoreria record, PIF cede asset calcistici, Premier domina mercato con 3,5 miliardi di spesa estiva.","datePublished":"2026-09-08","dateModified":"2026-09-08","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-19"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Il tesoretto del Napoli, il primo addio del PIF, il muro dei 3,5 miliardi della Premier","description":"Napoli con tesoreria record, PIF cede asset calcistici, Premier domina mercato con 3,5 miliardi di spesa estiva.","datePublished":"2026-09-08","dateModified":"2026-09-08","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-19"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Il Napoli ha 137 milioni di cassa netta. Ma quanti vengono dal campo?</h2>
-      <p class="sec-body">Il Napoli chiude il bilancio al 30 giugno 2025 con una posizione finanziaria netta positiva di 137 milioni: 174,4 milioni di liquidità a fronte di soli 37 milioni di debiti bancari, senza bond. Un dato solido, che a prima vista segnala un club in salute. Il problema è capire da dove vengono quei soldi.</p>
+      <p class="sec-body">Il Napoli chiude il bilancio al 30 giugno 2025 con una posizione finanziaria netta positiva di 137 milioni: 174,4 milioni di liquidità a fronte di soli 37 milioni di debiti bancari, senza bond. Un dato solido, che a prima vista segnala un club in salute.</p><p class="sec-body">Il problema è capire da dove vengono quei soldi. Ben 102,6 milioni del risultato derivano dalle plusvalenze, cioè dai guadagni sulle cessioni di calciatori. Tolto quel contributo, i ricavi operativi strutturali, quelli da diritti TV, stadio e sponsor, non bastano a coprire i costi da soli. Il modello regge solo se ogni anno il mercato porta vendite significative.</p><p class="sec-body">Questo è il punto debole. Un club che dipende dalle cessioni per chiudere i conti in pareggio non controlla davvero il proprio equilibrio economico. Dipende da fattori esterni: la disponibilità degli acquirenti, i prezzi di mercato, le offerte che arrivano.</p><p class="sec-body">Il ritorno in Champions League nel 2025/26 cambia qualcosa. Il solo ingresso nella league phase vale circa 18,6 milioni di bonus di partecipazione UEFA, che salgono con i risultati fino a diverse decine di milioni. È un&#39;iniezione reale, che riduce la pressione sul mercato dei trasferimenti. Ma dipende dai risultati e dura una stagione: se il Napoli non si riqualifica l&#39;anno dopo, il problema torna.</p><p class="sec-body">La cassa è positiva. Il modello di ricavo, però, resta fragile e dipendente da variabili che il club non controlla direttamente.</p>
       <div class="sec-src">Fonti: SSC Napoli, bilancio d&#39;esercizio ufficiale al 30/06/2025 · UEFA, prize money Champions League 2025/26 (bonus di partecipazione 18,62 milioni)</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-019__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Al-Hilal è solo il primo: così il PIF smonta il portafoglio calcio</h2>
-      <p class="sec-body">Il fondo sovrano saudita (PIF) ha venduto il 70% di Al-Hilal a Kingdom Holding Company per 224 milioni di dollari. È il prezzo del 70% del capitale, che valuta l&#39;intero club (il 100% dell&#39;equity) circa 320 milioni.</p>
+      <p class="sec-body">Il fondo sovrano saudita (PIF) ha venduto il 70% di Al-Hilal a Kingdom Holding Company per 224 milioni di dollari. È il prezzo del 70% del capitale, che valuta l&#39;intero club (il 100% dell&#39;equity) circa 320 milioni.</p><p class="sec-body">Il meccanismo scelto è preciso: si crea un veicolo societario separato, si cede la maggioranza a un acquirente privato, ma il controllo sostanziale resta vicino allo Stato, perché il PIF mantiene il 30%. È governance privata in apparenza, pubblica nella sostanza.</p><p class="sec-body">Perché farlo ora? La strategia PIF 2026-2030 ha ridefinito le priorità: lo sport non è più tra i settori core del fondo. Il portafoglio calcio, quattro club della Saudi Pro League, deve alleggerirsi. Al-Hilal è il primo test.</p><p class="sec-body">Se il modello funziona, i tre club restanti possono seguire la stessa strada. Al-Nassr, Al-Ittihad e Al-Ahli hanno strutture simili e lo stesso azionista di partenza. Il template è già pronto: valutazione benchmark, veicolo dedicato, cessione della maggioranza formale.</p><p class="sec-body">Per chi guarda dall&#39;esterno con occhi da M&amp;A, questa non è una privatizzazione piena. È una ristrutturazione della partecipazione statale in forma societaria: il PIF incassa liquidità, riduce l&#39;esposizione diretta allo sport e mantiene influenza attraverso strutture di controllo indirette.</p>
       <div class="sec-src">Fonti: Inside World Football, 02/09/2026 · PIF, comunicato ufficiale (accordo aprile 2026, closing settembre 2026)</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Premier League: 3,55 miliardi in un&#39;estate, più delle altre quattro leghe insieme</h2>
-      <p class="sec-body">In questa estate la Premier League ha speso 3,55 miliardi di sterline sul mercato: un record, che batte il precedente primato di 3,19 miliardi dell&#39;estate prima. Le altre quattro grandi leghe europee, tutte insieme, si fermano a circa 2,46 miliardi (Serie A 846 milioni, Liga 616, Bundesliga 508, Ligue 1 494).</p>
+      <p class="sec-body">In questa estate la Premier League ha speso 3,55 miliardi di sterline sul mercato: un record, che batte il precedente primato di 3,19 miliardi dell&#39;estate prima. Le altre quattro grandi leghe europee, tutte insieme, si fermano a circa 2,46 miliardi (Serie A 846 milioni, Liga 616, Bundesliga 508, Ligue 1 494). La Premier da sola spende più delle altre quattro sommate.</p><p class="sec-body">E non è una stagione anomala: la spesa inglese cresce di anno in anno, mentre le altre leghe non riescono a stare al passo. Il motivo è semplice: i ricavi televisivi, commerciali e da stadio delle rivali non reggono il confronto.</p><p class="sec-body">Questo è il punto centrale. I club inglesi spendono di più perché guadagnano di più. La Premier distribuisce ai propri club quote televisive che in Serie A, Bundesliga o Ligue 1 non esistono nello stesso ordine di grandezza. Con più liquidità puoi pagare ingaggi più alti e prezzi di cartellino, cioè il costo per acquistare un giocatore, che gli altri non si possono permettere.</p><p class="sec-body">Il divario non è casuale: è la conseguenza diretta di un gap strutturale di ricavi che si allarga ogni anno. Le altre leghe spesso possono avvicinarsi solo vendendo, non comprando: quest&#39;estate la Ligue 1, per esempio, ha chiuso il mercato in attivo.</p><p class="sec-body">Per chi lavora in M&amp;A o advisory nel calcio, il messaggio è semplice: fuori dalla Premier, i club competono con risorse diverse. Questo cambia le valutazioni, i multipli e le aspettative di ritorno di qualsiasi deal.</p>
       <div class="sec-src">Fonti: Sky Sports, breakdown spesa per lega, estate 2026 (04/09/2026) · Deloitte, record di spesa della Premier League superato (estate 2026)</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-019__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-019__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

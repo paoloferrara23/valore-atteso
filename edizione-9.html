@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Strategie finanziarie nascoste: PSG in equilibrio, Real Madrid come venture capitalist, Ronaldinho valore commerciale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Dietro le quinte del mercato: l'illusione del PSG, il playbook del Real e l'effetto Ronaldinho.","description":"Strategie finanziarie nascoste: PSG in equilibrio, Real Madrid come venture capitalist, Ronaldinho valore commerciale.","datePublished":"2026-06-30","dateModified":"2026-06-30","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-9"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Dietro le quinte del mercato: l'illusione del PSG, il playbook del Real e l'effetto Ronaldinho.","description":"Strategie finanziarie nascoste: PSG in equilibrio, Real Madrid come venture capitalist, Ronaldinho valore commerciale.","datePublished":"2026-06-30","dateModified":"2026-06-30","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-9"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,58 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">PSG Financial Fair Play: la cessione di Gonçalo Ramos è una exit strategy, non una vendita</h2>
-      <p class="sec-body">Il PSG ha ceduto Gonçalo Ramos per circa 70 milioni di euro. In superficie sembra un ottimo affare, ma scavando nei numeri è quasi un pareggio. Il club aveva comprato Ramos nel 2023 per circa 80 milioni complessivi.</p>
+      <p class="sec-body">Il PSG ha ceduto Gonçalo Ramos per circa 70 milioni di euro. In superficie sembra un ottimo affare, ma scavando nei numeri è quasi un pareggio. Il club aveva comprato Ramos nel 2023 per circa 80 milioni complessivi.</p><p class="sec-body">Nel calcio, il costo di acquisto di un giocatore non pesa subito per intero, ma viene diviso, o &quot;ammortizzato&quot;, per gli anni del suo contratto. Vendendolo oggi a 70 milioni, il PSG registra una &quot;plusvalenza&quot;, cioè un guadagno contabile, solo perché il valore a bilancio del giocatore è sceso nel tempo grazie agli ammortamenti, arrivando a circa 40 milioni.</p><p class="sec-body">Il guadagno reale e l&#39;impatto sulla cassa, quindi, sono molto modesti. Ma il vero punto è il contesto. Con perdite cumulative stimate in circa 560 milioni tra il 2021 e il 2024, il PSG è sotto la stretta lente della UEFA, che in passato lo ha già sanzionato. Le nuove regole di sostenibilità (Squad Cost Rule) impongono un limite rigido: le spese complessive per la squadra non potranno superare il 70% dei ricavi.</p><p class="sec-body">Ecco perché vendere Ramos non è una mossa di mercato, ma un obbligo per rispettare le norme. L&#39;obiettivo non è arricchirsi, ma tagliare i costi per evitare penalizzazioni. Nel calcio di oggi, la compravendita dei giocatori ha cambiato volto: da strumento per generare profitto è diventata una leva necessaria per la sopravvivenza finanziaria dei club.</p>
       <div class="sec-src">Fonti: UEFA Club Licensing and Financial Sustainability Regulations · Transfermarkt.it</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-009__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Nico Paz: la struttura del deal che trasforma il Real Madrid in un fondo VC</h2>
-      <p class="sec-body">Il 25 giugno 2026, il Real Madrid ha esercitato il diritto di buy-back su Nico Paz pagando 9 milioni di euro al Como. Nello stesso giorno ha rivenduto il giocatore allo stesso club per 60 milioni. Rendimento sull&#39;investimento: +567%. Non è una storia di calcio. È una storia di architettura contrattuale.</p>
+      <p class="sec-body">Il 25 giugno 2026, il Real Madrid ha esercitato il diritto di buy-back su Nico Paz pagando 9 milioni di euro al Como. Nello stesso giorno ha rivenduto il giocatore allo stesso club per 60 milioni.</p><p class="sec-body">Rendimento sull&#39;investimento: +567%. Non è una storia di calcio. È una storia di architettura contrattuale. Tutto nasce nel 2024, quando il Como acquista Paz dal Real Madrid per 6 milioni di euro. Nel contratto è già codificata una clausola di buy-back: il Real può riprendersi il giocatore per 9 milioni entro una data stabilita. Il club spagnolo esercita l&#39;opzione e cede immediatamente l&#39;asset all&#39;acquirente originale per 60 milioni.</p><p class="sec-body">L&#39;operazione netta genera 51 milioni di margine lordo su un&#39;esposizione iniziale di appena 9 milioni. Ma c&#39;è di più: nel nuovo contratto di rivendita è già prevista l&#39;inclusione di una nuova clausola di recompra, che secondo le stime permetterà al Real Madrid di riacquistare Paz nel 2027 per 80 milioni.</p><p class="sec-body">La struttura replica esattamente la logica del Venture Capital: piccola esposizione iniziale, monetizzazione intermedia per generare liquidità, e mantenimento di un&#39;opzione sul futuro upside. Il Real Madrid utilizza queste clausole da anni, ma il caso Paz ne rende visibile la meccanica con una chiarezza insolita: è un modello waterfall (struttura di distribuzione dei proventi per strati successivi) applicato a un asset sportivo.</p>
       <div class="sec-src">Fonti: Transfermarkt.it</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Ronaldinho-Ravenna: quanto vale un Pallone d&#39;Oro per un club di provincia?</h2>
-      <p class="sec-body">L&#39;associazione tra Ronaldinho e il Ravenna Calcio (Serie D) fa notizia, ma per chi analizza i bilanci non è una questione di nostalgia. è una manovra di pura ingegneria commerciale. I dettagli contrattuali esatti (costo, natura dell&#39;equity, ruolo di ambassador) non sono ancora pubblici.</p>
+      <p class="sec-body">L&#39;associazione tra Ronaldinho e il Ravenna Calcio (Serie D) fa notizia, ma per chi analizza i bilanci non è una questione di nostalgia. è una manovra di pura ingegneria commerciale. I dettagli contrattuali esatti (costo, natura dell&#39;equity, ruolo di ambassador) non sono ancora pubblici.</p><p class="sec-body">Speculare oggi sulle cifre sarebbe un errore. Quello che possiamo fare è costruire il corretto framework analitico, perché operazioni simili ricalcano logiche misurabili, come dimostrato recentemente dal &quot;caso Wrexham&quot;: la trasformazione di un club delle serie minori in un asset mediatico globale. Ronaldinho porta in dote una cassa di risonanza da circa 80 milioni di follower.</p><p class="sec-body">Per un club dilettantistico, la cui esposizione media si ferma a poche decine di migliaia di contatti, si tratta di una leva asimmetrica. Questa operazione apre istantaneamente un mercato di sponsorizzazioni internazionali, specialmente in Sud America e Asia, inaccessibile per una normale squadra di categoria.</p><p class="sec-body">Il Ritorno sull&#39;Investimento (ROI) si misurerà su tre driver precisi:</p><p class="sec-body">1- Crescita della fan base: nei 90 giorni post-annuncio, metrica che i modelli di valutazione legano ormai direttamente all&#39;Enterprise Value del club. 
+2- Nuovi flussi commerciali: il numero e il valore dei contratti di sponsorizzazione attratti esclusivamente dal brand dell&#39;ex giocatore. 
+3- Media Equivalent Value: il valore della copertura stampa globale, calcolato come se fossero spazi pubblicitari acquistati.</p><p class="sec-body">Senza i dati ufficiali di costo, il calcolo del margine netto resta in sospeso. Publicheremo l&#39;analisi quantitativa non appena le fonti primarie (bilanci e comunicati) saranno disponibili. Ma la direzione strategica è tracciata: l&#39;attenzione si sposta dalla categoria sportiva all&#39;audience globale.</p>
       <div class="sec-src">Fonti: Deloitte Annual Review of Football Finance 2025 · Football Benchmark The European Elite 2025</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-009__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-009__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +176,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

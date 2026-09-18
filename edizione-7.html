@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="UEFA riforma i conti della Serie A mentre FIFA costruisce il Mondiale più commerciale della storia.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Chi sta vincendo davvero il business del Calcio","description":"UEFA riforma i conti della Serie A mentre FIFA costruisce il Mondiale più commerciale della storia.","datePublished":"2026-06-16","dateModified":"2026-06-16","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-7"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Chi sta vincendo davvero il business del Calcio","description":"UEFA riforma i conti della Serie A mentre FIFA costruisce il Mondiale più commerciale della storia.","datePublished":"2026-06-16","dateModified":"2026-06-16","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-7"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">Il Bilancio</span></div>
       <h2 class="sec-title">70% o fuori. Come la UEFA sta riscrivendo i conti della Serie A</h2>
-      <p class="sec-body">C&#39;è un numero che racconta meglio di ogni altro la fragilità strutturale del calcio italiano: il Squad Cost Ratio. Il parametro centrale del nuovo regime UEFA misura il peso dei costi della rosa, stipendi, ammortamenti dei cartellini e commissioni agli agenti rispetto ai ricavi rilevanti.</p>
+      <p class="sec-body">C&#39;è un numero che racconta meglio di ogni altro la fragilità strutturale del calcio italiano: il Squad Cost Ratio. Il parametro centrale del nuovo regime UEFA misura il peso dei costi della rosa, stipendi, ammortamenti dei cartellini e commissioni agli agenti rispetto ai ricavi rilevanti. La UEFA ha introdotto un tetto progressivo: 90% nel 2023-24, 80% nel 2024-25, 70% dal 2025-26. Quest&#39;ultima soglia è quella in vigore oggi. Non è più un obiettivo futuro, è il limite che i club devono rispettare ora per ottenere la licenza UEFA. Il problema è che la Serie A è partita da lontano e la distanza dal 70% non è stata colmata in modo uniforme: alcuni club hanno gestito la transizione con cessioni strategiche e rinnovi al ribasso, altri hanno continuato a costruire rose costose confidando in una crescita dei ricavi che non sempre si è materializzata. Per un professionista del Corporate Finance la dinamica è familiare. Quando il costo del lavoro viaggia strutturalmente oltre i ricavi operativi, la leva sul fatturato non basta: serve comprimere il monte ingaggi. Le strade sono note, cessioni di asset, ricorso ai giovani, rinegoziazioni ma tutte erodono la competitività sportiva, che a sua volta alimenta i ricavi. Il classico circolo vizioso dei settori a margini compressi. La differenza tra i club si vedrà nei prossimi bilanci: chi ha anticipato la stretta affronta una correzione gestibile, chi ha rincorso il mercato a debito si trova ora a smontare una struttura di costo rigida sotto pressione regolamentare.</p>
       <div class="sec-src">Fonti: UEFA Financial Sustainability Regulations</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-007__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">Il Deal</span></div>
       <h2 class="sec-title">Aramco entra nel calcio: anatomia della sponsorship FIFA record</h2>
-      <p class="sec-body">Il colosso energetico saudita Aramco si aggiunge al portfolio commerciale che la FIFA sta costruendo attorno al Mondiale 2026. La cornice complessiva è ambiziosa: il programma commerciale del torneo è destinato a generare ricavi record, con oltre 2,7 miliardi di dollari attesi da sponsorship e marketing.</p>
+      <p class="sec-body">Il colosso energetico saudita Aramco si aggiunge al portfolio commerciale che la FIFA sta costruendo attorno al Mondiale 2026. La cornice complessiva è ambiziosa: il programma commerciale del torneo è destinato a generare ricavi record, con oltre 2,7 miliardi di dollari attesi da sponsorship e marketing. Dietro al numero c&#39;è un dato di scarsità che vale più della cifra stessa: l&#39;inventario di sponsorship risulta quasi esaurito. Per chi conosce le dinamiche di pricing, è il segnale di un venditore in posizione di forza. Quando lo spazio disponibile si comprime e la domanda resta alta, il potere contrattuale si sposta tutto sul lato dell&#39;offerta, la FIFA, e i prezzi per slot tendono a salire più del valore mediatico sottostante. L&#39;ingresso di Aramco va letto in questa chiave. Non è solo una sponsorizzazione, è la conferma di un riposizionamento del Golfo all&#39;interno del business calcistico, dopo gli investimenti in club, leghe e diritti già osservati negli ultimi anni. Per un capitale sovrano legato all&#39;energia, agganciare il marchio FIFA significa acquisire reach globale e legittimazione di brand in un singolo accordo pluriennale. La domanda strategica per un advisor non è quanto Aramco abbia pagato, ma cosa segnala questo deal sul valore residuo del brand FIFA: con l&#39;inventario esaurito ai prezzi più alti di sempre, dove si ferma la curva?</p>
       <div class="sec-src">Fonti: Comunicato ufficiale FIFA - partnership Aramco</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">La Metrica</span></div>
       <h2 class="sec-title">Mondiale 2026: 13 miliardi, il più grande evento commerciale di sempre</h2>
-      <p class="sec-body">Per misurare la distanza tra il calcio globale e quello dei singoli campionati basta un numero: la FIFA prevede ricavi complessivi per circa 13 miliardi di dollari nel ciclo 2023-2026. Di questi, circa 8,9 miliardi saranno generati dal solo Mondiale 2026.</p>
+      <p class="sec-body">Per misurare la distanza tra il calcio globale e quello dei singoli campionati basta un numero: la FIFA prevede ricavi complessivi per circa 13 miliardi di dollari nel ciclo 2023-2026. Di questi, circa 8,9 miliardi saranno generati dal solo Mondiale 2026. Si tratta del più grande programma commerciale mai costruito attorno a un singolo evento calcistico. La scomposizione delle revenue stream chiarisce dove si concentra il valore. I diritti broadcasting valgono circa 4,8 miliardi di dollari, ovvero la voce singola più pesante: quasi la metà dei ricavi del torneo arriva ancora dalla vendita televisiva, nonostante l&#39;espansione delle sponsorizzazioni. La restante quota si distribuisce tra sponsorship, ticketing e licensing. Il dato che merita attenzione da parte di un analista è la velocità di crescita: +72% rispetto al ciclo 2019-2022. Una progressione di questa entità in un solo ciclo quadriennale è anomala persino per un mercato in espansione, e si spiega in parte con l&#39;allargamento del format a 48 squadre, che moltiplica partite, inventario pubblicitario e finestre di trasmissione. Mentre la FIFA cresce a doppia cifra concentrando il valore in un evento di poche settimane, i club di Serie A faticano a contenere il costo del lavoro entro i ricavi ordinari. Il valore del calcio si sta spostando verso gli eventi globali e i detentori di diritti, lontano dai conti economici dei singoli club.</p>
       <div class="sec-src">Fonti: FIFA Financial Report 2023-2026</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-007__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-007__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

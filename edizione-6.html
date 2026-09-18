@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Debiti record e strategie diverse: Juventus accumula, Inter ottimizza, Friedkin costruisce il suo impero.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Juventus accumula. Inter ottimizza. Friedkin costruisce. Il Parlamento legifera.","description":"Debiti record e strategie diverse: Juventus accumula, Inter ottimizza, Friedkin costruisce il suo impero.","datePublished":"2026-06-09","dateModified":"2026-06-09","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-6"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Juventus accumula. Inter ottimizza. Friedkin costruisce. Il Parlamento legifera.","description":"Debiti record e strategie diverse: Juventus accumula, Inter ottimizza, Friedkin costruisce il suo impero.","datePublished":"2026-06-09","dateModified":"2026-06-09","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-6"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Serie A a 4,89 miliardi: il debito non smette di crescere</h2>
-      <p class="sec-body">Il calcio italiano è indebitato. Molto. Al 30 giugno 2025 i club di Serie A devono complessivamente 4,89 miliardi di euro alle banche e ai mercati finanziari. Un anno prima erano 4,72 miliardi. In dodici mesi il sistema ha accumulato altri 170 milioni di debito.</p>
+      <p class="sec-body">Il calcio italiano è indebitato. Molto. Al 30 giugno 2025 i club di Serie A devono complessivamente 4,89 miliardi di euro alle banche e ai mercati finanziari. Un anno prima erano 4,72 miliardi. In dodici mesi il sistema ha accumulato altri 170 milioni di debito.</p><p class="sec-body">La Juventus è il club più esposto: 280 milioni di indebitamento finanziario netto, in aumento rispetto all&#39;anno scorso. Un numero che racconta un modello preciso, si investe, si cresce, si prende a prestito. L&#39;autofinanziamento, per ora, resta un obiettivo lontano.</p><p class="sec-body">L&#39;Inter ha scelto una strada diversa. A giugno 2025, Oaktree ha sostituito il bond esistente da 415 milioni con uno nuovo da 350 milioni, scadenza 2030, collocato in private placement presso investitori istituzionali statunitensi.</p><p class="sec-body">Il tasso fisso è sceso dal 6,75% al 4,52%, oltre due punti percentuali in meno che dimezzano gli oneri finanziari annui da circa 30 a circa 15 milioni di euro stimati. Due approcci, due filosofie. Juventus accumula debito per crescere. Inter ottimizza quello che ha. In un sistema dove i ricavi salgono ma i margini no, chi gestisce meglio il passivo ha già vinto metà della partita.</p>
       <div class="sec-src">Fonti: Relazione Finanziaria Annuale Juventus FC - 30 giugno 2025 ; Comunicato ufficiale FC Internazionale Milano / Oaktree — 26 giugno 2025 ; FIGC Report sul Calcio italiano 2025</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-006__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Pursuit Sports: la holding Friedkin scommette sull&#39;immobiliare</h2>
-      <p class="sec-body">Dan Friedkin ha smesso di essere un proprietario di club. È diventato un gestore di piattaforme. Con il lancio di Pursuit Sports, la holding che riunisce Roma, Everton e Cannes sotto un&#39;unica regia i Friedkin formalizzano una strategia che nel calcio europeo si chiama Multi-Club Ownership, ma che in questo caso ha un…</p>
+      <p class="sec-body">Dan Friedkin ha smesso di essere un proprietario di club. È diventato un gestore di piattaforme. Con il lancio di Pursuit Sports, la holding che riunisce Roma, Everton e Cannes sotto un&#39;unica regia i Friedkin formalizzano una strategia che nel calcio europeo si chiama Multi-Club Ownership, ma che in questo caso ha un motore specifico: l&#39;immobiliare.</p><p class="sec-body">La prova concreta è l&#39;Everton. Il club di Liverpool ha aperto la stagione 2025-26 in un nuovo stadio da 52.888 posti a Bramley-Moore Dock, sul lungofiume della Mersey, costato £750-800 milioni. E già a maggio 2025, prima ancora del fischio d&#39;inizio, Friedkin ha chiuso il naming rights con Hill Dickinson, uno studio legale di Liverpool, per circa £10 milioni all&#39;anno.</p><p class="sec-body">Un accordo a lungo termine che porta in cassa ricavi fissi, indipendenti da risultati, classifiche e campagne acquisti. È esattamente questo il punto. Uno stadio moderno non è solo un impianto sportivo: è un asset immobiliare che genera flussi di cassa prevedibili. Naming rights, hospitality, eventi, affitti.</p><p class="sec-body">Ricavi che un analista può modellare con certezza relativa, e che in sede di valutazione valgono multipli più alti rispetto ai proventi legati alla performance sportiva. Lo stesso schema si replica a Roma, dove il progetto di Pietralata avanza. La holding consente di centralizzare competenze, condividere i costi e replicare il modello su più club contemporaneamente.</p><p class="sec-body">Non è un portafoglio sportivo. È una piattaforma di asset reali con il calcio come veicolo di acquisizione.</p>
       <div class="sec-src">Fonti: Comunicato ufficiale Everton FC / Hill Dickinson, maggio 2025 ; Comunicato ufficiale Pursuit Sports / The Friedkin Group ; BBC Sport, SportsPro</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Riforma calcio: nuovi parametri per un sistema da 5,5 miliardi</h2>
-      <p class="sec-body">Il Bilancio di questa edizione racconta il debito dei singoli club Juventus a 280 milioni, Inter che taglia il costo del capitale. Il DDL Marcheschi parte da un numero ancora più grande: quello dell&#39;intero sistema. 5,5 miliardi di indebitamento complessivo, 730 milioni di perdite annue.</p>
+      <p class="sec-body">Il Bilancio di questa edizione racconta il debito dei singoli club Juventus a 280 milioni, Inter che taglia il costo del capitale. Il DDL Marcheschi parte da un numero ancora più grande: quello dell&#39;intero sistema.</p><p class="sec-body">5,5 miliardi di indebitamento complessivo, 730 milioni di perdite annue. Una diagnosi condivisa, una risposta normativa che prova a cambiare le regole del gioco. Il DDL, firmato dal senatore di Fratelli d&#39;Italia Paolo Marcheschi e ancora in fase di iter parlamentare, non è un sussidio pubblico. È una riallocazione di risorse già presenti nel sistema, più alcune nuove. Tre leve concrete.</p><p class="sec-body">La prima: il denaro. Dal 2027, ogni euro scommesso sul calcio in Italia genererà un contributo del 2% destinato alla FIGC, circa 224 milioni annui. Metà ai vivai e alle infrastrutture, il resto tra prevenzione della ludopatia, calcio femminile e progetti sociali. Per i club, è una voce di entrata strutturale che non dipende dai risultati sul campo. Una novità significativa per un sistema abituato a contare solo su diritti TV e botteghino.</p><p class="sec-body">La seconda: i giovani. Il dato è impietoso: solo l&#39;1,9% dei minuti di Serie A viene giocato da Under 21 italiani selezionabili per la Nazionale. Quarantanovesimi su cinquanta campionati al mondo. Il 67,9% del minutaggio va agli stranieri. La risposta del DDL è diretta: per i calciatori tra 18 e 23 anni cresciuti nei vivai italiani, le aliquote contributive scendono del 30% per i primi cinque anni di carriera. Chi investe nei giovani paga meno. Un incentivo economico concreto, non una dichiarazione d&#39;intenti.</p><p class="sec-body">La terza: i diritti TV. Dal 2027-28, almeno il 15% delle risorse audiovisive della Serie A viene redistribuito secondo criteri nuovi: vivai (50%), sostenibilità dei bilanci (30%), utilizzo di italiani (10%), qualità delle infrastrutture (10%). Un ulteriore 5% va ai club con i conti in pareggio da almeno tre anni consecutivi. Per chi legge i club italiani come asset, il messaggio è chiaro: ricavi più prevedibili, costo del lavoro giovanile più competitivo, sostenibilità finanziaria che entra nei criteri di distribuzione.</p><p class="sec-body">Il sistema non cambia in una stagione. Ma chi si adatta prima vale di più.</p>
       <div class="sec-src">Fonti: Bozza DDL Marcheschi - riforma del calcio italiano, aprile-giugno 2026 ; Sky Sport</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-006__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-006__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

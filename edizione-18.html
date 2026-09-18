@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Villa vende talenti per l&#39;Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"L'Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero","description":"Villa vende talenti per l'Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.","datePublished":"2026-09-01","dateModified":"2026-09-01","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-18"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"L'Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero","description":"Villa vende talenti per l'Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.","datePublished":"2026-09-01","dateModified":"2026-09-01","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-18"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Aston Villa: come si compra l&#39;Europa vendendo i migliori</h2>
-      <p class="sec-body">L&#39;Aston Villa ha venduto Morgan Rogers al Chelsea per 117 milioni di sterline: mai nessun giocatore britannico era costato così tanto. Poco più di due anni prima il Villa lo aveva preso dal Middlesbrough per una cifra tra gli 8 e i 15 milioni, bonus inclusi.</p>
+      <p class="sec-body">L&#39;Aston Villa ha venduto Morgan Rogers al Chelsea per 117 milioni di sterline: mai nessun giocatore britannico era costato così tanto. Poco più di due anni prima il Villa lo aveva preso dal Middlesbrough per una cifra tra gli 8 e i 15 milioni, bonus inclusi. Un valore che, in due anni e mezzo, si è moltiplicato di oltre sette volte.</p><p class="sec-body">Ma attenzione: quei 117 milioni non finiscono tutti nelle casse del Villa. Quando lo comprò, il Middlesbrough si tenne il diritto al 20% sulla plusvalenza della rivendita, cioè sul guadagno, non sull&#39;intera cifra. Risultato: 20,3 milioni di sterline spettano al Middlesbrough e non restano al Villa. Il prezzo che leggi non è mai quello che il club incassa davvero.</p><p class="sec-body">E Rogers non è l&#39;unico partito. Nella stessa estate il Villa ha lasciato partire anche Youri Tielemans, uscito per una clausola rescissoria, e ha incassato da altre cessioni. Pur avendo fatto qualche acquisto, ha finanziato buona parte del mercato vendendo i suoi pezzi migliori.</p><p class="sec-body">Il paradosso è che il Villa è forte: si è qualificato in Champions League. Ma per un club come il Villa una rosa da Champions costa più di quanto la partecipazione porti, e allora vendere bene diventa il modo per far quadrare i conti.</p><p class="sec-body">Per chi guarda i numeri, il Villa è il ritratto di un modello sempre più comune: comprare giovani, farli crescere, rivenderli a peso d&#39;oro. Funziona finché c&#39;è chi compra. Il giorno che il mercato si raffredda, resti con una squadra più debole e senza quel tesoretto.</p>
       <div class="sec-src">Fonti: Sky Sports: Chelsea complete record £117m deal for Morgan Rogers (luglio 2026) · Sky Sports: Villa signed Rogers from Middlesbrough in Jan 2024, deal rising to ~£16m · Teesside Live / Yahoo Sport: Middlesbrough £20,3m dalla clausola del 20% sulla plusvalenza</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-018__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Chelsea: i contratti lunghi che hanno cambiato le regole</h2>
-      <p class="sec-body">Il Chelsea ha comprato Morgan Rogers per 117 milioni di sterline, il giocatore britannico più costoso di sempre, in un&#39;estate in cui ha speso circa 350 milioni di sterline: più di ogni altro club in Premier League. La domanda vera non è dove trovi i soldi: quelli si pagano davvero, di solito in più anni.</p>
+      <p class="sec-body">Il Chelsea ha comprato Morgan Rogers per 117 milioni di sterline, il giocatore britannico più costoso di sempre, in un&#39;estate in cui ha speso circa 350 milioni di sterline: più di ogni altro club in Premier League.</p><p class="sec-body">La domanda vera non è dove trovi i soldi: quelli si pagano davvero, di solito in più anni. È un&#39;altra: come fa a spendere così tanto senza essere punito dalle regole che vietano perdite troppo grandi?</p><p class="sec-body">La risposta è nella contabilità. Il costo di un cartellino non pesa tutto nell&#39;anno dell&#39;acquisto: si spalma sulla durata del contratto. Più lungo è il contratto, più sottile è la fetta che finisce ogni anno nei conti. Il Chelsea ha usato molto questa possibilità: ha iniziato a far firmare contratti lunghissimi, a Enzo Fernández addirittura otto anni e mezzo, così da diluire al massimo la spesa e restare dentro i limiti pur comprando a valanga.</p><p class="sec-body">Il punto di svolta: questa pratica si è diffusa al punto che le autorità hanno cambiato la regola. Dal 2023 non si può più spalmare il costo oltre cinque anni. Così quei 117 milioni di Rogers, sui conti, valgono circa 23 milioni l&#39;anno.</p><p class="sec-body">Per chi legge i conti, la lezione è che i soldi si spendono per davvero: il punto non sta nel pagare meno, ma nel modo in cui la spesa appare a bilancio. E quell&#39;apparenza conta, perché è ciò che decide se un club può continuare a comprare o no. Il Chelsea ha usato questa leva fino in fondo, poi il tetto è stato spostato.</p>
       <div class="sec-src">Fonti: Sky Sports: Chelsea record £117m per Morgan Rogers (luglio 2026) · Sports Illustrated / LiveScore: spesa Premier League estate 2026, Chelsea primo (circa £350m, ~$476m) · Inside World Football / The Guardian: UEFA e Premier League, tetto di 5 anni all&#39;ammortamento (2023) e contratti lunghi del Chelsea (Enzo Fernández 8 anni e mezzo)</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Quando leggi &quot;100 milioni&quot;, il club ne incassa molti meno</h2>
-      <p class="sec-body">Quando la notizia dice &quot;venduto per 100 milioni&quot; (prendiamo una cifra tonda come esempio), immagini che tutta quella somma arrivi nelle casse del club. Quasi mai è così. Dal prezzo che fa titolo vanno tolte diverse voci.</p>
+      <p class="sec-body">Quando la notizia dice &quot;venduto per 100 milioni&quot; (prendiamo una cifra tonda come esempio), immagini che tutta quella somma arrivi nelle casse del club. Quasi mai è così. Dal prezzo che fa titolo vanno tolte diverse voci.</p><p class="sec-body">La prima è la clausola di rivendita: spesso il club che aveva ceduto prima il giocatore si è tenuto una percentuale sul guadagno della vendita successiva. Sul Rogers, per esempio, il 20% della plusvalenza (20,3 milioni di sterline) spetta al Middlesbrough e non resta all&#39;Aston Villa.</p><p class="sec-body">La seconda è il contributo di solidarietà: nei trasferimenti internazionali fino al 5% della cifra viene messo da parte e distribuito a tutte le squadre che hanno cresciuto il giocatore da ragazzo, tra i 12 e i 23 anni.</p><p class="sec-body">La terza sono le commissioni degli agenti: chi costruisce l&#39;operazione può pesare parecchio, spesso una fetta a due cifre del valore.</p><p class="sec-body">Metti tutto insieme e una vendita che fa titolo per una certa cifra si traduce, per il club che vende, in parecchi milioni in meno davvero incassati.</p><p class="sec-body">Per chi guarda i numeri, la lezione è semplice: la cifra che fa notizia è marketing, quello che conta è il netto. La prossima volta che leggi una cifra record, chiediti quanto resta davvero al club.</p>
       <div class="sec-src">Fonti: FIFA / LawInSport: meccanismo di solidarietà (fino al 5%) e training compensation · Teesside Live: clausola di rivendita 20% del Middlesbrough sulla plusvalenza di Rogers · FIFA Football Agent Regulations / EA Sports Law: commissioni agenti e relativi tetti</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-018__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-018__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

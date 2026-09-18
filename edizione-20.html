@@ -20,7 +20,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Dollari, Squad Cost e il miracolo di Como","description":"Proprietà americana e crescita finanziaria: come cambia il calcio europeo con nuovi modelli economici.","datePublished":"2026-09-15","dateModified":"2026-09-15","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-20"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,34 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">Il Bilancio</span></div>
       <h2 class="sec-title">Como 1907: ricavi moltiplicati per 60, perdite coperte dalla proprietà. Un modello di crescita finanziata.</h2>
-      <p class="sec-body">In sei anni, il Como è passato dalla Serie D alla Serie A. I ricavi caratteristici (al netto delle plusvalenze) sono andati da 0,8 milioni a 50,5 milioni. È una crescita reale, ma racconta solo metà della storia. L&#39;altra metà è il costo del personale: 85,7 milioni nel 2025. Cioè 169% dei ricavi.</p>
+      <p class="sec-body">In sei anni, il Como è passato dalla Serie D alla Serie A. I ricavi caratteristici (al netto delle plusvalenze) sono andati da 0,8 milioni a 50,5 milioni. È una crescita reale, ma racconta solo metà della storia.</p><p class="sec-body">L&#39;altra metà è il costo del personale: 85,7 milioni nel 2025. Cioè 169% dei ricavi. Ogni 100 euro incassati, il club ne spende 169 solo in stipendi. Per capire la proporzione: un club ben gestito punta a stare sotto il 60-70%.</p><p class="sec-body">Il risultato sono perdite cumulate di circa 190 milioni in sei stagioni. La proprietà indonesiana (famiglia Hartono) ha coperto quasi tutto, versando circa 220 milioni di capitale fresco. Non è debito bancario: è denaro dei soci immesso direttamente nell&#39;azienda. Zero esposizione verso le banche.</p><p class="sec-body">Questo è il punto chiave per un lettore finanziario. Il Como non è un club in crisi di liquidità: è un club in fase di investimento accelerato, con una proprietà che sceglie di assorbire le perdite anziché ricorrere al credito esterno. Il rischio non è il debito, ma la dipendenza totale dalla capacità e dalla volontà dei soci di continuare a mettere soldi.</p><p class="sec-body">La domanda che conta non è &quot;quanto perdono&quot;, ma &quot;fino a quando la proprietà è disposta a farlo&quot; e &quot;quando i ricavi iniziano a reggere da soli il modello&quot;.</p>
       <div class="sec-src">Fonti: Como 1907, bilanci depositati, 2019-2025</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">Il Deal</span></div>
       <h2 class="sec-title">12 club su 20: la Premier League è diventata una lega americana</h2>
-      <p class="sec-body">Dodici club su venti in Premier League hanno oggi una proprietà a maggioranza statunitense. Non è una tendenza: è una struttura. E secondo il report annuale di Norton Rose Fulbright, non riguarda solo i club di vertice.</p>
-      <div class="sec-src">Fonti: Norton Rose Fulbright, Keeping Possession (7ª ed.), 06/09/2026</div>
+      <p class="sec-body">Dodici club su venti in Premier League hanno oggi una proprietà a maggioranza statunitense. Non è una tendenza: è una struttura.</p>
+      <p class="sec-locked">Continua nell'edizione completa ↓</p>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">La Metrica</span></div>
       <h2 class="sec-title">SCR: vinci chi incassa di più, non chi spende meno</h2>
-      <p class="sec-body">La Premier League ha approvato un nuovo sistema finanziario. Dal 2026/27 entra in vigore lo Squad Cost Ratio (SCR): il costo della rosa, comprensivo di stipendi e ammortamenti dei cartellini, non può superare l&#39;85% dei ricavi calcistici netti del club. La logica è semplice. Prima si controllava quanto un club perdeva.</p>
-      <div class="sec-src">Fonti: Premier League, Official Statement: New Financial System, 2026</div>
+      <p class="sec-body">La Premier League ha approvato un nuovo sistema finanziario. Dal 2026/27 entra in vigore lo Squad Cost Ratio (SCR): il costo della rosa, comprensivo di stipendi e ammortamenti dei…</p>
+      <p class="sec-locked">Continua nell'edizione completa ↓</p>
     </section>
   <div class="gate">
     <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <h3>Leggi Il Deal e La Metrica</h3>
+    <p>Il resto di questa edizione — e ogni nuova analisi — arriva via email. Gratis, ogni martedì in 8 minuti, con il caffè.</p>
+    <form class="vaform" data-source="edizione-020__gate" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +152,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>

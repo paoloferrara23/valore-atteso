@@ -17,10 +17,10 @@
 <meta name="twitter:description" content="Private equity ridisegna il calcio europeo: da mega-acquisizioni a minoranze strategiche e reti multi-club.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Arsenal, San Siro e il private capital che ridisegna il calcio","description":"Private equity ridisegna il calcio europeo: da mega-acquisizioni a minoranze strategiche e reti multi-club.","datePublished":"2026-05-26","dateModified":"2026-05-26","inLanguage":"it","isAccessibleForFree":false,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-4"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Arsenal, San Siro e il private capital che ridisegna il calcio","description":"Private equity ridisegna il calcio europeo: da mega-acquisizioni a minoranze strategiche e reti multi-club.","datePublished":"2026-05-26","dateModified":"2026-05-26","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-4"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:760px}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
@@ -54,6 +54,28 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 .gate h3{font-size:1.5rem;font-weight:600;margin-bottom:10px;letter-spacing:-.4px}
 .gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
 .gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+.sec-locked{color:var(--muted);font-style:italic;margin-top:8px}
+.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
+.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+.vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
+.vaform button{height:46px;padding:0 22px;border:0;background:var(--gold);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
+.vaform button:disabled{opacity:.6;cursor:default}
+.vaform-status{font-family:var(--mn);font-size:11px;margin-top:10px;min-height:14px}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
+.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
+.midcta .vaform-h{font-size:1.1rem}
+.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.gate .vaform-row{margin-top:6px}
+.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--gold)}
+#va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
+#va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
+#va-scroll-cta .vaform-row{margin:0}
+#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
+#va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
@@ -93,26 +115,56 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <section class="sec">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Il Modello Arsenal: i veri numeri dietro il ritorno nell&#39;elite UEFA</h2>
-      <p class="sec-body">L&#39;Arsenal arriva alle fasi finali europee con un bottino UEFA di primissimo livello: circa €117 milioni di premi stimati, frutto del percorso in Champions League. Ma per comprendere la reale portata del progetto, serve contestualizzare.</p>
+      <p class="sec-body">L&#39;Arsenal arriva alle fasi finali europee con un bottino UEFA di primissimo livello: circa €117 milioni di premi stimati, frutto del percorso in Champions League.</p><p class="sec-body">Ma per comprendere la reale portata del progetto, serve contestualizzare. Il wage bill dei Gunners ha toccato i £346,8 milioni nella stagione 2024/25, eppure, a fronte di ricavi record, il rapporto stipendi/ricavi è sceso a un sanissimo 50,2%. In base alle nuove normative UEFA sulla sostenibilità finanziaria, la rigorosa Squad Cost Rule si attesta ad appena il 61,9%, comodamente sotto la rigida soglia del 70% imposta da Nyon.</p><p class="sec-body">I premi Champions rappresentano quindi un potente acceleratore, non certo ossigeno vitale per il bilancio. Il divario strutturale con il Real Madrid resta netto: i Blancos dominano avendo superato la quota storica del miliardo di euro di fatturato, mentre l&#39;Arsenal insegue con ricavi totali per £690,3 milioni (di cui £263,6 milioni dal solo comparto commerciale). Ma i Gunners non stanno giocando alla roulette: l&#39;ultimo mercato ha registrato un net spend chirurgico di soli £18 milioni, magistralmente finanziato da quasi £106 milioni di cessioni.</p><p class="sec-body">Il Nord di Londra non vive più in apnea. I milioni della UEFA non sono una fragile stampella per evitare il collasso, ma il propellente per un decollo definitivo. L&#39;Arsenal ha forgiato una corazzata finanziaria sostenibile, progettata non solo per partecipare, ma per dominare l&#39;élite del calcio globale.</p>
       <div class="sec-src">Fonti: Deloitte Football Money League 2026 · UEFA Club Licensing and Financial Sustainability Regulations · Arsenal FC: 2024/25 Financial Results</div>
-    </section><section class="sec">
+    </section><div class="midcta">
+    <div class="vaform-h">Ricevi la prossima edizione</div>
+    <div class="vaform-p">Ogni martedì un bilancio, un deal e una metrica. In 8 minuti, con il caffè.</div>
+    <form class="vaform" data-source="edizione-004__mid" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+  </div><section class="sec">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Nuovo San Siro: colmare il gap con i big Europei</h2>
-      <p class="sec-body">L&#39;Inter sconta un gap infrastrutturale rispetto ai benchmark europei. Mentre i nerazzurri sono frenati dai limiti di un San Siro ormai obsoleto per la monetizzazione moderna, il Real Madrid post-restyling ha raddoppiato gli incassi toccando i €233M di ricavi matchday.</p>
+      <p class="sec-body">L&#39;Inter sconta un gap infrastrutturale rispetto ai benchmark europei. Mentre i nerazzurri sono frenati dai limiti di un San Siro ormai obsoleto per la monetizzazione moderna, il Real Madrid post-restyling ha raddoppiato gli incassi toccando i €233M di ricavi matchday.</p><p class="sec-body">Lo stadio di proprietà cambia strutturalmente l&#39;equazione. I casi studio parlano chiaro: sfruttando la leva del nuovo Metropolitano, l&#39;Atlético Madrid ha permesso al fondo Ares di uscire dall&#39;investimento valorizzando il club a un Enterprise Value (EV) di €2,5 miliardi. Ma l&#39;impatto più rilevante è sui multipli di valutazione. Nel mercato M&amp;A, i club con stadio di proprietà trattano a moltiplicatori EV/Revenue superiori di 0.5-1.0x rispetto ai tenant.</p><p class="sec-body">Applicando questo premio prudenziale agli attuali ricavi dell&#39;Inter (circa €468M), questo significa iniettare tra i €234M e i €468M di puro Enterprise Value aggiuntivo. Il nuovo San Siro non è un progetto immobiliare: è una vitale operazione di corporate finance che ridefinisce il posizionamento nei multipli di settore, rappresentando l&#39;unico fattore in grado di sbloccare la futura exit strategy di Oaktree.</p>
       <div class="sec-src">Fonti: Annual Review of Football Finance 2025 · Ares Management plans sports fund for European investors - SportsPro · Football Benchmark The European Elite 2025</div>
     </section><section class="sec">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Private Equity 2.0: minoranze strategiche, reti multi-club e la fine dei mega-buyout</h2>
-      <p class="sec-body">I grandi fondi di investimento stanno cambiando la loro strategia nel calcio europeo. Di fronte a valutazioni d&#39;ingresso sempre più elevate e alla limitata disponibilità di club di vertice in vendita, il private capital sta progressivamente abbandonando le acquisizioni totali per concentrarsi su quote di minoranza,…</p>
+      <p class="sec-body">I grandi fondi di investimento stanno cambiando la loro strategia nel calcio europeo. Di fronte a valutazioni d&#39;ingresso sempre più elevate e alla limitata disponibilità di club di vertice in vendita, il private capital sta progressivamente abbandonando le acquisizioni totali per concentrarsi su quote di minoranza, debito privato ed equity strutturato.</p><p class="sec-body">Il razionale finanziario è duplice: da un lato si garantisce l&#39;esposizione a un&#39;asset class in forte crescita, dall&#39;altro si evita l&#39;intenso scrutinio pubblico e mediatico che colpisce inevitabilmente gli azionisti di maggioranza. Parallelamente, per mitigare i rischi e sfruttare le economie di scala, si è consolidato il modello della Multi-Club Ownership (MCO).</p><p class="sec-body">I dati certificati UEFA confermano che 345 club a livello globale fanno ormai parte di reti d&#39;investimento multi-squadra. Questo approccio di portafoglio permette agli investitori di diversificare il rischio geografico, e le stesse acquisizioni di quote di minoranza stanno diventando lo strumento preferito per espandere rapidamente queste reti internazionali.</p><p class="sec-body">Per la Serie A, il messaggio dei mercati finanziari è inequivocabile. Gli investitori istituzionali favoriscono i club capaci di sfruttare la riqualificazione immobiliare e il controllo degli stadi per generare flussi di cassa ricorrenti a lungo termine, indipendenti dai risultati sul campo. Senza la costruzione di impianti multifunzionali in grado di massimizzare i ricavi da matchday, i club italiani faticheranno ad attrarre capitali azionari (equity) orientati allo sviluppo, rischiando di rimanere esposti solo a costose iniezioni di debito.</p>
       <div class="sec-src">Fonti: UEFA Intelligence Centre (2025) · Clifford Chance (&quot;US Private Equity Investments in European Football&quot;) · L&#39;Evoluzione del Capitalismo Sportivo / Deloitte</div>
     </section>
   <div class="gate">
-    <div class="gate-k">Anteprima</div>
-    <h3>Continua a leggere l'edizione completa</h3>
-    <p>Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione. Iscriviti gratis per ricevere ogni edizione e accedere all'archivio completo.</p>
-    <a href="/" class="gate-cta">Iscriviti gratis →</a>
+    <div class="gate-k">Newsletter</div>
+    <h3>Ricevila ogni martedì</h3>
+    <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
+    <form class="vaform" data-source="edizione-004__fine" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti gratis</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
   </div>
 </article>
+<div class="secondary-cta">Ti servono i bilanci completi dei club? Esplora la <a href="/club-intelligence">Club Intelligence →</a></div>
+<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  <div class="sc-in">
+    <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
+    <form class="vaform" data-source="edizione-004__scroll" onsubmit="return vaSub(this)" novalidate>
+    <div class="vaform-row">
+      <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
+      <button type="submit">Iscriviti</button>
+    </div>
+    <div class="vaform-status" aria-live="polite"></div>
+  </form>
+    <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
+  </div>
+</div>
 
 <footer class="foot">
   <a href="/">Home</a>
@@ -122,5 +174,43 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <a href="/privacy">Privacy</a>
 </footer>
 <p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:10px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<script>
+function vaSub(form){
+  var input=form.querySelector("input[type=email]");
+  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
+  var st=form.querySelector(".vaform-status");
+  var email=(input.value||"").trim();
+  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
+  var source=form.getAttribute("data-source")||"archivio";
+  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
+  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
+    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
+    .then(function(res){
+      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
+      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
+      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
+    })
+    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
+  return false;
+}
+(function(){
+  try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
+  var shown=false;
+  function onScroll(){
+    if(shown)return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight-h.clientHeight)||1;
+    var pct=(h.scrollTop||document.body.scrollTop)/max;
+    if(pct<0.7)return;
+    shown=true;
+    try{localStorage.setItem("va_prompted","1");}catch(e){}
+    var el=document.getElementById("va-scroll-cta");
+    if(el)el.style.display="block";
+    window.removeEventListener("scroll",onScroll);
+  }
+  window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
 </body>
 </html>
