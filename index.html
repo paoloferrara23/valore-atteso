@@ -1145,6 +1145,16 @@ async function crLoadBozze(){
 }
 function crToggleBozza(id){document.getElementById('bb-'+id).classList.toggle('open')}
 function crBodyVal(id){var el=document.getElementById(id);if(!el)return null;return (typeof el.value==="string")?el.value:el.innerText;}
+// In redazione il corpo si edita compatto (un solo a-capo tra paragrafi, niente riga vuota):
+// più facile da leggere e modificare. Lo spazio tra paragrafi esce solo dopo l'approvazione,
+// quando il testo arriva su archivio/email (che dividono i paragrafi su doppio a-capo).
+function crCompactBody(body){
+  var t=Array.isArray(body)?body.join('\n\n'):String(body||'');
+  return t.split(/\n{2,}/).map(function(p){return p.trim();}).filter(Boolean).join('\n');
+}
+function crExpandBody(text){
+  return String(text||'').split(/\n+/).map(function(p){return p.trim();}).filter(Boolean).join('\n\n');
+}
 async function crApproveBozza(id,num){
   const st=document.getElementById('bst-'+id);
   st.className='cr-status';
@@ -1190,7 +1200,8 @@ function crLeggiSezioniDom(edId,sections){
   return sections.map(function(s,i){
     var sid=edId+'-'+i;
     var title=(document.getElementById('bs-'+sid+'-title')||{innerText:s.title}).innerText.trim();
-    var body=(crBodyVal('bs-'+sid+'-body')||s.body).trim();
+    var bodyRaw=crBodyVal('bs-'+sid+'-body');
+    var body=(bodyRaw!=null?crExpandBody(bodyRaw):(Array.isArray(s.body)?s.body.join('\n\n'):(s.body||''))).trim();
     var verdict=(document.getElementById('bs-'+sid+'-verdict')||{innerText:s.verdict||''}).innerText.trim();
     // Leggi KPI dal DOM se disponibili, altrimenti da Supabase
     var kpisBase=s.kpis||[];
@@ -1643,7 +1654,7 @@ async function crLoadBozze(){
           return '<div style="margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid var(--rule)">'+
             '<div style="font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px">'+esc(s.label||'')+'</div>'+
             '<div contenteditable="true" id="bs-'+sid+'-title" style="font-family:var(--sf);font-size:1.5rem;font-weight:700;letter-spacing:-.4px;margin-bottom:10px;outline:none;border-bottom:1px dashed var(--rule);padding-bottom:4px">'+esc(s.title||'')+'</div>'+
-            '<textarea id="bs-'+sid+'-body" class="cr-edit" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:14px;width:100%;box-sizing:border-box;min-height:240px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--white);font-family:var(--sf);outline:none">'+esc(s.body||'')+'</textarea>'+
+            '<textarea id="bs-'+sid+'-body" class="cr-edit" style="font-size:15px;line-height:1.78;color:var(--ink2);margin-bottom:14px;width:100%;box-sizing:border-box;min-height:240px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--white);font-family:var(--sf);outline:none">'+esc(crCompactBody(s.body))+'</textarea>'+
             (kHtml?'<div style="background:var(--cream2);border:1px solid var(--rule);border-radius:14px;padding:12px 16px;margin-bottom:10px">'+
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'+
                 '<span style="font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">KPI</span>'+
