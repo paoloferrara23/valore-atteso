@@ -62,6 +62,8 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 
 > **Credenziali:** mai scritte in chiaro in file, chat o documenti. La Control Room è protetta da token `x-cr-token` validato server-side contro `CR_PASSWORD`. Vedi sezione Sicurezza.
 
+**Blocklist email (`blocked_emails`).** Per bloccare un indirizzo: inserirlo in `blocked_emails` con `email_normalized = normalize_email('...')` (il confronto ignora maiuscole, `+tag` e, per Gmail, i punti e `googlemail.com`) e rimuovere la sua riga da `subscribers` (altrimenti, non confermata, riceverebbe i reminder). Il trigger `trg_reject_blocked_emails` rifiuta ogni insert/update di un indirizzo bloccato con errore `blocked_email`; `api/subscribe.js` risponde `ok` senza inviare nulla. Per sbloccare: eliminare la riga da `blocked_emails`. Gli strumenti SQL/migrazioni di Claude non eseguono `DELETE`/`DROP` (vanno in timeout in attesa di conferma): quelle istruzioni si lanciano da Supabase → SQL Editor.
+
 ---
 
 ## ⚠️ Sicurezza — da chiudere prima di NaS / pagamenti / sponsor esterni

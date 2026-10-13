@@ -5,6 +5,11 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+// Indirizzi in blocklist (tabella blocked_emails): il trigger del database rifiuta ogni scrittura
+// con l'errore 'blocked_email'. Si risponde come se tutto fosse andato bene, senza inviare nulla,
+// per non rivelare il blocco.
+function isBlocked(err) { return !!err && String(err.message || '').includes('blocked_email'); }
+
 // ── Rate limiting: max 5 iscrizioni per IP per ora ───────────────────────────
 async function checkRateLimit(ip) {
   if (!ip) return true; // se non c'è IP, lascia passare
@@ -63,9 +68,9 @@ module.exports = async function handler(req, res) {
     let sent = 0;
     for (const sub of pending) {
       const tok = sub.token || require('crypto').randomUUID();
-      if (!sub.token) {
-        await supabase.from('subscribers').update({ token: tok }).eq('email', sub.email);
-      }
+      // La scrittura passa sempre dal database: se l'indirizzo e' bloccato il trigger la rifiuta e si salta il reminder.
+      const upd = await supabase.from('subscribers').update({ token: tok }).eq('email', sub.email);
+      if (isBlocked(upd.error)) continue;
       const html = `<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#D8D0C4">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#D8D0C4"><tr><td align="center">
@@ -160,12 +165,14 @@ module.exports = async function handler(req, res) {
   const tok = existing.data?.token || crypto.randomUUID();
 
   if (existing.data) {
-    if (!existing.data.token) await supabase.from('subscribers').update({ token: tok }).eq('email', email);
+    const upd = await supabase.from('subscribers').update({ token: tok }).eq('email', email);
+    if (isBlocked(upd.error)) return res.status(200).json({ ok: true });
   } else {
     // Il canale (source) arriva dal client: utm della URL + form che ha convertito.
     // È dato non fidato -> sanifica: stringa breve, solo caratteri sicuri, fallback 'direct'.
     const cleanSource = String(source || 'direct').slice(0, 120).replace(/[^A-Za-z0-9_.:|-]/g, '_') || 'direct';
     const ins = await supabase.from('subscribers').insert({ email, token: tok, confirmed: false, source: cleanSource });
+    if (isBlocked(ins.error)) return res.status(200).json({ ok: true });
     if (ins.error) return res.status(500).json({ error: ins.error.message });
   }
 
