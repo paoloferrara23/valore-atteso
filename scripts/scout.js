@@ -1,4 +1,4 @@
-// scripts/scout.js — Scout Agent v2.1
+// scripts/scout.js — Scout Agent v3
 // Web search libero su fonti certificate → verifica con Drive → brief + approvazione
 
 const crypto = require('crypto');
@@ -276,8 +276,23 @@ function contestoStagionale() {
 // (re-invio dal brief già salvato su scout_pending, senza rifare la ricerca web).
 async function inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start) {
   const selectUrl = `${SITE_URL}/scout-select?token=${selectionToken}`;
+  const tps = brief.temi_per_sezione || {};
+  const rec = brief.raccomandazione;
+  const etichette = { bilancio: 'Il Bilancio', deal: 'Il Deal', metrica: 'La Metrica' };
 
-  const tuttiTemi = [...(brief.temi_per_sezione?.bilancio||[]).map(t=>({...t,sezione_suggerita:'bilancio'})), ...(brief.temi_per_sezione?.deal||[]).map(t=>({...t,sezione_suggerita:'deal'})), ...(brief.temi_per_sezione?.metrica||[]).map(t=>({...t,sezione_suggerita:'metrica'}))];
+  // Gli stessi temi che la pagina di selezione rende selezionabili, nello stesso
+  // ordine. Il consigliato è marcato; non esistono temi citati ma non scegliibili.
+  const perSezione = SEZIONI.map(sez => ({
+    sez,
+    temi: (tps[sez] || []).map((t, idx) => ({
+      ...t, sezione_suggerita: sez,
+      consigliato: !!(rec && rec.sezione === sez && rec.idx === idx)
+    }))
+  }));
+  const tuttiTemi = perSezione.flatMap(x => x.temi);
+  const scarne = perSezione.filter(x => x.temi.length < MIN_OPZIONI);
+  const recTema = rec && rec.tema;
+  const nota = brief.note_editoriali || '';
 
   const html = agentEmail({
     agentName: 'Scout Agent',
@@ -286,15 +301,20 @@ async function inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start
     date: oggi,
     sections: [
       { type: 'narrative', label: 'Brief della settimana', text: brief.brief_narrativo || '', dark: true },
-      ...(brief.raccomandazione ? [
+      ...(rec ? [
         { type: 'dark_cards', label: 'Raccomandazione', cards: [
-          { label: (brief.raccomandazione.sezione||'') + ' - ' + (brief.raccomandazione.angolo_editoriale||''), value: brief.raccomandazione.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690' }
+          { label: '★ ' + (etichette[rec.sezione] || rec.sezione || '') + (rec.angolo_editoriale ? ' - ' + rec.angolo_editoriale : ''), value: rec.tema || '', valueColor: '#C8A97A', labelColor: '#9A9690' }
         ]},
-        { type: 'narrative', label: 'Perche questa settimana', text: brief.raccomandazione.perche || '' }
+        { type: 'narrative', label: 'Perche questa settimana', text: (rec.perche || '') + ' È già tra le opzioni qui sotto e nella pagina di selezione.' }
       ] : []),
-      ...(tuttiTemi.length > 0 ? [{ type: 'topics', label: 'Temi (' + tuttiTemi.length + ')', topics: tuttiTemi }] : []),
-      ...(brief.note_editoriali ? [{ type: 'alert', text: brief.note_editoriali, type: 'info' }] : []),
-      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Seleziona i temi</a></td></tr></table>' }
+      ...perSezione.filter(x => x.temi.length).map(x => ({
+        type: 'topics',
+        label: `${etichette[x.sez]} · ${x.temi.length} ${x.temi.length === 1 ? 'opzione' : 'opzioni'}`,
+        topics: x.temi
+      })),
+      ...(scarne.length ? [{ type: 'alert', level: 'warning', text: 'Poche opzioni: ' + scarne.map(x => `${etichette[x.sez]} (${x.temi.length})`).join(', ') + '. Nella pagina di selezione puoi scrivere un tuo argomento per queste sezioni.' }] : []),
+      ...(nota ? [{ type: 'alert', level: 'info', text: nota }] : []),
+      { type: 'narrative', label: null, dark: true, text: '<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="' + selectUrl + '" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Scegli i 3 temi (' + tuttiTemi.length + ' opzioni)</a></td></tr></table>' }
     ]
   });
 
@@ -303,7 +323,7 @@ async function inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start
   } else {
     const ok = await sendEmail({
       from: FROM, to: APPROVAL_EMAIL,
-      subject: `Scout VA · ${brief.raccomandazione?.tema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · approva →`,
+      subject: `Scout VA · ${recTema || tuttiTemi[0]?.titolo || 'Brief settimanale'} · scegli i 3 temi →`,
       html
     });
     if (ok) {
@@ -314,8 +334,8 @@ async function inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start
   }
 
   await logRun('scout', 'pending_approval',
-    `${tuttiTemi.length} temi. Drive: ${(driveFiles||[]).length} file. In attesa selezione temi.`,
-    { drive: driveFiles||[], raccomandazione: brief.raccomandazione },
+    `${tuttiTemi.length} temi (${perSezione.map(x => x.temi.length).join('/')}). Drive: ${(driveFiles||[]).length} file. In attesa selezione temi.`,
+    { drive: driveFiles||[], raccomandazione: brief.raccomandazione, opzioni: Object.fromEntries(perSezione.map(x => [x.sez, x.temi.length])), scartati: brief.scartati || [] },
     Date.now() - start
   );
 
@@ -339,36 +359,112 @@ async function notificaDaSalvato(oggi, start) {
   await inviaNotificaScout(rec, rec.drive_files || [], rec.selection_token, oggi, start);
 }
 
+// ── Punteggio editoriale ────────────────────────────────────────────────────
+// Criteri espliciti (NON dati di engagement: le metriche di apertura/click non
+// distinguono gli argomenti, quindi non possiamo dire "questo piace di più").
+// Ogni tema riceve 1-5 su quattro criteri dallo Scout; il totale (max 20) è
+// ridotto se la verifica fatti non lo conferma. Serve a ordinare le proposte e
+// resta salvato nel tema per un futuro confronto con click/aperture reali.
+const CRITERI = ['attualita', 'rilevanza', 'concretezza', 'novita'];
+const SEZIONI = ['bilancio', 'deal', 'metrica'];
+const TIPI_TEMA = ['protagonista', 'soldi_concreti', 'grande_deal', 'numero_sorprendente', 'altro'];
+const PENALITA_VERIFICA = { ok: 0, corretto: 0, unverified: 3, stale: 5 };
+
+function clamp15(n) {
+  const v = Math.round(Number(n));
+  return Number.isFinite(v) ? Math.min(5, Math.max(1, v)) : 3;
+}
+
+function calcolaPunteggio(t) {
+  const p = t.punteggi || {};
+  const voti = {};
+  CRITERI.forEach(c => { voti[c] = clamp15(p[c]); });
+  // Concretezza: senza almeno due dati chiave non può superare 2.
+  if ((t.dati_chiave || []).length < 2) voti.concretezza = Math.min(voti.concretezza, 2);
+  const base = CRITERI.reduce((sum, c) => sum + voti[c], 0);
+  const stato = t.verifica && t.verifica.stato;
+  const penalita = PENALITA_VERIFICA[stato] || 0;
+  t.punteggi = voti;
+  t.punteggio = Math.max(0, base - penalita);
+  if (!TIPI_TEMA.includes(t.tipo)) t.tipo = 'altro';
+  return t.punteggio;
+}
+
+function ordinaPerPunteggio(brief) {
+  SEZIONI.forEach(sez => {
+    const lista = (brief.temi_per_sezione[sez] || []);
+    lista.forEach(calcolaPunteggio);
+    // sort stabile: a parità resta l'ordine originale dello Scout
+    brief.temi_per_sezione[sez] = lista
+      .map((t, i) => ({ t, i }))
+      .sort((x, y) => (y.t.punteggio - x.t.punteggio) || (x.i - y.i))
+      .map(x => x.t);
+  });
+}
+
+// Raccomandazione deterministica: il tema col punteggio più alto (a parità,
+// preferisce il Deal, il cuore di VA). Usata se la sintesi con l'AI fallisce.
+function raccomandazioneFallback(brief) {
+  const ordine = ['deal', 'bilancio', 'metrica'];
+  let best = null;
+  ordine.forEach(sez => {
+    (brief.temi_per_sezione[sez] || []).forEach((t, idx) => {
+      if (!best || t.punteggio > best.t.punteggio) best = { sez, idx, t };
+    });
+  });
+  if (!best) return null;
+  return {
+    tema: best.t.titolo, sezione: best.sez, idx: best.idx,
+    perche: best.t.perche_interessa || best.t.sommario || '',
+    angolo_editoriale: best.t.angolo || '',
+    dati_ancora: (best.t.dati_chiave || []).slice(0, 3)
+  };
+}
+
+function parseJsonLoose(out) {
+  try {
+    const m = String(out || '').replace(/```json|```/g, '').match(/\{[\s\S]*\}/);
+    return m ? JSON.parse(m[0].replace(/,(\s*[}\]])/g, '$1')) : null;
+  } catch (_) { return null; }
+}
+
 // ── Fase 3.5: verifica fatti del brief ──────────────────────────────────────
-// Controlla con web search i fatti concreti di ogni tema (soprattutto
-// trasferimenti e cifre) e li marca: ok / stale (vero ma stagione sbagliata) /
-// wrong (attribuzione o dato errato) / unverified. I temi "wrong" vengono
-// RIMOSSI dal brief, così non arrivano a Paolo come fatti (era il caso di
-// "Openda alla Juventus", in realtà trasferimento della stagione precedente).
+// Controlla con web search i fatti concreti di ogni tema e li marca:
+//  ok         fatto principale confermato
+//  corretto   fatto principale VERO ma un dettaglio sbagliato: il tema resta,
+//             con titolo/sommario riscritti sui dati corretti
+//  stale      vero ma di una stagione precedente
+//  wrong      il fatto PRINCIPALE è falso o non è mai successo: il tema viene
+//             rimosso (era il caso di "Openda alla Juventus")
+//  unverified nessuna conferma sufficiente
+// Prima rimuoveva anche i temi con un solo dettaglio errato: così è sparito
+// il Qatar-Inter che poi la raccomandazione continuava a citare.
 async function verificaBrief(brief, oggi) {
-  const sezioni = ['bilancio', 'deal', 'metrica'];
   const claims = [];
-  sezioni.forEach(sez => {
+  SEZIONI.forEach(sez => {
     (brief.temi_per_sezione[sez] || []).forEach((t, i) => {
       claims.push({
         id: `${sez}:${i}`,
         titolo: t.titolo || '',
+        sommario: t.sommario || '',
         dati: (t.dati_chiave || []).join(' | '),
         fonte: t.fonte_principale || ''
       });
     });
   });
-  if (!claims.length) return { rimossi: 0 };
+  if (!claims.length) return { rimossi: 0, corretti: 0, titoliRimossi: [] };
 
   const sys = `Sei un fact-checker del business del calcio. Verifichi con web search se le affermazioni fattuali di un brief sono VERE e ATTUALI. Oggi è ${oggi}; la stagione in corso è la 2026/27 (la precedente, chiusa, è la 2025/26). Rispondi SOLO con JSON valido.`;
   const prompt = `Per ciascun tema verifica con web search i FATTI CONCRETI, in particolare:
 - Trasferimenti: il giocatore è DAVVERO passato al club indicato, in QUESTA finestra (estate 2026, stagione 26/27)? Attenzione a non confondere un trasferimento della stagione PRECEDENTE (25/26) spacciato come attuale.
 - Cifre/numeri: sono corretti e riferiti alla stagione giusta?
+- Trattative: se è solo una trattativa o un'indiscrezione, il testo deve dirlo; non va presentata come fatto compiuto.
 
 Assegna a ogni id uno "stato":
 - "ok": il fatto principale è confermato da fonte recente e riferito alla stagione/finestra giusta.
+- "corretto": il fatto PRINCIPALE è vero ma un dettaglio (una cifra, una data, un nome secondario, il grado di ufficialità) è sbagliato o impreciso. Riscrivi in "titolo_corretto" e "sommario_corretto" il testo con i dati giusti (sommario di 1-2 frasi, stessa lunghezza dell'originale).
 - "stale": il fatto è vero ma appartiene alla stagione PRECEDENTE (25/26) o comunque non è l'attualità di questi giorni.
-- "wrong": l'attribuzione o il dato principale è ERRATO (es. il giocatore è a un altro club, la cifra è materialmente sbagliata). Usa "wrong" SOLO quando la ricerca lo contraddice chiaramente.
+- "wrong": il fatto PRINCIPALE è FALSO o non è mai avvenuto (es. il giocatore è a un altro club, l'operazione non esiste). Usa "wrong" SOLO se la ricerca lo contraddice chiaramente E il tema non regge nemmeno corretto. Un dettaglio sbagliato NON basta: in quel caso usa "corretto".
 - "unverified": non trovi conferma sufficiente.
 Per "stale" e "wrong" scrivi in "correzione" il fatto corretto (breve, senza virgolette doppie). In "nota" una riga con la fonte.
 
@@ -376,42 +472,164 @@ TEMI:
 ${JSON.stringify(claims, null, 1)}
 
 JSON richiesto:
-{"verdicts": {"sezione:indice": {"stato":"ok|stale|wrong|unverified","nota":"...","correzione":"..."}}}`;
+{"verdicts": {"sezione:indice": {"stato":"ok|corretto|stale|wrong|unverified","nota":"...","correzione":"...","titolo_corretto":"solo se corretto","sommario_corretto":"solo se corretto"}}}`;
 
   let out = '';
   try {
     out = await callClaude([{ role: 'user', content: prompt }], sys, true, 'claude-sonnet-4-6');
   } catch (e) {
     console.warn('Verifica brief fallita (non bloccante):', e.message);
-    return { rimossi: 0 };
+    return { rimossi: 0, corretti: 0, titoliRimossi: [] };
   }
 
-  let verdicts = {};
-  try {
-    const m = out.replace(/```json|```/g, '').match(/\{[\s\S]*\}/);
-    const parsed = m ? JSON.parse(m[0].replace(/,(\s*[}\]])/g, '$1')) : {};
-    verdicts = parsed.verdicts || {};
-  } catch (e) {
-    console.warn('Verifica: JSON non parsabile, nessuna annotazione:', e.message);
-    return { rimossi: 0 };
+  const parsed = parseJsonLoose(out);
+  if (!parsed) {
+    console.warn('Verifica: JSON non parsabile, nessuna annotazione');
+    return { rimossi: 0, corretti: 0, titoliRimossi: [] };
   }
+  const verdicts = parsed.verdicts || {};
 
-  // Applica: annota ogni tema e rimuovi i "wrong". filter fornisce l'indice
-  // originale, quindi la chiave "sez:i" resta allineata durante il filtraggio.
-  let rimossi = 0;
-  sezioni.forEach(sez => {
+  // Applica: annota ogni tema, riscrive i "corretto", rimuove i "wrong".
+  // filter fornisce l'indice originale, quindi la chiave "sez:i" resta allineata.
+  let rimossi = 0, corretti = 0;
+  const titoliRimossi = [];
+  SEZIONI.forEach(sez => {
     brief.temi_per_sezione[sez] = (brief.temi_per_sezione[sez] || []).filter((t, i) => {
       const v = verdicts[`${sez}:${i}`];
       if (v && v.stato === 'wrong') {
         console.log(`Verifica: RIMOSSO ${sez}:${i} "${t.titolo}" — ${v.correzione || v.nota || 'errato'}`);
+        titoliRimossi.push(t.titolo);
         rimossi++;
         return false;
       }
-      if (v && v.stato) t.verifica = { stato: v.stato, nota: v.nota || '', correzione: v.correzione || '' };
+      if (v && v.stato) {
+        t.verifica = { stato: v.stato, nota: v.nota || '', correzione: v.correzione || '' };
+        if (v.stato === 'corretto' && (v.titolo_corretto || v.sommario_corretto)) {
+          t.titolo_originale = t.titolo;
+          t.sommario_originale = t.sommario;
+          if (v.titolo_corretto) t.titolo = v.titolo_corretto;
+          if (v.sommario_corretto) t.sommario = v.sommario_corretto;
+          corretti++;
+          console.log(`Verifica: CORRETTO ${sez}:${i} "${t.titolo}" — ${v.nota || ''}`);
+        } else if (v.stato === 'corretto') {
+          // corretto senza testo riscritto: lo segno solo da verificare
+          t.verifica.stato = 'unverified';
+        }
+      }
       return true;
     });
   });
-  return { rimossi };
+  return { rimossi, corretti, titoliRimossi };
+}
+
+// ── Sintesi post-verifica ───────────────────────────────────────────────────
+// Dopo verifica e ordinamento, narrativa e raccomandazione vengono RISCRITTE
+// solo sui temi sopravvissuti. La raccomandazione indica "sezione:indice" di
+// un tema realmente selezionabile, quindi non può più parlare di un tema che
+// la pagina di selezione non mostra.
+async function sintetizzaBrief(brief, oggi, titoliRimossi) {
+  const elenco = [];
+  SEZIONI.forEach(sez => (brief.temi_per_sezione[sez] || []).forEach((t, i) => {
+    elenco.push({
+      id: `${sez}:${i}`, titolo: t.titolo, sommario: t.sommario,
+      dati: (t.dati_chiave || []).slice(0, 3), punteggio: t.punteggio,
+      verifica: t.verifica ? t.verifica.stato : 'n/d'
+    });
+  }));
+  if (!elenco.length) return null;
+
+  const sys = 'Sei lo Scout senior di Valore Atteso, newsletter italiana sul business del calcio europeo. Scrivi in italiano semplice, senza trattini lunghi. Non aggiungere fatti che non sono nei temi forniti. Rispondi SOLO con JSON valido.';
+  const prompt = `Oggi è ${oggi}. Questi sono i temi che Paolo può scegliere questa settimana (già verificati). Scrivi il brief SOLO su questi.
+
+TEMI:
+${JSON.stringify(elenco, null, 1)}
+${titoliRimossi && titoliRimossi.length ? `\nTemi scartati perché risultati falsi (NON citarli): ${titoliRimossi.join(' | ')}\n` : ''}
+Regole:
+- "raccomandazione.id" DEVE essere uno degli id elencati: è il tema più forte per un lettore M&A/PE/finanza, tenendo conto di punteggio e verifica. Non raccomandare temi "unverified" o "stale" se ce ne sono di verificati.
+- "brief_narrativo": 3-4 frasi su cosa domina la settimana e il filo che lega i temi disponibili.
+- "perche": 2 frasi sul motivo per cui questo tema interessa ai lettori ORA.
+- "note_editoriali": cosa evitare o attenzione (es. tema ancora a livello di trattativa, sezione con poche opzioni).
+
+JSON richiesto:
+{"brief_narrativo":"...","raccomandazione":{"id":"sezione:indice","perche":"...","angolo_editoriale":"..."},"note_editoriali":"..."}`;
+
+  let out;
+  try {
+    out = await callClaude([{ role: 'user', content: prompt }], sys, false, 'claude-sonnet-4-6', 2000);
+  } catch (e) {
+    console.warn('Sintesi brief fallita (uso fallback):', e.message);
+    return null;
+  }
+  const j = parseJsonLoose(out);
+  const id = j && j.raccomandazione && String(j.raccomandazione.id || '');
+  const [sez, idxStr] = (id || '').split(':');
+  const idx = Number.parseInt(idxStr, 10);
+  const tema = SEZIONI.includes(sez) && Number.isInteger(idx) ? (brief.temi_per_sezione[sez] || [])[idx] : null;
+  if (!j || !tema) { console.warn('Sintesi non valida (id non selezionabile), uso fallback'); return null; }
+  return {
+    brief_narrativo: String(j.brief_narrativo || ''),
+    raccomandazione: {
+      tema: tema.titolo, sezione: sez, idx,
+      perche: String(j.raccomandazione.perche || ''),
+      angolo_editoriale: String(j.raccomandazione.angolo_editoriale || tema.angolo || ''),
+      dati_ancora: (tema.dati_chiave || []).slice(0, 3)
+    },
+    note_editoriali: String(j.note_editoriali || '')
+  };
+}
+
+// ── Rifornimento sezioni scarne ─────────────────────────────────────────────
+// Se dopo la verifica una sezione ha meno di 3 opzioni, UNA ricerca mirata
+// cerca solo i temi mancanti (poi verificati come gli altri). Un solo giro:
+// meglio avvisare Paolo che far salire il costo.
+const MIN_OPZIONI = 3;
+
+function sezioniScarne(brief) {
+  return SEZIONI.filter(s => (brief.temi_per_sezione[s] || []).length < MIN_OPZIONI);
+}
+
+async function rifornisciSezioni(brief, oggi, contesto) {
+  const scarne = sezioniScarne(brief);
+  if (!scarne.length) return 0;
+  const gia = SEZIONI.flatMap(s => (brief.temi_per_sezione[s] || []).map(t => t.titolo));
+  const descr = {
+    bilancio: 'BILANCIO: risultati finanziari, ricavi, perdite, aumenti di capitale, debito di un club NOMINATO, con la storia dietro ai numeri',
+    deal: 'DEAL: acquisizioni, cessioni di quote, fondi che entrano, cambi di proprietà, valutazioni, sponsor e diritti TV come operazioni (chi, quanto, perché)',
+    metrica: 'METRICA: UN numero sorprendente raccontato semplice (stipendi, biglietti, sponsor di maglia, ricavi per tifoso...), mai percentuali aggregate di lega o indici regolatori'
+  };
+  const richieste = scarne.map(s => `- ${descr[s]} (servono ${MIN_OPZIONI - (brief.temi_per_sezione[s] || []).length} temi in più)`).join('\n');
+  const sys = `Sei lo Scout senior di Valore Atteso, newsletter italiana sul business del calcio europeo. Cerchi notizie FRESCHE (ultimi 7 giorni) con web search. Ogni tema: un soggetto nominato, un evento datato, almeno 2 numeri concreti da fonte Tier 1 o 2 (bilanci e comunicati ufficiali, UEFA, leghe; Reuters, FT, Bloomberg, The Athletic, BBC). Mai Calcio e Finanza, Transfermarkt per le cifre, blog, aggregatori. Non presentare come fatto ciò che è solo trattativa. Evita gergo (PSR, SCR, wage ratio, EV/EBITDA). Rispondi SOLO con JSON valido.`;
+  const prompt = `Oggi è ${oggi}.${contesto || ''}
+
+Mancano opzioni in queste sezioni:
+${richieste}
+
+Temi GIÀ presenti o scartati (NON riproporli): ${gia.join(' | ') || 'nessuno'}
+
+Cerca con web search (max 5 query mirate) e rispondi con JSON:
+{"nuovi": {"sezione": [{"titolo":"...","sommario":"1-2 frasi: angolo e perché conta ora","dati_chiave":["numero con contesto","..."],"fonte_principale":"testata - titolo - data - url","angolo":"...","perche_interessa":"1 frase: perché al lettore importa","tipo":"protagonista|soldi_concreti|grande_deal|numero_sorprendente|altro","punteggi":{"attualita":1-5,"rilevanza":1-5,"concretezza":1-5,"novita":1-5}}]}}
+Usa come chiavi solo: ${scarne.join(', ')}. Se non trovi temi solidi, restituisci liste vuote: meglio nessuno che riempitivi.`;
+  let out;
+  try {
+    out = await callClaude([{ role: 'user', content: prompt }], sys, true, 'claude-sonnet-4-6', 8000);
+  } catch (e) {
+    console.warn('Rifornimento sezioni fallito (non bloccante):', e.message);
+    return 0;
+  }
+  const parsed = parseBriefJson(out);
+  const nuovi = parsed && parsed.nuovi;
+  if (!nuovi) { console.warn('Rifornimento: JSON non valido'); return 0; }
+
+  // Verifica solo i nuovi con lo stesso fact-check, poi li accoda.
+  const tmp = { temi_per_sezione: { bilancio: [], deal: [], metrica: [] } };
+  scarne.forEach(s => { tmp.temi_per_sezione[s] = Array.isArray(nuovi[s]) ? nuovi[s].slice(0, MIN_OPZIONI) : []; });
+  const v = await verificaBrief(tmp, oggi);
+  let aggiunti = 0;
+  scarne.forEach(s => {
+    tmp.temi_per_sezione[s].forEach(t => { t.rifornito = true; brief.temi_per_sezione[s].push(t); aggiunti++; });
+  });
+  console.log(`Rifornimento: ${aggiunti} temi aggiunti (${v.rimossi} scartati dalla verifica).`);
+  return aggiunti;
 }
 
 async function main() {
@@ -582,30 +800,34 @@ Per OGNI tema riporta: titolo editoriale incisivo, cosa è successo (con data), 
 
   // FASE 2: Conversione in JSON — chiamata separata senza web search
   const testoRicercaShort = testoRicerca.slice(0, 16000); // contesto ampio per non perdere temi
-  const jsonPrompt = `Converti questo brief Scout in JSON valido, SENZA perdere ricchezza: riporta più opzioni possibili (idealmente 4 per sezione) tra quelle presenti nel brief.
+  const jsonPrompt = `Converti questo brief Scout in JSON valido, SENZA perdere ricchezza: riporta più opzioni possibili (idealmente 5 per sezione, almeno 3 se il brief le contiene) tra quelle presenti nel brief.
 
 REGOLE JSON:
 - Italiano naturale con accenti e apostrofi: sono ammessi (in JSON l'apostrofo NON va escapato).
 - L'UNICA cosa vietata dentro una stringa è la virgoletta doppia " non escapata e gli a-capo: se servono, riscrivi la frase.
 - Il "sommario" deve essere ricco e specifico (1-2 frasi, ~200-280 caratteri): angolo di analisi + perché è rilevante ORA. Niente riassunti generici.
 - Ogni tema deve avere dati_chiave concreti (numeri con contesto) e fonte_principale con URL.
-- Non inventare: usa solo temi e dati presenti nel brief. Se una sezione ha meno di 4 temi validi nel brief, mettine meno (meglio 2 solidi che 4 riempitivi).
+- Non inventare: usa solo temi e dati presenti nel brief. Se una sezione ha meno di 5 temi validi nel brief, mettine meno (meglio 3 solidi che 5 riempitivi).
+- Per OGNI tema aggiungi: "perche_interessa" (1 frase: perché dovrebbe importare a un lettore italiano, in parole semplici), "tipo" e "punteggi".
+- "tipo": protagonista (storia di una persona/club/fondo nominato) | soldi_concreti (stipendi, sponsor, biglietti, incassi) | grande_deal (chi compra chi) | numero_sorprendente | altro.
+- "punteggi" da 1 a 5 su quattro criteri, da valutare con onestà (non dare 5 a tutto): attualita (5 = evento degli ultimi 2-3 giorni di cui si parla ora, 1 = più vecchio di una settimana); rilevanza (5 = un lettore italiano M&A/finanza/calcio lo sente suo: club e campionati italiani, big europei, nomi noti); concretezza (5 = almeno 2 numeri solidi e datati da fonte primaria, 1 = solo cifre vaghe); novita (5 = mai trattato nelle edizioni passate, 1 = già visto).
 
 BRIEF:
 ${testoRicercaShort}
 
-JSON richiesto (fino a 4 oggetti per sezione):
+JSON richiesto (fino a 5 oggetti per sezione):
 {
   "settimana": "${settimana}",
   "temi_per_sezione": {
-    "bilancio": [{"titolo":"titolo incisivo","sommario":"1-2 frasi ricche sull'angolo di analisi e perché conta ora","dati_chiave":["dato con contesto","dato2"],"fonte_principale":"testata - titolo - data - url","angolo":"es. redditività / player trading / indebitamento"},{"...":"..."}],
+    "bilancio": [{"titolo":"titolo incisivo","sommario":"1-2 frasi ricche sull'angolo di analisi e perché conta ora","dati_chiave":["dato con contesto","dato2"],"fonte_principale":"testata - titolo - data - url","angolo":"es. redditività / player trading / indebitamento","perche_interessa":"1 frase per il lettore","tipo":"protagonista","punteggi":{"attualita":4,"rilevanza":4,"concretezza":3,"novita":5}},{"...":"..."}],
     "deal": [{"...":"..."}],
     "metrica": [{"...":"..."}]
   },
   "brief_narrativo": "3-4 frasi: cosa ha dominato la settimana e il fil rouge",
   "raccomandazione": {"tema":"il tema più forte","sezione":"bilancio","perche":"2-3 frasi","angolo_editoriale":"l'angolo preciso"},
   "note_editoriali": "temi da evitare / contesto"
-}`;
+}
+La raccomandazione sarà ricalcolata dopo la verifica: scrivila comunque.`;
 
   // ── Fase 2b: Genera JSON ─────────────────────────────────────────────────
   const jsonSystemSimple = 'Sei un convertitore JSON. Rispondi SOLO con JSON valido. Nessun testo aggiuntivo.';
@@ -635,14 +857,40 @@ JSON richiesto (fino a 4 oggetti per sezione):
   if (!brief) brief = {};
   if (!brief.temi_per_sezione) brief.temi_per_sezione = { bilancio: [], deal: [], metrica: [] };
   ['bilancio','deal','metrica'].forEach(s => {
-    brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 4);
+    brief.temi_per_sezione[s] = (brief.temi_per_sezione[s] || []).slice(0, 5);
   });
   console.log(`Temi: bilancio=${brief.temi_per_sezione.bilancio.length}, deal=${brief.temi_per_sezione.deal.length}, metrica=${brief.temi_per_sezione.metrica.length}`);
 
-  // ── Fase 3.5: verifica fatti — rimuove attribuzioni errate, marca gli altri
+  // ── Fase 3.5: verifica fatti — corregge i dettagli, rimuove solo i temi falsi
   console.log('Fase 3.5: verifica fatti (web search)...');
   const verifica = await verificaBrief(brief, oggi);
-  console.log(`Verifica fatti completata: ${verifica.rimossi} tema/i rimosso/i perché errato/i.`);
+  console.log(`Verifica fatti completata: ${verifica.corretti} corretto/i, ${verifica.rimossi} rimosso/i perché falso/i.`);
+  const titoliRimossi = [...verifica.titoliRimossi];
+
+  // ── Fase 3.6: se una sezione ha meno di 3 opzioni, un solo giro di rifornimento
+  if (sezioniScarne(brief).length) {
+    console.log('Fase 3.6: sezioni con meno di', MIN_OPZIONI, 'opzioni:', sezioniScarne(brief).join(', '), '— ricerca mirata...');
+    await rifornisciSezioni(brief, oggi, stagionale + wikiContext);
+  }
+
+  // ── Fase 3.7: punteggio, ordinamento e sintesi riscritta sui temi rimasti
+  ordinaPerPunteggio(brief);
+  const sintesi = await sintetizzaBrief(brief, oggi, titoliRimossi);
+  if (sintesi) {
+    brief.brief_narrativo = sintesi.brief_narrativo;
+    brief.raccomandazione = sintesi.raccomandazione;
+    brief.note_editoriali = sintesi.note_editoriali;
+  } else {
+    brief.raccomandazione = raccomandazioneFallback(brief);
+    brief.brief_narrativo = brief.brief_narrativo || '';
+  }
+  const scarne = sezioniScarne(brief);
+  if (scarne.length) {
+    const avviso = `Sezioni con meno di ${MIN_OPZIONI} opzioni: ${scarne.map(s => `${s} (${brief.temi_per_sezione[s].length})`).join(', ')}. Puoi scrivere un tuo argomento nella pagina di selezione.`;
+    brief.note_editoriali = (brief.note_editoriali ? brief.note_editoriali + ' ' : '') + avviso;
+  }
+  brief.scartati = titoliRimossi;
+  console.log(`Temi finali: bilancio=${brief.temi_per_sezione.bilancio.length}, deal=${brief.temi_per_sezione.deal.length}, metrica=${brief.temi_per_sezione.metrica.length}. Raccomandato: ${brief.raccomandazione ? brief.raccomandazione.tema : 'nessuno'}`);
 
   // ── Fase 4: Salva pending con token approvazione ─────────────────────────
   const selectionToken = generateToken();
@@ -666,8 +914,15 @@ JSON richiesto (fino a 4 oggetti per sezione):
   await inviaNotificaScout(brief, driveFiles, selectionToken, oggi, start);
 }
 
-main().catch(async e => {
-  console.error('ERRORE Scout:', e.message);
-  await logRun('scout', 'error', e.message).catch(() => {});
-  process.exit(1);
-});
+module.exports = {
+  calcolaPunteggio, ordinaPerPunteggio, raccomandazioneFallback, sezioniScarne,
+  verificaBrief, sintetizzaBrief, rifornisciSezioni, inviaNotificaScout, parseBriefJson
+};
+
+if (require.main === module) {
+  main().catch(async e => {
+    console.error('ERRORE Scout:', e.message);
+    await logRun('scout', 'error', e.message).catch(() => {});
+    process.exit(1);
+  });
+}
