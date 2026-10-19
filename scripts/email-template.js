@@ -193,13 +193,18 @@ function sPostCard({ tipo, label, labelBg, labelFg, angolo, datoPrincipale, test
   </td></tr>`;
 }
 
+function escH(v) {
+  return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function sTopics({ label, topics }) {
   const topicsHTML = topics.map((t, i) => {
     const sezColors = { bilancio: ['#1B4332','#E4EDE7'], deal: ['#1B3A6B','#E4ECF7'], metrica: ['#6B1B1B','#F7E4E4'] };
     const [fg, bg] = sezColors[t.sezione] || ['#4A4845','#EDE9E0'];
-    const fontiHTML = (t.fonti||[]).map(f => {
+    const fonti = (t.fonti && t.fonti.length) ? t.fonti : (t.fonte_principale ? [t.fonte_principale] : []);
+    const fontiHTML = fonti.map(f => {
       const url = f.match(/https?:\/\/[^\s"]+/)?.[0];
-      const lbl = f.replace(/\s*—\s*https?:\/\/[^\s"]+/,'').trim();
+      const lbl = f.replace(/\s*[—-]\s*https?:\/\/[^\s"]+/,'').replace(/https?:\/\/[^\s"]+/,'').trim();
       return url ? `<a href="${url}" style="color:${fg};font-size:9px;text-decoration:underline;font-family:'Courier New',monospace">${lbl}</a>` : `<span style="font-size:9px;color:#9A9690;font-family:'Courier New',monospace">${lbl}</span>`;
     }).join(' · ');
     const verificaHTML = t.verifica_biblioteca && t.verifica_biblioteca !== 'N/A'
@@ -207,6 +212,7 @@ function sTopics({ label, topics }) {
     // Esito verifica fatti (web search): badge per tema.
     const statiVerifica = {
       ok:         { c: '#1B6B3A', bg: '#E4EDE7', icona: '✓', testo: 'Verificato' },
+      corretto:   { c: '#1B6B3A', bg: '#E4EDE7', icona: '✎', testo: 'Verificato, dettaglio corretto' },
       stale:      { c: '#8A6D1B', bg: '#F7EFD9', icona: '⚠', testo: 'Stagione da controllare' },
       unverified: { c: '#8A6D1B', bg: '#F7EFD9', icona: '⚠', testo: 'Da verificare' },
       wrong:      { c: '#8A1B1B', bg: '#F7E4E4', icona: '✗', testo: 'Risulta errato' },
@@ -219,15 +225,17 @@ function sTopics({ label, topics }) {
     return `<div style="margin-bottom:${i<topics.length-1?'12px':'0'};border-left:3px solid ${fg}">
       <div style="background:${fg};padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span style="font-family:'Courier New',monospace;font-size:8px;font-weight:700;color:#fff;background:rgba(255,255,255,0.15);padding:2px 7px">#${i+1}</span>
-        <span style="font-family:'Courier New',monospace;font-size:7px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.08em">${t.sezione_suggerita||t.sezione} · priorità ${t.priorita||'—'}/5</span>
+        ${t.consigliato ? `<span style="font-family:'Courier New',monospace;font-size:8px;font-weight:700;color:#1A1A1A;background:#C8A97A;padding:2px 7px">★ CONSIGLIATO</span>` : ''}
+        <span style="font-family:'Courier New',monospace;font-size:7px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.08em">${t.sezione_suggerita||t.sezione}${t.punteggio != null ? ` · punteggio ${t.punteggio}/20` : ` · priorità ${t.priorita||'—'}/5`}</span>
       </div>
       <div style="background:#fff;padding:12px 14px;border-bottom:1px solid #E0DBD3">
         <div style="font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:5px;line-height:1.3">${t.titolo}</div>
         <div style="font-family:Georgia,serif;font-size:12px;color:#4A4845;line-height:1.6;margin-bottom:8px">${t.sommario||t.notizia||''}</div>
-        <div style="background:${bg};padding:9px 12px;border-left:2px solid ${fg};margin-bottom:6px">
+        ${t.perche_interessa ? `<div style="font-family:Georgia,serif;font-size:12px;color:${fg};font-style:italic;line-height:1.5;margin-bottom:8px">Perché interessa: ${escH(t.perche_interessa)}</div>` : ''}
+        ${t.analisi_cf ? `<div style="background:${bg};padding:9px 12px;border-left:2px solid ${fg};margin-bottom:6px">
           <div style="font-family:'Courier New',monospace;font-size:7px;color:${fg};letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px">Lettura CF</div>
-          <div style="font-family:Georgia,serif;font-size:12px;color:#1A1A1A;line-height:1.5">${t.analisi_cf||''}</div>
-        </div>
+          <div style="font-family:Georgia,serif;font-size:12px;color:#1A1A1A;line-height:1.5">${t.analisi_cf}</div>
+        </div>` : ''}
         ${t.dati_chiave?.length ? `<div style="font-family:'Courier New',monospace;font-size:9px;color:#4A4845;margin-bottom:5px">${t.dati_chiave.join(' · ')}</div>` : ''}
         ${verificaHTML}
         ${verificaFattiHTML}
