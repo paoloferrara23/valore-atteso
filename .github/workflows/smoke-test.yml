@@ -1,0 +1,54 @@
+name: Smoke Test Sicurezza
+
+# Verifica dall'esterno, come un visitatore senza login, che il sito pubblico
+# non esponga Control Room, password o codice, e che le API admin rifiutino.
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Controlli
+        env:
+          SITE: https://www.valoreatteso.com
+        run: |
+          fail=0
+          check() { if [ "$2" = "ok" ]; then echo "OK   $1"; else echo "FAIL $1 ($2)"; fail=1; fi; }
+
+          home=$(curl -s "$SITE/")
+          echo "$home" | grep -qiE "CR_PWD|valopro|cr-overlay|Organigramma|AGENT_SCHEDULE|scripts/" && check "home senza Control Room" "trovato" || check "home senza Control Room" ok
+
+          adm=$(curl -s "$SITE/admin")
+          echo "$adm" | grep -q 'id="cr-app"' && check "/admin senza login non mostra l'interfaccia" "interfaccia esposta" || check "/admin senza login non mostra l'interfaccia" ok
+
+          for ep in send-newsletter send-test publisher-gate genera-edizione genera-opzioni ad send-utils subscribe-reminder admin-db; do
+            case $ep in
+              subscribe-reminder) url="$SITE/api/subscribe"; body='{"action":"reminder","confirm":"INVIA"}';;
+              admin-db) url="$SITE/api/admin-db/rest/v1/subscribers?select=email"; body='{}';;
+              *) url="$SITE/api/$ep"; body='{"edition_num":"001","confirm":"001","messages":[{"role":"user","content":"x"}]}';;
+            esac
+            code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -H 'x-cr-token: valopro2025' -d "$body" "$url")
+            if [ "$code" = 401 ] || [ "$code" = 503 ]; then check "API $ep rifiuta senza sessione ($code)" ok; else check "API $ep rifiuta senza sessione" "HTTP $code"; fi
+          done
+
+          for f in lib/preflight.js scripts/memory.js CLAUDE.md api/_lib/admin-auth.js api/_admin/control-room.html sql docs; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$SITE/$f")
+            [ "$code" = 404 ] && check "/$f non servito" ok || check "/$f non servito" "HTTP $code"
+          done
+
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d '{"email":"non-una-email"}' "$SITE/api/subscribe")
+          [ "$code" = 400 ] && check "form iscrizione attivo (email non valida = 400)" ok || check "form iscrizione attivo" "HTTP $code"
+
+          # La chiave pubblica di Supabase è nel sorgente della home: con quella gli iscritti devono risultare invisibili.
+          key=$(echo "$home" | grep -o "eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*" | head -1)
+          supa=$(echo "$home" | grep -o "https://[a-z0-9]*\.supabase\.co" | head -1)
+          rows=$(curl -s "$supa/rest/v1/subscribers?select=email&limit=1" -H "apikey: $key" -H "Authorization: Bearer $key")
+          [ "$rows" = "[]" ] && check "iscritti non leggibili con la chiave pubblica" ok || check "iscritti non leggibili con la chiave pubblica" "risposta: ${rows:0:60}"
+          drafts=$(curl -s "$supa/rest/v1/editions?select=num&published=eq.false" -H "apikey: $key" -H "Authorization: Bearer $key")
+          [ "$drafts" = "[]" ] && check "bozze non leggibili con la chiave pubblica" ok || check "bozze non leggibili con la chiave pubblica" "risposta: ${drafts:0:60}"
+
+          for h in content-security-policy x-frame-options referrer-policy; do
+            curl -sI "$SITE/" | grep -qi "^$h:" && check "header $h" ok || check "header $h" "mancante"
+          done
+          exit $fail
