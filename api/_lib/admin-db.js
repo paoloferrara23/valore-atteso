@@ -27,9 +27,11 @@ module.exports = async function adminDb(req, res) {
   const key = serviceKey();
   if (!key) return res.status(500).json({ ok: false, error: 'Chiave di servizio Supabase mancante' });
 
+  // action e p vengono dalla rewrite di vercel.json; path lo aggiunge Vercel
+  // (parametro :path* della rewrite): Supabase li leggerebbe come filtri (400).
   const qs = new URLSearchParams();
   Object.entries(req.query || {}).forEach(([k, v]) => {
-    if (k === 'action' || k === 'p') return;
+    if (k === 'action' || k === 'p' || k === 'path') return;
     (Array.isArray(v) ? v : [v]).forEach(x => qs.append(k, x));
   });
 
@@ -43,6 +45,7 @@ module.exports = async function adminDb(req, res) {
 
   const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/${m[1]}${qs.toString() ? '?' + qs : ''}`, init);
   const text = await r.text();
+  if (!r.ok) console.error('[admin-db]', req.method, m[1], r.status, text.slice(0, 200));
   res.status(r.status);
   res.setHeader('Content-Type', r.headers.get('content-type') || 'application/json');
   return res.send(text);
