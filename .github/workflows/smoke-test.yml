@@ -21,6 +21,7 @@ jobs:
 
           adm=$(curl -s "$SITE/admin")
           echo "$adm" | grep -q 'id="cr-app"' && check "/admin senza login non mostra l'interfaccia" "interfaccia esposta" || check "/admin senza login non mostra l'interfaccia" ok
+          echo "$adm" | grep -q '/api/admin-login' && check "/admin mostra il form di login" ok || check "/admin mostra il form di login" "login assente (CR_ADMIN_SECRET non configurato?)"
 
           for ep in send-newsletter send-test publisher-gate genera-edizione genera-opzioni ad send-utils subscribe-reminder admin-db; do
             case $ep in
@@ -29,7 +30,7 @@ jobs:
               *) url="$SITE/api/$ep"; body='{"edition_num":"001","confirm":"001","messages":[{"role":"user","content":"x"}]}';;
             esac
             code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -H 'x-cr-token: valopro2025' -d "$body" "$url")
-            if [ "$code" = 401 ] || [ "$code" = 503 ]; then check "API $ep rifiuta senza sessione ($code)" ok; else check "API $ep rifiuta senza sessione" "HTTP $code"; fi
+            if [ "$code" = 401 ]; then check "API $ep rifiuta senza sessione ($code)" ok; else check "API $ep rifiuta senza sessione" "HTTP $code"; fi
           done
 
           for f in lib/preflight.js scripts/memory.js CLAUDE.md api/_lib/admin-auth.js api/_admin/control-room.html sql docs; do
@@ -47,6 +48,9 @@ jobs:
           [ "$rows" = "[]" ] && check "iscritti non leggibili con la chiave pubblica" ok || check "iscritti non leggibili con la chiave pubblica" "risposta: ${rows:0:60}"
           drafts=$(curl -s "$supa/rest/v1/editions?select=num&published=eq.false" -H "apikey: $key" -H "Authorization: Bearer $key")
           [ "$drafts" = "[]" ] && check "bozze non leggibili con la chiave pubblica" ok || check "bozze non leggibili con la chiave pubblica" "risposta: ${drafts:0:60}"
+
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -H "Origin: $SITE" -d '{"password":"password-sbagliata-di-prova"}' "$SITE/api/admin-login")
+          [ "$code" = 401 ] && check "login con password sbagliata rifiutato (401)" ok || check "login con password sbagliata rifiutato" "HTTP $code"
 
           for h in content-security-policy x-frame-options referrer-policy; do
             curl -sI "$SITE/" | grep -qi "^$h:" && check "header $h" ok || check "header $h" "mancante"
