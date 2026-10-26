@@ -27,20 +27,6 @@ module.exports = async function handler(req, res) {
       return;
     }
   }
-  if (req.query?.action === 'bilanci') {
-    try {
-      return await require('../lib/bilanci-approval')(req, res, createClient);
-    } catch (e) {
-      console.error('[run-agent:bilanci]', e);
-      if (!res.headersSent) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-cr-token');
-        return res.status(500).json({ error: 'bilanci: ' + (e?.message || String(e)) });
-      }
-      return;
-    }
-  }
-
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
