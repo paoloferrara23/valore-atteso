@@ -33,7 +33,7 @@ jobs:
           done
 
           for f in lib/preflight.js scripts/memory.js CLAUDE.md api/_lib/admin-auth.js api/_admin/control-room.html sql docs; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "$SITE/$f")
+            code=$(curl -sL -o /dev/null -w "%{http_code}" "$SITE/$f")
             [ "$code" = 404 ] && check "/$f non servito" ok || check "/$f non servito" "HTTP $code"
           done
 
