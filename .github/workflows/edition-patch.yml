@@ -1,0 +1,24 @@
+name: Edition Patch
+
+# Correzioni redazionali su una bozza non ancora inviata (vedi scripts/patch-edition.js).
+on:
+  workflow_dispatch:
+    inputs:
+      patch:
+        description: 'Patch JSON: {"num":"026","fields":{...},"sections":[{"index":0,"field":"verdict","value":"..."}],"reset_factcheck":true}'
+        required: true
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Applica patch
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          PATCH_JSON: ${{ github.event.inputs.patch }}
+        run: node scripts/patch-edition.js
