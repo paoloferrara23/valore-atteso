@@ -58,7 +58,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Anthropic API** via env var. Opus per Writer/Editor.
 - Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono. Palette: crema `#F4EFE6`, dark, oro.
 
-**Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` (pubblica, solo letture pubbliche), `SUPABASE_SECRET_KEY` / `SUPABASE_SERVICE_ROLE_KEY` / `SUPABASE_SERVICE_KEY` (servizio, usata dal server), `RESEND_KEY`, `BREVO_KEY`, `APPROVAL_EMAIL`, `CR_ADMIN_SECRET` (password Control Room, 24+ caratteri), `AGENT_API_SECRET` (agenti GitHub → API, anche come secret GitHub), `GH_TOKEN`/`GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
+**Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` (pubblica, solo letture pubbliche), `SUPABASE_SECRET_KEY` / `SUPABASE_SERVICE_ROLE_KEY` / `SUPABASE_SERVICE_KEY` (servizio, usata dal server), `RESEND_KEY`, `BREVO_KEY`, `APPROVAL_EMAIL`, `CR_ADMIN_SECRET` (password Control Room, minimo 5 caratteri), `AGENT_API_SECRET` (agenti GitHub → API, anche come secret GitHub), `GH_TOKEN`/`GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
 
 > **Credenziali:** mai scritte in chiaro in file, chat o documenti. Vedi sezione Sicurezza.
 
@@ -69,7 +69,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 ## Sicurezza — architettura di accesso (ottobre 2026)
 
 - **Control Room su `/admin`**, non più nella home. Il file `api/_admin/control-room.html` non è servito come statico: lo restituisce `api/run-agent?action=adminPage` solo con sessione valida, altrimenti mostra il login.
-- **Login lato server** (`api/_lib/admin-auth.js`): password solo in `CR_ADMIN_SECRET`, confronto a tempo costante, max 5 errori per IP in 15 minuti (`rate_limits`), cookie `va_admin` httpOnly/Secure/SameSite=Strict di 4 ore firmato con HMAC derivato dalla password (cambiarla invalida tutte le sessioni). Login, logout e tentativi bloccati finiscono in `agent_runs` (`admin-auth`). Senza `CR_ADMIN_SECRET` l'accesso resta chiuso.
+- **Login lato server** (`api/_lib/admin-auth.js`): password solo in `CR_ADMIN_SECRET`, confronto a tempo costante, max 5 errori per IP e 20 errori totali in 15 minuti (`rate_limits`), cookie `va_admin` httpOnly/Secure/SameSite=Strict di 4 ore firmato con HMAC derivato dalla password (cambiarla invalida tutte le sessioni). Login, logout e tentativi bloccati finiscono in `agent_runs` (`admin-auth`). Senza `CR_ADMIN_SECRET` l'accesso resta chiuso.
 - **Tutte le API admin** verificano il cookie (`requireAdmin`), mai header con password. Gli agenti GitHub usano `x-agent-key` = `AGENT_API_SECRET` (`requireAdminOrAgent`, solo `genera-edizione`/`genera-opzioni`).
 - **Dati della Control Room** via proxy `/api/admin-db/rest/v1/<tabella>` (chiave di servizio, tabelle in whitelist). Il browser non usa più la chiave pubblica per le scritture.
 - **Invii massivi** (newsletter, comunicazioni, reinvii, promemoria) richiedono conferma esplicita (numero edizione o `INVIA`) e vengono registrati in `agent_runs`.
