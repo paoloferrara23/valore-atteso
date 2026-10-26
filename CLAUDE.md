@@ -55,7 +55,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Vercel** (frontend + API), piano Hobby. Repo: `paoloferrara23/valore-atteso`.
 - **Supabase**, project ID: `xxnmkiwnjpppfzrftvuv`. RLS attiva su tutte le tabelle.
 - **Resend**, sender: info@valoreatteso.com.
-- **Anthropic API** via env var. Opus per Writer/Editor, Sonnet per Adapter.
+- **Anthropic API** via env var. Opus per Writer/Editor.
 - Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono. Palette: crema `#F4EFE6`, dark, oro.
 
 **Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `RESEND_KEY`, `APPROVAL_EMAIL`, `CR_PASSWORD`, `GH_TOKEN`, `GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
@@ -83,7 +83,7 @@ Sequenza: verifica `CR_PASSWORD` su Vercel → segreto forte 32+ char → rimuov
 
 1. **Base per index.html:** scarica SEMPRE la versione live prima di modificare (`https://raw.githubusercontent.com/paoloferrara23/valore-atteso/main/index.html`). Mai da locale o da chat precedente.
 2. **Verifica prima di consegnare index.html:** `node --check` sul JS estratto + verifica `</body>` presente. File troncato = deploy rotto.
-3. **Limite Vercel Hobby: max 12 file in `api/`.** Attualmente al limite. Nuove capacità come `?action=` in router esistenti, mai file nuovi.
+3. **Limite Vercel Hobby: max 12 file in `api/`.** Nuove capacità come `?action=` in router esistenti, mai file nuovi.
 4. **GitHub:** drag-and-drop per file grandi, mai copia-incolla.
 5. **Modifiche dirette:** genera il file completo pronto all'uso, non chiedere a Paolo di editare a mano.
 6. **Non ripetere soluzioni fallite:** se non funziona al secondo tentativo, cambia approccio con analisi diretta del problema.
@@ -105,7 +105,7 @@ Sequenza: verifica `CR_PASSWORD` su Vercel → segreto forte 32+ char → rimuov
 | Lunedì | Paolo | Control Room → seleziona sezioni → genera bozza → revisiona → approva |
 | Martedì | Paolo | Dashboard → numero edizione → invia |
 
-Pipeline: Opus Writer → Opus Editor (intercetta errori/dati inventati) → Sonnet Adapter (social). `editorial_wiki` si aggiorna dopo ogni invio.
+Pipeline: Opus Writer → Opus Editor (intercetta errori/dati inventati). `editorial_wiki` si aggiorna dopo ogni invio. I contenuti social non sono più generati qui: li gestisce Paolo con un bot Grok esterno (Content Agent rimosso).
 
 **Barriera pre-invio (`lib/preflight.js`).** Controlli deterministici condivisi tra `publisher-gate` (anteprima Control Room), `send-newsletter` (blocco reale) e `send-test` (informativo). Un *blocker* impedisce l'invio massivo: segnaposto non risolti (`[da verificare]`, TODO), trattino lungo `—`, sezione senza corpo/KPI/fonti, titolo mancante. Sono *warning* (non bloccano): KPI il cui numero non compare nel corpo, sezione con una sola fonte (proxy anti-plagio), URL nella riga fonti, fonte sospetta, verdetto assente, corpo troppo lungo. Override d'emergenza: `force:true` nel body di `send-newsletter`. È la "barriera 2" del percorso verso una redazione più autonoma (barriera 1 = fonti verificate a monte; barriera 3 = agente fact-check).
 
@@ -113,9 +113,9 @@ Pipeline: Opus Writer → Opus Editor (intercetta errori/dati inventati) → Son
 
 ## Architettura agenti
 
-**Nota:** lo stato reale (attivo/quanti run) va letto da `agent_runs` (query nel blocco Dati live). Diversi agenti storicamente elencati come "da costruire" (Growth, LinkedIn Content, Sponsor-outreach, Deliverability) risultano **già attivi**. Non fidarti di questa sezione per lo stato: interroga il DB.
+**Nota:** lo stato reale (attivo/quanti run) va letto da `agent_runs` (query nel blocco Dati live). Diversi agenti storicamente elencati come "da costruire" (Growth, Sponsor-outreach, Deliverability) risultano **già attivi**. Non fidarti di questa sezione per lo stato: interroga il DB.
 
-Ruoli previsti: Scout, SEO, Editoriale, Growth, Content/LinkedIn, Sponsor-outreach, Deliverability, Security, Incident-response, Cost-guardian.
+Ruoli previsti: Scout, SEO, Editoriale, Growth, Sponsor-outreach, Deliverability, Security, Incident-response, Cost-guardian. Social: fuori dal sistema (bot Grok gestito da Paolo).
 
 **Welcome Sequence: esclusa** (Paolo non la vuole — il benvenuto rimanda all'archivio).
 
