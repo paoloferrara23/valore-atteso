@@ -1424,21 +1424,26 @@ async function crApprovaBozzaConData(id,num){
   var origTxt=btn?btn.textContent:'✓ Approva';
   if(btn){btn.disabled=true;btn.textContent='Approvazione...';}
   st.className='cr-status';st.style.display='block';
-  st.innerHTML='<span style="color:#8E6B33">⏳ Generazione sottotitolo...</span>';
+  st.innerHTML='<span style="color:#8E6B33">⏳ Preparazione...</span>';
   var dateEl=document.getElementById('date2-'+id);
   try{
     var ed=await crFetchEdition(id);
     var title=(document.getElementById('bt-'+id)||{innerText:ed.title}).innerText.trim();
     var date=dateEl?dateEl.value:ed.date;
     var sections=crLeggiSezioniDom(id,ed.sections||[]);
-    var contenuto=sections.map(function(s){return s.label+': '+s.title+'. '+s.body.slice(0,200);}).join(' ');
-    var subResp=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        system:'Sei il redattore di Valore Atteso. Scrivi UN sottotitolo di max 20 parole che riassume questa edizione della newsletter. Solo il testo, niente altro.',
-        messages:[{role:'user',content:'Edizione: '+title+'. Contenuto: '+contenuto}]
-      })});
-    var subData=await subResp.json();
-    var subtitle=(subData.text||'').trim().replace(/^["']|["']$/g,'');
+    // Se la bozza ha già un sottotitolo (verificato in redazione) si tiene quello;
+    // l'AI lo scrive solo quando manca.
+    var subtitle=(ed.subtitle||'').trim();
+    if(!subtitle){
+      var contenuto=sections.map(function(s){return s.label+': '+s.title+'. '+s.body.slice(0,200);}).join(' ');
+      var subResp=await fetch('/api/ad',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system:'Sei il redattore di Valore Atteso. Scrivi UN sottotitolo di max 20 parole che riassume questa edizione della newsletter. Solo il testo, niente altro.',
+          messages:[{role:'user',content:'Edizione: '+title+'. Contenuto: '+contenuto}]
+        })});
+      var subData=await subResp.json();
+      subtitle=(subData.text||'').trim().replace(/^["']|["']$/g,'');
+    }
     st.innerHTML='<span style="color:#8E6B33">⏳ Pubblicazione in corso...</span>';
     var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
