@@ -20,6 +20,18 @@
       "destination": "/api/run-agent?action=adminPage"
     },
     {
+      "source": "/admin/",
+      "destination": "/api/run-agent?action=adminPage"
+    },
+    {
+      "source": "/Admin",
+      "destination": "/api/run-agent?action=adminPage"
+    },
+    {
+      "source": "/Admin/",
+      "destination": "/api/run-agent?action=adminPage"
+    },
+    {
       "source": "/api/admin-login",
       "destination": "/api/run-agent?action=adminLogin"
     },
