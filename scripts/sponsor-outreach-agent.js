@@ -10,7 +10,7 @@
 // - Ogni informazione deve avere URL della fonte.
 
 const { logRun, supaFetch } = require('./memory');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 const gmail = require('./gmail');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY || process.env.ANTHROPIC_API_KEY;
@@ -20,7 +20,7 @@ const DRAFT_LIMIT = parseInt(process.env.SPONSOR_OUTREACH_DRAFT_LIMIT || '5', 10
 const SIGNATURE = process.env.SPONSOR_OUTREACH_SIGNATURE ||
   'Paolo Ferrara\nFondatore, Valore Atteso\nvaloreatteso.com · info@valoreatteso.com';
 const RESEND_KEY = process.env.RESEND_KEY;
-const { sendEmail } = require('../lib/mailer');
+const { sendEmail } = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const TRIGGER = process.env.TRIGGER_TYPE === 'manual' ? 'manual' : 'scheduled';
 

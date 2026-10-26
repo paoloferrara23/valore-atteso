@@ -87,9 +87,6 @@
   </div>
 </main>
 <script>
-const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
-const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-const HDR={apikey:SKEY,'Authorization':'Bearer '+SKEY};
 const SEZIONI=[
   {key:'bilancio',label:'Il Bilancio',color:'#C8A97A'},
   {key:'deal',label:'Il Deal',color:'#C8A97A'},
@@ -207,35 +204,15 @@ async function submitSelection(){
 
   try{
     const token=new URLSearchParams(location.search).get('token');
-    const briefId=pending.brief_id||('legacy-'+Date.now());
-    const now=new Date().toISOString();
-
-    // Costruisci oggetto selezione
-    const temi={};
+    const selections={};
     SEZIONI.forEach(function(sez){
-      const s=sel[sez.key];
-      if(s.type==='custom'){
-        temi[sez.key]={custom:s.text,titolo:s.text,sommario:'Tema indicato direttamente dall editore.'};
-      }else{
-        const idx=s.idx;
-        const t=((pending.temi_per_sezione||{})[sez.key]||[])[idx]||{};
-        temi[sez.key]=t;
-      }
+      const x=sel[sez.key];
+      selections[sez.key]=x.type==='custom'?{type:'custom',text:x.text}:{type:'scout',idx:x.idx};
     });
-    const rc=pending.raccomandazione||null;
-    const consigliatoSeguito=rc?(sel[rc.sezione]&&sel[rc.sezione].type==='scout'&&sel[rc.sezione].idx===rc.idx):null;
-    const selection={brief_id:briefId,stato:'approved',bilancio:sel.bilancio.type==='scout'?sel.bilancio.idx:null,deal:sel.deal.type==='scout'?sel.deal.idx:null,metrica:sel.metrica.type==='scout'?sel.metrica.idx:null,temi:temi,consigliato_seguito:consigliatoSeguito,selezionato_at:now};
-    const approvedBrief={...pending,brief_id:briefId,stato:'approvato',selezione:selection,approvato_at:now};
-    delete approvedBrief.selection_token;
-
-    // Salva direttamente su Supabase dal browser
-    const upsertHdr={'Content-Type':'application/json','apikey':SKEY,'Authorization':'Bearer '+SKEY,'Prefer':'resolution=merge-duplicates,return=minimal'};
-    const [r1,r2,r3]=await Promise.all([
-      fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{method:'POST',headers:upsertHdr,body:JSON.stringify({key:'scout_selezione',value:selection,written_by:'scout',updated_at:now})}),
-      fetch(SURL+'/rest/v1/agent_memory?on_conflict=key',{method:'POST',headers:upsertHdr,body:JSON.stringify({key:'scout_brief',value:approvedBrief,written_by:'scout',updated_at:now})}),
-      fetch(SURL+'/rest/v1/agent_runs',{method:'POST',headers:{...upsertHdr,'Prefer':'return=minimal'},body:JSON.stringify({agent:'scout',status:'success',summary:'Temi Scout selezionati.',data:{brief_id:briefId,selezione:selection}})})
-    ]);
-    if(!r1.ok||!r2.ok)throw new Error('Errore salvataggio Supabase ('+r1.status+'/'+r2.status+')');
+    // Il salvataggio passa dal server, che verifica il token dell'email.
+    const r=await fetch('/api/scout-select',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token,selections:selections})});
+    const d=await r.json().catch(function(){return {};});
+    if(!r.ok||!d.ok)throw new Error(d.error||('Errore salvataggio ('+r.status+')'));
     st.className='status ok';
     st.textContent='Selezione salvata. Redazione usera esclusivamente questi temi.';
     btn.textContent='Salvato';
@@ -272,14 +249,12 @@ async function init(){
   const token=new URLSearchParams(location.search).get('token');
   if(!token){showError('Link non valido — token mancante.');return;}
   try{
-    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.scout_pending&select=value',{headers:HDR});
-    if(!r.ok)throw new Error('Errore caricamento dati Scout.');
-    const data=await r.json();
-    if(!data.length||!data[0].value){showError('Nessun brief Scout disponibile. Riprova dopo che lo Scout ha girato sabato.');return;}
-    pending=data[0].value;
-    if(pending.selection_token&&pending.selection_token!==token){
-      showError('Link scaduto o non valido. Usa il link dell\'ultima email Scout.');return;
-    }
+    const r=await fetch('/api/scout-select?format=json&token='+encodeURIComponent(token));
+    if(r.status===403){showError('Link scaduto o non valido. Usa il link dell\'ultima email Scout.');return;}
+    if(r.status===404){showError('Nessun brief Scout disponibile. Riprova dopo che lo Scout ha girato sabato.');return;}
+    const data=await r.json().catch(function(){return {};});
+    if(!r.ok||!data.ok||!data.pending)throw new Error('Errore caricamento dati Scout.');
+    pending=data.pending;
     document.getElementById('page-date').textContent='Brief settimana del '+(pending.settimana||new Date().toLocaleDateString('it-IT'));
     if(pending.brief_narrativo){
       document.getElementById('brief-text').textContent=pending.brief_narrativo;

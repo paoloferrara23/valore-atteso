@@ -22,5 +22,6 @@ jobs:
           BREVO_KEY: ${{ secrets.BREVO_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
         run: node scripts/deliverability-agent.js

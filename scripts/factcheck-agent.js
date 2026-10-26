@@ -8,11 +8,11 @@
 // Uso locale/manuale:  EDITION_NUM=016 node scripts/factcheck-agent.js
 
 const { supaFetch, logRun } = require('./memory');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
-const { sendEmail }  = require('../lib/mailer');
+const { sendEmail }  = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const MODEL          = 'claude-opus-4-8';
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';

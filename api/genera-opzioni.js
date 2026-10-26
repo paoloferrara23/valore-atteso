@@ -1,8 +1,9 @@
 // api/genera-opzioni.js — Genera 3 opzioni per sezione (auto da Scout o tematiche manuali)
 const { createClient } = require('@supabase/supabase-js');
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const { requireAdminOrAgent, serviceKey } = require('./_lib/admin-auth');
+const supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('./_lib/ai-usage');
 
 async function callClaude(messages, system, maxTokens = 4000) {
   const model = 'claude-sonnet-4-6';
@@ -24,14 +25,10 @@ async function callClaude(messages, system, maxTokens = 4000) {
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  if (req.headers['x-cr-token'] !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  if (!requireAdminOrAgent(req, res)) return;
 
   try {
     const { hint, editionNum, oggi, tematiche } = req.body;

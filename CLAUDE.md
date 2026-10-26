@@ -58,24 +58,25 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Anthropic API** via env var. Opus per Writer/Editor.
 - Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono. Palette: crema `#F4EFE6`, dark, oro.
 
-**Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `RESEND_KEY`, `APPROVAL_EMAIL`, `CR_PASSWORD`, `GH_TOKEN`, `GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
+**Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` (pubblica, solo letture pubbliche), `SUPABASE_SECRET_KEY` / `SUPABASE_SERVICE_ROLE_KEY` / `SUPABASE_SERVICE_KEY` (servizio, usata dal server), `RESEND_KEY`, `BREVO_KEY`, `APPROVAL_EMAIL`, `CR_ADMIN_SECRET` (password Control Room, 24+ caratteri), `AGENT_API_SECRET` (agenti GitHub → API, anche come secret GitHub), `GH_TOKEN`/`GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
 
-> **Credenziali:** mai scritte in chiaro in file, chat o documenti. La Control Room è protetta da token `x-cr-token` validato server-side contro `CR_PASSWORD`. Vedi sezione Sicurezza.
+> **Credenziali:** mai scritte in chiaro in file, chat o documenti. Vedi sezione Sicurezza.
 
 **Blocklist email (`blocked_emails`).** Per bloccare un indirizzo: inserirlo in `blocked_emails` con `email_normalized = normalize_email('...')` (il confronto ignora maiuscole, `+tag` e, per Gmail, i punti e `googlemail.com`) e rimuovere la sua riga da `subscribers` (altrimenti, non confermata, riceverebbe i reminder). Il trigger `trg_reject_blocked_emails` rifiuta ogni insert/update di un indirizzo bloccato con errore `blocked_email`; `api/subscribe.js` risponde `ok` senza inviare nulla. Per sbloccare: eliminare la riga da `blocked_emails`. Gli strumenti SQL/migrazioni di Claude non eseguono `DELETE`/`DROP` (vanno in timeout in attesa di conferma): quelle istruzioni si lanciano da Supabase → SQL Editor.
 
 ---
 
-## ⚠️ Sicurezza — da chiudere prima di NaS / pagamenti / sponsor esterni
+## Sicurezza — architettura di accesso (ottobre 2026)
 
-Stato verificato sul codice:
-1. **Fallback in chiaro** `process.env.CR_PASSWORD || '<password>'` in 7 file `api/` + lib sponsor → rimuovere, far fallire (500) se env var assente.
-2. **`send-test.js`** senza validazione token → correggere.
-3. **Password in `index.html`** (`CR_PWD`) servita client-side → rimuovere; password solo in sessione utente.
-4. **CORS `*`** su tutti gli `/api/*` → valutare restrizione.
-5. **Git history** contiene la vecchia password → dopo rotazione è innocua; per pulizia totale `git filter-repo`.
-
-Sequenza: verifica `CR_PASSWORD` su Vercel → segreto forte 32+ char → rimuovi fallback → rimuovi `CR_PWD` da index.html → gitleaks. **Prerequisito assoluto prima di vendere il sistema o gestire pagamenti.**
+- **Control Room su `/admin`**, non più nella home. Il file `api/_admin/control-room.html` non è servito come statico: lo restituisce `api/run-agent?action=adminPage` solo con sessione valida, altrimenti mostra il login.
+- **Login lato server** (`api/_lib/admin-auth.js`): password solo in `CR_ADMIN_SECRET`, confronto a tempo costante, max 5 errori per IP in 15 minuti (`rate_limits`), cookie `va_admin` httpOnly/Secure/SameSite=Strict di 4 ore firmato con HMAC derivato dalla password (cambiarla invalida tutte le sessioni). Login, logout e tentativi bloccati finiscono in `agent_runs` (`admin-auth`). Senza `CR_ADMIN_SECRET` l'accesso resta chiuso.
+- **Tutte le API admin** verificano il cookie (`requireAdmin`), mai header con password. Gli agenti GitHub usano `x-agent-key` = `AGENT_API_SECRET` (`requireAdminOrAgent`, solo `genera-edizione`/`genera-opzioni`).
+- **Dati della Control Room** via proxy `/api/admin-db/rest/v1/<tabella>` (chiave di servizio, tabelle in whitelist). Il browser non usa più la chiave pubblica per le scritture.
+- **Invii massivi** (newsletter, comunicazioni, reinvii, promemoria) richiedono conferma esplicita (numero edizione o `INVIA`) e vengono registrati in `agent_runs`.
+- **Codice non pubblico:** il codice condiviso sta in `api/_lib/` (non servito); `scripts/`, `docs/`, `sql/`, `.github/`, `*.md` sono esclusi dal deploy con `.vercelignore`.
+- **Header** CSP, X-Frame-Options, Referrer-Policy, nosniff in `vercel.json`; niente più CORS `*`.
+- **Regola:** niente password di riserva nel codice (`process.env.X || 'valore'`): se manca una env var, si fallisce.
+- **Git history** contiene la vecchia password della Control Room: è stata dismessa, quindi è innocua; per pulizia totale `git filter-repo`.
 
 ---
 
@@ -103,11 +104,11 @@ Sequenza: verifica `CR_PASSWORD` su Vercel → segreto forte 32+ char → rimuov
 | Domenica | SEO Agent | Keyword in `agent_memory` |
 | Lunedì | Editoriale (`scripts/agent.js`) | Legge Scout+SEO, 3 opzioni/sezione, email a Paolo |
 | Lunedì | Paolo | Control Room → seleziona sezioni → genera bozza → revisiona → approva |
-| Martedì | Paolo | Dashboard → numero edizione → invia |
+| Martedì | Paolo | Control Room (`/admin`) → Dashboard → numero edizione → invia (con conferma) |
 
 Pipeline: Opus Writer → Opus Editor (intercetta errori/dati inventati). `editorial_wiki` si aggiorna dopo ogni invio. I contenuti social non sono più generati qui: li gestisce Paolo con un bot Grok esterno (Content Agent rimosso).
 
-**Barriera pre-invio (`lib/preflight.js`).** Controlli deterministici condivisi tra `publisher-gate` (anteprima Control Room), `send-newsletter` (blocco reale) e `send-test` (informativo). Un *blocker* impedisce l'invio massivo: segnaposto non risolti (`[da verificare]`, TODO), trattino lungo `—`, sezione senza corpo/KPI/fonti, titolo mancante. Sono *warning* (non bloccano): KPI il cui numero non compare nel corpo, sezione con una sola fonte (proxy anti-plagio), URL nella riga fonti, fonte sospetta, verdetto assente, corpo troppo lungo. Override d'emergenza: `force:true` nel body di `send-newsletter`. È la "barriera 2" del percorso verso una redazione più autonoma (barriera 1 = fonti verificate a monte; barriera 3 = agente fact-check).
+**Barriera pre-invio (`api/_lib/preflight.js`).** Controlli deterministici condivisi tra `publisher-gate` (anteprima Control Room), `send-newsletter` (blocco reale) e `send-test` (informativo). Un *blocker* impedisce l'invio massivo: segnaposto non risolti (`[da verificare]`, TODO), trattino lungo `—`, sezione senza corpo/KPI/fonti, titolo mancante. Sono *warning* (non bloccano): KPI il cui numero non compare nel corpo, sezione con una sola fonte (proxy anti-plagio), URL nella riga fonti, fonte sospetta, verdetto assente, corpo troppo lungo. Override d'emergenza: `force:true` nel body di `send-newsletter`. È la "barriera 2" del percorso verso una redazione più autonoma (barriera 1 = fonti verificate a monte; barriera 3 = agente fact-check).
 
 ---
 

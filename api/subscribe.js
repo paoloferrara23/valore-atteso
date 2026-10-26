@@ -1,7 +1,8 @@
 // api/subscribe.js — Con rate limiting per IP
 const { createClient } = require('@supabase/supabase-js');
-const { sendEmail } = require('../lib/mailer');
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const { requireAdmin, serviceKey, ipHash } = require('./_lib/admin-auth');
+const { sendEmail } = require('./_lib/mailer');
+const supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -42,7 +43,6 @@ async function checkRateLimit(ip) {
 }
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -55,8 +55,9 @@ module.exports = async function handler(req, res) {
 
   // ── REMINDER — rimanda conferma a non confermati ─────────────────────────
   if (action === 'reminder') {
-    if (req.headers['x-cr-token'] !== (process.env.CR_PASSWORD || 'valopro2025')) {
-      return res.status(401).json({ error: 'Non autorizzato' });
+    if (!requireAdmin(req, res)) return;
+    if ((req.body || {}).confirm !== 'INVIA') {
+      return res.status(400).json({ error: 'Conferma mancante: scrivi INVIA per mandare il promemoria ai non confermati.' });
     }
     const { data: pending } = await supabase
       .from('subscribers')
@@ -96,6 +97,12 @@ module.exports = async function handler(req, res) {
       const ok = await sendEmail({ from: FROM, to: sub.email, subject: 'Hai dimenticato di confermare la tua iscrizione a Valore Atteso', html });
       if (ok) sent++;
     }
+    await supabase.from('agent_runs').insert({
+      agent: 'send-reminder',
+      status: 'success',
+      summary: `Promemoria di conferma inviato a ${sent} indirizzi non confermati.`,
+      data: { sent, total: pending.length, ip_hash: ipHash(req) },
+    }).then(() => {}, () => {});
     return res.status(200).json({ ok: true, sent, total: pending.length });
   }
 
@@ -103,7 +110,7 @@ module.exports = async function handler(req, res) {
   if (action === 'conferma' && token) {
     const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/subscribers?token=eq.${token}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'apikey': process.env.SUPABASE_KEY, 'Authorization': `Bearer ${process.env.SUPABASE_KEY}`, 'Prefer': 'return=representation' },
+      headers: { 'Content-Type': 'application/json', 'apikey': serviceKey() || process.env.SUPABASE_KEY, 'Authorization': `Bearer ${serviceKey() || process.env.SUPABASE_KEY}`, 'Prefer': 'return=representation' },
       body: JSON.stringify({ confirmed: true, token: null })
     });
     const rows = await r.json();

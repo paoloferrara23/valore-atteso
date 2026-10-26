@@ -1,13 +1,14 @@
 // api/meta-webhook.js
 // Riceve lead da Meta Lead Gen Forms e li salva in Supabase subscribers
 const { createClient } = require('@supabase/supabase-js');
+const { serviceKey } = require('./_lib/admin-auth');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
+  serviceKey() || process.env.SUPABASE_KEY
 );
 
-const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN || 'valoreatteso_meta_2026';
+const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.META_PAGE_TOKEN;
 
 module.exports = async function handler(req, res) {
@@ -18,7 +19,7 @@ module.exports = async function handler(req, res) {
     const token     = req.query['hub.verify_token'];
     const challenge = req.query['hub.challenge'];
 
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    if (mode === 'subscribe' && VERIFY_TOKEN && token === VERIFY_TOKEN) {
       console.log('[meta-webhook] Webhook verificato da Meta');
       return res.status(200).send(challenge);
     }

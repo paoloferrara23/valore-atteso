@@ -3,7 +3,7 @@ const { memSet, logRun, supaFetch } = require('./memory');
 const { agentEmail } = require('./email-template');
 
 const RESEND_KEY     = process.env.RESEND_KEY;
-const { sendEmail }  = require('../lib/mailer');
+const { sendEmail }  = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SITE_URL       = process.env.SITE_URL || 'https://valoreatteso.com';
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';

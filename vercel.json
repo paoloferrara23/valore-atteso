@@ -1,37 +1,127 @@
 {
   "cleanUrls": true,
-  "github": { "silent": true },
+  "github": {
+    "silent": true
+  },
   "functions": {
-    "api/genera-edizione.js": { "maxDuration": 60 },
-    "api/genera-opzioni.js": { "maxDuration": 60 }
+    "api/genera-edizione.js": {
+      "maxDuration": 60
+    },
+    "api/genera-opzioni.js": {
+      "maxDuration": 60
+    },
+    "api/run-agent.js": {
+      "includeFiles": "api/_admin/**"
+    }
   },
   "rewrites": [
-    { "source": "/api/approve-sponsor", "destination": "/api/sponsor-request?action=approve" },
-    { "source": "/api/delete-sponsor-request", "destination": "/api/sponsor-request?action=delete" },
-    { "source": "/api/get-edition-sponsors", "destination": "/api/sponsor-request?action=editionSponsors" },
-    { "source": "/api/get-sponsor-request", "destination": "/api/sponsor-request?action=get" },
-    { "source": "/api/list-sponsor-requests", "destination": "/api/sponsor-request?action=list" },
-    { "source": "/api/manage-sponsor-editorial", "destination": "/api/sponsor-request?action=manageEditorial" },
-    { "source": "/api/review-sponsor-materials", "destination": "/api/sponsor-request?action=review" },
-    { "source": "/api/scout-select", "destination": "/api/run-agent?action=scoutSelect" },
-    { "source": "/api/select-sponsor-slot", "destination": "/api/sponsor-request?action=selectSlot" },
-    { "source": "/api/send-utils", "destination": "/api/send-newsletter?action=utils" },
-    { "source": "/api/update-sponsor-status", "destination": "/api/sponsor-request?action=updateStatus" },
-    { "source": "/api/upload-sponsor-assets", "destination": "/api/sponsor-request?action=upload" }
+    {
+      "source": "/admin",
+      "destination": "/api/run-agent?action=adminPage"
+    },
+    {
+      "source": "/api/admin-login",
+      "destination": "/api/run-agent?action=adminLogin"
+    },
+    {
+      "source": "/api/admin-logout",
+      "destination": "/api/run-agent?action=adminLogout"
+    },
+    {
+      "source": "/api/admin-db/:path*",
+      "destination": "/api/run-agent?action=adminDb&p=:path*"
+    },
+    {
+      "source": "/api/approve-sponsor",
+      "destination": "/api/sponsor-request?action=approve"
+    },
+    {
+      "source": "/api/delete-sponsor-request",
+      "destination": "/api/sponsor-request?action=delete"
+    },
+    {
+      "source": "/api/get-edition-sponsors",
+      "destination": "/api/sponsor-request?action=editionSponsors"
+    },
+    {
+      "source": "/api/get-sponsor-request",
+      "destination": "/api/sponsor-request?action=get"
+    },
+    {
+      "source": "/api/list-sponsor-requests",
+      "destination": "/api/sponsor-request?action=list"
+    },
+    {
+      "source": "/api/manage-sponsor-editorial",
+      "destination": "/api/sponsor-request?action=manageEditorial"
+    },
+    {
+      "source": "/api/review-sponsor-materials",
+      "destination": "/api/sponsor-request?action=review"
+    },
+    {
+      "source": "/api/scout-select",
+      "destination": "/api/run-agent?action=scoutSelect"
+    },
+    {
+      "source": "/api/select-sponsor-slot",
+      "destination": "/api/sponsor-request?action=selectSlot"
+    },
+    {
+      "source": "/api/send-utils",
+      "destination": "/api/send-newsletter?action=utils"
+    },
+    {
+      "source": "/api/update-sponsor-status",
+      "destination": "/api/sponsor-request?action=updateStatus"
+    },
+    {
+      "source": "/api/upload-sponsor-assets",
+      "destination": "/api/sponsor-request?action=upload"
+    }
   ],
   "headers": [
     {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://xxnmkiwnjpppfzrftvuv.supabase.co; frame-src 'self' blob: about:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, x-cr-token" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
       ]
     },
     {
       "source": "/sitemap.xml",
       "headers": [
-        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        }
       ]
     }
   ]

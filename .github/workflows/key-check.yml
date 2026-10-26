@@ -1,0 +1,28 @@
+name: Key Check
+
+# Diagnostica: dice che TIPO di chiave Supabase hanno gli agenti (anon, service_role,
+# secret, assente). Non stampa mai il valore. Serve prima di restringere le regole RLS.
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tipo di chiave
+        env:
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          node -e '
+          for (const name of ["SUPABASE_KEY", "SUPABASE_SERVICE_KEY"]) {
+            const v = process.env[name] || "";
+            let kind = "assente";
+            if (v.startsWith("sb_secret_")) kind = "secret (servizio)";
+            else if (v.startsWith("sb_publishable_")) kind = "publishable (pubblica)";
+            else if (v.split(".").length === 3) {
+              try { kind = "jwt role=" + JSON.parse(Buffer.from(v.split(".")[1], "base64url").toString()).role; }
+              catch (_) { kind = "jwt illeggibile"; }
+            } else if (v) kind = "formato sconosciuto";
+            console.log(name + ": " + kind);
+          }'

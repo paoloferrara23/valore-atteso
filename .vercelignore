@@ -1,0 +1,8 @@
+# File del repository che non devono essere pubblicati come statici sul sito.
+# Le funzioni in api/ non ne dipendono (il codice condiviso è in api/_lib, non servito).
+scripts/
+docs/
+sql/
+.github/
+CLAUDE.md
+README.md

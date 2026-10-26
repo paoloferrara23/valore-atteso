@@ -24,6 +24,7 @@ jobs:
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           SOGLIA_ANTHROPIC: '10'
           SOGLIA_RESEND: '10'
         run: node scripts/cost-guardian.js

@@ -1,3 +1,4 @@
+const adminAuth = require('./admin-auth');
 const {
   escapeHtml,
   parseJsonBody,
@@ -8,8 +9,7 @@ const { issueMagicToken } = require('./sponsor-auth');
 const { TERMS_VERSION } = require('./sponsor-legal');
 
 function adminAuthorized(req) {
-  const token = req.headers['x-admin-secret'] || req.headers['x-cr-token'];
-  return token === (process.env.SPONSOR_ADMIN_SECRET || process.env.CR_PASSWORD || 'valopro2025');
+  return adminAuth.isAdmin(req);
 }
 
 module.exports = async function handler(req, res) {

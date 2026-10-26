@@ -1,14 +1,16 @@
 // api/send-test.js
 const { createClient } = require('@supabase/supabase-js');
-const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
-const { buildHtml } = require('../lib/build-html');
-const { contentPreflight } = require('../lib/preflight');
-const { provider, brevoRequest } = require('../lib/mailer');
+const { requireAdmin } = require('./_lib/admin-auth');
+const { loadEditionSponsors } = require('./_lib/sponsor-edition-data');
+const { buildHtml } = require('./_lib/build-html');
+const { contentPreflight } = require('./_lib/preflight');
+const { provider, brevoRequest } = require('./_lib/mailer');
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!requireAdmin(req, res)) return;
 
   try {
     const { edition_num, edition_id } = req.body;

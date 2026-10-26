@@ -1,3 +1,4 @@
+const adminAuth = require('./admin-auth');
 const {
   escapeHtml,
   parseJsonBody,
@@ -13,11 +14,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const adminSecret = req.headers['x-admin-secret'] || req.headers['x-cr-token'];
-    const expectedSecret = process.env.SPONSOR_ADMIN_SECRET
-      || process.env.CR_PASSWORD
-      || 'valopro2025';
-    if (adminSecret !== expectedSecret) {
+    if (!adminAuth.isAdmin(req)) {
       return res.status(401).json({ ok: false, error: 'Unauthorized' });
     }
 

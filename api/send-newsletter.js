@@ -1,11 +1,12 @@
 // api/send-newsletter.js
 // CommonJS — Vercel serverless function
 const { createClient } = require('@supabase/supabase-js');
+const { requireAdmin, ipHash } = require('./_lib/admin-auth');
 const { Resend } = require('resend');
-const { loadEditionSponsors } = require('../lib/sponsor-edition-data');
-const { buildHtml } = require('../lib/build-html');
-const { contentPreflight } = require('../lib/preflight');
-const { provider, sendViaBrevo } = require('../lib/mailer');
+const { loadEditionSponsors } = require('./_lib/sponsor-edition-data');
+const { buildHtml } = require('./_lib/build-html');
+const { contentPreflight } = require('./_lib/preflight');
+const { provider, sendViaBrevo } = require('./_lib/mailer');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -16,7 +17,7 @@ const supabase = createClient(
 
 async function handler(req, res) {
   if (String((req.query && req.query.action) || '') === 'utils') {
-    const sendUtilsHandler = require('../lib/send-utils');
+    const sendUtilsHandler = require('./_lib/send-utils');
     return sendUtilsHandler(req, res, { createClient, Resend });
   }
 
@@ -24,9 +25,7 @@ async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  const token = req.headers['x-cr-token'];
-  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  if (!requireAdmin(req, res)) return;
 
   try {
     const { edition_num, edition_id } = req.body;
@@ -41,6 +40,17 @@ async function handler(req, res) {
     if (!editions || !editions.length) throw new Error('Edizione non trovata o non pubblicata');
     const edition = editions[0];
 
+    // Invio a tutti gli iscritti: serve la conferma esplicita col numero dell'edizione.
+    if (String(req.body.confirm || '').padStart(3, '0') !== String(edition.num)) {
+      return res.status(400).json({ error: `Conferma mancante: per inviare a tutti gli iscritti ripeti il numero dell'edizione (#${edition.num}).` });
+    }
+    await supabase.from('agent_runs').insert({
+      agent: 'send-newsletter',
+      status: 'started',
+      summary: `Invio #${edition.num} avviato dalla Control Room.`,
+      data: { edition_num: edition.num, ip_hash: ipHash(req) },
+    }).then(() => {}, () => {});
+
     // ── BARRIERA PRE-INVIO ──────────────────────────────────────────────────
     // Controlli deterministici sul contenuto. Un blocker (placeholder, trattino
     // lungo, sezione senza corpo/KPI/fonti) impedisce l'invio massivo.
@@ -52,7 +62,7 @@ async function handler(req, res) {
         status: 'blocked',
         summary: `Invio #${edition.num} bloccato dai controlli pre-invio (${preflight.blockers} blocker).`,
         data: { edition_num: edition.num, blockers: preflight.blockers },
-      }).catch(() => {});
+      }).then(() => {}, () => {});
       return res.status(422).json({
         error: 'Invio bloccato dai controlli pre-invio',
         can_send: false,
@@ -161,7 +171,7 @@ async function handler(req, res) {
       agent: 'send-newsletter',
       status: 'error',
       summary: err.message,
-    }).catch(() => {});
+    }).then(() => {}, () => {});
     return res.status(500).json({ error: err.message });
   }
 }

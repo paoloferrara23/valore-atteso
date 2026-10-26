@@ -1,14 +1,14 @@
 // scripts/agent.js — Editoriale Agent v2 con nuovo template email
 const { memGet, memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const RESEND_KEY    = process.env.RESEND_KEY;
-const { sendEmail } = require('../lib/mailer');
+const { sendEmail } = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL      = process.env.SUPABASE_URL;
-const SUPA_KEY      = process.env.SUPABASE_KEY;
+const SUPA_KEY      = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY);
 const SITE          = 'https://valoreatteso.com';
 const FROM          = 'Valore Atteso <info@valoreatteso.com>';
 
@@ -143,7 +143,7 @@ async function main() {
       if (editionId) {
         const genRes = await httpRequest(`${SITE}/api/genera-edizione`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-cr-token': process.env.CR_PASSWORD || 'valopro2025' },
+          headers: { 'Content-Type': 'application/json', 'x-agent-key': process.env.AGENT_API_SECRET || '' },
           body: JSON.stringify({ editionId, bilancio, deal, metrica, date: oggi })
         });
 
@@ -161,7 +161,7 @@ async function main() {
                 [{ value: '02 · Il Deal',     mono: true, color: '#1B3A6B', bold: true }, { value: deal.titolo }],
                 [{ value: '03 · La Metrica',  mono: true, color: '#6B1B1B', bold: true }, { value: metrica.titolo }],
               ]},
-              { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/?cr=redazione" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Apri Control Room →</a></td></tr></table>` },
+              { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/admin" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Apri Control Room →</a></td></tr></table>` },
             ]
           });
 
@@ -204,7 +204,7 @@ async function main() {
       { type: 'table', label: '01 · Il Bilancio', headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.bilancio) },
       { type: 'table', label: '02 · Il Deal',     headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.deal) },
       { type: 'table', label: '03 · La Metrica',  headers: [{ label: '#' }, { label: 'Titolo' }, { label: 'Sommario' }, { label: 'Dati preview' }], rows: makeRows(options.section_options?.metrica) },
-      { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/?cr=redazione" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Vai in Control Room →</a></td></tr></table>` },
+      { type: 'narrative', label: null, dark: true, text: `<table cellpadding="0" cellspacing="0" style="margin:0 auto"><tr><td><a href="${SITE}/admin" style="display:inline-block;background:#C8A97A;color:#1A1A1A;font-family:Courier New,monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:16px 40px;text-decoration:none">Vai in Control Room →</a></td></tr></table>` },
     ]
   });
 

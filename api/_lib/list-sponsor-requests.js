@@ -1,3 +1,4 @@
+const adminAuth = require('./admin-auth');
 const { supabaseRequest } = require('./sponsor-utils');
 const { TERMS_VERSION } = require('./sponsor-legal');
 
@@ -8,9 +9,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const token = req.headers['x-cr-token'];
-    const expectedToken = process.env.CR_PASSWORD || 'valopro2025';
-    if (token !== expectedToken) {
+    if (!adminAuth.isAdmin(req)) {
       return res.status(401).json({ ok: false, error: 'Unauthorized' });
     }
 

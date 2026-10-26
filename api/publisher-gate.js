@@ -3,7 +3,8 @@
 // Checks di contenuto delegati a lib/preflight (condivisi con send-newsletter/send-test).
 // Qui restano i check che richiedono il DB: dedup temi, stato pubblicazione, sponsor.
 const { createClient } = require('@supabase/supabase-js');
-const { contentPreflight } = require('../lib/preflight');
+const { requireAdmin } = require('./_lib/admin-auth');
+const { contentPreflight } = require('./_lib/preflight');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -17,9 +18,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  const token = req.headers['x-cr-token'];
-  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
+  if (!requireAdmin(req, res)) return;
 
   try {
     const { edition_num } = req.body;
