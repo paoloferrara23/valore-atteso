@@ -1,6 +1,6 @@
 // scripts/seo-agent.js — SEO Agent v3 con parse robusto
 const { memSet, logRun } = require('./memory');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;

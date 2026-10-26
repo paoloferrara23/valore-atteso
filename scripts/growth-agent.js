@@ -1,14 +1,14 @@
 // scripts/growth-agent.js — Growth Agent v3 con nuovo design email
 const { memGet, memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
-const { sendEmail }  = require('../lib/mailer');
+const { sendEmail }  = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
-const SUPA_KEY       = process.env.SUPABASE_KEY;
+const SUPA_KEY       = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY);
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';
 
 async function supaFetch(path) {

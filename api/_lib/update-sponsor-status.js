@@ -1,3 +1,4 @@
+const adminAuth = require('./admin-auth');
 const {
   escapeHtml,
   parseJsonBody,
@@ -11,9 +12,7 @@ module.exports = async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
-  const token = req.headers['x-admin-secret'] || req.headers['x-cr-token'];
-  const expected = process.env.SPONSOR_ADMIN_SECRET || process.env.CR_PASSWORD || 'valopro2025';
-  if (token !== expected) return res.status(401).json({ ok: false, error: 'Unauthorized' });
+  if (!adminAuth.requireAdmin(req, res)) return;
 
   try {
     const body = parseJsonBody(req);

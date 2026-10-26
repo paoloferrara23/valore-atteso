@@ -25,4 +25,5 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           APPROVAL_EMAIL: ${{ secrets.APPROVAL_EMAIL }}
+          AGENT_API_SECRET: ${{ secrets.AGENT_API_SECRET }}
         run: node scripts/agent.js

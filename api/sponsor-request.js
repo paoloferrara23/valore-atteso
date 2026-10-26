@@ -3,17 +3,17 @@ const {
   parseJsonBody,
   sendGmail,
   supabaseRequest
-} = require('../lib/sponsor-utils');
-const approveSponsor = require('../lib/approve-sponsor');
-const deleteSponsorRequest = require('../lib/delete-sponsor-request');
-const getEditionSponsors = require('../lib/get-edition-sponsors');
-const getSponsorRequest = require('../lib/get-sponsor-request');
-const listSponsorRequests = require('../lib/list-sponsor-requests');
-const manageSponsorEditorial = require('../lib/manage-sponsor-editorial');
-const reviewSponsorMaterials = require('../lib/review-sponsor-materials');
-const selectSponsorSlot = require('../lib/select-sponsor-slot');
-const updateSponsorStatus = require('../lib/update-sponsor-status');
-const uploadSponsorAssets = require('../lib/upload-sponsor-assets');
+} = require('./_lib/sponsor-utils');
+const approveSponsor = require('./_lib/approve-sponsor');
+const deleteSponsorRequest = require('./_lib/delete-sponsor-request');
+const getEditionSponsors = require('./_lib/get-edition-sponsors');
+const getSponsorRequest = require('./_lib/get-sponsor-request');
+const listSponsorRequests = require('./_lib/list-sponsor-requests');
+const manageSponsorEditorial = require('./_lib/manage-sponsor-editorial');
+const reviewSponsorMaterials = require('./_lib/review-sponsor-materials');
+const selectSponsorSlot = require('./_lib/select-sponsor-slot');
+const updateSponsorStatus = require('./_lib/update-sponsor-status');
+const uploadSponsorAssets = require('./_lib/upload-sponsor-assets');
 
 const SPONSOR_ACTIONS = {
   approve: approveSponsor,

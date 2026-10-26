@@ -1,9 +1,10 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  // Solo Control Room: senza sessione admin questo endpoint sarebbe un proxy
+  // gratuito verso l'API Anthropic a spese del progetto.
+  const auth = await import('./_lib/admin-auth.js');
+  const requireAdmin = auth.requireAdmin || (auth.default && auth.default.requireAdmin);
+  if (!requireAdmin(req, res)) return;
 
   const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
   
@@ -46,7 +47,7 @@ export default async function handler(req, res) {
   }
 
   // Tracking costi (best-effort: non deve mai rompere la chat)
-  try { const m = await import('../lib/ai-usage.js'); (m.logUsage || m.default?.logUsage)?.('ad-controlroom', payload.model, data.usage); } catch {}
+  try { const m = await import('./_lib/ai-usage.js'); (m.logUsage || m.default?.logUsage)?.('ad-controlroom', payload.model, data.usage); } catch {}
 
   return res.status(200).json({ text: data.content?.[0]?.text || '' });
 }

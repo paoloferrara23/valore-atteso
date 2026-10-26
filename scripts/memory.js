@@ -2,7 +2,7 @@
 // Usato da tutti gli agenti per leggere/scrivere stato
 
 const SUPA_URL = process.env.SUPABASE_URL;
-const SUPA_KEY = process.env.SUPABASE_KEY;
+const SUPA_KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY);
 
 async function supaFetch(path, opts = {}) {
   const r = await fetch(`${SUPA_URL}${path}`, {

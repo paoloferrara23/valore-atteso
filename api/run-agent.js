@@ -1,6 +1,7 @@
 // api/run-agent.js — Esegui agente manualmente dalla Control Room
 const { createClient } = require('@supabase/supabase-js');
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const { requireAdmin, serviceKey, login, logout } = require('./_lib/admin-auth');
+const supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
 
 const AGENT_MAP = {
   scout:      { workflow: 'scout.yml',             label: 'Scout' },
@@ -18,55 +19,50 @@ module.exports = async function handler(req, res) {
   // (o di esecuzione async), restituiamo un JSON con l'errore reale invece
   // di lasciare crashare la function — che produrrebbe la pagina HTML
   // "A server error has occurred" e un JSON.parse fallito lato Control Room.
+  // Accesso Control Room (vedi api/_lib/admin-auth.js): niente file nuovi in api/.
+  const action = req.query?.action;
+  if (action === 'adminLogin') return login(req, res);
+  if (action === 'adminLogout') return logout(req, res);
+  if (action === 'adminPage') return require('./_lib/admin-page')(req, res);
+  if (action === 'adminDb') {
+    try { return await require('./_lib/admin-db')(req, res); }
+    catch (e) {
+      console.error('[run-agent:adminDb]', e);
+      if (!res.headersSent) return res.status(500).json({ ok: false, error: 'adminDb: ' + (e?.message || String(e)) });
+      return;
+    }
+  }
   if (req.query?.action === 'scoutSelect') {
     try {
-      return await require('../lib/scout-select')(req, res, createClient);
+      return await require('./_lib/scout-select')(req, res, createClient);
     } catch (e) {
       console.error('[run-agent:scoutSelect]', e);
       if (!res.headersSent) return res.status(500).json({ error: 'scoutSelect: ' + (e?.message || String(e)) });
       return;
     }
   }
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
   const { agent, scout_token } = req.body || {};
 
-  if (req.headers['x-cr-token'] !== CR_TOKEN) {
+  if (!(agent === 'scout' && scout_token)) {
+    if (!requireAdmin(req, res)) return;
+  } else {
     // Auth alternativa: scout token dall'email (solo per ri-avviare lo Scout)
-    if (agent === 'scout' && scout_token) {
-      const { data: pendingRow } = await supabase.from('agent_memory').select('value').eq('key', 'scout_pending').single();
-      if (!pendingRow?.value?.selection_token || pendingRow.value.selection_token !== scout_token) {
-        return res.status(401).json({ error: 'Token non valido o scaduto.' });
-      }
-    } else {
-      return res.status(401).json({ error: 'Non autorizzato' });
+    const { data: pendingRow } = await supabase.from('agent_memory').select('value').eq('key', 'scout_pending').single();
+    if (!pendingRow?.value?.selection_token || pendingRow.value.selection_token !== scout_token) {
+      return res.status(401).json({ error: 'Token non valido o scaduto.' });
     }
   }
   if (!agent || !AGENT_MAP[agent]) {
     return res.status(400).json({ error: `Agente non valido. Disponibili: ${Object.keys(AGENT_MAP).join(', ')}` });
   }
 
-  // Leggi GH token da env var (aggiunta via setup-env) oppure da Supabase config
-  let ghToken = process.env.GH_TOKEN;
+  // Token GitHub solo da env var (mai da database).
+  const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
 
   if (!ghToken) {
-    try {
-      const { data } = await supabase
-        .from('agent_memory')
-        .select('value')
-        .eq('key', 'config_gh_token')
-        .single();
-      ghToken = data?.value;
-    } catch(e) { /* ignore */ }
-  }
-
-  if (!ghToken) {
-    return res.status(500).json({ error: 'GH_TOKEN non configurato. Contatta l\'amministratore.' });
+    return res.status(500).json({ error: 'Token GitHub non configurato su Vercel.' });
   }
 
   const { workflow, label } = AGENT_MAP[agent];

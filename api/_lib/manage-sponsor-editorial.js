@@ -1,3 +1,4 @@
+const adminAuth = require('./admin-auth');
 const {
   escapeHtml,
   parseJsonBody,
@@ -9,8 +10,7 @@ const { TERMS_VERSION, recordAcceptance } = require('./sponsor-legal');
 const { authenticateSponsor, issueMagicToken } = require('./sponsor-auth');
 
 function isAdmin(req) {
-  const token = req.headers['x-admin-secret'] || req.headers['x-cr-token'];
-  return token === (process.env.SPONSOR_ADMIN_SECRET || process.env.CR_PASSWORD || 'valopro2025');
+  return adminAuth.isAdmin(req);
 }
 
 function privateUrl(req, token) {

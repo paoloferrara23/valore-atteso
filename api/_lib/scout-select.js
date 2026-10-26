@@ -3,6 +3,7 @@
 // i pacchetti npm delle function in api/. createClient viene iniettato dal
 // chiamante api/run-agent.js; il client resta a livello di modulo, assegnato
 // alla prima invocazione.
+const { serviceKey } = require('./admin-auth');
 let supabase;
 
 function esc(value) {
@@ -48,7 +49,7 @@ function topicCard(section, topic, index, selected) {
 module.exports = async function handler(req, res, createClient) {
   if (!supabase) {
     if (typeof createClient !== 'function') return res.status(500).json({ error: 'createClient non iniettato dal chiamante' });
-    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+    supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
   }
   try {
     const { data: row, error } = await supabase
@@ -87,6 +88,8 @@ module.exports = async function handler(req, res, createClient) {
       }
 
       const approvedAt = new Date().toISOString();
+      const rec = pending.raccomandazione || null;
+      const recPick = rec && submitted ? submitted[rec.sezione] : null;
       const selection = {
         brief_id: briefId,
         stato: 'approved',
@@ -98,6 +101,7 @@ module.exports = async function handler(req, res, createClient) {
           deal: deal.topic,
           metrica: metrica.topic
         },
+        consigliato_seguito: rec ? !!(recPick && recPick.type === 'scout' && Number(recPick.idx) === rec.idx) : null,
         selezionato_at: approvedAt
       };
       const approvedBrief = {
@@ -147,6 +151,14 @@ module.exports = async function handler(req, res, createClient) {
     const current = selectionRow?.value?.brief_id === briefId && selectionRow.value.stato === 'approved'
       ? selectionRow.value
       : null;
+
+    // Pagina statica scout-select.html: i dati del brief arrivano da qui, non più
+    // dal database letto con la chiave pubblica.
+    if (String(req.query?.format || '') === 'json') {
+      res.setHeader('Cache-Control', 'no-store');
+      const { selection_token, ...safe } = pending;
+      return res.status(200).json({ ok: true, pending: safe, current });
+    }
     const sections = [
       ['bilancio', '01 - Il Bilancio'],
       ['deal', '02 - Il Deal'],

@@ -4,14 +4,14 @@
 const crypto = require('crypto');
 const { memSet, logRun } = require('./memory');
 const { agentEmail } = require('./email-template');
-const { logUsage } = require('../lib/ai-usage');
+const { logUsage } = require('../api/_lib/ai-usage');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
-const { sendEmail }  = require('../lib/mailer');
+const { sendEmail }  = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
 const SUPA_URL       = process.env.SUPABASE_URL;
-const SUPA_KEY       = process.env.SUPABASE_KEY;
+const SUPA_KEY       = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY);
 const SITE_URL       = process.env.SITE_URL || 'https://valoreatteso.com';
 const DRIVE_API_KEY  = process.env.GOOGLE_DRIVE_API_KEY;
 const DRIVE_FOLDER   = process.env.GOOGLE_DRIVE_FOLDER_ID;

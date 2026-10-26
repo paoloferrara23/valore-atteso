@@ -2,6 +2,7 @@
 // NIENTE require di pacchetti npm qui: i moduli in lib/ non risolvono i
 // pacchetti installati per le function in api/. createClient e Resend sono
 // iniettati dal chiamante api/send-newsletter.js.
+const { requireAdmin, serviceKey, ipHash } = require('./admin-auth');
 let supabase;
 let resend;
 const FROM = 'Valore Atteso <info@valoreatteso.com>';
@@ -147,25 +148,18 @@ function buildEditionHtml(edition) {
 
 // ── HANDLER PRINCIPALE ────────────────────────────────────────────────────────
 module.exports = async function handler(req, res, deps) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (!requireAdmin(req, res)) return;
   if (!supabase || !resend) {
     const createClient = deps && deps.createClient;
     const Resend = deps && deps.Resend;
     if (typeof createClient !== 'function' || typeof Resend !== 'function') {
       return res.status(500).json({ error: 'Dipendenze (createClient/Resend) non iniettate dal chiamante' });
     }
-    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+    supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
     resend = new Resend(process.env.RESEND_KEY);
   }
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
-  // ── AUTH ──────────────────────────────────────────────────────────────────
-  const CR_TOKEN = process.env.CR_PASSWORD || 'valopro2025';
-  const token = req.headers['x-cr-token'];
-  if (token !== CR_TOKEN) return res.status(401).json({ error: 'Non autorizzato' });
   // ──────────────────────────────────────────────────────────────────────────
 
   const { action } = req.body || {};
@@ -195,6 +189,11 @@ module.exports = async function handler(req, res, deps) {
         </table>`;
         await resend.emails.send({ from: FROM, to: test_email, subject, html });
         return res.status(200).json({ ok: true, sent: 1 });
+      }
+
+      // Invio massivo: conferma esplicita obbligatoria.
+      if (req.body.confirm !== 'INVIA') {
+        return res.status(400).json({ error: 'Conferma mancante: scrivi INVIA per mandare la comunicazione a tutti gli iscritti.' });
       }
 
       let query = supabase.from('subscribers').select('email, created_at').eq('confirmed', true);
@@ -235,6 +234,12 @@ module.exports = async function handler(req, res, deps) {
         );
         sent += results.filter(r => r.status === 'fulfilled').length;
       }
+      await supabase.from('agent_runs').insert({
+        agent: 'send-communication',
+        status: 'success',
+        summary: `Comunicazione "${String(subject).slice(0, 80)}" inviata a ${sent} iscritti.`,
+        data: { subject: String(subject).slice(0, 200), segmento: segmento || 'tutti', sent, ip_hash: ipHash(req) },
+      }).then(() => {}, () => {});
       return res.status(200).json({ ok: true, sent });
     } catch (e) {
       console.error('[send-utils:communication]', e);
@@ -246,6 +251,9 @@ module.exports = async function handler(req, res, deps) {
   if (action === 'missing') {
     const { edition_num } = req.body;
     if (!edition_num) return res.status(400).json({ error: 'edition_num obbligatorio' });
+    if (req.body.confirm !== 'INVIA') {
+      return res.status(400).json({ error: 'Conferma mancante: scrivi INVIA per reinviare agli iscritti mancanti.' });
+    }
 
     try {
       const num = String(edition_num).padStart(3, '0');

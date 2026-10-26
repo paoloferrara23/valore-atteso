@@ -331,7 +331,7 @@ async function fetchEditions() {
     return JSON.parse(fs.readFileSync(process.env.EDITIONS_FIXTURE, 'utf8'));
   }
   const base = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_KEY;
+  const key = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY);
   if (!base || !key) throw new Error('SUPABASE_URL / SUPABASE_KEY mancanti');
   const url = base + '/rest/v1/editions?published=eq.true&order=num.desc'
     + '&select=num,title,subtitle,date,tags,opener,sections';
