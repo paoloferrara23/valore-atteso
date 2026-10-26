@@ -1,9 +1,11 @@
 // api/_lib/admin-auth.js — Autenticazione della Control Room, tutta lato server.
 //
 // - La password vive SOLO nella env var CR_ADMIN_SECRET (Vercel). Se manca o è
-//   corta (< 24 caratteri) l'accesso admin resta chiuso (503): fail closed.
+//   corta (< 5 caratteri) l'accesso admin resta chiuso (503): fail closed.
 // - Login: POST con la password, confronto a tempo costante, massimo 5 errori
-//   per IP ogni 15 minuti (tabella rate_limits, IP salvato solo come hash).
+//   per IP ogni 15 minuti (tabella rate_limits, IP salvato solo come hash) e
+//   massimo 20 errori totali ogni 15 minuti da qualunque IP: con una password
+//   corta il blocco globale impedisce i tentativi distribuiti su molti indirizzi.
 // - Sessione: cookie va_admin httpOnly, Secure, SameSite=Strict, 4 ore, firmato
 //   con HMAC derivato dalla password: cambiarla invalida tutte le sessioni.
 // - Agenti GitHub Actions: header x-agent-key confrontato con AGENT_API_SECRET.
@@ -13,11 +15,13 @@ const crypto = require('crypto');
 const COOKIE = 'va_admin';
 const TTL_S = 4 * 3600;
 const MAX_FAILS = 5;
+const MAX_FAILS_ALL = 20;
+const MIN_ADMIN_LEN = 5;
 const WINDOW_MIN = 15;
 
 function adminSecret() {
   const s = process.env.CR_ADMIN_SECRET || '';
-  return s.length >= 24 ? s : null;
+  return s.length >= MIN_ADMIN_LEN ? s : null;
 }
 
 function serviceKey() {
@@ -157,27 +161,31 @@ async function login(req, res) {
 
   const hash = ipHash(req);
   const windowStart = Date.now() - WINDOW_MIN * 60000;
-  let row = null;
+  let row = null, all = null;
   try {
     const rows = await supa(`/rest/v1/rate_limits?ip=eq.${hash}&action=eq.admin_login_fail&select=count,created_at`);
     row = (rows || [])[0] || null;
+    const allRows = await supa('/rest/v1/rate_limits?ip=eq.global&action=eq.admin_login_fail_all&select=count,created_at');
+    all = (allRows || [])[0] || null;
   } catch (_) {
     // Senza registro dei tentativi non si rischia: login chiuso.
     return deny(res, 503, 'Servizio temporaneamente non disponibile');
   }
   const fresh = !!row && new Date(row.created_at).getTime() > windowStart;
   const fails = fresh ? (row.count || 0) : 0;
-  if (fails >= MAX_FAILS) {
+  const freshAll = !!all && new Date(all.created_at).getTime() > windowStart;
+  const failsAll = freshAll ? (all.count || 0) : 0;
+  if (fails >= MAX_FAILS || failsAll >= MAX_FAILS_ALL) {
     await logAuth('blocked', 'Login admin bloccato per troppi tentativi', req);
     return deny(res, 429, `Troppi tentativi. Riprova tra ${WINDOW_MIN} minuti.`);
   }
 
-  const saveFails = async (count, createdAt) => {
+  const saveFails = async (count, createdAt, ip = hash, action = 'admin_login_fail') => {
     try {
       await supa('/rest/v1/rate_limits?on_conflict=ip,action', {
         method: 'POST',
         headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
-        body: JSON.stringify({ ip: hash, action: 'admin_login_fail', count, created_at: createdAt })
+        body: JSON.stringify({ ip, action, count, created_at: createdAt })
       });
     } catch (_) {}
   };
@@ -185,6 +193,7 @@ async function login(req, res) {
   const password = String((req.body && req.body.password) || '');
   if (!password || !safeEqual(password, secret)) {
     await saveFails(fails + 1, fresh ? row.created_at : new Date().toISOString());
+    await saveFails(failsAll + 1, freshAll ? all.created_at : new Date().toISOString(), 'global', 'admin_login_fail_all');
     await logAuth('error', 'Login admin fallito', req);
     await new Promise(r => setTimeout(r, 400));
     return deny(res, 401, 'Password errata');

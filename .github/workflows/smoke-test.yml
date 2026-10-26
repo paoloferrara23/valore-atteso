@@ -22,7 +22,7 @@ jobs:
           adm=$(curl -s "$SITE/admin")
           echo "$adm" | grep -q 'id="cr-app"' && check "/admin senza login non mostra l'interfaccia" "interfaccia esposta" || check "/admin senza login non mostra l'interfaccia" ok
           admcode=$(curl -s -o /dev/null -w "%{http_code}" "$SITE/admin")
-          [ "$admcode" = 200 ] && echo "$adm" | grep -q '/api/admin-login' && check "/admin mostra il form di login" ok || check "/admin mostra il form di login" "HTTP $admcode: CR_ADMIN_SECRET assente o sotto i 24 caratteri"
+          [ "$admcode" = 200 ] && echo "$adm" | grep -q '/api/admin-login' && check "/admin mostra il form di login" ok || check "/admin mostra il form di login" "HTTP $admcode: CR_ADMIN_SECRET assente o sotto i 5 caratteri"
 
           for ep in send-newsletter send-test publisher-gate genera-edizione genera-opzioni ad send-utils subscribe-reminder admin-db; do
             case $ep in
