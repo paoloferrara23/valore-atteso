@@ -13,6 +13,7 @@ jobs:
         env:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          AGENT_API_SECRET: ${{ secrets.AGENT_API_SECRET }}
         run: |
           node -e '
           for (const name of ["SUPABASE_KEY", "SUPABASE_SERVICE_KEY"]) {
@@ -25,4 +26,6 @@ jobs:
               catch (_) { kind = "jwt illeggibile"; }
             } else if (v) kind = "formato sconosciuto";
             console.log(name + ": " + kind);
-          }'
+          }
+          const a = process.env.AGENT_API_SECRET || "";
+          console.log("AGENT_API_SECRET: " + (!a ? "assente" : a.length >= 24 ? "presente, lunghezza ok" : "presente ma troppo corta (min 24)"));'
