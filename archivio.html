@@ -353,16 +353,23 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 const SURL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
 
-const CR_PWD = 'valopro2025';
 let isAdmin = false;
 let currentEditionId = null;
 let currentEditionNum = null;
 let currentEditionData = null;
 let isEditing = false;
 
-function checkAdmin(){
-  isAdmin = localStorage.getItem('va_admin') === 'yes';
-  if(isAdmin) document.getElementById('art-edit-bar').style.display = 'flex';
+// Modalità modifica: solo con la sessione della Control Room (login su /admin).
+// Il server verifica il cookie; qui si controlla soltanto se la sessione c'è.
+async function hasAdminSession(){
+  try{ const r = await fetch('/api/admin-db/rest/v1/editions?select=id&limit=1'); return r.ok; }
+  catch(e){ return false; }
+}
+async function checkAdmin(){
+  if(localStorage.getItem('va_admin') !== 'yes') return;
+  isAdmin = await hasAdminSession();
+  if(!isAdmin) localStorage.removeItem('va_admin');
+  document.getElementById('art-edit-bar').style.display = isAdmin ? 'flex' : 'none';
 }
 
 function toggleEdit(){
@@ -435,9 +442,9 @@ async function saveEdit(){
       sections
     };
 
-    const r = await fetch(SURL + '/rest/v1/editions?id=eq.' + currentEditionId, {
+    const r = await fetch('/api/admin-db/rest/v1/editions?id=eq.' + encodeURIComponent(currentEditionId), {
       method: 'PATCH',
-      headers: {'Content-Type':'application/json', apikey:SKEY, Authorization:'Bearer '+SKEY},
+      headers: {'Content-Type':'application/json', Prefer:'return=minimal'},
       body: JSON.stringify(payload)
     });
 
@@ -1010,15 +1017,16 @@ document.addEventListener('keydown', function(e){
       document.getElementById('art-edit-bar').style.display = 'none';
       alert('Modalità admin disattivata.');
     } else {
-      const pwd = prompt('Password admin:');
-      if(pwd === CR_PWD){
-        isAdmin = true;
-        localStorage.setItem('va_admin','yes');
-        document.getElementById('art-edit-bar').style.display = 'flex';
-        alert('Modalità admin attivata. Apri una newsletter per modificarla.');
-      } else if(pwd !== null) {
-        alert('Password errata.');
-      }
+      hasAdminSession().then(function(ok){
+        if(ok){
+          isAdmin = true;
+          localStorage.setItem('va_admin','yes');
+          document.getElementById('art-edit-bar').style.display = 'flex';
+          alert('Modalità admin attivata. Apri una newsletter per modificarla.');
+        } else {
+          alert('Accedi prima alla Control Room su /admin, poi torna qui.');
+        }
+      });
     }
   }
 });

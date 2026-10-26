@@ -27,6 +27,16 @@ function serviceKey() {
     || null;
 }
 
+// Tipo della chiave di servizio (mai il valore), una volta per istanza: serve a
+// verificare dai log che il server non stia usando per errore la chiave pubblica.
+function keyKind(v) {
+  if (!v) return 'assente';
+  if (v.startsWith('sb_secret_')) return 'secret';
+  if (v.startsWith('sb_publishable_')) return 'publishable';
+  try { return 'jwt:' + JSON.parse(Buffer.from(v.split('.')[1], 'base64url').toString()).role; } catch (_) { return 'sconosciuto'; }
+}
+console.log('[admin-auth] chiave di servizio:', keyKind(serviceKey()));
+
 function safeEqual(a, b) {
   const ha = crypto.createHash('sha256').update(String(a)).digest();
   const hb = crypto.createHash('sha256').update(String(b)).digest();
