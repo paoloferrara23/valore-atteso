@@ -7,7 +7,6 @@ const AGENT_MAP = {
   seo:        { workflow: 'seo-agent.yml',          label: 'SEO Agent' },
   editoriale: { workflow: 'editoriale-agent.yml',   label: 'Editoriale Agent' },
   growth:     { workflow: 'growth-agent.yml',       label: 'Growth Agent' },
-  content:    { workflow: 'content-agent.yml',      label: 'Content Agent' },
   factcheck:  { workflow: 'factcheck-agent.yml',    label: 'Fact-Check Agent' },
   'sponsor-outreach': { workflow: 'sponsor-outreach.yml', label: 'Sponsor Outreach' },
 };

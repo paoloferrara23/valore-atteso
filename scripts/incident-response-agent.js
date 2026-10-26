@@ -84,8 +84,7 @@ async function main() {
     const runsSettimana = await supaFetch(`/rest/v1/agent_runs?created_at=gte.${settimanaFa}&select=agent&order=created_at.desc`);
     const agentiGirati = new Set((Array.isArray(runsSettimana) ? runsSettimana : []).map(r => r.agent));
     // NB: il nome deve combaciare con quello usato in logRun() da ogni agente.
-    // Il Content Agent si registra come 'content' (non 'content-agent').
-    const agentiAttesi = ['scout', 'seo', 'editoriale', 'growth', 'content', 'deliverability', 'security'];
+    const agentiAttesi = ['scout', 'seo', 'editoriale', 'growth', 'deliverability', 'security'];
     const agentiSilenti = agentiAttesi.filter(a => !agentiGirati.has(a));
     if (agentiSilenti.length > 0) {
       warnings.push({ tipo: 'AGENTS_SILENT', msg: `Agenti non eseguiti questa settimana: ${agentiSilenti.join(', ')}`, detail: 'Verificare schedule e logs GitHub Actions' });

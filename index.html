@@ -329,11 +329,10 @@ var VA_SOURCE=(function(){
 const AGENT_SCHEDULE=[
   {key:'scout',name:'Scout',day:'Sabato',time:'08:00',group:'editoriale',desc:'Web search su calcioefinanza.it, Swiss Ramble, UEFA, Deloitte, FT. Genera brief temi con scoring rilevanza.'},
   {key:'seo',name:'SEO',day:'Domenica',time:'08:00',group:'editoriale',desc:'Keyword research football finance. Salva parole chiave per ottimizzare visibilità organica dell\'edizione.'},
-  {key:'editoriale',name:'Editoriale',day:'Lunedì',time:'08:00',group:'editoriale',desc:'Opus Writer → Opus Editor → Sonnet Adapter. Genera bozza completa con soli dati Scout-verificati.'},
+  {key:'editoriale',name:'Editoriale',day:'Lunedì',time:'08:00',group:'editoriale',desc:'Opus Writer → Opus Editor. Genera bozza completa con soli dati Scout-verificati.'},
   {key:'approval',name:'Paolo',day:'Martedì',time:'Manuale',group:'gate',desc:'Revisione inline, approvazione, verifica gate e invio a tutti gli iscritti.'},
   {key:'deliverability',name:'Deliverability',day:'Martedì',time:'14:00',group:'operativo',desc:'Controlla invii, bounce, engagement e reputazione dominio dopo ogni send.'},
   {key:'growth',name:'Growth',day:'Mercoledì',time:'08:00',group:'operativo',desc:'Analizza crescita iscritti, canali, conversioni e opportunità distribuzione settimanale.'},
-  {key:'content',name:'Content',day:'Lunedì',time:'09:00',group:'operativo',desc:'Genera il calendario social (LinkedIn/Instagram) dall\'ultima bozza. Rigenerabile a mano dal tab Social.'},
   {key:'cost-guardian',name:'Cost Guardian',day:'Venerdì',time:'08:00',group:'operativo',desc:'Monitora costi API Anthropic, Resend, Vercel. Alert se superano soglie.'},
   {key:'security',name:'Security',day:'Ogni giorno',time:'10:00',group:'operativo',desc:'Controlla endpoint, chiavi API, configurazioni critiche e accessi anomali.'},
   {key:'incident-response',name:'Incident Response',day:'Ogni giorno',time:'09:00',group:'operativo',desc:'Verifica errori, anomalie nei log e incidenti operativi. Notifica Paolo se critico.'}
@@ -428,7 +427,6 @@ function crTab(name,btn){
   btn.classList.add('on');
   if(name==='redazione')crLoadBozze();
   if(name==='dashboard')crLoadCtx();
-  if(name==='social')crLoadCalendario();
   if(name==='sponsor')crLoadSponsors();
   if(name==='bilanci')crLoadBilanci();
 }
@@ -801,11 +799,11 @@ function crRenderOrg(){
     <div class="cr-org-row">
       <div class="cr-org-role">Produzione</div>
       <div class="cr-org-box">
-        <div class="cr-org-title">Editoriale (Opus Writer → Editor → Sonnet)</div>
-        <div class="cr-org-text">Pipeline a 3 fasi: bozza da Wiki context, revisione critica, adattamento social. Solo dati Scout-verificati. Lunedì 08:00.</div>
+        <div class="cr-org-title">Editoriale (Opus Writer → Editor)</div>
+        <div class="cr-org-text">Pipeline a 2 fasi: bozza da Wiki context e revisione critica. Solo dati Scout-verificati. Lunedì 08:00.</div>
         <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
           <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Lun 08:00</span>
-          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">→ editions + social_content</span>
+          <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">→ editions</span>
         </div>
       </div>
     </div>
@@ -821,8 +819,8 @@ function crRenderOrg(){
     <div class="cr-org-row">
       <div class="cr-org-role">Post-invio</div>
       <div class="cr-org-box">
-        <div class="cr-org-title">Deliverability · Growth · Content · Cost Guardian · Security · Incident Response</div>
-        <div class="cr-org-text">6 agenti operativi monitorano in automatico: engagement email, crescita iscritti, idee social, costi API, sicurezza e anomalie. Report settimanale via email a Paolo.</div>
+        <div class="cr-org-title">Deliverability · Growth · Cost Guardian · Security · Incident Response</div>
+        <div class="cr-org-text">5 agenti operativi monitorano in automatico: engagement email, crescita iscritti, costi API, sicurezza e anomalie. Report settimanale via email a Paolo.</div>
         <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
           <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Mar–Ven</span>
           <span style="font-family:var(--mn);font-size:8px;background:var(--cream2);border:1px solid var(--rule);padding:3px 8px">Ogni giorno</span>
@@ -841,167 +839,6 @@ async function crSendTest(){
     if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
     else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
-}
-// Stato globale calendario
-let crCalPosts=[];
-let crCalSelected=null;
-
-function crCopyText(text,btn,label){
-  navigator.clipboard.writeText(text).then(function(){
-    btn.textContent='✓ Copiato';
-    setTimeout(function(){btn.textContent=label;},2000);
-  }).catch(function(){btn.textContent='Errore';});
-}
-
-function crCalRenderDetail(idx){
-  const p=crCalPosts[idx];
-  if(!p)return;
-  crCalSelected=idx;
-  // Aggiorna selezione nel calendario
-  document.querySelectorAll('.cr-cal-day').forEach(function(d,i){
-    d.classList.toggle('selected',i===idx);
-  });
-  const det=document.getElementById('cr-cal-detail');
-  det.innerHTML='';
-
-  // Header
-  const hdr=document.createElement('div');
-  hdr.style.cssText='margin-bottom:20px';
-  const tipo=document.createElement('span');
-  const colori={TEASER:'#8E6B33',LANCIO:'#4a7c4e',APPROFONDIMENTO:'#1C4B8A',SCOUT_PREVIEW:'#6E675F'};
-  tipo.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:'+(colori[p.tipo]||'var(--ink)');
-  tipo.textContent=p.tipo;
-  const titolo=document.createElement('div');
-  titolo.style.cssText='font-family:var(--sf);font-size:1.2rem;font-weight:700;color:var(--ink);margin-top:4px;line-height:1.3';
-  titolo.textContent=p.tema||'';
-  hdr.appendChild(tipo);
-  hdr.appendChild(titolo);
-  det.appendChild(hdr);
-
-  // Sezione Instagram
-  function makeSection(label,text,btnLabel,dark){
-    const wrap=document.createElement('div');
-    wrap.style.cssText='margin-bottom:16px';
-    const lbl=document.createElement('div');
-    lbl.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.1em;color:var(--deepgold);text-transform:uppercase;margin-bottom:8px';
-    lbl.textContent=label;
-    const box=document.createElement('div');
-    box.style.cssText='font-size:12px;line-height:1.7;white-space:pre-wrap;padding:12px;border-radius:8px;max-height:180px;overflow-y:auto;'+(dark?'background:var(--ink);color:#F4EFE6;font-family:var(--mn)':'background:var(--cream2);color:var(--ink2)');
-    box.textContent=text||'—';
-    const btn=document.createElement('button');
-    btn.className='cr-btn light';
-    btn.style.cssText='margin-top:8px;font-size:9px;height:26px'+(dark?';background:var(--deepgold);color:var(--cream)':'');
-    btn.textContent=btnLabel;
-    const t=text||'';
-    btn.addEventListener('click',function(){crCopyText(t,btn,btnLabel);});
-    wrap.appendChild(lbl);
-    wrap.appendChild(box);
-    wrap.appendChild(btn);
-    return wrap;
-  }
-
-  det.appendChild(makeSection('📸 Instagram — Caption',p.instagram_caption,'Copia caption',false));
-  det.appendChild(makeSection('💼 LinkedIn',p.linkedin_post,'Copia LinkedIn',false));
-  if(p.chatgpt_prompt){
-    det.appendChild(makeSection('🎨 Prompt ChatGPT → immagine Instagram',p.chatgpt_prompt,'Copia prompt → ChatGPT',true));
-  }
-}
-
-async function crAggiornaCalendario(){
-  const st=document.getElementById('cr-social-stato');
-  st.style.display='block';st.className='cr-status';
-  st.textContent='Rigenerazione dall\'ultima bozza salvata in corso...';
-  try{
-    const r=await fetch('/api/trigger-content',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD}});
-    const d=await r.json().catch(function(){return {};});
-    if(r.ok&&d.ok){
-      st.className='cr-status ok';
-      st.innerHTML='✓ Content Agent avviato sull\'ultima bozza. Il calendario si aggiorna tra 2-3 minuti: poi clicca ↻ Ricarica per vederlo.';
-    }else{
-      st.className='cr-status err';
-      st.textContent='Errore avvio Content Agent: '+(d.error||('HTTP '+r.status));
-    }
-  }catch(e){
-    st.className='cr-status err';st.textContent='Errore: '+e.message;
-  }
-}
-
-async function crLoadCalendario(){
-  const el=document.getElementById('cr-social-calendario');
-  el.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted)">Caricamento...</div>';
-  try{
-    const r=await fetch(SURL+'/rest/v1/agent_memory?key=eq.social_calendario&select=value',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
-    const data=await r.json();
-    const cal=data?.[0]?.value;
-    if(!cal||!cal.posts||!cal.posts.length){
-      el.innerHTML='<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Nessun calendario disponibile. Il Content Agent gira ogni lunedì alle 09:00.</div>';
-      return;
-    }
-    crCalPosts=cal.posts;
-
-    el.innerHTML='';
-
-    // Info edizione
-    const info=document.createElement('div');
-    info.style.cssText='font-family:var(--mn);font-size:9px;color:var(--muted);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--rule)';
-    info.textContent='Edizione #'+esc(cal.edition_num)+' · Generato '+new Date(cal.generato).toLocaleDateString('it-IT');
-    el.appendChild(info);
-
-    // Layout: calendario + dettaglio
-    const layout=document.createElement('div');
-    layout.style.cssText='display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start';
-
-    // Colonna sinistra — calendario stile Apple
-    const calCol=document.createElement('div');
-    const colori={TEASER:'#8E6B33',LANCIO:'#4a7c4e',APPROFONDIMENTO:'#1C4B8A',SCOUT_PREVIEW:'#6E675F'};
-
-    crCalPosts.forEach(function(p,i){
-      const day=document.createElement('div');
-      day.className='cr-cal-day';
-      day.style.cssText='padding:10px 12px;border-radius:10px;cursor:pointer;margin-bottom:6px;border:1px solid transparent;transition:all .15s';
-      const col=colori[p.tipo]||'var(--ink)';
-      const dayName=document.createElement('div');
-      dayName.style.cssText='font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:'+col;
-      dayName.textContent=p.giorno;
-      const dayTipo=document.createElement('div');
-      dayTipo.style.cssText='font-family:var(--sf);font-size:13px;font-weight:600;color:var(--ink);margin-top:2px';
-      dayTipo.textContent=p.tipo.replace('_',' ');
-      const dayTema=document.createElement('div');
-      dayTema.style.cssText='font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4';
-      dayTema.textContent=(p.tema||'').slice(0,40)+(p.tema&&p.tema.length>40?'…':'');
-      day.appendChild(dayName);
-      day.appendChild(dayTipo);
-      day.appendChild(dayTema);
-      day.addEventListener('click',function(){crCalRenderDetail(i);});
-      day.addEventListener('mouseenter',function(){if(crCalSelected!==i)this.style.background='var(--cream2)';});
-      day.addEventListener('mouseleave',function(){if(crCalSelected!==i)this.style.background='';});
-      calCol.appendChild(day);
-    });
-
-    // CSS per .cr-cal-day.selected
-    if(!document.getElementById('cr-cal-style')){
-      const style=document.createElement('style');
-      style.id='cr-cal-style';
-      style.textContent='.cr-cal-day.selected{background:var(--ink)!important;border-color:var(--ink)!important}.cr-cal-day.selected *{color:#F4EFE6!important}';
-      document.head.appendChild(style);
-    }
-
-    // Colonna destra — dettaglio
-    const detCol=document.createElement('div');
-    detCol.id='cr-cal-detail';
-    detCol.style.cssText='min-height:200px';
-    detCol.innerHTML='<div style="font-family:var(--mn);font-size:10px;color:var(--muted);padding-top:20px">← Seleziona un giorno</div>';
-
-    layout.appendChild(calCol);
-    layout.appendChild(detCol);
-    el.appendChild(layout);
-
-    // Seleziona primo post automaticamente
-    if(crCalPosts.length)setTimeout(function(){crCalRenderDetail(0);},50);
-
-  }catch(e){
-    el.innerHTML='<div class="cr-status err">Errore: '+esc(e.message)+'</div>';
-  }
 }
 async function crRunGate(num,st){
   st.className='cr-status';st.style.display='block';
@@ -1110,7 +947,7 @@ STATO OPERATIVO ATTUALE:
 - Ultimi run agenti:\n${ultAgenti||'nessuno'}
 
 STACK: Vercel + Supabase + Resend + Anthropic API
-AGENTI ATTIVI (lo stato reale e nei run qui sopra): Scout, SEO, Editoriale, Growth, Content/Social, Deliverability, Security, Incident Response, Cost Guardian. Sponsor Outreach in pausa. Welcome Sequence esclusa per scelta.
+AGENTI ATTIVI (lo stato reale e nei run qui sopra): Scout, SEO, Editoriale, Growth, Deliverability, Security, Incident Response, Cost Guardian. Sponsor Outreach in pausa. Welcome Sequence esclusa per scelta.
 
 ROADMAP MONETIZZAZIONE (per soglia di iscritti confermati — vedi il numero live qui sopra):
 - Ora: crescita organica + LinkedIn, media kit
@@ -1120,7 +957,7 @@ ROADMAP MONETIZZAZIONE (per soglia di iscritti confermati — vedi il numero liv
 
 COSA PUOI FARE:
 - Suggerire angoli editoriali per le 3 sezioni
-- Scrivere opener, verdict, subject line, post LinkedIn
+- Scrivere opener, verdict, subject line
 - Analizzare dati iscritti e trend crescita
 - Rispondere a domande operative sul progetto
 - Aiutare a strutturare nuovi agenti o funzionalità
@@ -1346,75 +1183,6 @@ function crDeselect(edId,sezione){
   document.querySelectorAll('[data-edid="'+edId+'"][data-sez="'+sezione+'"].cr-option').forEach(function(el){el.classList.remove('selected');});
 }
 
-async function crLoadSocial(edId, edNum) {
-  // Carica social content dopo generazione
-  try {
-    const r = await fetch(SURL + '/rest/v1/social_content?edition_id=eq.' + edId + '&select=*', {
-      headers: { apikey: SKEY, Authorization: 'Bearer ' + SKEY }
-    });
-    const data = await r.json();
-    const sc = data?.[0];
-    if (!sc) return;
-
-    const box = document.getElementById('cr-social-' + edId);
-    if (!box) return;
-
-    box.innerHTML = '';
-    const header = document.createElement('div'); header.className = 'cr-social-header';
-    header.innerHTML = '<span>📱 Contenuti Social — Edizione #' + edNum + '</span><span style="opacity:.5">generati automaticamente</span>';
-    box.appendChild(header);
-
-    const wrap = document.createElement('div'); wrap.style.cssText = 'padding:14px';
-
-    // Tab switcher
-    const tabDiv = document.createElement('div'); tabDiv.className = 'cr-social-tab';
-    const tabs = [['ig','Instagram'], ['li','LinkedIn'], ['vis','Visual brief']];
-    const contents = { ig: sc.instagram_caption, li: sc.linkedin_post, vis: null };
-    const contentEl = document.createElement('div'); contentEl.className = 'cr-social-content';
-
-    tabs.forEach(([key, label]) => {
-      const btn = document.createElement('button');
-      btn.textContent = label;
-      if (key === 'ig') btn.classList.add('active');
-      btn.onclick = function() {
-        tabDiv.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        if (key === 'vis' && sc.visual) {
-          const v = sc.visual;
-          contentEl.innerHTML = '<div class="cr-visual-card">' +
-            '<div class="cr-visual-label">' + (v.layout_type||'') + ' · ' + (v.format||'') + '</div>' +
-            '<div class="cr-visual-label" style="margin-top:8px">Dato principale</div>' +
-            '<div class="cr-visual-number">' + (v.main_number||'—') + '</div>' +
-            '<div style="font-family:var(--sf);font-size:15px;font-weight:700;margin-bottom:4px">' + (v.headline||'') + '</div>' +
-            '<div style="color:var(--muted);font-size:11px;margin-bottom:8px">' + (v.subheadline||'') + '</div>' +
-            '<div class="cr-visual-label">Direzione immagine</div>' +
-            '<div style="color:var(--ink);font-size:11px;margin-bottom:8px">' + (v.image_direction||'') + '</div>' +
-            '<div class="cr-visual-label">Evitare</div>' +
-            '<div style="color:#C8251D;font-size:10px">' + (v.avoid||[]).join(' · ') + '</div>' +
-          '</div>';
-        } else {
-          contentEl.textContent = contents[key] || '—';
-        }
-      };
-      tabDiv.appendChild(btn);
-    });
-
-    contentEl.textContent = sc.instagram_caption || '—';
-
-    // Copy button
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'cr-btn light'; copyBtn.style.cssText = 'margin-top:8px;font-size:9px;height:26px';
-    copyBtn.textContent = 'Copia testo';
-    copyBtn.onclick = function() {
-      navigator.clipboard.writeText(contentEl.textContent).then(() => { copyBtn.textContent = '✓ Copiato'; setTimeout(() => copyBtn.textContent = 'Copia testo', 2000); });
-    };
-
-    wrap.appendChild(tabDiv); wrap.appendChild(contentEl); wrap.appendChild(copyBtn);
-    box.appendChild(wrap);
-    box.style.display = 'block';
-  } catch(e) { console.warn('Social load fallito:', e.message); }
-}
-
 async function crGeneraBozza(edId){
   var st=document.getElementById('bst-'+edId);
   st.className='cr-status';st.style.display='block';st.textContent='Generazione bozza...';
@@ -1465,15 +1233,8 @@ async function crSalvaModifiche(edId){
       headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
       body:JSON.stringify({title:title,sections:sections,date:date})});
     if(!r.ok)throw new Error('HTTP '+r.status);
-    st.className='cr-status ok';st.innerHTML='✓ Salvato. Generazione calendario social in corso...';
+    st.className='cr-status ok';st.innerHTML='✓ Salvato.';
     if(btn){btn.textContent='✓ Salvato';btn.style.background='#4a7c4e';}
-    fetch('/api/trigger-content',{method:'POST',headers:{'Content-Type':'application/json','x-cr-token':CR_PWD}})
-      .then(function(r){return r.json();})
-      .then(function(d){
-        if(d.ok)st.innerHTML='✓ Salvato. Calendario social in generazione — vedi tab Social tra 2-3 min.';
-        else st.innerHTML='✓ Salvato. <span style="color:#8E6B33">Content Agent: '+esc(d.error||'')+'</span>';
-      })
-      .catch(function(){st.innerHTML='✓ Salvato.';});
     setTimeout(function(){
       st.style.display='none';
       if(btn){btn.disabled=false;btn.textContent=origTxt;btn.style.background='';}
@@ -1690,7 +1451,6 @@ async function crLoadBozze(){
             (editionSponsors.length?'<div style="font-family:var(--mn);font-size:9px;color:#315C49;margin-bottom:12px">Sponsor associati: '+editionSponsors.length+' · inseriti nella posizione finale</div>':'')+
             mainDraftSponsors+previewSecs+secondaryDraftSponsors+
             '<div class="cr-status" id="bst-'+e.id+'"></div>'+
-          '<div id="cr-social-'+e.id+'" style="display:none;border-top:1px solid var(--rule);margin-top:16px"></div>'+
           '</div></div>';
       }else{
         return '<div class="cr-box" style="font-family:var(--mn);font-size:10px;color:var(--muted)">Bozza #'+esc(e.num)+' in elaborazione...</div>';
@@ -1853,7 +1613,6 @@ loadLatestPreview();
       <div class="cr-tabs">
         <button class="cr-tab on" onclick="crTab('dashboard',this)">Dashboard</button>
         <button class="cr-tab" onclick="crTab('pipeline',this)">Pipeline</button>
-        <button class="cr-tab" onclick="crTab('social',this)" id="cr-tab-social">Social</button>
         <button class="cr-tab" onclick="crTab('ad',this)">AD</button>
         <button class="cr-tab" onclick="crTab('redazione',this)">Redazione</button>
         <button class="cr-tab" onclick="crTab('sponsor',this)">Sponsor</button>
@@ -1894,23 +1653,6 @@ loadLatestPreview();
       <div class="cr-sec-title">Agenti</div><div class="cr-agents" id="cr-agents-list"></div>
       <div class="cr-sec-title">Programmazione agenti</div><div class="cr-schedule" id="cr-schedule-list"></div>
       <div class="cr-sec-title">Organigramma operativo</div><div class="cr-org" id="cr-org-chart"></div>
-    </div>
-
-    <div class="cr-panel" id="cr-social">
-      <div style="max-width:800px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
-          <div>
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Strategia di comunicazione</div>
-            <div style="font-family:var(--sf);font-size:1.4rem;font-weight:700;color:var(--ink)">Calendario social settimanale</div>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="cr-btn light" onclick="crLoadCalendario()">↻ Ricarica</button>
-            <button class="cr-btn" onclick="crAggiornaCalendario()">✦ Rigenera dall'ultima bozza</button>
-          </div>
-        </div>
-        <div id="cr-social-stato" class="cr-status" style="margin-bottom:16px"></div>
-        <div id="cr-social-calendario"></div>
-      </div>
     </div>
 
     <div class="cr-panel" id="cr-pipeline">
@@ -2004,23 +1746,6 @@ loadLatestPreview();
           </div>
         </div>
 
-        <!-- FASE 5 -->
-        <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">5</div>
-            <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
-          </div>
-          <div style="padding:0 0 28px 16px">
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--deepgold);text-transform:uppercase;margin-bottom:6px">Lunedì — Adattamento</div>
-            <div style="font-family:var(--sf);font-size:1.15rem;font-weight:700;color:var(--ink);margin-bottom:8px">Sonnet Adapter</div>
-            <div style="font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px">Claude Sonnet genera caption Instagram, post LinkedIn e visual brief per ogni edizione. Output salvato in social_content e visibile in Control Room.</div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">claude-sonnet-4</span>
-              <span style="font-family:var(--mn);font-size:9px;background:var(--cream2);border:1px solid var(--rule);padding:4px 10px;color:var(--ink2)">→ social_content</span>
-            </div>
-          </div>
-        </div>
-
         <!-- GATE UMANO 2 -->
         <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
           <div style="display:flex;flex-direction:column;align-items:center">
@@ -2037,10 +1762,10 @@ loadLatestPreview();
           </div>
         </div>
 
-        <!-- FASE 6 -->
+        <!-- FASE 5 -->
         <div style="display:grid;grid-template-columns:32px 1fr;gap:0;margin-bottom:0">
           <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">6</div>
+            <div style="width:32px;height:32px;background:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;font-weight:700;color:var(--deepgold);flex-shrink:0">5</div>
             <div style="width:2px;background:var(--rule);flex:1;margin:4px 0"></div>
           </div>
           <div style="padding:0 0 28px 16px">
@@ -2054,7 +1779,7 @@ loadLatestPreview();
           </div>
         </div>
 
-        <!-- FASE 7 — INVIO -->
+        <!-- FASE 6 — INVIO -->
         <div style="display:grid;grid-template-columns:32px 1fr;gap:0">
           <div style="display:flex;flex-direction:column;align-items:center">
             <div style="width:32px;height:32px;background:#4a7c4e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">&#10003;</div>
