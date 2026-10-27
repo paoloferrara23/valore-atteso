@@ -6,3 +6,5 @@ sql/
 .github/
 CLAUDE.md
 README.md
+dist/
+fixtures/
