@@ -20,7 +20,7 @@ const ED26 = data('edition-026.json');
 const vercel = JSON.parse(fs.readFileSync(path.join(siteRoot, 'vercel.json'), 'utf8'));
 const CSP = vercel.headers[0].headers.find(h => h.key === 'Content-Security-Policy').value;
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.xml': 'application/xml', '.txt': 'text/plain' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.xml': 'application/xml', '.txt': 'text/plain' };
 function serve(port) {
   return new Promise(res => {
     const srv = http.createServer((req, rsp) => {
