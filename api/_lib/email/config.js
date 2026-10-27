@@ -9,7 +9,8 @@ module.exports = {
   logos: {
     monogram: { file: 'va-monogramma-crema@2x.png', width: 64, height: 44 },
     lockup: { file: 'va-orizzontale-crema-su-ink@2x.png', width: 180, height: 60 },
-    baseUrl: 'https://valoreatteso.com/email/brand/',
+    // www: il dominio senza www risponde con un redirect 307, che alcuni client non seguono per le immagini.
+    baseUrl: 'https://www.valoreatteso.com/email/brand/',
   },
 
   // Dati legali: restano placeholder finché Paolo non li fornisce (bloccano "send").
