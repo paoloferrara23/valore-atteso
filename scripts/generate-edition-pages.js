@@ -211,6 +211,13 @@ function buildEditionHtml(ed) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(ed.title)}">
 <meta name="twitter:description" content="${esc(desc)}">
+<meta property="og:image" content="${SITE}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:image" content="${SITE}/og.png">
+<meta name="twitter:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.ico" sizes="any">
