@@ -10,7 +10,7 @@ const { isPh } = require('./validate');
 
 const C = {
   cream: '#F3EFE6', white: '#FFFFFF', paper: '#FBF9F4', ink: '#1C1914', text: '#2B2824', muted: '#4F545F',
-  blue: '#00266E', blue200: '#C9D2EA', blueRule: '#274681', goldDark: '#E5962E', goldLight: '#7A5C1E',
+  blue: '#00266E', blue700: '#0039A4', blue200: '#C9D2EA', blueRule: '#274681', goldDark: '#E5962E', goldLight: '#7A5C1E',
   goldBar: '#D67F0D', goldRule: '#B08A4B', inkText2: '#C9C2B6', legal: '#A8A196',
   line: '#DDD3C2', line2: '#E7DFD2', lineDark: '#3A352E',
 };
@@ -46,26 +46,28 @@ function formatDate(iso) {
   return `${DAYS[new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).getUTCDay()]} ${m[3]}.${m[2]}.${m[1]}`;
 }
 
-// ── Tabellone d'apertura ────────────────────────────────────────────────────
+// ── Testata blu compatta, filetto oro, apertura su crema ─────────────────────
+// La testata contiene solo riga edizione e logo; titolo, dek e sintesi stanno sotto, su crema.
+// Separatori fra le colonne della sintesi solo via CSS (@media e celle MSO), mai inline.
+const FN = "'Playfair Display','Times New Roman',Times,Georgia,serif"; // numeri: cifre lining anche nei ripieghi
+const arrow = s => esc(s).replace(/\s*(\u2193|\u2192)$/, ' <span aria-hidden="true">$1</span>');
+
 function hero(c, img) {
   const cols = c.summary.map((r, i) => {
-    const inner = i
-      ? `border-left:1px solid ${C.blueRule};padding:0 16px;`
-      : 'padding:0 16px 0 0;';
-    const mso = i ? '<!--[if mso]></td><td width="196" valign="top"><![endif]-->' : '';
+    const mso = i ? `<!--[if mso]></td><td width="196" valign="top" style="border-left:1px solid ${C.line};"><![endif]-->` : '';
     return `${mso}<div class="sum-col${i ? '' : ' sum-c1'}" style="display:inline-block;width:100%;max-width:196px;vertical-align:top;">
-<table ${T} width="100%"><tr><td class="sum-in" valign="top" style="${inner}">
+<table ${T} width="100%"><tr><td class="sum-in" valign="top" style="padding:0 16px;${i ? '' : 'padding-left:0;'}">
 <div class="sum-row">
-<p class="sum-n ff-d num" style="margin:0 0 10px;font-family:${FD};font-size:30px;line-height:34px;font-weight:700;color:${C.cream};${nowrap(r.number)}word-break:break-word;${NUM}">${esc(r.number)}</p>
+<p class="sum-n ff-n num lk" style="margin:0 0 10px;font-family:${FN};font-size:34px;line-height:38px;font-weight:700;color:${C.blue700};${nowrap(r.number)}word-break:break-word;${NUM}">${esc(r.number)}</p>
 <div class="sum-t">
-<p class="ff-m" style="margin:0 0 8px;${label(11, C.goldDark)}line-height:16px;font-weight:600;">${pad2(r.section_n)} &middot; ${esc(r.label)}</p>
-<p class="ff-t" style="margin:0;font-family:${FT};font-size:14.5px;line-height:1.5;color:${C.blue200};">${t(r.thesis)} <a href="#s${r.section_n}" style="display:inline-block;padding:12px 0;margin:-12px 0;color:${C.cream};font-weight:600;text-decoration:none;white-space:nowrap;">${esc(cfg.copy.readMore)}</a></p>
+<p class="ff-m gl" style="margin:0 0 8px;${label(11, C.goldLight)}line-height:16px;font-weight:600;">${pad2(r.section_n)} &middot; ${esc(r.label)}</p>
+<p class="ff-t t" style="margin:0;font-family:${FT};font-size:14.5px;line-height:1.5;color:${C.text};">${t(r.thesis)} <a href="#s${r.section_n}" class="lk" style="display:inline-block;padding:12px 0;margin:-12px 0;color:${C.blue};font-weight:600;text-decoration:none;white-space:nowrap;">${arrow(cfg.copy.readMore)}</a></p>
 </div>
 </div>
 </td></tr></table></div>`;
   }).join('');
 
-  return `<tr><td class="hero bdb" bgcolor="${C.blue}" style="background:${C.blue};">
+  return `<tr><td id="hdr" class="bdb" bgcolor="${C.blue}" style="background:${C.blue};">
 <table ${T} width="100%">
 <tr><td class="px" style="padding:16px 24px 0;">
 <table ${T} width="100%"><tr>
@@ -73,7 +75,7 @@ function hero(c, img) {
 <td class="ff-m hide-m" align="right" valign="top" style="${label(11, C.blue200)}line-height:16px;padding-left:16px;">${formatDate(c.date)}</td>
 </tr></table>
 </td></tr>
-<tr><td class="hd" style="padding:14px 16px 20px;">
+<tr><td class="hdc" style="padding:12px 16px 14px;">
 <table ${T}><tr>
 <td valign="middle" style="padding:0 14px 0 0;"><a href="${esc(vaUrl('/', 'testata_logo', c.edition))}" target="_blank" style="text-decoration:none;">${img.monogram}</a></td>
 <td valign="middle">
@@ -81,25 +83,24 @@ function hero(c, img) {
 <p class="ff-m motto" style="margin:4px 0 0;font-family:${FM};font-size:11px;line-height:16px;letter-spacing:.08em;text-transform:uppercase;color:${C.goldDark};white-space:nowrap;">${esc(cfg.copy.motto)}</p>
 </td></tr></table>
 </td></tr>
-<tr><td class="px" style="padding:0 24px;"><table ${T} width="100%"><tr><td height="1" style="height:1px;line-height:1px;font-size:0;border-top:1px solid ${C.blueRule};">&nbsp;</td></tr></table></td></tr>
-<tr><td class="px lead" style="padding:24px 24px 0;">
-<p class="ff-m" style="margin:0 0 8px;${label(11, C.goldDark)}line-height:16px;font-weight:600;">${esc(c.kicker)}</p>
-<h1 class="ff-d h1 num" style="margin:0 0 12px;font-family:${FD};font-size:30px;line-height:35px;font-weight:700;color:${C.cream};${NUM}">${t(c.title)}</h1>
-<p class="ff-t" style="margin:0;font-family:${FT};font-size:16px;line-height:1.55;color:${C.blue200};">${t(c.dek)}</p>
+</table>
 </td></tr>
-<tr><td class="px sum-h" style="padding:32px 24px 0;">
-<p class="ff-m" style="margin:0;padding:0 0 10px;${label(11, C.cream)}line-height:16px;font-weight:600;border-bottom:2px solid ${C.goldBar};">${esc(cfg.copy.summaryTitle)}</p>
+<tr><td bgcolor="${C.goldBar}" height="4" style="height:4px;line-height:4px;font-size:0;background:${C.goldBar};">&nbsp;</td></tr>
+<tr><td class="px lead pg" bgcolor="${C.cream}" style="background:${C.cream};padding:28px 24px 0;">
+<p class="ff-m gl" style="margin:0 0 8px;${label(11, C.goldLight)}line-height:16px;font-weight:600;">${esc(c.kicker)}</p>
+<h1 class="ff-d h1 t num" style="margin:0 0 12px;font-family:${FD};font-size:30px;line-height:35px;font-weight:700;color:${C.ink};${NUM}">${t(c.title)}</h1>
+<p class="ff-t t" style="margin:0;font-family:${FT};font-size:16px;line-height:1.55;color:${C.text};">${t(c.dek)}</p>
 </td></tr>
-<tr><td class="px sum-g" style="padding:16px 24px 28px;">
+<tr><td class="px sum-h pg" bgcolor="${C.cream}" style="background:${C.cream};padding:32px 24px 0;">
+<p class="ff-m t rule-blue" style="margin:0;padding:0 0 10px;${label(11, C.ink)}line-height:16px;font-weight:600;border-bottom:2px solid ${C.blue700};">${esc(cfg.copy.summaryTitle)}</p>
+</td></tr>
+<tr><td class="px sum-g pg ln" bgcolor="${C.cream}" style="background:${C.cream};padding:16px 24px 28px;border-bottom:1px solid ${C.line};">
 <div style="font-size:0;line-height:0;">
 <!--[if mso]><table ${T} width="592"><tr><td width="196" valign="top"><![endif]-->
 ${cols}
 <!--[if mso]></td></tr></table><![endif]-->
 </div>
-</td></tr>
-</table>
-</td></tr>
-<tr><td bgcolor="${C.goldBar}" height="4" style="height:4px;line-height:4px;font-size:0;background:${C.goldBar};">&nbsp;</td></tr>`;
+</td></tr>`;
 }
 
 // ── KPI ibridi: si impilano anche senza media query ──────────────────────────
@@ -276,7 +277,7 @@ function renderHtml(c, opts = {}) {
 <title>${esc(c.title)} · Valore Atteso #${esc(c.edition)}</title>
 <!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=Inter:wght@400;600&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"><!--<![endif]-->
 <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
-<style>.ff-d{font-family:Georgia,serif !important;}.ff-t{font-family:Arial,sans-serif !important;}.ff-m{font-family:'Courier New',monospace !important;}.hd{padding:16px 24px 24px !important;}.motto{letter-spacing:.14em !important;}</style><![endif]-->
+<style>.ff-d{font-family:Georgia,serif !important;}.ff-n{font-family:'Times New Roman',serif !important;}.ff-t{font-family:Arial,sans-serif !important;}.ff-m{font-family:'Courier New',monospace !important;}.hdc{padding:12px 24px 14px !important;}.motto{letter-spacing:.14em !important;}</style><![endif]-->
 <style>
 :root{color-scheme:light dark;supported-color-schemes:light dark;}
 body{margin:0;padding:0;width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
@@ -286,8 +287,10 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .num{font-variant-numeric:lining-nums !important;}
 .tab{font-variant-numeric:tabular-nums lining-nums !important;}
 @media only screen and (min-width:601px){
-.hd{padding:16px 24px 24px !important;}
+.hdc{padding:12px 24px 14px !important;}
 .motto{letter-spacing:.14em !important;}
+.sum-in{border-left:1px solid ${C.line} !important;}
+.sum-c1 .sum-in{border-left:0 !important;}
 }
 @media only screen and (max-width:600px){
 .wrap{width:100% !important;}
@@ -300,10 +303,10 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .sum-h{padding-top:24px !important;}
 .sum-g{padding:12px 16px 20px !important;}
 .sum-col{display:block !important;max-width:none !important;width:100% !important;}
-.sum-in{padding:14px 0 !important;border-left:0 !important;border-top:1px solid ${C.blueRule} !important;}
+.sum-in{padding:14px 0 !important;border-left:0 !important;border-top:1px solid ${C.line} !important;}
 .sum-c1 .sum-in{border-top:0 !important;padding-top:4px !important;}
 .sum-row{display:table !important;width:100% !important;}
-.sum-n{display:table-cell !important;width:136px !important;margin:0 !important;font-size:24px !important;line-height:28px !important;vertical-align:top;}
+.sum-n{display:table-cell !important;width:136px !important;margin:0 !important;font-size:28px !important;line-height:32px !important;vertical-align:top;}
 .sum-t{display:table-cell !important;vertical-align:top;}
 .sec1{padding-top:28px !important;}
 .stack{display:block !important;width:100% !important;box-sizing:border-box;}
