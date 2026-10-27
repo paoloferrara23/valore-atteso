@@ -1,0 +1,511 @@
+{
+  "label": "dopo",
+  "pages": {
+    "home-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Inter"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "home-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.74,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Inter"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "archivio-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "archivio-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "lettore-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio.",
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "lettore-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio.",
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "about-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Playfair Display",
+        "Inter",
+        "Arial"
+      ],
+      "title": "Chi siamo — Valore Atteso",
+      "h1": [
+        "Il calcio letto come un business."
+      ]
+    },
+    "about-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Arial",
+        "Playfair Display",
+        "Inter"
+      ],
+      "title": "Chi siamo — Valore Atteso",
+      "h1": [
+        "Il calcio letto come un business."
+      ]
+    },
+    "sponsor-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Sponsorizza | Valore Atteso",
+      "h1": [
+        "Il tuo brand, nel contesto giusto."
+      ]
+    },
+    "sponsor-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Sponsorizza | Valore Atteso",
+      "h1": [
+        "Il tuo brand, nel contesto giusto."
+      ]
+    },
+    "404-1440": {
+      "status": 404,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Playfair Display",
+        "Inter",
+        "Arial"
+      ],
+      "title": "Pagina non trovata — Valore Atteso",
+      "h1": [
+        "Pagina non trovata"
+      ]
+    },
+    "404-375": {
+      "status": 404,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4",
+        "Arial",
+        "Playfair Display",
+        "Inter"
+      ],
+      "title": "Pagina non trovata — Valore Atteso",
+      "h1": [
+        "Pagina non trovata"
+      ]
+    },
+    "edizione-26-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "edizione-26-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.23,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "JetBrains Mono",
+        "Source Serif 4"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    }
+  },
+  "network": {
+    "subscribeRequests": 2,
+    "subscribePayloads": [
+      "{\"email\":\"test@example.org\",\"source\":\"direct__hero\"}",
+      "{\"email\":\"test@example.org\",\"source\":\"direct__hero\"}"
+    ],
+    "supabaseQueries": [
+      "editions?select=num,title,subtitle,opener,sections&published=eq.true&order=num.desc&limit=1",
+      "editions?select=num,title,date,tags,subtitle&order=num.desc&published=eq.true",
+      "editions?num=eq.026&published=eq.true&select=id,num,title,subtitle,date,opener,sections,tags"
+    ],
+    "blockedExternal": []
+  },
+  "extra": {
+    "status": {
+      "/og.png": 200,
+      "/favicon.ico": 200,
+      "/favicon.svg": 200,
+      "/apple-touch-icon-180x180.png": 200,
+      "/icon-512x512.png": 200,
+      "/site.webmanifest": 200,
+      "/brand/svg/orizzontale-ink.svg": 200,
+      "/brand/svg/monogramma-ink.svg": 200,
+      "/brand/svg/monogramma-crema.svg": 200,
+      "/pagina-che-non-esiste": 404
+    },
+    "meta": {
+      "404": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Pagina non trovata — Valore Atteso",
+        "og:description": "La pagina che cerchi non esiste o è stata spostata. Leggi l'archivio di Valore Atteso, la newsletter sul business del calcio.",
+        "og:url": "https://www.valoreatteso.com/",
+        "og:type": "website",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      },
+      "home": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+        "og:description": "Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.",
+        "og:url": "https://valoreatteso.com",
+        "og:type": "website",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      },
+      "archivio": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Archivio — Valore Atteso",
+        "og:description": "Archivio Valore Atteso — tutte le edizioni della newsletter sul business del calcio globale.",
+        "og:url": "https://www.valoreatteso.com/archivio",
+        "og:type": "website",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      },
+      "about": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Chi siamo — Valore Atteso",
+        "og:description": "Valore Atteso è una newsletter indipendente che analizza il business del calcio attraverso strumenti di corporate finance e strategia.",
+        "og:url": "https://www.valoreatteso.com/about",
+        "og:type": "website",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      },
+      "sponsor": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Sponsorizza | Valore Atteso",
+        "og:description": "Sponsorizza Valore Atteso: slot newsletter per brand attivi in Corporate Finance, M&A, Private Equity e Sport Business.",
+        "og:url": "https://www.valoreatteso.com/sponsor",
+        "og:type": "website",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      },
+      "edizione-26": {
+        "og:image": "https://www.valoreatteso.com/og.png",
+        "og:image:width": "1200",
+        "og:image:height": "630",
+        "og:image:alt": "Valore Atteso. Il calcio dei numeri, non dei goal.",
+        "og:title": "Il Milan spende, il Valencia apre ai soci, il Real incassa",
+        "og:description": "Il Milan fa mercato da Champions giocando l'Europa League, il Valencia vende il 42% per finire lo stadio, Real e Barça superano il miliardo ma solo uno…",
+        "og:url": "https://www.valoreatteso.com/edizione-26",
+        "og:type": "article",
+        "twitter:card": "summary_large_image",
+        "twitter:image": "https://www.valoreatteso.com/og.png",
+        "icon": true,
+        "apple": true
+      }
+    },
+    "form": {
+      "consenso": {
+        "invalid": "true",
+        "describedby": "form-check-err",
+        "msg": "Per iscriverti accetta la Privacy Policy.",
+        "focus": true
+      },
+      "email": {
+        "invalid": "true",
+        "msg": "Inserisci un indirizzo email valido.",
+        "focus": true
+      },
+      "successo": "✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma. Se non lo vedi, guarda in spam o promozioni.\nFATTO ✓\nPer advisor, investitori, manager e opera",
+      "erroreServer": "Iscrizione non riuscita. Controlla l'email e riprova, oppure scrivici a info@valoreatteso.com\nISCRIVITI →\nPer advisor, investitori, manager e operatori del settore sportivo.\nAccetto la Privacy Policy "
+    },
+    "keyboard": {
+      "steps": 30,
+      "withoutRing": [],
+      "first": [
+        {
+          "tag": "a",
+          "text": "Vai al contenuto",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Newsletter",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Archivio",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Club Intelligence",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Glossario",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "About",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Sponsorizza",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "a",
+          "text": "Iscriviti gratis",
+          "ring": true,
+          "y": 10
+        },
+        {
+          "tag": "input",
+          "text": "Email",
+          "ring": true,
+          "y": 381
+        },
+        {
+          "tag": "button",
+          "text": "Iscriviti →",
+          "ring": true,
+          "y": 381
+        },
+        {
+          "tag": "input",
+          "text": "checkbox",
+          "ring": true,
+          "y": 488
+        }
+      ]
+    }
+  }
+}
