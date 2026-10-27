@@ -223,10 +223,20 @@ I tre temi dell'edizione:
 - La Metrica: ${secMetrica.title}
 
 L'opener è 2-3 frasi che legano i tre temi e invogliano a leggere, tono Valore Atteso "make it simple".
-Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
+
+Per l'email servono anche:
+- "preheader": una frase di 85-100 caratteri, senza puntini finali, con i numeri chiave.
+- "tesi": tre frasi (una per sezione, nell'ordine Bilancio, Deal, Metrica), max 110 caratteri ciascuna, che dicono cosa significa il numero principale della sezione.
+- "da_guardare": tre frasi brevi (una per sezione) su cosa seguire nelle prossime settimane: date, scadenze, documenti attesi.
+Usa solo numeri presenti nelle sezioni, senza arrotondarli. Non nominare mai testate, agenzie o social. Niente trattino lungo.
+
+Sezioni complete:
+${sections.map(s => `${s.label}: ${s.title}\nKPI: ${(s.kpis || []).map(k => `${k.label} ${k.value}`).join('; ')}\n${String(s.body || '').slice(0, 1200)}`).join('\n\n')}
+
+Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"...","preheader":"...","tesi":["...","...","..."],"da_guardare":["...","...","..."]}`;
     let meta = { title: `Edizione #${draft.num}`, subtitle: '', opener: '' };
     try {
-      const metaRaw = await callClaude([{ role: 'user', content: metaPrompt }], genSystem, 'claude-sonnet-4-6', 600);
+      const metaRaw = await callClaude([{ role: 'user', content: metaPrompt }], genSystem, 'claude-sonnet-4-6', 1200);
       meta = parseJSON(metaRaw);
     } catch (e) { console.warn('Meta non generata:', e.message); }
 
@@ -238,6 +248,23 @@ Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
       sections,
       date:     date || draft.date,
     }).eq('id', editionId);
+
+    // Campi del template email (colonna `email`): in un update separato, così un errore
+    // qui non perde la bozza. Se mancano, il template usa sottotitolo e titoli delle sezioni.
+    try {
+      const str = v => (typeof v === 'string' ? v.trim() : '');
+      const tesi = Array.isArray(meta.tesi) ? meta.tesi.map(str) : [];
+      const watch = (Array.isArray(meta.da_guardare) ? meta.da_guardare.map(str) : [])
+        .map((text, i) => ({ label: sections[i] && sections[i].label, text }))
+        .filter(w => w.label && w.text);
+      const email = {
+        ...(str(meta.preheader) ? { preheader: str(meta.preheader) } : {}),
+        summary: sections.map((_, i) => (tesi[i] ? { thesis: tesi[i] } : {})),
+        watch,
+      };
+      const { error: emErr } = await supabase.from('editions').update({ email }).eq('id', editionId);
+      if (emErr) console.warn('Campi email non salvati:', emErr.message);
+    } catch (e) { console.warn('Campi email non salvati:', e.message); }
 
     console.log(`Bozza #${draft.num} generata.`);
     return res.status(200).json({
