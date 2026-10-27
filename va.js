@@ -144,3 +144,31 @@ function vaSub(form) {
     .catch(function () { done(); st.textContent = 'Errore di rete. Riprova.'; st.className = cls + ' err'; btn.textContent = old; });
   return false;
 }
+
+// Date in italiano: "27 ott 2026" dentro <time datetime="2026-10-27">.
+// Accetta ISO (2026-10-27) e le date già scritte per esteso nelle prime edizioni ("19 maggio 2026").
+var VA_MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+function vaIsoDate(v) {
+  var s = String(v || '').trim();
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if (m) return m[1] + '-' + m[2] + '-' + m[3];
+  m = /^(\d{1,2})\s+([a-zà]+)\s+(\d{4})$/i.exec(s);
+  if (m) { var i = VA_MESI.indexOf(m[2].toLowerCase()); if (i >= 0) return m[3] + '-' + String(i + 1).padStart(2, '0') + '-' + String(m[1]).padStart(2, '0'); }
+  return null;
+}
+function vaFormatDate(v) {
+  var iso = vaIsoDate(v);
+  if (!iso) return String(v || '');
+  var d = new Date(iso + 'T00:00:00Z');
+  return new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(d).replace(/\./g, '');
+}
+// Riempie `el` con <time datetime="..."> (o il testo così com'è se la data non è leggibile).
+function vaSetDate(el, v) {
+  var iso = vaIsoDate(v);
+  el.textContent = '';
+  if (!iso) { el.textContent = String(v || ''); return; }
+  var t = document.createElement('time');
+  t.setAttribute('datetime', iso);
+  t.textContent = vaFormatDate(v);
+  el.appendChild(t);
+}

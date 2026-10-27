@@ -58,6 +58,24 @@ function bodyParas(body) {
     .map(p => `<p class="sec-body">${esc(p)}</p>`).join('');
 }
 
+// Data in italiano ("27 ott 2026") dentro <time datetime>, come in /archivio (vaSetDate in va.js).
+const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+function isoDate(v) {
+  const s = String(v || '').trim();
+  let m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = /^(\d{1,2})\s+([a-zà]+)\s+(\d{4})$/i.exec(s);
+  const i = m ? MESI.indexOf(m[2].toLowerCase()) : -1;
+  return i >= 0 ? `${m[3]}-${String(i + 1).padStart(2, '0')}-${String(m[1]).padStart(2, '0')}` : null;
+}
+function timeTag(v) {
+  const iso = isoDate(v);
+  if (!iso) return esc(v);
+  const txt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
+    .format(new Date(iso + 'T00:00:00Z')).replace(/\./g, '');
+  return `<time datetime="${iso}">${esc(txt)}</time>`;
+}
+
 // Form di cattura email inline (un solo campo, nessun redirect). Il source
 // per-edizione permette di sapere quale contenuto converte (es. edizione-020__fine).
 function inlineForm(source, cta) {
@@ -283,7 +301,7 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 </div></nav>
 
 <article class="wrap">
-  <div class="kicker">Edizione #${esc(ed.num)} · ${esc(ed.date)}</div>
+  <div class="kicker">Edizione #${esc(ed.num)} · ${timeTag(ed.date)}</div>
   <h1>${esc(ed.title)}</h1>
   ${ed.subtitle ? `<div class="sub">${esc(ed.subtitle)}</div>` : ''}
   ${ed.opener ? `<p class="opener">${esc(teaser(ed.opener, 420))}</p>` : ''}

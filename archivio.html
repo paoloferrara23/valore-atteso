@@ -548,7 +548,7 @@ async function loadList(){
 
       const dateEl = document.createElement('div');
       dateEl.className = 'ed-date';
-      dateEl.textContent = e.date;
+      vaSetDate(dateEl, e.date);
 
       row.appendChild(numEl);
       row.appendChild(mid);
@@ -630,7 +630,7 @@ async function openArt(num){
     numBig.textContent = '#' + e.num;
     const dateEl = document.createElement('div');
     dateEl.className = 'art-date';
-    dateEl.textContent = e.date;
+    vaSetDate(dateEl, e.date);
     mastheadRight.appendChild(numLabel);
     mastheadRight.appendChild(numBig);
     mastheadRight.appendChild(dateEl);
