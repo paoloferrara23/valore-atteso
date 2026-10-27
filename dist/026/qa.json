@@ -1,0 +1,255 @@
+{
+  "edition": "026",
+  "renders": {
+    "640-light": {
+      "s1": 643,
+      "height": 5246,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 11,
+      "kpiTops": [
+        797,
+        797,
+        797
+      ],
+      "kpiStacked": null,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "640-dark": {
+      "s1": 645,
+      "height": 5282,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 11,
+      "kpiTops": [
+        799,
+        799,
+        799
+      ],
+      "kpiStacked": null,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-light": {
+      "s1": 768,
+      "height": 7343,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 11,
+      "kpiTops": [
+        942,
+        984,
+        1027
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-dark": {
+      "s1": 770,
+      "height": 7379,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 11,
+      "kpiTops": [
+        944,
+        986,
+        1029
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-senza-media-query": {
+      "s1": 913,
+      "height": 7828,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 11,
+      "kpiTops": [
+        1123,
+        1200,
+        1277
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 2,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    }
+  },
+  "graphicPairs": {
+    "filetto oro / ink": 5.76,
+    "filetto oro / pagina dark": 6.2,
+    "bordo footer / pagina dark": 1.55,
+    "bordo sintesi / pagina dark": 2.24,
+    "blu / ink (motivo del filetto)": 1.25
+  },
+  "introVariant": {
+    "s1": 933,
+    "overBy": 133
+  },
+  "missingText": [],
+  "validation": {
+    "fonti vuote": [
+      "sections[0].sources: schema: almeno 1 elementi"
+    ],
+    "sintesi con 2 righe": [
+      "summary: schema: almeno 3 elementi"
+    ],
+    "numero KPI mancante": [
+      "sections[0].kpi[0].value: numero mancante"
+    ],
+    "numero sintesi assente nella sezione": [
+      "summary[2].number: il numero non compare nella sezione 3"
+    ],
+    "numero ripetuto KPI/modulo": [
+      "sections[0]: numero ripetuto nella sezione (565m)"
+    ],
+    "modulo non valido": [
+      "sections[2].module.type: schema: uno tra bars, deal, vs, none"
+    ],
+    "cella vs vuota": [
+      "sections[2].module.rows[0].b: cella vuota"
+    ],
+    "valore vs con trattino": [
+      "sections[2].module.rows[3].b: valore assente reso con un trattino: il dato va scritto esplicito"
+    ],
+    "fonte su dominio di stampa": [
+      "sections[0].sources[0].url: fonte di stampa o social non ammessa",
+      "sections[0].sources[0].url: nome di testata o social",
+      "output: placeholder rimasti nell'output (4)"
+    ],
+    "fonte con testo generico": [
+      "sections[0].sources[0].testo: il testo del link deve essere il nome del documento",
+      "output: placeholder rimasti nell'output (4)"
+    ],
+    "UTM su fonte esterna": [
+      "sections[0].sources[0].url: niente UTM sulle fonti esterne",
+      "output: placeholder rimasti nell'output (4)",
+      "output: HTML: UTM su un link esterno (https://example.org/a?utm_source=x)",
+      "output: text/plain: UTM su un link esterno (https://example.org/a?utm_source=x)"
+    ],
+    "numero di iscritti": [
+      "dek: numero di iscritti",
+      "output: numero di iscritti nell'output"
+    ],
+    "preheader troncato": [
+      "preheader: preheader troncato con \"…\": serve un testo dedicato"
+    ],
+    "026 in send (atteso: bloccato)": "23 errori",
+    "026 pulita in send, dati legali ancora placeholder (atteso: bloccato)": [
+      "output: placeholder rimasti nell'output (4)"
+    ],
+    "026 pulita in send, dati legali compilati (atteso: OK)": []
+  }
+}

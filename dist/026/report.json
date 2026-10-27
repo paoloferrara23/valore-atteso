@@ -1,0 +1,132 @@
+{
+  "edition": "026",
+  "mode": "preview",
+  "errors": [],
+  "warnings": [
+    {
+      "level": "warning",
+      "field": "sections[0].sources[1].testo",
+      "rule": "nome di testata o social",
+      "value": "ESPN"
+    },
+    {
+      "level": "warning",
+      "field": "sections[1].body[1]",
+      "rule": "nome di testata o social",
+      "value": "Reuters"
+    },
+    {
+      "level": "warning",
+      "field": "sections[1].sources[1].testo",
+      "rule": "nome di testata o social",
+      "value": "Reuters"
+    },
+    {
+      "level": "warning",
+      "field": "sections[1].sources[2].testo",
+      "rule": "nome di testata o social",
+      "value": "Inside World Football"
+    },
+    {
+      "level": "warning",
+      "field": "sections[1].sources[3].testo",
+      "rule": "nome di testata o social",
+      "value": "The Stadium Business"
+    },
+    {
+      "level": "warning",
+      "field": "sections[2].sources[1].testo",
+      "rule": "nome di testata o social",
+      "value": "Forbes"
+    },
+    {
+      "level": "warning",
+      "field": "sections[2].sources[2].testo",
+      "rule": "nome di testata o social",
+      "value": "ESPN"
+    },
+    {
+      "level": "warning",
+      "field": "sections[2].sources[3].testo",
+      "rule": "nome di testata o social",
+      "value": "ESPN"
+    },
+    {
+      "level": "warning",
+      "field": "approvals.copy",
+      "rule": "approvazione mancante",
+      "value": false
+    },
+    {
+      "level": "warning",
+      "field": "approvals.factcheck",
+      "rule": "approvazione mancante",
+      "value": false
+    },
+    {
+      "level": "warning",
+      "field": "approvals.paolo",
+      "rule": "approvazione mancante",
+      "value": false
+    }
+  ],
+  "placeholders": [
+    "sections[0].sources[0].url: [[DA_FORNIRE: url del documento]]",
+    "sections[0].sources[1].url: [[DA_FORNIRE: url del documento]]",
+    "sections[0].sources[2].url: [[DA_FORNIRE: url del documento]]",
+    "sections[1].sources[0].url: [[DA_FORNIRE: url del documento]]",
+    "sections[1].sources[1].url: [[DA_FORNIRE: url del documento]]",
+    "sections[1].sources[2].url: [[DA_FORNIRE: url del documento]]",
+    "sections[1].sources[3].url: [[DA_FORNIRE: url del documento]]",
+    "sections[2].sources[0].url: [[DA_FORNIRE: url del documento]]",
+    "sections[2].sources[1].url: [[DA_FORNIRE: url del documento]]",
+    "sections[2].sources[2].url: [[DA_FORNIRE: url del documento]]",
+    "sections[2].sources[3].url: [[DA_FORNIRE: url del documento]]"
+  ],
+  "subject": "#026 - Il Milan spende, il Valencia apre ai soci, il Real incassa",
+  "outputPlaceholders": [
+    "html: tamento: [[TITOLARE]] , [[INDIRIZZO]] &middot;",
+    "html: LARE]] , [[INDIRIZZO]] &middot; Informativa pri",
+    "text: /09/2026 ([[DA_FORNIRE: url del documento]]) - ESP",
+    "text: /06/2026 ([[DA_FORNIRE: url del documento]]) - UEF",
+    "text: 024-2027 ([[DA_FORNIRE: url del documento]]) — 02",
+    "text: bre 2026 ([[DA_FORNIRE: url del documento]]) - Reu",
+    "text: bre 2026 ([[DA_FORNIRE: url del documento]]) - Ins",
+    "text: /10/2026 ([[DA_FORNIRE: url del documento]]) - The",
+    "text: aio 2025 ([[DA_FORNIRE: url del documento]]) — 03",
+    "text: /07/2026 ([[DA_FORNIRE: url del documento]]) - For",
+    "text: /07/2026 ([[DA_FORNIRE: url del documento]]) - ESP",
+    "text: bre 2026 ([[DA_FORNIRE: url del documento]]) - ESP",
+    "text: /10/2026 ([[DA_FORNIRE: url del documento]]) — CO",
+    "text: ttamento: [[TITOLARE]], [[INDIRIZZO]] · Privacy: h",
+    "text: TOLARE]], [[INDIRIZZO]] · Privacy: https://valorea"
+  ],
+  "weightKB": {
+    "html": 50.5,
+    "text": 9.7
+  },
+  "sha256": {
+    "html": "c615a052552e3cb930a87b86836e411e90750da5f3a3050d4f17a2f0c5ba01b1",
+    "text": "55694427f2d085a7a1791687571d4a35ebfb1103c307d88650f9253df19a947a"
+  },
+  "hrefs": [
+    "https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=testata_logo",
+    "#s1",
+    "#s2",
+    "#s3",
+    "[[DA_FORNIRE: url del documento]]",
+    "https://wa.me/?text=Ti%20condivido%20l'ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%20https%3A%2F%2Fvaloreatteso.com%2F026%3Futm_source%3Dwhatsapp%26utm_medium%3Dshare%26utm_campaign%3Dva-026",
+    "mailto:?subject=Valore%20Atteso%20%23026%20%C2%B7%20Il%20Milan%20spende%2C%20il%20Valencia%20apre%20ai%20soci%2C%20il%20Real%20incassa&body=Ti%20condivido%20l'ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0Ahttps%3A%2F%2Fvaloreatteso.com%2F026%3Futm_source%3Demail%26utm_medium%3Dshare%26utm_campaign%3Dva-026",
+    "https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=inoltrata_iscriviti",
+    "https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=footer_logo",
+    "https://valoreatteso.com/026?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=footer_leggi_online",
+    "https://valoreatteso.com/archivio?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=footer_archivio",
+    "https://valoreatteso.com/026?utm_source=newsletter&utm_medium=email&utm_campaign=va-026&utm_content=footer_fonti",
+    "mailto:info@valoreatteso.com?subject=Valore%20Atteso%20%23026",
+    "https://valoreatteso.com/privacy",
+    "https://www.valoreatteso.com/cancella?email={{EMAIL}}",
+    "https://valoreatteso.com/026?utm_source=whatsapp&utm_medium=share&utm_campaign=va-026",
+    "https://valoreatteso.com/026?utm_source=email&utm_medium=share&utm_campaign=va-026"
+  ],
+  "deterministic": true
+}
