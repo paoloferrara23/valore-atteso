@@ -1,10 +1,10 @@
 # QA #026
 
-- **640-light**: #s1 a 612px · altezza 5172px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati null · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
-- **640-dark**: #s1 a 614px · altezza 5234px · overflow false · contrasto min 5.81 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati null · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
-- **375-light**: #s1 a 781px · altezza 7102px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
-- **375-dark**: #s1 a 783px · altezza 7189px · overflow false · contrasto min 5.81 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
-- **375-senza-media-query**: #s1 a 781px · altezza 7102px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
+- **640-light**: #s1 a 604px · altezza 5237px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati null · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
+- **640-dark**: #s1 a 606px · altezza 5293px · overflow false · contrasto min 5.81 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati null · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
+- **375-light**: #s1 a 771px · altezza 7189px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
+- **375-dark**: #s1 a 773px · altezza 7245px · overflow false · contrasto min 5.81 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
+- **375-senza-media-query**: #s1 a 771px · altezza 7189px · overflow false · contrasto min 5.42 (sotto 4,5: 0) · font <11px 0 · testo <12px 0 · tap <44px 0 (link fonti nel testo 0) · KPI impilati true · etichette barre a capo 0 · motto righe 1 · loghi 64×44 def 0, 180×60 def 0
 
 ## Coppie grafiche
 - filetto oro / ink: 5.76:1
