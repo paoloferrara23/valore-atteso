@@ -16,18 +16,6 @@
   },
   "rewrites": [
     {
-      "source": "/00:n(\\d)",
-      "destination": "/edizione-:n"
-    },
-    {
-      "source": "/0:n([1-9]\\d)",
-      "destination": "/edizione-:n"
-    },
-    {
-      "source": "/:n([1-9]\\d\\d)",
-      "destination": "/edizione-:n"
-    },
-    {
       "source": "/admin",
       "destination": "/api/run-agent?action=adminPage"
     },

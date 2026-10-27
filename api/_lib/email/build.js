@@ -4,11 +4,12 @@
 // Modalità:
 //   preview  anteprima per Paolo: placeholder ammessi ed elencati, immagini da percorso locale
 //   test     come preview, ma immagini con URL assoluto (per l'invio di prova a un solo indirizzo)
-//   send     HTML per Brevo: ogni placeholder, fonte di stampa o approvazione mancante blocca
+//   send     HTML per Brevo: placeholder, nomi di stampa, link non ammessi o edizione non approvata bloccano
 
 const crypto = require('crypto');
 const cfg = require('./config');
-const { validate, isPh, PLACEHOLDER, SUBSCRIBERS, hostOf } = require('./validate');
+const { validate, PLACEHOLDER, SUBSCRIBERS } = require('./validate');
+const { privacyUrl, unsubscribeUrl } = require('./urls');
 const { renderHtml } = require('./render-html');
 const { renderText } = require('./render-text');
 
@@ -16,30 +17,27 @@ const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 const kb = s => Math.round(Buffer.byteLength(s) / 102.4) / 10;
 const unescapeAttr = s => s.replace(/&amp;/g, '&').replace(/&quot;/g, '"');
 
-// Controllo di un URL: ritorna l'elenco dei problemi (stringhe vuote se ok).
+// Controllo di un URL verso valoreatteso.com: ritorna l'elenco dei problemi.
+// Ammessi solo www.valoreatteso.com (con UTM), mailto: e wa.me; ogni altro dominio è vietato.
 function checkUrl(url, edition, where) {
-  const out = [];
-  if (url === cfg.unsubscribeUrl || url === cfg.site + cfg.legal.privacyPath) return out; // link di servizio senza UTM
+  if (url === unsubscribeUrl() || url === privacyUrl()) return []; // link di servizio senza UTM
   let u;
   try { u = new URL(url); } catch (_) { return [`${where}: URL non valido ${url}`]; }
+  const out = [];
   const host = u.hostname.toLowerCase();
   const q = u.searchParams;
-  if (host === 'valoreatteso.com' || host === 'www.valoreatteso.com') {
-    if (host.startsWith('www.')) out.push(`${where}: URL VA con www (${url})`);
-    if (/\.html$/.test(u.pathname)) out.push(`${where}: URL VA con .html (${url})`);
-    if (u.hash && u.hash !== '#fonti') out.push(`${where}: ancora non ammessa ${u.hash} (${url})`);
-    const share = q.get('utm_medium') === 'share';
-    if (share) {
-      if (!['whatsapp', 'email'].includes(q.get('utm_source'))) out.push(`${where}: share con utm_source non valido (${url})`);
-      if (q.get('utm_campaign') !== `va-${edition}`) out.push(`${where}: utm_campaign diverso da va-${edition} (${url})`);
-      if (q.has('utm_content')) out.push(`${where}: share senza utm_content (${url})`);
-    } else {
-      if (q.get('utm_source') !== 'newsletter' || q.get('utm_medium') !== 'email') out.push(`${where}: UTM newsletter/email mancanti (${url})`);
-      if (q.get('utm_campaign') !== `va-${edition}`) out.push(`${where}: utm_campaign diverso da va-${edition} (${url})`);
-      if (!cfg.utmBlocks.includes(q.get('utm_content'))) out.push(`${where}: utm_content fuori lista (${url})`);
-    }
-  } else if ([...q.keys()].some(k => /^utm_/i.test(k))) {
-    out.push(`${where}: UTM su un link esterno (${url})`);
+  if (host !== 'www.valoreatteso.com') return [`${where}: link esterno non ammesso (${url})`];
+  if (/\.html$/.test(u.pathname)) out.push(`${where}: URL con .html (${url})`);
+  if (u.hash) out.push(`${where}: ancora non ammessa ${u.hash} (${url})`);
+  if (!/^\/($|archivio$|edizione-\d+$)/.test(u.pathname)) out.push(`${where}: pagina non prevista ${u.pathname}`);
+  if (q.get('utm_medium') === 'share') {
+    if (!['whatsapp', 'email'].includes(q.get('utm_source'))) out.push(`${where}: share con utm_source non valido (${url})`);
+    if (q.get('utm_campaign') !== `va-${edition}`) out.push(`${where}: utm_campaign diverso da va-${edition} (${url})`);
+    if (q.has('utm_content')) out.push(`${where}: share senza utm_content (${url})`);
+  } else {
+    if (q.get('utm_source') !== 'newsletter' || q.get('utm_medium') !== 'email') out.push(`${where}: UTM newsletter/email mancanti (${url})`);
+    if (q.get('utm_campaign') !== `va-${edition}`) out.push(`${where}: utm_campaign diverso da va-${edition} (${url})`);
+    if (!cfg.utmBlocks.includes(q.get('utm_content'))) out.push(`${where}: utm_content fuori lista (${url})`);
   }
   return out;
 }
@@ -65,7 +63,7 @@ function postChecks(html, text, c, mode) {
   });
 
   // Link: HTML e text/plain.
-  const hrefs = [...html.matchAll(/href="([^"]*)"/g)].map(m => unescapeAttr(m[1]));
+  const hrefs = [...html.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)].map(m => unescapeAttr(m[1]));
   hrefs.forEach(h => {
     if (h.startsWith('#')) { if (!/^#s[1-3]$/.test(h)) errors.push(`ancora interna non valida ${h}`); return; }
     if (h.startsWith('mailto:')) {
@@ -80,23 +78,17 @@ function postChecks(html, text, c, mode) {
       else checkUrl(inner, c.edition, 'WhatsApp').forEach(e => errors.push(e));
       return;
     }
-    if (isPh(h)) return; // fonte da fornire: già elencata
     checkUrl(h, c.edition, 'HTML').forEach(e => errors.push(e));
   });
   const textUrls = [...text.matchAll(/https?:\/\/[^\s)]+/g)].map(m => m[0]);
   textUrls.forEach(u => checkUrl(u, c.edition, 'text/plain').forEach(e => errors.push(e)));
-  // Le fonti devono aprirsi in una nuova scheda.
-  c.sections.forEach(s => s.sources.forEach(x => {
-    if (!html.includes(`href="${x.url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" target="_blank"`)) errors.push(`fonte senza target="_blank": ${x.testo}`);
-  }));
-
   // Immagini: esattamente 2, con alt; in send/test src assoluti su dominio VA.
   const imgs = [...html.matchAll(/<img[^>]*>/g)].map(m => m[0]);
   if (imgs.length !== 2) errors.push(`attese 2 immagini, trovate ${imgs.length}`);
   imgs.forEach(t => {
     if (!/alt="Valore Atteso"/.test(t)) errors.push('immagine senza alt="Valore Atteso"');
     const src = (t.match(/src="([^"]*)"/) || [])[1] || '';
-    if (mode !== 'preview' && !/^https:\/\/(www\.)?valoreatteso\.com\//.test(src)) errors.push(`immagine non ospitata su valoreatteso.com: ${src}`);
+    if (mode !== 'preview' && !/^https:\/\/www\.valoreatteso\.com\//.test(src)) errors.push(`immagine non ospitata su valoreatteso.com: ${src}`);
   });
 
   if (!c.sponsor && /Presentato da/i.test(html)) errors.push('sponsor null ma "Presentato da" presente');
@@ -150,4 +142,4 @@ function reportMarkdown(r) {
   return L.join('\n') + '\n';
 }
 
-module.exports = { build, reportMarkdown, checkUrl, hostOf };
+module.exports = { build, reportMarkdown, checkUrl };

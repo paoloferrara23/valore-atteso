@@ -1,10 +1,10 @@
 # Report build #027 (send)
 
-Esito: **BLOCCATO** · errori 68 · avvisi 0 · placeholder 64
+Esito: **BLOCCATO** · errori 57 · avvisi 0 · placeholder 55
 
-Peso: HTML 39.7 KB · text/plain 3.5 KB
-SHA-256 HTML 2c9c2918c33c50e4008d15b79719773d0ef9c17114d4561a393de92af52daad6
-SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
+Peso: HTML 39.6 KB · text/plain 3.3 KB
+SHA-256 HTML b807d6f7cf4f6c46ee2a12e3ca6c1ba71de9160502c127c65830b6ad6690ec7d
+SHA-256 text ab92845646ada6d79f32f5b489e2d8bdbb66488d34b16cb17236a8c95357cb07
 
 ## Errori
 - `subject`: placeholder rimasto ("[[DA_FORNIRE: oggetto]]")
@@ -34,8 +34,6 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - `sections[0].body[0]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[0].body[1]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[0].reading`: placeholder rimasto ("[[DA_FORNIRE: la nostra lettura]]")
-- `sections[0].sources[0].testo`: placeholder rimasto ("[[DA_FORNIRE: nome del documento]]")
-- `sections[0].sources[0].url`: placeholder rimasto ("[[DA_FORNIRE: url]]")
 - `sections[1].title`: placeholder rimasto ("[[DA_FORNIRE: titolo della sezione]]")
 - `sections[1].module.rows[0].key`: placeholder rimasto ("[[DA_FORNIRE: voce]]")
 - `sections[1].module.rows[0].value`: placeholder rimasto ("[[DA_FORNIRE: valore]]")
@@ -48,8 +46,6 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - `sections[1].body[0]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[1].body[1]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[1].reading`: placeholder rimasto ("[[DA_FORNIRE: la nostra lettura]]")
-- `sections[1].sources[0].testo`: placeholder rimasto ("[[DA_FORNIRE: nome del documento]]")
-- `sections[1].sources[0].url`: placeholder rimasto ("[[DA_FORNIRE: url]]")
 - `sections[2].title`: placeholder rimasto ("[[DA_FORNIRE: titolo della sezione]]")
 - `sections[2].module.columns[0]`: placeholder rimasto ("[[DA_FORNIRE: A]]")
 - `sections[2].module.columns[1]`: placeholder rimasto ("[[DA_FORNIRE: B]]")
@@ -63,18 +59,11 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - `sections[2].body[0]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[2].body[1]`: placeholder rimasto ("[[DA_FORNIRE: paragrafo]]")
 - `sections[2].reading`: placeholder rimasto ("[[DA_FORNIRE: la nostra lettura]]")
-- `sections[2].sources[0].testo`: placeholder rimasto ("[[DA_FORNIRE: nome del documento]]")
-- `sections[2].sources[0].url`: placeholder rimasto ("[[DA_FORNIRE: url]]")
 - `watch[0].text`: placeholder rimasto ("[[DA_FORNIRE: cosa guardare]]")
 - `watch[1].text`: placeholder rimasto ("[[DA_FORNIRE: cosa guardare]]")
 - `watch[2].text`: placeholder rimasto ("[[DA_FORNIRE: cosa guardare]]")
-- `share.headline`: placeholder rimasto ("[[DA_FORNIRE: frase di inoltro, da approvare]]")
-- `share.subline`: placeholder rimasto ("[[DA_FORNIRE: sottotitolo, da approvare]]")
-- `share.text`: placeholder rimasto ("[[DA_FORNIRE: testo per WhatsApp ed email]]")
-- `approvals.copy`: approvazione mancante (false)
-- `approvals.factcheck`: approvazione mancante (false)
-- `approvals.paolo`: approvazione mancante (false)
-- `output`: placeholder rimasti nell'output (123)
+- `approvals.paolo`: edizione non approvata da Paolo in Control Room (false)
+- `output`: placeholder rimasti nell'output (106)
 
 ## Placeholder da fornire
 - subject: [[DA_FORNIRE: oggetto]]
@@ -104,8 +93,6 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - sections[0].body[0]: [[DA_FORNIRE: paragrafo]]
 - sections[0].body[1]: [[DA_FORNIRE: paragrafo]]
 - sections[0].reading: [[DA_FORNIRE: la nostra lettura]]
-- sections[0].sources[0].testo: [[DA_FORNIRE: nome del documento]]
-- sections[0].sources[0].url: [[DA_FORNIRE: url]]
 - sections[1].title: [[DA_FORNIRE: titolo della sezione]]
 - sections[1].module.rows[0].key: [[DA_FORNIRE: voce]]
 - sections[1].module.rows[0].value: [[DA_FORNIRE: valore]]
@@ -118,8 +105,6 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - sections[1].body[0]: [[DA_FORNIRE: paragrafo]]
 - sections[1].body[1]: [[DA_FORNIRE: paragrafo]]
 - sections[1].reading: [[DA_FORNIRE: la nostra lettura]]
-- sections[1].sources[0].testo: [[DA_FORNIRE: nome del documento]]
-- sections[1].sources[0].url: [[DA_FORNIRE: url]]
 - sections[2].title: [[DA_FORNIRE: titolo della sezione]]
 - sections[2].module.columns[0]: [[DA_FORNIRE: A]]
 - sections[2].module.columns[1]: [[DA_FORNIRE: B]]
@@ -133,31 +118,26 @@ SHA-256 text af1f31066cd0cb1243b0c6894b5831365d3b2b6fb8999c4f0a005c3893554e03
 - sections[2].body[0]: [[DA_FORNIRE: paragrafo]]
 - sections[2].body[1]: [[DA_FORNIRE: paragrafo]]
 - sections[2].reading: [[DA_FORNIRE: la nostra lettura]]
-- sections[2].sources[0].testo: [[DA_FORNIRE: nome del documento]]
-- sections[2].sources[0].url: [[DA_FORNIRE: url]]
 - watch[0].text: [[DA_FORNIRE: cosa guardare]]
 - watch[1].text: [[DA_FORNIRE: cosa guardare]]
 - watch[2].text: [[DA_FORNIRE: cosa guardare]]
-- share.headline: [[DA_FORNIRE: frase di inoltro, da approvare]]
-- share.subline: [[DA_FORNIRE: sottotitolo, da approvare]]
-- share.text: [[DA_FORNIRE: testo per WhatsApp ed email]]
 
 ## Link
-- `https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=testata_logo`
+- `https://www.valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=testata_logo`
 - `#s1`
 - `#s2`
 - `#s3`
-- `[[DA_FORNIRE: url]]`
-- `https://wa.me/?text=%5B%5BDA_FORNIRE%3A%20testo%20per%20WhatsApp%20ed%20email%5D%5D%20https%3A%2F%2Fvaloreatteso.com%2F027%3Futm_source%3Dwhatsapp%26utm_medium%3Dshare%26utm_campaign%3Dva-027`
-- `mailto:?subject=Valore%20Atteso%20%23027%20%C2%B7%20%5B%5BDA_FORNIRE%3A%20titolo%2C%20max%2090%20caratteri%5D%5D&body=%5B%5BDA_FORNIRE%3A%20testo%20per%20WhatsApp%20ed%20email%5D%5D%0A%0Ahttps%3A%2F%2Fvaloreatteso.com%2F027%3Futm_source%3Demail%26utm_medium%3Dshare%26utm_campaign%3Dva-027`
-- `https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=inoltrata_iscriviti`
-- `https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_logo`
-- `https://valoreatteso.com/027?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_leggi_online`
-- `https://valoreatteso.com/archivio?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_archivio`
-- `https://valoreatteso.com/027?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_fonti`
+- `https://wa.me/?text=Ti%20condivido%20l'ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%20https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-27%3Futm_source%3Dwhatsapp%26utm_medium%3Dshare%26utm_campaign%3Dva-027`
+- `mailto:?subject=Valore%20Atteso%20%23027%20%C2%B7%20%5B%5BDA_FORNIRE%3A%20titolo%2C%20max%2090%20caratteri%5D%5D&body=Ti%20condivido%20l'ultima%20edizione%20di%20Valore%20Atteso%2C%20newsletter%20sul%20business%20del%20calcio%20europeo.%0A%0Ahttps%3A%2F%2Fwww.valoreatteso.com%2Fedizione-27%3Futm_source%3Demail%26utm_medium%3Dshare%26utm_campaign%3Dva-027`
+- `https://www.valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=inoltrata_iscriviti`
+- `https://www.valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_logo`
+- `https://www.valoreatteso.com/edizione-27?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_leggi_online`
+- `https://www.valoreatteso.com/archivio?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_archivio`
+- `mailto:info@valoreatteso.com?subject=Preferenze%20newsletter%20Valore%20Atteso`
 - `mailto:info@valoreatteso.com?subject=Valore%20Atteso%20%23027`
-- `https://valoreatteso.com/privacy`
+- `https://www.valoreatteso.com/privacy`
+- `mailto:info@valoreatteso.com`
 - `https://www.valoreatteso.com/cancella?email={{EMAIL}}`
-- `https://valoreatteso.com/027?utm_source=whatsapp&utm_medium=share&utm_campaign=va-027`
-- `https://valoreatteso.com/027?utm_source=email&utm_medium=share&utm_campaign=va-027`
+- `https://www.valoreatteso.com/edizione-27?utm_source=whatsapp&utm_medium=share&utm_campaign=va-027`
+- `https://www.valoreatteso.com/edizione-27?utm_source=email&utm_medium=share&utm_campaign=va-027`
 

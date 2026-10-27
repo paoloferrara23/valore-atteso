@@ -10,7 +10,6 @@ const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
 const { build } = require('../api/_lib/email/build');
-const cfg = require('../api/_lib/email/config');
 
 const edition = String(process.argv[2] || '026').padStart(3, '0');
 const root = path.join(__dirname, '..');
@@ -105,52 +104,33 @@ async function render(browser, h, width, scheme, name) {
   };
 
   if (edition === '026') {
-    // Variante con il paragrafo d'apertura (§7: decisione di Paolo).
-    const intro = fs.readFileSync(path.join(root, 'fixtures', '026-intro.txt'), 'utf8').trim();
-    const withIntro = build({ ...contract, intro }, { mode: 'preview', assetBase: '../../email/brand/' });
-    const mi = await render(browser, withIntro.html, 375, 'light', '');
-    report.introVariant = { s1: mi.s1, overBy: Math.max(0, mi.s1 - 800) };
-
-    // Testi: ogni paragrafo, titolo, lettura, tesi e voce del deal/vs deve comparire identico.
+    // Testi: ogni paragrafo, titolo, lettura, tesi e KPI deve comparire identico.
     const norm = s => String(s).replace(/\s+/g, ' ').trim();
     const flat = norm(text);
     const must = [contract.title, contract.dek, ...contract.summary.map(s => s.thesis)];
-    contract.sections.forEach(s => must.push(s.title, s.reading, ...s.body, ...s.sources.map(x => x.testo), ...s.kpi.map(k => k.value)));
+    contract.sections.forEach(s => must.push(s.title, s.reading, ...s.body, ...s.kpi.map(k => k.value)));
     report.missingText = must.map(norm).filter(t => !flat.includes(t));
 
-    // Validazione: casi che devono bloccare, e un caso "pulito" che deve passare in send.
+    // Validazione: casi che devono bloccare.
     const clone = () => JSON.parse(JSON.stringify(contract));
     const errs = (c, mode = 'preview') => build(c, { mode, assetBase: '../../email/brand/' }).report.errors.map(e => `${e.field}: ${e.rule}`);
-    const clean = () => {
-      const c = clone();
-      c.sections.forEach((s, i) => { s.sources = [{ testo: `Documento ufficiale di prova ${i + 1}`, url: `https://example.org/doc-${i + 1}.pdf` }]; });
-      c.sections[1].body = c.sections[1].body.map(p => p.replace(' secondo Reuters', ''));
-      c.approvals = { copy: true, factcheck: true, paolo: true };
-      return c;
-    };
     const cases = {
-      'fonti vuote': c => { c.sections[0].sources = []; return c; },
-      'sintesi con 2 righe': c => { c.summary.pop(); return c; },
-      'numero KPI mancante': c => { c.sections[0].kpi[0].value = 'n.d.'; return c; },
-      'numero sintesi assente nella sezione': c => { c.summary[2].number = '€999M'; return c; },
-      'numero ripetuto KPI/modulo': c => { c.sections[0].kpi[2].value = '€565M'; return c; },
-      'modulo non valido': c => { c.sections[2].module.type = 'grafico'; return c; },
-      'cella vs vuota': c => { c.sections[2].module.rows[0].b = ''; return c; },
-      'valore vs con trattino': c => { c.sections[2].module.rows[3].b = '–'; return c; },
-      'fonte su dominio di stampa': c => { const x = clean(); x.sections[0].sources[0].url = 'https://www.reuters.com/x'; return x; },
-      'fonte con testo generico': c => { const x = clean(); x.sections[0].sources[0].testo = 'clicca qui'; return x; },
-      'UTM su fonte esterna': c => { const x = clean(); x.sections[0].sources[0].url = 'https://example.org/a?utm_source=x'; return x; },
-      'numero di iscritti': c => { c.dek = 'Siamo 182 iscritti'; return c; },
-      'preheader troncato': c => { c.preheader = 'Il Milan fa mercato da Champions giocando l\'Europa League, il Valencia vende il 42% per…'; return c; },
+      'sintesi con 2 righe': [c => { c.summary.pop(); return c; }],
+      'numero KPI mancante': [c => { c.sections[0].kpi[0].value = 'n.d.'; return c; }],
+      'numero sintesi assente nella sezione': [c => { c.summary[2].number = '€999M'; return c; }],
+      'numero ripetuto KPI/modulo': [c => { c.sections[0].kpi[2].value = '€565M'; return c; }],
+      'modulo non valido': [c => { c.sections[2].module.type = 'grafico'; return c; }],
+      'cella vs vuota': [c => { c.sections[2].module.rows[0].b = ''; return c; }],
+      'valore vs con trattino': [c => { c.sections[2].module.rows[3].b = '–'; return c; }],
+      'nome di stampa nel corpo (send)': [c => { c.sections[1].body[1] += ' secondo Reuters.'; return c; }, 'send'],
+      'placeholder in send': [c => { c.dek = '[[DA_FORNIRE: dek]]'; return c; }, 'send'],
+      'edizione non approvata (send)': [c => { c.approvals.paolo = false; return c; }, 'send'],
+      'numero di iscritti': [c => { c.dek = 'Siamo 182 iscritti'; return c; }],
+      'preheader troncato': [c => { c.preheader = 'Il Milan fa mercato da Champions giocando l\'Europa League, il Valencia vende il 42% per…'; return c; }],
     };
     report.validation = {};
-    Object.entries(cases).forEach(([k, f]) => { report.validation[k] = errs(f(clone()), /stampa|generico|UTM su/.test(k) ? 'send' : 'preview'); });
-    report.validation['026 in send (atteso: bloccato)'] = errs(clone(), 'send').length + ' errori';
-    report.validation['026 pulita in send, dati legali ancora placeholder (atteso: bloccato)'] = errs(clean(), 'send');
-    const saved = { ...cfg.legal };
-    cfg.legal.titolare = 'Titolare di prova'; cfg.legal.indirizzo = 'Indirizzo di prova';
-    report.validation['026 pulita in send, dati legali compilati (atteso: OK)'] = errs(clean(), 'send');
-    Object.assign(cfg.legal, saved);
+    Object.entries(cases).forEach(([k, [f, mode]]) => { report.validation[k] = errs(f(clone()), mode || 'preview'); });
+    report.validation['026 in send (atteso: OK)'] = errs(clone(), 'send');
   }
   await browser.close();
 
@@ -158,7 +138,6 @@ async function render(browser, h, width, scheme, name) {
   const L = [`# QA #${edition}`, ''];
   Object.entries(report.renders).forEach(([k, v]) => L.push(`- **${k}**: #s1 a ${v.s1}px · altezza ${v.height}px · overflow ${v.overflow} · contrasto min ${v.minContrast} (sotto 4,5: ${v.contrastFails.length}) · font <11px ${v.fontsUnder11.length} · testo <12px ${v.nonLabelUnder12.length} · tap <44px ${v.tapsUnder44.length} (link fonti nel testo ${v.sourceLinksUnder44}) · KPI impilati ${v.kpiStacked} · etichette barre a capo ${v.barLabelsMultiline.length} · motto righe ${v.mottoLines} · loghi ${v.images.map(i => `${i.w}×${i.h} def ${i.deformation}`).join(', ')}`));
   L.push('', '## Coppie grafiche', ...Object.entries(report.graphicPairs).map(([k, v]) => `- ${k}: ${v}:1`));
-  if (report.introVariant) L.push('', `## Variante con intro: #s1 a ${report.introVariant.s1}px (oltre gli 800px di ${report.introVariant.overBy}px)`);
   if (report.missingText) L.push('', `## Testi mancanti rispetto alla 026: ${report.missingText.length ? report.missingText.join(' | ') : 'nessuno'}`);
   if (report.validation) { L.push('', '## Validazione'); Object.entries(report.validation).forEach(([k, v]) => L.push(`- ${k}: ${Array.isArray(v) ? (v.length ? v.join(' · ') : 'OK') : v}`)); }
   fs.writeFileSync(path.join(dist, 'qa.md'), L.join('\n') + '\n');

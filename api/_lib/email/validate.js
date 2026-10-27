@@ -5,16 +5,15 @@
 //      non aggiungere dipendenze (copre le parole chiave usate nello schema);
 //   2. regole editoriali e tecniche, con esito diverso per modalità:
 //      preview = anteprima per Paolo (placeholder ammessi ed elencati),
-//      send    = HTML per Brevo (ogni placeholder, fonte di stampa o approvazione mancante blocca).
+//      send    = HTML per Brevo (placeholder, nomi di stampa o approvazione di Paolo mancante bloccano).
 // Ogni problema è {level, field, rule, value}: errori leggibili, mai una mail rotta.
 
 const cfg = require('./config');
 const schema = require('./schema.json');
 
-const PLACEHOLDER = /\[\[[^\]]*\]\]|\[Fonte|\[dato da verificare\]|\bESEMPIO\b|\bTODO\b|lorem ipsum|\bipotetico\b|testo accorciato/i;
+const PLACEHOLDER = /\[\[[^\]]*\]\]|\[Fonte|\[(dato )?da verificare\]|\bESEMPIO\b|\bTODO\b|lorem ipsum|\bipotetico\b|testo accorciato/i;
 const isPh = v => typeof v === 'string' && PLACEHOLDER.test(v);
 const SUBSCRIBERS = /\d[\d.,]*\s*(iscritti|lettori|subscriber)/i;
-const GENERIC_LINK = /^(link|qui|clicca qui|leggi|fonte|url)$/i;
 
 // ── Validatore JSON Schema (sottoinsieme usato da schema.json) ───────────────
 function typeOf(v) {
@@ -90,22 +89,10 @@ function walkStrings(v, path, out) {
   return out;
 }
 
-function hostOf(url) {
-  try { return new URL(url).hostname.toLowerCase(); } catch (_) { return ''; }
-}
-const blockedHost = h => cfg.blockedDomains.some(d => h === d || h.endsWith('.' + d));
 const NAME_RE = new RegExp(`(^|[^\\p{L}\\p{N}])(${cfg.blockedNames.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})(?=$|[^\\p{L}\\p{N}])`, 'iu');
 
-// Normalizza i campi con alias storici (sources[].label → testo) senza toccare i contenuti.
-function normalize(c) {
-  const out = JSON.parse(JSON.stringify(c));
-  (out.sections || []).forEach(s => {
-    s.sources = (s.sources || []).map(x => (typeof x === 'string'
-      ? { testo: x, url: '' }
-      : { testo: x.testo !== undefined ? x.testo : (x.label || ''), url: x.url || '' }));
-  });
-  return out;
-}
+// Copia profonda: la validazione non modifica il contratto ricevuto.
+const normalize = c => JSON.parse(JSON.stringify(c));
 
 // ── Regole (§4.3) ───────────────────────────────────────────────────────────
 function validate(contract, mode = 'preview') {
@@ -142,6 +129,7 @@ function validate(contract, mode = 'preview') {
   c.sections.forEach((s, i) => {
     const P = `sections[${i}]`;
     if (s.n !== i + 1 || s.label !== cfg.sectionLabels[i]) add('error', P, `attesa sezione ${i + 1} "${cfg.sectionLabels[i]}"`, `${s.n} ${s.label}`);
+    if (!ph(`${P}.title`) && s.title.length > 80) add('warning', `${P}.title`, `titolo di ${s.title.length} caratteri (max 80)`, s.title);
     s.kpi.forEach((k, j) => {
       if (ph(`${P}.kpi[${j}].value`)) return;
       if (!hasDigit(k.value)) add('error', `${P}.kpi[${j}].value`, 'numero mancante', k.value);
@@ -176,18 +164,6 @@ function validate(contract, mode = 'preview') {
     const dup = Object.keys(counts).filter(k => counts[k] > 1);
     if (dup.length) add('error', P, `numero ripetuto nella sezione (${dup.join(', ')})`, dup);
 
-    // Fonti
-    s.sources.forEach((src, j) => {
-      const F = `${P}.sources[${j}]`;
-      if (!ph(`${F}.url`)) {
-        if (!/^https:\/\/[^\s]+$/.test(src.url)) add('error', `${F}.url`, 'URL vuoto o non https://', src.url);
-        else {
-          if (blockedHost(hostOf(src.url))) errOrWarn(`${F}.url`, 'fonte di stampa o social non ammessa', src.url);
-          if (/[?&]utm_/i.test(src.url)) add('error', `${F}.url`, 'niente UTM sulle fonti esterne', src.url);
-        }
-      }
-      if (!ph(`${F}.testo`) && (src.testo === src.url || GENERIC_LINK.test(src.testo.trim()))) add('error', `${F}.testo`, 'il testo del link deve essere il nome del documento', src.testo);
-    });
   });
 
   // Sintesi: il numero deve ricomparire nella sua sezione.
@@ -207,9 +183,10 @@ function validate(contract, mode = 'preview') {
   });
 
   if (c.sponsor && c.sponsor.approved !== true) errOrWarn('sponsor.approved', 'sponsor attivo senza approvazione', c.sponsor.approved);
-  ['copy', 'factcheck', 'paolo'].forEach(k => { if (c.approvals[k] !== true) errOrWarn(`approvals.${k}`, 'approvazione mancante', c.approvals[k]); });
+  if (c.approvals.paolo !== true) errOrWarn('approvals.paolo', "edizione non approvata da Paolo in Control Room", c.approvals.paolo);
+  ['copy', 'factcheck'].forEach(k => { if (c.approvals[k] === false) add('warning', `approvals.${k}`, 'approvazione mancante', false); });
 
   return { contract: c, issues, placeholders };
 }
 
-module.exports = { validate, schemaErrors, numKeys, isPh, PLACEHOLDER, SUBSCRIBERS, moduleValues, hostOf, blockedHost };
+module.exports = { validate, schemaErrors, numKeys, isPh, PLACEHOLDER, SUBSCRIBERS, moduleValues };

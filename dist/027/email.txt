@@ -28,9 +28,6 @@ IN SINTESI · 3 NUMERI
 LA NOSTRA LETTURA
 [[DA_FORNIRE: la nostra lettura]]
 
-FONTI:
-- [[DA_FORNIRE: nome del documento]] ([[DA_FORNIRE: url]])
-
 —
 02 · IL DEAL
 [[DA_FORNIRE: titolo della sezione]]
@@ -48,9 +45,6 @@ SCHEDA DEL DEAL
 LA NOSTRA LETTURA
 [[DA_FORNIRE: la nostra lettura]]
 
-FONTI:
-- [[DA_FORNIRE: nome del documento]] ([[DA_FORNIRE: url]])
-
 —
 03 · LA METRICA
 [[DA_FORNIRE: titolo della sezione]]
@@ -66,9 +60,6 @@ FONTI:
 LA NOSTRA LETTURA
 [[DA_FORNIRE: la nostra lettura]]
 
-FONTI:
-- [[DA_FORNIRE: nome del documento]] ([[DA_FORNIRE: url]])
-
 —
 COSA GUARDARE NELLE PROSSIME SETTIMANE
 - Il Bilancio: [[DA_FORNIRE: cosa guardare]]
@@ -76,21 +67,21 @@ COSA GUARDARE NELLE PROSSIME SETTIMANE
 - La Metrica: [[DA_FORNIRE: cosa guardare]]
 
 —
-[[DA_FORNIRE: frase di inoltro, da approvare]]
-[[DA_FORNIRE: sottotitolo, da approvare]]
-Inoltra su WhatsApp: https://valoreatteso.com/027?utm_source=whatsapp&utm_medium=share&utm_campaign=va-027
-Inoltra via email: https://valoreatteso.com/027?utm_source=email&utm_medium=share&utm_campaign=va-027
-Te l'hanno inoltrata? Iscriviti gratis: https://valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=inoltrata_iscriviti
+Un collega lavora su un club? Inoltragli il #027.
+Il modo più semplice per far crescere Valore Atteso è passarlo a chi lavora sui numeri.
+Inoltra su WhatsApp: https://www.valoreatteso.com/edizione-27?utm_source=whatsapp&utm_medium=share&utm_campaign=va-027
+Inoltra via email: https://www.valoreatteso.com/edizione-27?utm_source=email&utm_medium=share&utm_campaign=va-027
+Te l'hanno inoltrata? Iscriviti gratis: https://www.valoreatteso.com/?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=inoltrata_iscriviti
 
 VALORE ATTESO
 Il calcio dei numeri, non dei goal. Ogni martedì, in 8 minuti.
 
-Leggi online: https://valoreatteso.com/027?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_leggi_online
-Archivio: https://valoreatteso.com/archivio?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_archivio
-Fonti: https://valoreatteso.com/027?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_fonti
-Un dato da correggere o una segnalazione? info@valoreatteso.com
+Leggi online: https://www.valoreatteso.com/edizione-27?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_leggi_online
+Archivio: https://www.valoreatteso.com/archivio?utm_source=newsletter&utm_medium=email&utm_campaign=va-027&utm_content=footer_archivio
+Preferenze: info@valoreatteso.com
+Un dato da correggere? Scrivi a info@valoreatteso.com
 
-Ricevi questa email perché ti sei iscritto a Valore Atteso con l'indirizzo {{EMAIL_TEXT}}.
-Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Le fonti sono linkate in fondo a ogni sezione. Analisi a scopo informativo: non costituisce consulenza finanziaria né sollecitazione all'investimento.
-Titolare del trattamento: [[TITOLARE]], [[INDIRIZZO]] · Privacy: https://valoreatteso.com/privacy
-Disiscriviti: https://www.valoreatteso.com/cancella?email={{EMAIL}}
+Dati tratti da documenti ufficiali di club e organismi competenti.
+Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Analisi a scopo informativo: non costituisce consulenza finanziaria né sollecitazione all'investimento.
+Titolare del trattamento: Valore Atteso · Informativa privacy: https://www.valoreatteso.com/privacy · Contatto: info@valoreatteso.com
+Cancella iscrizione: https://www.valoreatteso.com/cancella?email={{EMAIL}}

@@ -1,5 +1,5 @@
 {
-  "$comment": "Scheletro #027 (martedì 03/11/2026, da confermare). Nessun contenuto: tutto [[DA_FORNIRE]]. --mode=preview passa ed elenca i campi, --mode=send fallisce. I contenuti veri stanno su Supabase (editions + colonna email).",
+  "$comment": "Scheletro #027 (martedì 03/11/2026). Nessun contenuto: tutto [[DA_FORNIRE]]. --mode=preview passa ed elenca i campi, --mode=send fallisce. I contenuti veri stanno su Supabase (editions + colonna email).",
   "edition": "027",
   "date": "2026-11-03",
   "read_min": 8,
@@ -8,76 +8,148 @@
   "kicker": "Questa settimana",
   "title": "[[DA_FORNIRE: titolo, max 90 caratteri]]",
   "dek": "[[DA_FORNIRE: sottotitolo, max 200 caratteri]]",
-  "intro": null,
   "sponsor": null,
   "summary": [
-    { "section_n": 1, "label": "Il Bilancio", "number": "[[DA_FORNIRE: numero]]", "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]" },
-    { "section_n": 2, "label": "Il Deal", "number": "[[DA_FORNIRE: numero]]", "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]" },
-    { "section_n": 3, "label": "La Metrica", "number": "[[DA_FORNIRE: numero]]", "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]" }
+    {
+      "section_n": 1,
+      "label": "Il Bilancio",
+      "number": "[[DA_FORNIRE: numero]]",
+      "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]"
+    },
+    {
+      "section_n": 2,
+      "label": "Il Deal",
+      "number": "[[DA_FORNIRE: numero]]",
+      "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]"
+    },
+    {
+      "section_n": 3,
+      "label": "La Metrica",
+      "number": "[[DA_FORNIRE: numero]]",
+      "thesis": "[[DA_FORNIRE: tesi, max 110 caratteri]]"
+    }
   ],
   "sections": [
     {
-      "n": 1, "label": "Il Bilancio", "title": "[[DA_FORNIRE: titolo della sezione]]",
+      "n": 1,
+      "label": "Il Bilancio",
+      "title": "[[DA_FORNIRE: titolo della sezione]]",
       "kpi": [
-        { "value": "[[DA_FORNIRE: valore]]", "label": "[[DA_FORNIRE: etichetta]]" },
-        { "value": "[[DA_FORNIRE: valore]]", "label": "[[DA_FORNIRE: etichetta]]" },
-        { "value": "[[DA_FORNIRE: valore]]", "label": "[[DA_FORNIRE: etichetta]]" }
+        {
+          "value": "[[DA_FORNIRE: valore]]",
+          "label": "[[DA_FORNIRE: etichetta]]"
+        },
+        {
+          "value": "[[DA_FORNIRE: valore]]",
+          "label": "[[DA_FORNIRE: etichetta]]"
+        },
+        {
+          "value": "[[DA_FORNIRE: valore]]",
+          "label": "[[DA_FORNIRE: etichetta]]"
+        }
       ],
       "module": {
         "type": "bars",
         "title": "[[DA_FORNIRE: titolo del grafico]]",
         "rows": [
-          { "label": "[[DA_FORNIRE: etichetta]]", "value": "[[DA_FORNIRE: numero]]", "display": "[[DA_FORNIRE: valore]]" },
-          { "label": "[[DA_FORNIRE: etichetta]]", "value": "[[DA_FORNIRE: numero]]", "display": "[[DA_FORNIRE: valore]]" }
+          {
+            "label": "[[DA_FORNIRE: etichetta]]",
+            "value": "[[DA_FORNIRE: numero]]",
+            "display": "[[DA_FORNIRE: valore]]"
+          },
+          {
+            "label": "[[DA_FORNIRE: etichetta]]",
+            "value": "[[DA_FORNIRE: numero]]",
+            "display": "[[DA_FORNIRE: valore]]"
+          }
         ]
       },
-      "body": ["[[DA_FORNIRE: paragrafo]]", "[[DA_FORNIRE: paragrafo]]"],
-      "reading": "[[DA_FORNIRE: la nostra lettura]]",
-      "sources": [{ "testo": "[[DA_FORNIRE: nome del documento]]", "url": "[[DA_FORNIRE: url]]" }]
+      "body": [
+        "[[DA_FORNIRE: paragrafo]]",
+        "[[DA_FORNIRE: paragrafo]]"
+      ],
+      "reading": "[[DA_FORNIRE: la nostra lettura]]"
     },
     {
-      "n": 2, "label": "Il Deal", "title": "[[DA_FORNIRE: titolo della sezione]]",
+      "n": 2,
+      "label": "Il Deal",
+      "title": "[[DA_FORNIRE: titolo della sezione]]",
       "kpi": [],
       "module": {
         "type": "deal",
         "title": "Scheda del deal",
         "rows": [
-          { "key": "[[DA_FORNIRE: voce]]", "value": "[[DA_FORNIRE: valore]]" },
-          { "key": "[[DA_FORNIRE: voce]]", "value": "[[DA_FORNIRE: valore]]" },
-          { "key": "[[DA_FORNIRE: voce]]", "value": "[[DA_FORNIRE: valore]]" },
-          { "key": "[[DA_FORNIRE: voce]]", "value": "[[DA_FORNIRE: valore]]" }
+          {
+            "key": "[[DA_FORNIRE: voce]]",
+            "value": "[[DA_FORNIRE: valore]]"
+          },
+          {
+            "key": "[[DA_FORNIRE: voce]]",
+            "value": "[[DA_FORNIRE: valore]]"
+          },
+          {
+            "key": "[[DA_FORNIRE: voce]]",
+            "value": "[[DA_FORNIRE: valore]]"
+          },
+          {
+            "key": "[[DA_FORNIRE: voce]]",
+            "value": "[[DA_FORNIRE: valore]]"
+          }
         ]
       },
-      "body": ["[[DA_FORNIRE: paragrafo]]", "[[DA_FORNIRE: paragrafo]]"],
-      "reading": "[[DA_FORNIRE: la nostra lettura]]",
-      "sources": [{ "testo": "[[DA_FORNIRE: nome del documento]]", "url": "[[DA_FORNIRE: url]]" }]
+      "body": [
+        "[[DA_FORNIRE: paragrafo]]",
+        "[[DA_FORNIRE: paragrafo]]"
+      ],
+      "reading": "[[DA_FORNIRE: la nostra lettura]]"
     },
     {
-      "n": 3, "label": "La Metrica", "title": "[[DA_FORNIRE: titolo della sezione]]",
+      "n": 3,
+      "label": "La Metrica",
+      "title": "[[DA_FORNIRE: titolo della sezione]]",
       "kpi": [],
       "module": {
         "type": "vs",
-        "columns": ["[[DA_FORNIRE: A]]", "[[DA_FORNIRE: B]]"],
+        "columns": [
+          "[[DA_FORNIRE: A]]",
+          "[[DA_FORNIRE: B]]"
+        ],
         "rows": [
-          { "label": "[[DA_FORNIRE: voce]]", "a": "[[DA_FORNIRE: valore A]]", "b": "[[DA_FORNIRE: valore B]]" },
-          { "label": "[[DA_FORNIRE: voce]]", "a": "[[DA_FORNIRE: valore A]]", "b": "[[DA_FORNIRE: valore B]]" }
+          {
+            "label": "[[DA_FORNIRE: voce]]",
+            "a": "[[DA_FORNIRE: valore A]]",
+            "b": "[[DA_FORNIRE: valore B]]"
+          },
+          {
+            "label": "[[DA_FORNIRE: voce]]",
+            "a": "[[DA_FORNIRE: valore A]]",
+            "b": "[[DA_FORNIRE: valore B]]"
+          }
         ],
         "note": "[[DA_FORNIRE: nota]]"
       },
-      "body": ["[[DA_FORNIRE: paragrafo]]", "[[DA_FORNIRE: paragrafo]]"],
-      "reading": "[[DA_FORNIRE: la nostra lettura]]",
-      "sources": [{ "testo": "[[DA_FORNIRE: nome del documento]]", "url": "[[DA_FORNIRE: url]]" }]
+      "body": [
+        "[[DA_FORNIRE: paragrafo]]",
+        "[[DA_FORNIRE: paragrafo]]"
+      ],
+      "reading": "[[DA_FORNIRE: la nostra lettura]]"
     }
   ],
   "watch": [
-    { "label": "Il Bilancio", "text": "[[DA_FORNIRE: cosa guardare]]" },
-    { "label": "Il Deal", "text": "[[DA_FORNIRE: cosa guardare]]" },
-    { "label": "La Metrica", "text": "[[DA_FORNIRE: cosa guardare]]" }
+    {
+      "label": "Il Bilancio",
+      "text": "[[DA_FORNIRE: cosa guardare]]"
+    },
+    {
+      "label": "Il Deal",
+      "text": "[[DA_FORNIRE: cosa guardare]]"
+    },
+    {
+      "label": "La Metrica",
+      "text": "[[DA_FORNIRE: cosa guardare]]"
+    }
   ],
-  "share": {
-    "headline": "[[DA_FORNIRE: frase di inoltro, da approvare]]",
-    "subline": "[[DA_FORNIRE: sottotitolo, da approvare]]",
-    "text": "[[DA_FORNIRE: testo per WhatsApp ed email]]"
-  },
-  "approvals": { "copy": false, "factcheck": false, "paolo": false }
+  "approvals": {
+    "paolo": false
+  }
 }

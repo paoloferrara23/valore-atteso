@@ -2,19 +2,19 @@
   "edition": "026",
   "renders": {
     "640-light": {
-      "s1": 643,
-      "height": 5246,
+      "s1": 612,
+      "height": 5172,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 11,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        797,
-        797,
-        797
+        767,
+        767,
+        767
       ],
       "kpiStacked": null,
       "barLabelsMultiline": [],
@@ -39,19 +39,19 @@
       ]
     },
     "640-dark": {
-      "s1": 645,
-      "height": 5282,
+      "s1": 614,
+      "height": 5234,
       "overflow": false,
       "minContrast": 5.81,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 11,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        799,
-        799,
-        799
+        769,
+        769,
+        769
       ],
       "kpiStacked": null,
       "barLabelsMultiline": [],
@@ -76,19 +76,19 @@
       ]
     },
     "375-light": {
-      "s1": 768,
-      "height": 7343,
+      "s1": 781,
+      "height": 7102,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 11,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        942,
-        984,
-        1027
+        953,
+        995,
+        1038
       ],
       "kpiStacked": true,
       "barLabelsMultiline": [],
@@ -113,19 +113,19 @@
       ]
     },
     "375-dark": {
-      "s1": 770,
-      "height": 7379,
+      "s1": 783,
+      "height": 7189,
       "overflow": false,
       "minContrast": 5.81,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 11,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        944,
-        986,
-        1029
+        955,
+        997,
+        1040
       ],
       "kpiStacked": true,
       "barLabelsMultiline": [],
@@ -150,23 +150,23 @@
       ]
     },
     "375-senza-media-query": {
-      "s1": 913,
-      "height": 7828,
+      "s1": 781,
+      "height": 7102,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 11,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        1123,
-        1200,
-        1277
+        953,
+        995,
+        1038
       ],
       "kpiStacked": true,
       "barLabelsMultiline": [],
-      "mottoLines": 2,
+      "mottoLines": 1,
       "images": [
         {
           "w": 64,
@@ -194,15 +194,8 @@
     "bordo sintesi / pagina dark": 2.24,
     "blu / ink (motivo del filetto)": 1.25
   },
-  "introVariant": {
-    "s1": 933,
-    "overBy": 133
-  },
   "missingText": [],
   "validation": {
-    "fonti vuote": [
-      "sections[0].sources: schema: almeno 1 elementi"
-    ],
     "sintesi con 2 righe": [
       "summary: schema: almeno 3 elementi"
     ],
@@ -224,20 +217,15 @@
     "valore vs con trattino": [
       "sections[2].module.rows[3].b: valore assente reso con un trattino: il dato va scritto esplicito"
     ],
-    "fonte su dominio di stampa": [
-      "sections[0].sources[0].url: fonte di stampa o social non ammessa",
-      "sections[0].sources[0].url: nome di testata o social",
-      "output: placeholder rimasti nell'output (4)"
+    "nome di stampa nel corpo (send)": [
+      "sections[1].body[1]: nome di testata o social"
     ],
-    "fonte con testo generico": [
-      "sections[0].sources[0].testo: il testo del link deve essere il nome del documento",
-      "output: placeholder rimasti nell'output (4)"
+    "placeholder in send": [
+      "dek: placeholder rimasto",
+      "output: placeholder rimasti nell'output (2)"
     ],
-    "UTM su fonte esterna": [
-      "sections[0].sources[0].url: niente UTM sulle fonti esterne",
-      "output: placeholder rimasti nell'output (4)",
-      "output: HTML: UTM su un link esterno (https://example.org/a?utm_source=x)",
-      "output: text/plain: UTM su un link esterno (https://example.org/a?utm_source=x)"
+    "edizione non approvata (send)": [
+      "approvals.paolo: edizione non approvata da Paolo in Control Room"
     ],
     "numero di iscritti": [
       "dek: numero di iscritti",
@@ -246,10 +234,6 @@
     "preheader troncato": [
       "preheader: preheader troncato con \"…\": serve un testo dedicato"
     ],
-    "026 in send (atteso: bloccato)": "23 errori",
-    "026 pulita in send, dati legali ancora placeholder (atteso: bloccato)": [
-      "output: placeholder rimasti nell'output (4)"
-    ],
-    "026 pulita in send, dati legali compilati (atteso: OK)": []
+    "026 in send (atteso: OK)": []
   }
 }

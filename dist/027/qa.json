@@ -2,19 +2,19 @@
   "edition": "027",
   "renders": {
     "640-light": {
-      "s1": 638,
-      "height": 3197,
+      "s1": 552,
+      "height": 3087,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 3,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        763,
-        763,
-        763
+        679,
+        679,
+        679
       ],
       "kpiStacked": null,
       "barLabelsMultiline": [
@@ -48,19 +48,19 @@
       ]
     },
     "640-dark": {
-      "s1": 640,
-      "height": 3233,
+      "s1": 554,
+      "height": 3123,
       "overflow": false,
       "minContrast": 5.81,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 3,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        765,
-        765,
-        765
+        681,
+        681,
+        681
       ],
       "kpiStacked": null,
       "barLabelsMultiline": [
@@ -94,19 +94,19 @@
       ]
     },
     "375-light": {
-      "s1": 696,
-      "height": 3758,
+      "s1": 694,
+      "height": 3667,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 3,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        819,
-        886,
-        953
+        814,
+        881,
+        948
       ],
       "kpiStacked": true,
       "barLabelsMultiline": [],
@@ -131,19 +131,19 @@
       ]
     },
     "375-dark": {
-      "s1": 698,
-      "height": 3871,
+      "s1": 696,
+      "height": 3779,
       "overflow": false,
       "minContrast": 5.81,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 3,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        847,
-        913,
-        981
+        842,
+        908,
+        976
       ],
       "kpiStacked": true,
       "barLabelsMultiline": [],
@@ -168,32 +168,23 @@
       ]
     },
     "375-senza-media-query": {
-      "s1": 709,
-      "height": 3964,
+      "s1": 694,
+      "height": 3667,
       "overflow": false,
-      "minContrast": 5.81,
+      "minContrast": 5.42,
       "contrastFails": [],
       "fontsUnder11": [],
       "nonLabelUnder12": [],
       "tapsUnder44": [],
-      "sourceLinksUnder44": 3,
+      "sourceLinksUnder44": 0,
       "kpiTops": [
-        863,
-        967,
-        1072
+        814,
+        881,
+        948
       ],
       "kpiStacked": true,
-      "barLabelsMultiline": [
-        {
-          "text": "[[DA_FORNIRE: etichetta]]",
-          "lines": 2
-        },
-        {
-          "text": "[[DA_FORNIRE: etichetta]]",
-          "lines": 2
-        }
-      ],
-      "mottoLines": 2,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
       "images": [
         {
           "w": 64,

@@ -1,7 +1,7 @@
-// api/_lib/email/render-text.js — Versione text/plain, dagli stessi dati e dalla stessa va_url dell'HTML.
+// api/_lib/email/render-text.js — Versione text/plain, dagli stessi dati e dagli stessi URL dell'HTML.
 
 const cfg = require('./config');
-const { vaUrl, editionPath, shareUrl } = require('./urls');
+const { vaUrl, editionPath, shareUrl, privacyUrl, unsubscribeUrl } = require('./urls');
 const { formatDate } = require('./render-html');
 
 const pad2 = n => String(n).padStart(2, '0');
@@ -11,11 +11,10 @@ function renderText(c) {
   const e = c.edition;
   const L = [];
   L.push(`VALORE ATTESO · Edizione #${e} · ${c.read_min} min · ${formatDate(c.date)}`, cfg.copy.motto, '');
-  if (c.sponsor) L.push(`${cfg.copy.sponsorLead} · ${c.sponsor.name}: ${c.sponsor.url}`, '');
-  L.push(c.kicker.toUpperCase(), c.title, c.dek);
-  if (c.intro) L.push('', c.intro);
-  L.push('', cfg.copy.summaryTitle.toUpperCase());
+  L.push(c.kicker.toUpperCase(), c.title, c.dek, '');
+  L.push(cfg.copy.summaryTitle.toUpperCase());
   c.summary.forEach(r => L.push(`${pad2(r.section_n)} ${r.label}: ${r.number}. ${r.thesis}`));
+  if (c.sponsor) L.push('', `${cfg.copy.sponsorLead} · ${c.sponsor.name}: ${c.sponsor.url}`);
 
   c.sections.forEach(s => {
     L.push('', RULE, `${pad2(s.n)} · ${s.label.toUpperCase()}`, s.title, '');
@@ -29,26 +28,26 @@ function renderText(c) {
     }
     if (s.kpi.length || m.type !== 'none') L.push('');
     s.body.forEach(p => L.push(p, ''));
-    L.push(cfg.copy.reading.replace(/^—\s*/, '').toUpperCase(), s.reading, '');
-    L.push(`${cfg.copy.sources.toUpperCase()}:`);
-    s.sources.forEach(x => L.push(`- ${x.testo} (${x.url})`));
+    L.push(cfg.copy.reading.replace(/^—\s*/, '').toUpperCase(), s.reading);
   });
 
-  L.push('', RULE, cfg.copy.watchTitle.toUpperCase());
-  c.watch.forEach(w => L.push(`- ${w.label}: ${w.text}`));
+  if (c.watch.length) {
+    L.push('', RULE, cfg.copy.watchTitle.toUpperCase());
+    c.watch.forEach(w => L.push(`- ${w.label}: ${w.text}`));
+  }
 
-  L.push('', RULE, c.share.headline, c.share.subline);
-  L.push(`Inoltra su WhatsApp: ${shareUrl(e, 'whatsapp')}`, `Inoltra via email: ${shareUrl(e, 'email')}`);
+  L.push('', RULE, cfg.copy.shareHeadline(e), cfg.copy.shareSubline);
+  L.push(`Inoltra su WhatsApp: ${shareUrl(c, 'whatsapp')}`, `Inoltra via email: ${shareUrl(c, 'email')}`);
   L.push(`${cfg.copy.forwarded} Iscriviti gratis: ${vaUrl('/', 'inoltrata_iscriviti', e)}`, '');
   L.push('VALORE ATTESO', cfg.copy.tagline, '');
-  L.push(`Leggi online: ${vaUrl(editionPath(e), 'footer_leggi_online', e)}`);
+  L.push(`Leggi online: ${vaUrl(editionPath(c), 'footer_leggi_online', e)}`);
   L.push(`Archivio: ${vaUrl('/archivio', 'footer_archivio', e)}`);
-  L.push(`Fonti: ${vaUrl(editionPath(e), 'footer_fonti', e)}`);
-  L.push(`${cfg.copy.contact.replace(/ Scrivi a$/, '')} ${cfg.copy.contactEmail}`, '');
-  L.push(`${cfg.copy.legalReceived} {{EMAIL_TEXT}}.`);
-  L.push(cfg.copy.legalAi);
-  L.push(`${cfg.copy.legalOwner} ${cfg.legal.titolare}, ${cfg.legal.indirizzo} · Privacy: ${cfg.site}${cfg.legal.privacyPath}`);
-  L.push(`Disiscriviti: ${cfg.unsubscribeUrl}`);
+  L.push(`Preferenze: ${cfg.legal.contact}`);
+  L.push(`${cfg.copy.contact} ${cfg.legal.contact}`, '');
+  L.push(cfg.copy.legalData, cfg.copy.legalAi);
+  const owner = cfg.legal.ownerAddress ? `${cfg.legal.owner}, ${cfg.legal.ownerAddress}` : cfg.legal.owner;
+  L.push(`${cfg.copy.legalOwner} ${owner} · ${cfg.copy.privacy} ${privacyUrl()} · ${cfg.copy.contactLabel} ${cfg.legal.contact}`);
+  L.push(`${cfg.copy.unsubscribe}: ${unsubscribeUrl()}`);
   return L.join('\n') + '\n';
 }
 

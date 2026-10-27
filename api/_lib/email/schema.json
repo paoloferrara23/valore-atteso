@@ -1,13 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://valoreatteso.com/schema/edizione-email.json",
+  "$id": "https://www.valoreatteso.com/schema/edizione-email.json",
   "title": "Valore Atteso, contratto dati dell'edizione email",
   "type": "object",
   "additionalProperties": false,
-  "required": ["edition", "date", "read_min", "subject", "preheader", "kicker", "title", "dek", "intro", "sponsor", "summary", "sections", "watch", "share", "approvals"],
+  "required": ["edition", "date", "read_min", "subject", "preheader", "kicker", "title", "dek", "sponsor", "summary", "sections", "watch", "approvals"],
   "properties": {
     "$comment": { "type": "string" },
     "edition": { "type": "string", "pattern": "^[0-9]{3}$" },
+    "edition_page": { "type": "boolean" },
     "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
     "read_min": { "type": "integer", "minimum": 1, "maximum": 30 },
     "subject": { "type": "string", "minLength": 1 },
@@ -15,7 +16,6 @@
     "kicker": { "type": "string", "minLength": 1 },
     "title": { "type": "string", "minLength": 1 },
     "dek": { "type": "string", "minLength": 1 },
-    "intro": { "type": ["string", "null"] },
     "sponsor": {
       "oneOf": [
         { "type": "null" },
@@ -40,7 +40,7 @@
     "sections": {
       "type": "array", "minItems": 3, "maxItems": 3,
       "items": {
-        "type": "object", "additionalProperties": false, "required": ["n", "label", "title", "kpi", "module", "body", "reading", "sources"],
+        "type": "object", "additionalProperties": false, "required": ["n", "label", "title", "kpi", "module", "body", "reading"],
         "properties": {
           "n": { "type": "integer", "enum": [1, 2, 3] },
           "label": { "type": "string", "enum": ["Il Bilancio", "Il Deal", "La Metrica"] },
@@ -63,34 +63,19 @@
             }
           },
           "body": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
-          "reading": { "type": "string", "minLength": 1 },
-          "sources": {
-            "type": "array", "minItems": 1, "maxItems": 4,
-            "items": {
-              "type": "object", "additionalProperties": false, "required": ["testo", "url"],
-              "properties": { "testo": { "type": "string", "minLength": 1 }, "url": { "type": "string", "minLength": 1 } }
-            }
-          }
+          "reading": { "type": "string", "minLength": 1 }
         }
       }
     },
     "watch": {
-      "type": "array", "minItems": 1, "maxItems": 3,
+      "type": "array", "maxItems": 3,
       "items": {
         "type": "object", "additionalProperties": false, "required": ["label", "text"],
         "properties": { "label": { "type": "string", "minLength": 1 }, "text": { "type": "string", "minLength": 1 } }
       }
     },
-    "share": {
-      "type": "object", "additionalProperties": false, "required": ["headline", "subline", "text"],
-      "properties": {
-        "headline": { "type": "string", "minLength": 1 },
-        "subline": { "type": "string", "minLength": 1 },
-        "text": { "type": "string", "minLength": 1 }
-      }
-    },
     "approvals": {
-      "type": "object", "additionalProperties": false, "required": ["copy", "factcheck", "paolo"],
+      "type": "object", "additionalProperties": false, "required": ["paolo"],
       "properties": { "copy": { "type": "boolean" }, "factcheck": { "type": "boolean" }, "paolo": { "type": "boolean" } }
     }
   }
