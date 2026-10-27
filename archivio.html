@@ -6,7 +6,10 @@
 <title>Archivio — Valore Atteso</title>
 <meta name="description" content="Archivio Valore Atteso — tutte le edizioni della newsletter sul business del calcio globale.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -343,7 +346,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
   <!-- ARTICOLO SINGOLO -->
   <div class="article" id="article-wrap">
     <div class="article-top">
-      <a class="art-back" onclick="backToList()">Torna all'archivio</a>
+      <a class="art-back" href="/archivio" onclick="backToList();return false;">Torna all'archivio</a>
       <div id="art-edit-bar" style="display:none;gap:8px;align-items:center">
         <button onclick="toggleEdit()" id="btn-edit">✎ Modifica</button>
         <button onclick="saveEdit()" id="btn-save" style="display:none">Salva modifiche</button>
