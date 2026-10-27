@@ -1,0 +1,239 @@
+{
+  "edition": "026",
+  "renders": {
+    "640-light": {
+      "s1": 612,
+      "height": 5172,
+      "overflow": false,
+      "minContrast": 5.42,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 0,
+      "kpiTops": [
+        767,
+        767,
+        767
+      ],
+      "kpiStacked": null,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "640-dark": {
+      "s1": 614,
+      "height": 5234,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 0,
+      "kpiTops": [
+        769,
+        769,
+        769
+      ],
+      "kpiStacked": null,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-light": {
+      "s1": 781,
+      "height": 7102,
+      "overflow": false,
+      "minContrast": 5.42,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 0,
+      "kpiTops": [
+        953,
+        995,
+        1038
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-dark": {
+      "s1": 783,
+      "height": 7189,
+      "overflow": false,
+      "minContrast": 5.81,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 0,
+      "kpiTops": [
+        955,
+        997,
+        1040
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    },
+    "375-senza-media-query": {
+      "s1": 781,
+      "height": 7102,
+      "overflow": false,
+      "minContrast": 5.42,
+      "contrastFails": [],
+      "fontsUnder11": [],
+      "nonLabelUnder12": [],
+      "tapsUnder44": [],
+      "sourceLinksUnder44": 0,
+      "kpiTops": [
+        953,
+        995,
+        1038
+      ],
+      "kpiStacked": true,
+      "barLabelsMultiline": [],
+      "mottoLines": 1,
+      "images": [
+        {
+          "w": 64,
+          "h": 44,
+          "nw": 128,
+          "nh": 88,
+          "ok": true,
+          "deformation": 0
+        },
+        {
+          "w": 180,
+          "h": 60,
+          "nw": 360,
+          "nh": 120,
+          "ok": true,
+          "deformation": 0
+        }
+      ]
+    }
+  },
+  "graphicPairs": {
+    "filetto oro / ink": 5.76,
+    "filetto oro / pagina dark": 6.2,
+    "bordo footer / pagina dark": 1.55,
+    "bordo sintesi / pagina dark": 2.24,
+    "blu / ink (motivo del filetto)": 1.25
+  },
+  "missingText": [],
+  "validation": {
+    "sintesi con 2 righe": [
+      "summary: schema: almeno 3 elementi"
+    ],
+    "numero KPI mancante": [
+      "sections[0].kpi[0].value: numero mancante"
+    ],
+    "numero sintesi assente nella sezione": [
+      "summary[2].number: il numero non compare nella sezione 3"
+    ],
+    "numero ripetuto KPI/modulo": [
+      "sections[0]: numero ripetuto nella sezione (565m)"
+    ],
+    "modulo non valido": [
+      "sections[2].module.type: schema: uno tra bars, deal, vs, none"
+    ],
+    "cella vs vuota": [
+      "sections[2].module.rows[0].b: cella vuota"
+    ],
+    "valore vs con trattino": [
+      "sections[2].module.rows[3].b: valore assente reso con un trattino: il dato va scritto esplicito"
+    ],
+    "nome di stampa nel corpo (send)": [
+      "sections[1].body[1]: nome di testata o social"
+    ],
+    "placeholder in send": [
+      "dek: placeholder rimasto",
+      "output: placeholder rimasti nell'output (2)"
+    ],
+    "edizione non approvata (send)": [
+      "approvals.paolo: edizione non approvata da Paolo in Control Room"
+    ],
+    "numero di iscritti": [
+      "dek: numero di iscritti",
+      "output: numero di iscritti nell'output"
+    ],
+    "preheader troncato": [
+      "preheader: preheader troncato con \"…\": serve un testo dedicato"
+    ],
+    "026 in send (atteso: OK)": []
+  }
+}

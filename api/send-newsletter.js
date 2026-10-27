@@ -5,6 +5,7 @@ const { requireAdmin, ipHash } = require('./_lib/admin-auth');
 const { Resend } = require('resend');
 const { loadEditionSponsors } = require('./_lib/sponsor-edition-data');
 const { buildHtml } = require('./_lib/build-html');
+const { buildEditionEmail, personalize, usesNewTemplate } = require('./_lib/email');
 const { contentPreflight } = require('./_lib/preflight');
 const { provider, sendViaBrevo } = require('./_lib/mailer');
 
@@ -74,6 +75,30 @@ async function handler(req, res) {
 
     edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
+    // Dalla #027 il template generico (api/_lib/email) in modalità send: placeholder,
+    // nomi di stampa, link non ammessi o edizione non approvata bloccano l'invio.
+    // Con force:true gli errori di regola sono solo segnalati (resta il blocco di struttura).
+    let built = null;
+    if (usesNewTemplate(edition.num)) {
+      built = await buildEditionEmail(edition, req.body.force === true ? 'test' : 'send');
+      if (!built.ok && (!built.html || req.body.force !== true)) {
+        const errs = built.report.errors.map(i => `${i.field}: ${i.rule}`);
+        await supabase.from('agent_runs').insert({
+          agent: 'send-newsletter',
+          status: 'blocked',
+          summary: `Invio #${edition.num} bloccato dai controlli del template email (${errs.length} errori).`,
+          data: { edition_num: edition.num, errors: errs.slice(0, 30) },
+        }).then(() => {}, () => {});
+        return res.status(422).json({
+          error: 'Invio bloccato dai controlli del template email',
+          can_send: false,
+          blockers: errs.length,
+          checks: errs.map(message => ({ type: 'error', message })),
+          hint: 'Correggi i campi indicati in Control Room e riprova.',
+        });
+      }
+    }
+
     const { data: subs, error: subErr } = await supabase
       .from('subscribers')
       .select('email')
@@ -81,13 +106,20 @@ async function handler(req, res) {
     if (subErr) throw new Error('Supabase subscribers: ' + subErr.message);
     if (!subs || !subs.length) return res.status(200).json({ ok: true, sent: 0, message: 'Nessun iscritto confermato' });
 
-    const html = buildHtml(edition);
-    const subject = `#${edition.num} - ${edition.title}`;
+    const html = built ? built.html : buildHtml(edition);
+    const text = built ? built.text : null;
+    const subject = built ? built.report.subject : `#${edition.num} - ${edition.title}`;
 
     let sent = 0;
     let errors = 0;
 
-    const makeBatch = arr => arr.map(sub => ({
+    const makeBatch = arr => arr.map(sub => (built ? {
+      from: 'Valore Atteso <info@valoreatteso.com>',
+      to: sub.email,
+      subject,
+      html: personalize(html, sub.email),
+      text: personalize(text, sub.email),
+    } : {
       from: 'Valore Atteso <info@valoreatteso.com>',
       to: sub.email,
       subject,

@@ -1,0 +1,180 @@
+{
+  "$comment": "Fixture di regressione: #026 come inviata il 27/10/2026 (testi verificati con md5 su editions), con le modifiche del prompt definitivo: niente blocchi Fonti, tolta l'attribuzione 'secondo Reuters' (cifra invariata). Voci in attesa di Copy/Fact-check: preheader, tesi di In sintesi, Cosa guardare, Stato del deal, '0 (perdita)', KPI 3 diviso in valore/etichetta.",
+  "edition": "026",
+  "date": "2026-10-27",
+  "read_min": 8,
+  "subject": "#026 - Il Milan spende, il Valencia apre ai soci, il Real incassa",
+  "preheader": "Milan in rosso di 24 milioni, Valencia valutato 1,25 miliardi, Real e Barça sopra il miliardo.",
+  "kicker": "Questa settimana",
+  "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa",
+  "dek": "Il Milan fa mercato da Champions giocando l'Europa League, il Valencia vende il 42% per finire lo stadio, Real e Barça superano il miliardo ma solo uno chiude in utile.",
+  "sponsor": null,
+  "summary": [
+    {
+      "section_n": 1,
+      "label": "Il Bilancio",
+      "number": "-€24M",
+      "thesis": "Il primo rosso dopo tre utili, mentre il mercato è da Champions."
+    },
+    {
+      "section_n": 2,
+      "label": "Il Deal",
+      "number": "€1,25 mld",
+      "thesis": "Il Valencia vale questo con i debiti: il 42% va a Pitchwise per finire lo stadio."
+    },
+    {
+      "section_n": 3,
+      "label": "La Metrica",
+      "number": "€607M",
+      "thesis": "Il debito netto del Barça. Real e Barça sopra il miliardo, ma solo il Real chiude in utile."
+    }
+  ],
+  "sections": [
+    {
+      "n": 1,
+      "label": "Il Bilancio",
+      "title": "Milan, investimenti da Champions con un bilancio in rosso e un posto in Europa League",
+      "kpi": [
+        {
+          "value": "-€24M",
+          "label": "Perdita netta 2025/26"
+        },
+        {
+          "value": "€464,6M",
+          "label": "Ricavi 2025/26"
+        },
+        {
+          "value": "€14-15M",
+          "label": "Ramos a bilancio, all'anno"
+        }
+      ],
+      "module": {
+        "type": "bars",
+        "title": "Premi UEFA all'anno, ciclo 2024-2027",
+        "rows": [
+          {
+            "label": "Champions",
+            "value": 2470,
+            "display": "€2,47 mld"
+          },
+          {
+            "label": "Europa League",
+            "value": 565,
+            "display": "€565M"
+          }
+        ]
+      },
+      "body": [
+        "A fine settembre il Milan ha approvato il bilancio 2025/26, chiuso il 30 giugno 2026, con ricavi per 464,6 milioni, in calo del 6%, e una perdita di circa 24 milioni: il primo rosso dopo tre utili, in una stagione senza coppe europee. Nella stessa estate il club ha investito sul mercato, e l'acquisto più caro dice molto su cosa si aspetta.",
+        "Il colpo principale è Gonçalo Ramos, arrivato dal PSG il 30 giugno con un contratto di cinque anni, fino al 2031. La cifra non è stata comunicata: le stime della stampa vanno da 70 a 74 milioni, bonus esclusi.",
+        "Il costo non pesa tutto in un anno. Con l'ammortamento il prezzo del cartellino si divide sugli anni di contratto: 70-74 milioni divisi su cinque anni fanno 14-15 milioni l'anno a bilancio, a cui si aggiunge lo stipendio. Per questo un acquisto pesa sui conti per tutta la durata del contratto, non solo nell'estate in cui si paga.",
+        "Il nodo è l'Europa. Il Milan ha chiuso la Serie A 2025/26 al quinto posto, a un punto dal Como quarto, e in questa stagione, la 2026/27, gioca l'Europa League. La differenza di soldi è grande: nel ciclo 2024-2027 l'UEFA assegna ogni anno circa 2,47 miliardi ai club della Champions (Supercoppa compresa) e 565 milioni a quelli dell'Europa League. Il pacchetto della Champions vale oltre quattro volte quello dell'Europa League."
+      ],
+      "reading": "Il Milan ha investito su una rosa da Champions mentre quest'anno gioca l'Europa League. Il rosso del 2025/26, chiuso senza coppe europee, è piccolo, ma gli ammortamenti dei nuovi acquisti pesano per anni e i premi europei di questa stagione sono quelli dell'Europa League. Per chi guarda i conti, tornare in Champions nel 2027/28 non è un obiettivo: è una condizione."
+    },
+    {
+      "n": 2,
+      "label": "Il Deal",
+      "title": "Valencia, nuovi soci statunitensi per finire lo stadio: il 42% a Pitchwise, club valutato 1,25 miliardi",
+      "kpi": [],
+      "module": {
+        "type": "deal",
+        "title": "Scheda del deal",
+        "rows": [
+          {
+            "key": "Acquirente",
+            "value": "Pitchwise Holdings (USA)"
+          },
+          {
+            "key": "Quota",
+            "value": "42%"
+          },
+          {
+            "key": "Venditore",
+            "value": "Meriton (famiglia Lim), resta maggioranza"
+          },
+          {
+            "key": "Valore d'impresa",
+            "value": "€1,25 mld (≈ $1,4 mld)"
+          },
+          {
+            "key": "Capitale nuovo",
+            "value": "€100M"
+          },
+          {
+            "key": "Stato",
+            "value": "In attesa di autorizzazioni"
+          }
+        ]
+      },
+      "body": [
+        "La scorsa settimana il Valencia ha annunciato l'ingresso di Pitchwise Holdings, un gruppo di investitori statunitensi, che arriverà al 42% del club. Meriton, la società della famiglia di Peter Lim, resta azionista di maggioranza e il figlio Kiat Lim resta presidente. L'operazione aspetta ancora le autorizzazioni.",
+        "Il club è valutato 1,25 miliardi di euro, circa 1,4 miliardi di dollari. È un valore d'impresa: comprende squadra maschile e femminile, lo stadio attuale e il progetto del Nou Mestalla, e include i debiti. Il prezzo pagato a Lim per le azioni non è stato reso noto. In più Pitchwise mette 100 milioni di capitale nuovo nel club.",
+        "Dietro Pitchwise ci sono nomi pesanti della finanza: George Roberts e Henry Kravis, cofondatori del fondo KKR, e il Penner Sports Group, veicolo della famiglia di Greg Penner, presidente del consiglio di amministrazione di Walmart e tra i proprietari dei Denver Broncos della NFL. A guidarlo sono Ann Rodriguez e Corey Woolfolk.",
+        "Il cuore dell'operazione è lo stadio. Il Nou Mestalla è stato iniziato nel 2007 e fermato nel 2009 per mancanza di soldi, ed è rimasto uno scheletro di cemento per oltre quindici anni. Il club ha ottenuto un finanziamento di circa 322 milioni, i lavori sono ripartiti a gennaio 2025 e l'apertura è prevista per l'estate 2027, con circa 70.000 posti.",
+        "Un confronto utile: nel 2014 Lim aveva pagato circa 100 milioni per il 70% delle azioni, con un club pieno di debiti da ristrutturare. Non si può dire quanto abbia guadagnato, perché le due cifre misurano cose diverse: allora il prezzo delle azioni, oggi il valore di tutta l'impresa con i debiti."
+      ],
+      "reading": "Qui chi possiede il club non vende per uscire: fa entrare un socio per finire lo stadio. Per un advisor il numero da guardare non è 1,25 miliardi, che include debiti e progetto, ma quanto vale il 42% in azioni e quali diritti di governo ottiene Pitchwise. Finché non si conosce, la valutazione racconta più un'ambizione che un prezzo."
+    },
+    {
+      "n": 3,
+      "label": "La Metrica",
+      "title": "Il Clásico dei bilanci: sopra il miliardo tutti e due, ma solo il Real guadagna",
+      "kpi": [],
+      "module": {
+        "type": "vs",
+        "columns": [
+          "Real Madrid",
+          "Barcellona"
+        ],
+        "rows": [
+          {
+            "label": "Ricavi",
+            "a": "€1.221M",
+            "b": "€1.060M"
+          },
+          {
+            "label": "Risultato netto",
+            "a": "+€26,3M",
+            "b": "≈ -€18M"
+          },
+          {
+            "label": "Debito netto",
+            "a": "≈ €9M*",
+            "b": "€607M"
+          },
+          {
+            "label": "Anni di fila in utile",
+            "a": "26",
+            "b": "0 (perdita)"
+          }
+        ],
+        "note": "* escluso lo stadio. I due club non calcolano i ricavi allo stesso modo: differenza da leggere come ordine di grandezza."
+      },
+      "body": [
+        "Domenica il Real Madrid ha vinto 2-1 al Camp Nou il primo Clásico della stagione 2026/27, con una doppietta di Mbappé. Fuori dal campo il confronto più interessante sta nei bilanci dell'anno precedente, il 2025/26, chiusi da entrambi il 30 giugno.",
+        "Il Real ha incassato 1.221 milioni di euro, il dato più alto della sua storia, e ha chiuso con un utile netto di 26,3 milioni: è il ventiseiesimo anno di fila in utile. Il Barcellona ha superato per la prima volta il miliardo, con 1.060 milioni, ma ha chiuso con una perdita netta di circa 18 milioni.",
+        "La differenza vera è il debito. Il debito netto, cioè i debiti meno la cassa, del Real è di circa 9 milioni, escluso lo stadio. Quello del Barcellona, calcolato con le regole della Liga, è di 607 milioni, in aumento di 138 milioni in un anno. Anche questo dato lascia fuori gran parte dei finanziamenti per il nuovo Camp Nou.",
+        "Il Real ricava circa 160 milioni in più, il 15% (1.221 contro 1.060 milioni). I due club non calcolano i ricavi esattamente allo stesso modo, quindi la differenza va presa come ordine di grandezza. Sul risultato invece non ci sono dubbi: uno chiude in utile con il debito netto quasi azzerato, l'altro in perdita con il debito in crescita."
+      ],
+      "reading": "Il Real trasforma i ricavi in utile e quasi non ha debito netto. Il Barcellona fattura oltre un miliardo ma perde e si indebita di più per lo stadio. Per chi valuta un club il fatturato conta meno della cassa che resta, ed è lì che il Clásico dei conti, quest'anno, non ha storia."
+    }
+  ],
+  "watch": [
+    {
+      "label": "Il Bilancio",
+      "text": "Il ritorno in Champions nel 2027/28: da lì dipende quanto pesano gli ammortamenti."
+    },
+    {
+      "label": "Il Deal",
+      "text": "Le autorizzazioni dell'operazione e il prezzo delle azioni pagato a Lim, oggi non reso noto."
+    },
+    {
+      "label": "La Metrica",
+      "text": "La parte dei finanziamenti del nuovo Camp Nou che resta fuori dal debito netto calcolato con le regole della Liga."
+    }
+  ],
+  "approvals": {
+    "paolo": true
+  }
+}

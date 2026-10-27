@@ -994,6 +994,12 @@ function crRenderOrg(){
       </div>
     </div>`;
 }
+// Messaggio d'errore di un invio, con i primi controlli falliti (pre-invio o template email).
+function crErrMsg(d,r){
+  var m=String(d.error||r.status);
+  if(Array.isArray(d.checks)&&d.checks.length)m+=': '+d.checks.slice(0,6).map(function(c){return c.message||c.label||'';}).join(' · ')+(d.checks.length>6?' (e altri '+(d.checks.length-6)+')':'');
+  return m;
+}
 async function crSendTest(){
   const num=document.getElementById('cr-send-num').value.trim().padStart(3,'0');
   const st=document.getElementById('cr-send-status');
@@ -1002,8 +1008,15 @@ async function crSendTest(){
   try{
     const r=await fetch('/api/send-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
     const d=await r.json();
-    if(r.ok&&d.ok){st.className='cr-status ok';st.textContent='Test inviato a '+d.sent_to;}
-    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status);}
+    if(r.ok&&d.ok){
+      var t=d.template||{};
+      st.className='cr-status ok';
+      st.innerHTML='Test inviato a '+esc(d.sent_to)+
+        (t.errors&&t.errors.length?'<br><span style="font-size:11px">Da sistemare prima dell\'invio: '+t.errors.slice(0,6).map(esc).join(' · ')+'</span>':'')+
+        (t.warnings&&t.warnings.length?'<br><span style="font-size:11px;opacity:.8">Avvisi: '+t.warnings.slice(0,6).map(esc).join(' · ')+'</span>':'')+
+        (t.edition_page===false?'<br><span style="font-size:11px;opacity:.8">Pagina /edizione non ancora online: i link puntano all\'archivio.</span>':'');
+    }
+    else{st.className='cr-status err';st.textContent='Errore: '+(d.error||r.status)+(d.template&&d.template.errors?': '+d.template.errors.slice(0,4).join(' · '):'');}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message;}
 }
 async function crRunGate(num,st){
@@ -1059,7 +1072,7 @@ async function crConfirmSend(num,btn){
     
     const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Edizione '+(d.edition||num)+' inviata a <strong>'+d.sent+'</strong> iscritti.';}
-    else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
+    else{st.className='cr-status err';st.textContent='Errore invio: '+crErrMsg(d,r);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
 async function crSendExisting(){
@@ -1076,7 +1089,7 @@ async function crSendExisting(){
     
     const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Edizione '+(d.edition||num)+' inviata a <strong>'+d.sent+'</strong> iscritti.';}
-    else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
+    else{st.className='cr-status err';st.textContent='Errore invio: '+crErrMsg(d,r);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
 
@@ -1112,6 +1125,7 @@ async function crApproveBozza(id,num){
     const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
     const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
+    if(r.ok)fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:'edition-pages'})}).catch(function(){});
     if(!r.ok)throw new Error('HTTP '+r.status);
     st.className='cr-status ok';
     st.textContent='✓ Edizione #'+num+' approvata e pubblicata.';
@@ -1138,7 +1152,7 @@ async function crInviaBozza(num,id){
     
     const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';}
-    else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
+    else{st.className='cr-status err';st.textContent='Errore invio: '+crErrMsg(d,r);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
 
@@ -1452,6 +1466,8 @@ async function crApprovaBozzaConData(id,num){
     st.className='cr-status ok';
     st.innerHTML='✓ Edizione #'+num+' approvata e pubblicata.<br><span style="font-size:11px;opacity:.8">Sottotitolo: '+esc(subtitle)+'</span>';
     if(btn){btn.textContent='✓ Approvata';btn.style.background='#4a7c4e';btn.style.color='#fff';}
+    // Genera la pagina /edizione-N (workflow GitHub): serve ai link "Leggi online" dell'email.
+    fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:'edition-pages'})}).catch(function(){});
     crLoadCtx();loadLatestPreview();
     setTimeout(function(){crLoadBozze();},1500);
   }catch(e){
@@ -1587,6 +1603,7 @@ async function crApproveBozza(id,num){
     const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
     const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
+    if(r.ok)fetch('/api/run-agent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({agent:'edition-pages'})}).catch(function(){});
     if(!r.ok)throw new Error('HTTP '+r.status);
     st.className='cr-status ok';
     st.textContent='✓ Edizione #'+num+' approvata e pubblicata.';
@@ -1613,7 +1630,7 @@ async function crInviaBozza(num,id){
     
     const _t=await r.text();let d;try{d=JSON.parse(_t);}catch(e){throw new Error('Server: '+_t.slice(0,200));}
     if(r.ok&&d.ok){st.className='cr-status ok';st.innerHTML='✓ Newsletter inviata a <strong>'+d.sent+'</strong> iscritti.';}
-    else{st.className='cr-status err';st.textContent='Errore invio: '+(d.error||r.status);}
+    else{st.className='cr-status err';st.textContent='Errore invio: '+crErrMsg(d,r);}
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
 }
 async function crGenera(){

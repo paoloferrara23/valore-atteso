@@ -34,7 +34,7 @@ Se Paolo cita un numero diverso da quello che leggi live, il numero live vince. 
 
 M&A Manager con background in sport advisory. Ha fondato Valore Atteso ispirandosi a due modelli editoriali italiani: **Calcio e Finanza** (giornalismo finanziario applicato al calcio) e **SpiegameloFacile** (concetti complessi resi accessibili, format visivo pulito). Obiettivo di lungo periodo: fondare un'azienda in cui l'M&A resta un'attività, affiancata da un prodotto scalabile. Il ruolo di Paolo tende all'editoriale e strategico; l'operatività è progressivamente automatizzata via agenti.
 
-Nota: Calcio e Finanza è modello di riferimento e competitor di categoria. **Non è una fonte vietata**: si può usare (come Transfermarkt) per reperire informazioni. La regola vera è **non replicare i loro articoli** (struttura o testo) in modo contestabile come plagio: ogni pezzo va rielaborato con analisi originale VA e, dove possibile, i dati vanno riscontrati su una fonte indipendente.
+Nota: Calcio e Finanza è modello di riferimento e competitor di categoria. Si può leggere (come Transfermarkt) per orientarsi, ma **non si cita mai come fonte**: in pagina vanno solo fonti primarie (vedi Note editoriali, regola di ottobre 2026). Resta la regola di **non replicare i loro articoli** (struttura o testo): ogni pezzo va rielaborato con analisi originale VA.
 
 ---
 
@@ -96,6 +96,15 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 
 ---
 
+## Email: template generico (attivo dall'ed. #027)
+
+- Codice in `api/_lib/email/`: `schema.json` (contratto JSON dell'edizione), `validate.js` (numeri, placeholder, nomi di stampa, merge tag), `render-html.js`, `render-text.js`, `urls.js` (unica fonte degli URL e degli UTM `va-{edizione}`), `config.js` (micro-testi, dati legali, nomi vietati), `contract.js` (riga `editions` → contratto), `index.js` (usato da send-test e send-newsletter).
+- **Dove è collegato:** `send-test` lo usa sempre (modalità test: errori solo segnalati nella Control Room); `send-newsletter` lo usa dalla #027 in modalità send (placeholder, nomi di testate/social, link esterni, edizione non approvata → 422 con l'elenco). Le edizioni fino alla #026 restano su `build-html.js`.
+- **Niente blocco fonti nell'email:** le fonti restano nelle sezioni su Supabase (verifica e pagina web), non si stampano in email. Link ammessi solo verso `https://www.valoreatteso.com` (con UTM), `mailto:` e `wa.me`. Pagina dell'edizione `/edizione-N` (es. `/edizione-27`); se non è ancora online i link puntano a `/archivio`. All'approvazione la Control Room lancia il workflow `edition-pages` (`run-agent`, agente `edition-pages`).
+- **Disiscrizione:** merge tag `{{EMAIL}}`, sostituito per ogni destinatario con il suo indirizzo (`/cancella?email=...`). I tag di Brevo (`{{ unsubscribe }}`) non funzionano con gli invii transazionali che usiamo. "Preferenze" apre per ora una mail a info@.
+- Contenuti su **Supabase**: riga `editions` + colonna `email` (jsonb, applicata) con preheader, tesi della sintesi (`summary[i].thesis`), "Cosa guardare" (`watch`), e opzionali `sections[i].kpi/module`. Il Writer (`genera-edizione`) li compila; se mancano: preheader = sottotitolo, tesi = titolo della sezione, "Cosa guardare" non mostrato.
+- Build locale: `npm run edition -- 027 --mode=preview|test|send [--from=supabase]` → `dist/027/`. Test: `npm run edition:qa -- 026`. Invio di prova a info@ da GitHub Actions: workflow `newsletter-a2-test.yml`. Dettagli in `docs/email/README.md`.
+
 ## Flusso redazione settimanale
 
 | Quando | Chi | Cosa |
@@ -140,7 +149,7 @@ Ruoli previsti: Scout, SEO, Editoriale, Growth, Sponsor-outreach, Deliverability
 ## Note editoriali
 
 - Tono: analitico, diretto, dati verificabili. Nessun gossip/rumor.
-- Fonti: priorità alle primarie (bilanci ufficiali, UEFA, FIGC, Lega Serie A, Deloitte/KPMG/PwC solo report, comunicati); secondarie autorevoli (Reuters, FT, Bloomberg, The Athletic, BBC) quando la primaria manca. **Calcio e Finanza e Transfermarkt sono ammesse come fonti** (non citarle a sproposito, ma si possono usare), a patto di **non replicarne gli articoli** (rischio plagio) e di riscontrare i dati altrove. Vietati solo blog di tifosi, forum, aggregatori di rumor. Nessun dato inventato. Esplicitare la base di calcolo delle percentuali.
+- Fonti (decisione di Paolo, ottobre 2026): **solo primarie**. Ammessi bilanci e documenti ufficiali dei club, filings, organi di governo (UEFA, FIFA, FIGC, leghe, ECA), comunicati ufficiali, report pubblici di consulenze e fondi di private equity (Deloitte, KPMG, PwC e simili). **Mai** stampa, testate, agenzie, TV, siti di news, blog, aggregatori, Transfermarkt, Calcio e Finanza o social, né come fonte né come attribuzione nel testo ("secondo X"). **Stime**: se un dato esiste solo come stima della stampa, si resta generici ("la cifra non è stata resa nota") senza riportare la stima. Nessun dato inventato. Esplicitare la base di calcolo delle percentuali.
 - Stile LinkedIn: numeri secchi su righe separate; pivot "ma il numero non è la storia"; parallelo finanziario naturale; domanda aperta per i commenti; link nei commenti; chiusura "con il caffè, 8 minuti". Evitare "genio", "secondo voi".
 - KPI format: `{"label":"max 4 parole","value":"numero con unità","sub":"max 4 parole"}`
 - Benvenuto: rimanda all'archivio. Claim: "Analisi, non rumore. Ogni martedì in 8 minuti, con il caffè, prima di una riunione."

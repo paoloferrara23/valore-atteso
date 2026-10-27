@@ -10,6 +10,8 @@ const AGENT_MAP = {
   growth:     { workflow: 'growth-agent.yml',       label: 'Growth Agent' },
   factcheck:  { workflow: 'factcheck-agent.yml',    label: 'Fact-Check Agent' },
   'sponsor-outreach': { workflow: 'sponsor-outreach.yml', label: 'Sponsor Outreach' },
+  // Pagina web /edizione-N: lanciata dalla Control Room all'approvazione, così "Leggi online" dell'email non resta sull'archivio.
+  'edition-pages': { workflow: 'edition-pages.yml', label: 'Pagine edizioni' },
 };
 
 const REPO = 'paoloferrara23/valore-atteso';

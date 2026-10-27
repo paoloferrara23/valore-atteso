@@ -194,7 +194,7 @@ REGOLE ASSOLUTE:
 5. Scrivi analitico ma LEGGIBILE (vedi "Make it simple"): frasi corte, nessun gergo non spiegato, mai tono da report o da comunicato
 6. I dati finanziari devono avere contesto — ogni numero deve spiegare perché conta
 7. Le tre sezioni non devono contraddirsi né ripetere gli stessi dati
-8. GERARCHIA DELLE FONTI (usa sempre la più alta disponibile). TIER 1 primarie e istituzionali: bilanci ufficiali dei club, documenti depositati e filings di borsa, organi di governo (UEFA, FIFA, FIGC, leghe, ECA), report pubblicati di Deloitte (Money League, Annual Review of Football Finance), KPMG Football Benchmark e PwC, comunicati ufficiali. TIER 2, solo se manca la primaria: Reuters, FT, Bloomberg, The Athletic, BBC, SportsPro, Sportcal, SwissRamble. TIER 3, MAI da citare: blog di tifosi, aggregatori, Transfermarkt per le cifre dei trasferimenti, tabloid, Calcio e Finanza. FORMATO FONTI: pulito e breve. Ogni voce di "sources" come nome fonte + (documento o tipo solo se è un report o un comunicato) + data. NIENTE URL e niente titolo lungo dell'articolo. Es: "Bloomberg, 19/05/2026"; "Deloitte, Football Money League 2026"; "Arsenal, comunicato ufficiale, 06/08/2026".
+8. FONTI: SOLO PRIMARIE. Ammessi: bilanci ufficiali e documenti depositati dei club, filings di borsa, organi di governo (UEFA, FIFA, FIGC, leghe, ECA), comunicati ufficiali, report pubblici di consulenze e fondi di private equity (es. Deloitte Football Money League, KPMG Football Benchmark, PwC). MAI stampa, testate, agenzie, siti di news, TV, blog, aggregatori, Transfermarkt, Calcio e Finanza o social, né come fonte né come attribuzione nel testo (niente "secondo X"). STIME: se un dato esiste solo come stima della stampa (es. il prezzo di un trasferimento non comunicato), resta generico: scrivi che la cifra non è stata resa nota, senza riportare la stima e senza nominare chi l'ha fatta. FORMATO FONTI: nome del documento + emittente + data, pulito e breve, NIENTE URL. Es: "AC Milan, Bilancio 2025/26, 28/09/2026"; "Deloitte, Football Money League 2026"; "Arsenal, comunicato ufficiale, 06/08/2026".
 9. Ogni sezione: 180-250 parole, 3 KPI dai dati Scout, verdict incisivo, fonti reali
 10. FORMATO KPI — i "key financials" devono essere CORTI. Il campo "value" è SOLO una cifra compatta con unità (es. "€13 mld", "70%", "£100M", "3,3 mld $", "104"), MAI una frase, max ~12 caratteri. Il contesto va nel "sub" (max ~30 caratteri). Il "label" è breve (max ~24 caratteri). Se un dato non è esprimibile in cifra breve, non usarlo come KPI.
 11. COMPETIZIONI EUROPEE E REGOLE APPLICABILI — verifica prima di affermare: NON dare per scontato che un club giochi in Champions/Europa/Conference League. Le regole finanziarie UEFA (Fair Play Finanziario, Squad Cost Ratio 70%) valgono SOLO per i club iscritti alle competizioni UEFA di quella stagione. Per i club fuori dall'Europa valgono le regole domestiche (es. Premier League: Squad Cost Ratio 85%, PSR). Se lo status europeo di un club per la stagione in corso non è tra i DATI VERIFICATI SCOUT, NON affermarlo e non dedurne conseguenze regolamentari: scrivi [da verificare] oppure ometti.
@@ -223,10 +223,20 @@ I tre temi dell'edizione:
 - La Metrica: ${secMetrica.title}
 
 L'opener è 2-3 frasi che legano i tre temi e invogliano a leggere, tono Valore Atteso "make it simple".
-Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
+
+Per l'email servono anche:
+- "preheader": una frase di 85-100 caratteri, senza puntini finali, con i numeri chiave.
+- "tesi": tre frasi (una per sezione, nell'ordine Bilancio, Deal, Metrica), max 110 caratteri ciascuna, che dicono cosa significa il numero principale della sezione.
+- "da_guardare": tre frasi brevi (una per sezione) su cosa seguire nelle prossime settimane: date, scadenze, documenti attesi.
+Usa solo numeri presenti nelle sezioni, senza arrotondarli. Non nominare mai testate, agenzie o social. Niente trattino lungo.
+
+Sezioni complete:
+${sections.map(s => `${s.label}: ${s.title}\nKPI: ${(s.kpis || []).map(k => `${k.label} ${k.value}`).join('; ')}\n${String(s.body || '').slice(0, 1200)}`).join('\n\n')}
+
+Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"...","preheader":"...","tesi":["...","...","..."],"da_guardare":["...","...","..."]}`;
     let meta = { title: `Edizione #${draft.num}`, subtitle: '', opener: '' };
     try {
-      const metaRaw = await callClaude([{ role: 'user', content: metaPrompt }], genSystem, 'claude-sonnet-4-6', 600);
+      const metaRaw = await callClaude([{ role: 'user', content: metaPrompt }], genSystem, 'claude-sonnet-4-6', 1200);
       meta = parseJSON(metaRaw);
     } catch (e) { console.warn('Meta non generata:', e.message); }
 
@@ -238,6 +248,23 @@ Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
       sections,
       date:     date || draft.date,
     }).eq('id', editionId);
+
+    // Campi del template email (colonna `email`): in un update separato, così un errore
+    // qui non perde la bozza. Se mancano, il template usa sottotitolo e titoli delle sezioni.
+    try {
+      const str = v => (typeof v === 'string' ? v.trim() : '');
+      const tesi = Array.isArray(meta.tesi) ? meta.tesi.map(str) : [];
+      const watch = (Array.isArray(meta.da_guardare) ? meta.da_guardare.map(str) : [])
+        .map((text, i) => ({ label: sections[i] && sections[i].label, text }))
+        .filter(w => w.label && w.text);
+      const email = {
+        ...(str(meta.preheader) ? { preheader: str(meta.preheader) } : {}),
+        summary: sections.map((_, i) => (tesi[i] ? { thesis: tesi[i] } : {})),
+        watch,
+      };
+      const { error: emErr } = await supabase.from('editions').update({ email }).eq('id', editionId);
+      if (emErr) console.warn('Campi email non salvati:', emErr.message);
+    } catch (e) { console.warn('Campi email non salvati:', e.message); }
 
     console.log(`Bozza #${draft.num} generata.`);
     return res.status(200).json({

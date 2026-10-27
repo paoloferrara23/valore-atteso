@@ -1,14 +1,18 @@
-name: Test newsletter A2
+name: Test email edizione
 
-# Invio di prova del template A2 a info@valoreatteso.com (indirizzo fisso nello script).
-# Non tocca la lista iscritti né gli invii del martedì.
+# Invio di prova del template generico a info@valoreatteso.com (indirizzo fisso nello script).
+# Non tocca la lista iscritti né gli invii del martedì. Da lanciare solo dopo l'ok di Paolo.
 on:
   workflow_dispatch:
     inputs:
       num:
-        description: 'Numero edizione con file in docs/newsletter-a2 (es. 026)'
+        description: 'Numero edizione a 3 cifre (es. 026)'
         required: true
         default: '026'
+      from:
+        description: 'Origine dei dati: fixture (fixtures/<num>.json) oppure supabase'
+        required: true
+        default: 'fixture'
 
 jobs:
   send:
@@ -21,5 +25,9 @@ jobs:
       - name: Invio di prova
         env:
           BREVO_KEY: ${{ secrets.BREVO_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           NUM: ${{ github.event.inputs.num }}
-        run: node scripts/newsletter-a2-send-test.js "$NUM"
+          FROM: ${{ github.event.inputs.from }}
+        run: |
+          if [ "$FROM" = "supabase" ]; then node scripts/email-send-test.js "$NUM" --from=supabase; else node scripts/email-send-test.js "$NUM"; fi
