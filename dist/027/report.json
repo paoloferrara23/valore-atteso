@@ -102,8 +102,8 @@
     "html: re]] [[DA_FORNIRE: voce]] [[DA_FORNIRE: val",
     "html: voce]] [[DA_FORNIRE: valore]] [[DA_FORNIRE",
     "html: re]] [[DA_FORNIRE: voce]] [[DA_FORNIRE: val",
-    "html: voce]] [[DA_FORNIRE: valore]] [[DA_FORNIRE",
-    "html: re]] [[DA_FORNIRE:&nbsp;paragrafo]] [[DA_FO",
+    "html: voce]] [[DA_FORNIRE: valore]] [[DA_FOR",
+    "html: [[DA_FORNIRE:&nbsp;paragrafo]] [[DA_FO",
     "html: grafo]] [[DA_FORNIRE:&nbsp;paragrafo]] &nbs",
     "html: lettura [[DA_FORNIRE: la nostra&nbsp;lettura]]",
     "html: rica [[DA_FORNIRE: titolo della&nbsp;sezione]",
@@ -115,8 +115,8 @@
     "html: B]] [[DA_FORNIRE: voce]] [[DA_FORNIRE: val",
     "html: voce]] [[DA_FORNIRE: valore A]] [[DA_FORNIRE:",
     "html: lore A]] [[DA_FORNIRE: valore B]] [[DA_FORNIR",
-    "html: e B]] [[DA_FORNIRE:&nbsp;nota]] [[DA_FORNI",
-    "html: ota]] [[DA_FORNIRE:&nbsp;paragrafo]] [[DA_FO",
+    "html: e B]] [[DA_FORNIRE:&nbsp;nota]] [[DA_F",
+    "html: ] [[DA_FORNIRE:&nbsp;paragrafo]] [[DA_FO",
     "html: grafo]] [[DA_FORNIRE:&nbsp;paragrafo]] &nbs",
     "html: lettura [[DA_FORNIRE: la nostra&nbsp;lettura]]",
     "html: io &nbsp; [[DA_FORNIRE: cosa&nbsp;guardare]]",
@@ -177,11 +177,11 @@
     "text: Metrica: [[DA_FORNIRE: cosa guardare]] — Un coll"
   ],
   "weightKB": {
-    "html": 39.6,
+    "html": 41.6,
     "text": 3.3
   },
   "sha256": {
-    "html": "2497805c741e4a0aeaf3fea8a8c100155078371085f3c8c8c0ed6f286a8687ef",
+    "html": "bda0d78577d8f0dd7ed4ac5a83711c0669c01f5e670d23eb6007a9c9b76b46f9",
     "text": "ab92845646ada6d79f32f5b489e2d8bdbb66488d34b16cb17236a8c95357cb07"
   },
   "hrefs": [

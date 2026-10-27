@@ -2,8 +2,8 @@
 
 Esito: **OK** · errori 0 · avvisi 2 · placeholder 0
 
-Peso: HTML 49.3 KB · text/plain 8.7 KB
-SHA-256 HTML da6ddc529199d5f8d6cee96fcf16e316f6ce39ad4e3b80322ac24d2de3056f0b
+Peso: HTML 51.2 KB · text/plain 8.7 KB
+SHA-256 HTML 9df2b480620abddce1328fba588ab7a4eb9c666221819abaffba8b8da3e24d16
 SHA-256 text a9b9b25bd2b089f20cb697b3aeef009ad394582d8305ff1c9c4adf79fa928ee7
 
 ## Avvisi
