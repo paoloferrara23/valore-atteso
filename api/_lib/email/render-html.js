@@ -340,6 +340,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .track{background:#2A2621 !important;}
 .kpiwrap{border-top-color:#9DB4F0 !important;}
 .rule-ink{border-color:#EDE7DB !important;}
+.rule-blue{border-color:#9DB4F0 !important;}
 .bdb{border:1px solid #2E4A8F !important;}
 .bdi{border:1px solid ${C.lineDark} !important;}
 }
@@ -347,6 +348,10 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 [data-ogsb] .box{background:#1F1C18 !important;}
 [data-ogsb] .bar{background:#9DB4F0 !important;}
 [data-ogsb] .track{background:#2A2621 !important;}
+[data-ogsb] .box-bd,[data-ogsb] .ln{border-color:${C.lineDark} !important;}
+[data-ogsb] .kpiwrap{border-top-color:#9DB4F0 !important;}
+[data-ogsb] .rule-blue{border-color:#9DB4F0 !important;}
+[data-ogsb] .rule-ink{border-color:#EDE7DB !important;}
 [data-ogsc] .t{color:#EDE7DB !important;}
 [data-ogsc] .mu{color:#B9B1A4 !important;}
 [data-ogsc] .lk{color:#9DB4F0 !important;}
