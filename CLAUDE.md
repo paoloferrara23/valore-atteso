@@ -96,12 +96,14 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 
 ---
 
-## Email: template generico (dall'ed. #027, in prova)
+## Email: template generico (attivo dall'ed. #027)
 
-- Codice in `api/_lib/email/`: `schema.json` (contratto JSON dell'edizione), `validate.js` (regole: numeri, fonti primarie, placeholder, UTM, merge tag), `render-html.js` (concept A2 + footer opzione 1), `render-text.js`, `urls.js` (unica fonte degli URL VA e degli UTM `va-{edizione}`), `config.js` (micro-testi, dati legali, liste di blocco).
-- I contenuti restano su **Supabase**: riga `editions` + colonna proposta `email` (jsonb) con i campi del template (`sql/2026-10-27_editions_email.sql`, non ancora applicata).
-- Build: `npm run edition -- 027 --mode=preview|test|send [--from=supabase]` → `dist/027/`. `send` si blocca con placeholder, fonti di stampa, dati legali mancanti o approvazioni a `false`. Test: `npm run edition:qa -- 027`.
-- Non ancora collegato a `send-newsletter`: il martedì parte ancora `build-html.js`. Vedi `docs/email/README.md`.
+- Codice in `api/_lib/email/`: `schema.json` (contratto JSON dell'edizione), `validate.js` (numeri, placeholder, nomi di stampa, merge tag), `render-html.js`, `render-text.js`, `urls.js` (unica fonte degli URL e degli UTM `va-{edizione}`), `config.js` (micro-testi, dati legali, nomi vietati), `contract.js` (riga `editions` → contratto), `index.js` (usato da send-test e send-newsletter).
+- **Dove è collegato:** `send-test` lo usa sempre (modalità test: errori solo segnalati nella Control Room); `send-newsletter` lo usa dalla #027 in modalità send (placeholder, nomi di testate/social, link esterni, edizione non approvata → 422 con l'elenco). Le edizioni fino alla #026 restano su `build-html.js`.
+- **Niente blocco fonti nell'email:** le fonti restano nelle sezioni su Supabase (verifica e pagina web), non si stampano in email. Link ammessi solo verso `https://www.valoreatteso.com` (con UTM), `mailto:` e `wa.me`. Pagina dell'edizione `/edizione-N` (es. `/edizione-27`); se non è ancora online i link puntano a `/archivio`. All'approvazione la Control Room lancia il workflow `edition-pages` (`run-agent`, agente `edition-pages`).
+- **Disiscrizione:** merge tag `{{EMAIL}}`, sostituito per ogni destinatario con il suo indirizzo (`/cancella?email=...`). I tag di Brevo (`{{ unsubscribe }}`) non funzionano con gli invii transazionali che usiamo. "Preferenze" apre per ora una mail a info@.
+- Contenuti su **Supabase**: riga `editions` + colonna `email` (jsonb, applicata) con preheader, tesi della sintesi (`summary[i].thesis`), "Cosa guardare" (`watch`), e opzionali `sections[i].kpi/module`. Il Writer (`genera-edizione`) li compila; se mancano: preheader = sottotitolo, tesi = titolo della sezione, "Cosa guardare" non mostrato.
+- Build locale: `npm run edition -- 027 --mode=preview|test|send [--from=supabase]` → `dist/027/`. Test: `npm run edition:qa -- 026`. Invio di prova a info@ da GitHub Actions: workflow `newsletter-a2-test.yml`. Dettagli in `docs/email/README.md`.
 
 ## Flusso redazione settimanale
 
