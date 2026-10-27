@@ -1,0 +1,33 @@
+name: Test email edizione
+
+# Invio di prova del template generico a info@valoreatteso.com (indirizzo fisso nello script).
+# Non tocca la lista iscritti né gli invii del martedì. Da lanciare solo dopo l'ok di Paolo.
+on:
+  workflow_dispatch:
+    inputs:
+      num:
+        description: 'Numero edizione a 3 cifre (es. 026)'
+        required: true
+        default: '026'
+      from:
+        description: 'Origine dei dati: fixture (fixtures/<num>.json) oppure supabase'
+        required: true
+        default: 'fixture'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Invio di prova
+        env:
+          BREVO_KEY: ${{ secrets.BREVO_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          NUM: ${{ github.event.inputs.num }}
+          FROM: ${{ github.event.inputs.from }}
+        run: |
+          if [ "$FROM" = "supabase" ]; then node scripts/email-send-test.js "$NUM" --from=supabase; else node scripts/email-send-test.js "$NUM"; fi
