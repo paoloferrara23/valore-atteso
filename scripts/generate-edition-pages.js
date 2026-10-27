@@ -64,7 +64,7 @@ function inlineForm(source, cta) {
   return `<form class="vaform" data-source="${esc(source)}" onsubmit="return vaSub(this)" novalidate>
     <div class="vaform-row">
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
-      <button type="submit">${esc(cta || 'Iscriviti gratis')}</button>
+      <button type="submit" class="va-btn-primary">${esc(cta || 'Iscriviti gratis')}</button>
     </div>
     <div class="vaform-status" aria-live="polite"></div>
   </form>`;
@@ -72,7 +72,7 @@ function inlineForm(source, cta) {
 
 // Barra fissa che compare a ~70% di scroll (una volta per visitatore).
 function scrollBar(source) {
-  return `<div id="va-scroll-cta" role="region" aria-label="Iscrizione">
+  return `<div id="va-scroll-cta" class="va-on-dark" role="region" aria-label="Iscrizione">
   <div class="sc-in">
     <div class="sc-t">Ti sta piacendo? Ricevila ogni martedì, con il caffè.</div>
     ${inlineForm(source, 'Iscriviti')}
@@ -81,26 +81,9 @@ function scrollBar(source) {
 </div>`;
 }
 
-const SUBSCRIBE_JS = `<script>
-function vaSub(form){
-  var input=form.querySelector("input[type=email]");
-  var btn=form.querySelector("button[type=submit]")||form.querySelector("button");
-  var st=form.querySelector(".vaform-status");
-  var email=(input.value||"").trim();
-  if(!email||email.indexOf("@")<1){st.textContent="Inserisci un'email valida.";st.className="vaform-status err";return false;}
-  var source=form.getAttribute("data-source")||"archivio";
-  var old=btn.textContent;btn.disabled=true;btn.textContent="...";st.textContent="";st.className="vaform-status";
-  fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:source})})
-    .then(function(r){return r.json().then(function(d){return {s:r.status,d:d};}).catch(function(){return {s:r.status,d:{}};});})
-    .then(function(res){
-      if(res.s===429){st.textContent="Troppi tentativi ravvicinati. Riprova tra qualche minuto.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;return;}
-      if(res.d&&res.d.already){st.textContent="✓ Sei già iscritto. Sei a posto.";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
-      if(res.d&&res.d.ok){st.textContent="✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam).";st.className="vaform-status ok";input.value="";btn.textContent="Fatto ✓";return;}
-      st.textContent=(res.d&&res.d.error)||"Iscrizione non riuscita. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;
-    })
-    .catch(function(){st.textContent="Errore di rete. Riprova.";st.className="vaform-status err";btn.disabled=false;btn.textContent=old;});
-  return false;
-}
+// vaSub(form) sta in /va.js, condiviso con /archivio.
+const SUBSCRIBE_JS = `<script src="/va.js"></script>
+<script>
 (function(){
   try{if(localStorage.getItem("va_prompted")==="1")return;}catch(e){}
   var shown=false;
@@ -165,7 +148,7 @@ function buildEditionHtml(ed) {
 
   // Blocco finale: invito a ricevere il prossimo numero, uguale su tutte le edizioni.
   const bottomSource = 'edizione-' + ed.num + '__fine';
-  const bottom = `<div class="gate">
+  const bottom = `<div class="gate va-on-dark">
     <div class="gate-k">Newsletter</div>
     <h3>Ricevila ogni martedì</h3>
     <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
@@ -295,7 +278,7 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   <div class="nav-links">
     <a href="/archivio" class="nav-a">Archivio</a>
     <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="/" class="nav-cta">Iscriviti</a>
+    <a href="/" class="nav-cta va-btn-primary">Iscriviti</a>
   </div>
 </div></nav>
 

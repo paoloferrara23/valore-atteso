@@ -169,7 +169,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
       <a class="nav-a" href="/">Home</a>
       <a class="nav-a" href="/archivio">Archivio</a>
       <a class="nav-a active" href="/glossario">Glossario</a>
-      <a class="nav-cta" href="/#signup-top">Iscriviti gratis</a>
+      <a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a>
     </div>
   </div>
 </nav>
@@ -217,12 +217,12 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
   <p>Le definizioni contenute in questo glossario hanno scopo puramente informativo e divulgativo. Non costituiscono consulenza finanziaria, legale o fiscale. I dati e gli esempi citati sono tratti da fonti pubbliche e potrebbero non essere aggiornati. Prima di prendere decisioni di investimento o strategiche consultare un professionista qualificato.</p>
 </div>
 
-<div class="cta-strip">
+<div class="cta-strip va-on-dark">
   <h2>Questi termini in azione,<br><em>ogni martedì mattina.</em></h2>
   <p>La newsletter che usa questi strumenti per analizzare il business del calcio. Gratis.</p>
   <div class="cta-strip-form">
-    <input type="email" class="cta-strip-email" id="cta-email" placeholder="la tua email" autocomplete="email" inputmode="email">
-    <button class="cta-strip-btn" onclick="doSignup()">Iscriviti →</button>
+    <input type="email" class="cta-strip-email" id="cta-email" placeholder="la tua email" autocomplete="email" inputmode="email" aria-label="Email">
+    <button class="cta-strip-btn va-btn-primary" type="button" onclick="doSignup()">Iscriviti →</button>
   </div>
   <div class="cta-success" id="cta-success">✓ Controlla la tua inbox per confermare l'iscrizione</div>
 </div>
@@ -239,6 +239,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
   </div>
 </footer>
 
+<script src="/va.js"></script>
 <script>
 const TERMS = [
   { letter:'A', name:'Ammortamento', tag:'finanza', body:'Processo contabile che distribuisce il costo di un asset (es. un calciatore acquistato) su più anni. Se compri un giocatore a €30M con contratto 5 anni, ammortizzi €6M/anno a conto economico. È il motivo per cui i bilanci dei club non mostrano mai il costo reale dei trasferimenti nell\'anno dell\'acquisto.' },
@@ -347,10 +348,11 @@ function filterTerms() {
 
 async function doSignup() {
   const email = document.getElementById('cta-email').value.trim();
-  if (!email || !email.includes('@')) { document.getElementById('cta-email').style.borderColor = '#B93A2F'; return; }
-  document.getElementById('cta-email').style.borderColor = '';
+  const emailEl = document.getElementById('cta-email');
   const btn = document.querySelector('.cta-strip-btn');
-  btn.disabled = true; btn.textContent = 'Iscrizione…';
+  if (btn.getAttribute('aria-busy') === 'true') return;
+  if (!vaCheckSignup(emailEl, null, emailEl.closest('.cta-strip-form'))) return;
+  btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Iscrizione…';
   try {
     const r = await fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, source:'glossario'}) });
     const d = await r.json();
@@ -360,7 +362,7 @@ async function doSignup() {
       document.getElementById('cta-success').style.display = 'block';
     } else throw new Error();
   } catch {
-    btn.disabled = false; btn.textContent = 'Iscriviti →';
+    btn.removeAttribute('aria-busy'); btn.textContent = 'Iscriviti →';
     document.getElementById('cta-email').style.borderColor = '#B93A2F';
   }
 }

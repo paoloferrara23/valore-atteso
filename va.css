@@ -6,3 +6,19 @@
 .va-mono{display:inline-flex;align-items:center}
 .va-mono img{display:block;height:44px;width:auto}
 @media(max-width:920px){.va-logo img{height:28px}}
+
+/* Iscrizione: un solo stile primario (blu) per tutte le CTA di iscrizione; il nero resta alle secondarie. */
+.va-btn-primary.va-btn-primary{background:#0039A4;color:#F3EFE6;border:1px solid #0039A4;min-height:44px;cursor:pointer;opacity:1;transition:background-color .15s,border-color .15s}
+.va-btn-primary.va-btn-primary:hover{background:#00266E;border-color:#00266E;color:#F3EFE6}
+.va-btn-primary.va-btn-primary[aria-busy="true"]{cursor:progress}
+.va-consent.va-consent{display:flex;gap:12px;align-items:center;min-height:44px;margin-top:8px;cursor:pointer;font-family:'Inter',Arial,sans-serif;font-size:13px;line-height:1.45;letter-spacing:0;color:#4F545F}
+.va-consent.va-consent input{width:20px;height:20px;flex:0 0 20px;margin:0;accent-color:#0039A4;cursor:pointer}
+.va-consent a{text-decoration:underline;color:inherit}
+.va-err-msg{display:none;align-items:center;gap:8px;margin-top:6px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;line-height:1.4;color:#9A3A2F}
+.va-err-msg.on{display:flex}
+.va-err-msg::before{content:'!' / '';flex:0 0 18px;height:18px;border-radius:50%;background:#9A3A2F;color:#F3EFE6;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #9A3A2F}
+.va-on-dark .va-consent.va-consent{color:#D7D3CB}
+.va-on-dark .va-err-msg{color:#E9A08A}
+.va-on-dark .va-err-msg::before{background:#E9A08A;color:#1C1914}
+.va-on-dark input[aria-invalid="true"]{border-color:#E9A08A!important;box-shadow:0 0 0 1px #E9A08A}

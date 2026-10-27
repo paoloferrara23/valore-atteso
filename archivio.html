@@ -318,7 +318,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
       <a class="nav-a active" href="/archivio">Archivio</a>
       <a class="nav-a" href="/glossario">Glossario</a>
       <a class="nav-a" href="/#about">About</a>
-      <a class="nav-cta" href="/#signup-top">Iscriviti gratis</a>
+      <a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a>
     </div>
   </div>
 </nav>
@@ -369,6 +369,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
   </div>
 </footer>
 
+<script src="/va.js"></script>
 <script>
 const SURL = 'https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
@@ -965,32 +966,14 @@ function backToList(){
 // ── Cattura email inline (condivisa da tutte le CTA dell'archivio) ──────────
 function vaArchSource(num, pos){ return 'archivio-' + num + '__' + pos; }
 
-function vaSub(form){
-  var input = form.querySelector('input[type=email]');
-  var btn = form.querySelector('button[type=submit]') || form.querySelector('button');
-  var st = form.querySelector('.va-cap-status');
-  var email = (input.value || '').trim();
-  if(!email || email.indexOf('@') < 1){ st.textContent = "Inserisci un'email valida."; st.className = 'va-cap-status err'; return false; }
-  var source = form.getAttribute('data-source') || 'archivio';
-  var old = btn.textContent; btn.disabled = true; btn.textContent = '...'; st.textContent = ''; st.className = 'va-cap-status';
-  fetch('/api/subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: email, source: source }) })
-    .then(function(r){ return r.json().then(function(d){ return {s:r.status, d:d}; }).catch(function(){ return {s:r.status, d:{}}; }); })
-    .then(function(res){
-      if(res.s === 429){ st.textContent = 'Troppi tentativi ravvicinati. Riprova tra qualche minuto.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old; return; }
-      if(res.d && res.d.already){ st.textContent = '✓ Sei già iscritto. Sei a posto.'; st.className = 'va-cap-status ok'; input.value = ''; btn.textContent = 'Fatto ✓'; return; }
-      if(res.d && res.d.ok){ st.textContent = "✓ Controlla la tua inbox e conferma l'iscrizione (guarda anche in spam)."; st.className = 'va-cap-status ok'; input.value = ''; btn.textContent = 'Fatto ✓'; return; }
-      st.textContent = (res.d && res.d.error) || 'Iscrizione non riuscita. Riprova.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old;
-    })
-    .catch(function(){ st.textContent = 'Errore di rete. Riprova.'; st.className = 'va-cap-status err'; btn.disabled = false; btn.textContent = old; });
-  return false;
-}
+// vaSub(form) sta in /va.js (condiviso con le pagine edizione).
 
 function vaCapture(source){
   var f = document.createElement('form'); f.className = 'va-cap'; f.setAttribute('data-source', source); f.setAttribute('novalidate','');
   f.onsubmit = function(){ return vaSub(f); };
   var row = document.createElement('div'); row.className = 'va-cap-row';
   var inp = document.createElement('input'); inp.type = 'email'; inp.name = 'email'; inp.required = true; inp.placeholder = 'La tua email'; inp.setAttribute('autocomplete','email'); inp.setAttribute('aria-label','Email');
-  var btn = document.createElement('button'); btn.type = 'submit'; btn.textContent = 'Iscriviti gratis';
+  var btn = document.createElement('button'); btn.type = 'submit'; btn.className = 'va-btn-primary'; btn.textContent = 'Iscriviti gratis';
   row.appendChild(inp); row.appendChild(btn); f.appendChild(row);
   var st = document.createElement('div'); st.className = 'va-cap-status'; st.setAttribute('aria-live','polite'); f.appendChild(st);
   return f;
