@@ -35,7 +35,7 @@ async function brevoRequest(msg) {
     r = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: { 'api-key': key, 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ sender, to: toList, subject: msg.subject, htmlContent: msg.html }),
+      body: JSON.stringify({ sender, to: toList, subject: msg.subject, htmlContent: msg.html, ...(msg.text ? { textContent: msg.text } : {}) }),
     });
   } catch (e) {
     return { ok: false, status: 0, body: 'rete: ' + (e && e.message) };
@@ -44,7 +44,7 @@ async function brevoRequest(msg) {
   return { ok: r.ok, status: r.status, body };
 }
 
-// Invia una lista di messaggi [{ from, to, subject, html }] via Brevo.
+// Invia una lista di messaggi [{ from, to, subject, html, text? }] via Brevo.
 // Ritorna il numero di invii riusciti. Concorrenza limitata per stare nei
 // tempi della serverless function.
 async function sendViaBrevo(messages) {
@@ -65,7 +65,7 @@ async function sendViaResendOne(msg) {
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-    body: JSON.stringify({ from: msg.from, to: msg.to, subject: msg.subject, html: msg.html }),
+    body: JSON.stringify({ from: msg.from, to: msg.to, subject: msg.subject, html: msg.html, ...(msg.text ? { text: msg.text } : {}) }),
   });
   return r.ok;
 }

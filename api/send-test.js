@@ -2,9 +2,21 @@
 const { createClient } = require('@supabase/supabase-js');
 const { requireAdmin } = require('./_lib/admin-auth');
 const { loadEditionSponsors } = require('./_lib/sponsor-edition-data');
-const { buildHtml } = require('./_lib/build-html');
+const { buildEditionEmail, personalize } = require('./_lib/email');
 const { contentPreflight } = require('./_lib/preflight');
 const { provider, brevoRequest } = require('./_lib/mailer');
+
+// Riassunto del report del template per la Control Room.
+function templateReport(r) {
+  const fmt = i => `${i.field}: ${i.rule}`;
+  return {
+    errors: (r.errors || []).map(fmt),
+    warnings: (r.warnings || []).map(fmt),
+    placeholders: (r.placeholders || []).length,
+    edition_page: r.editionPage,
+    weight_kb: r.weightKB,
+  };
+}
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -48,17 +60,22 @@ module.exports = async function handler(req, res) {
 
     const toEmail = (process.env.APPROVAL_EMAIL || 'info@valoreatteso.com').trim();
 
-    const html = buildHtml(edition)
-      .replace('{{EMAIL}}', encodeURIComponent(toEmail))
-      .replace('{{WEBVIEW_URL}}', `https://valoreatteso.com/archivio#${edition.num}`);
+    // Nuovo template (api/_lib/email): in modalità test placeholder e nomi di stampa
+    // sono solo segnalati nel report; si ferma solo se la struttura non è valida.
+    const built = await buildEditionEmail(edition, 'test');
+    if (!built.html) {
+      return res.status(422).json({ error: 'Template email: struttura dell\'edizione non valida', template: templateReport(built.report) });
+    }
+    const html = personalize(built.html, toEmail);
+    const text = personalize(built.text, toEmail);
 
-    const subject = `[TEST] #${edition.num} - ${edition.title}`;
+    const subject = `[TEST] ${built.report.subject}`;
     const from = 'Valore Atteso <info@valoreatteso.com>';
 
     // Piano B: se EMAIL_PROVIDER=brevo, invia il test via Brevo; altrimenti Resend.
     let sendId = null;
     if (provider() === 'brevo') {
-      const r = await brevoRequest({ from, to: toEmail, subject, html });
+      const r = await brevoRequest({ from, to: toEmail, subject, html, text });
       if (!r.ok) throw new Error(`Brevo ${r.status}: ${String(r.body || '').slice(0, 300)}`);
       sendId = 'brevo';
     } else {
@@ -68,7 +85,7 @@ module.exports = async function handler(req, res) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${process.env.RESEND_KEY}`,
         },
-        body: JSON.stringify({ from, to: toEmail, subject, html }),
+        body: JSON.stringify({ from, to: toEmail, subject, html, text }),
       });
       const raw = await response.text();
       let result;
@@ -83,6 +100,7 @@ module.exports = async function handler(req, res) {
       id: sendId,
       provider: provider(),
       sponsors: edition.sponsors.length,
+      template: templateReport(built.report),
       preflight: {
         can_send: preflight.can_send,
         blockers: preflight.blockers,
