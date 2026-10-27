@@ -172,3 +172,8 @@ function vaSetDate(el, v) {
   t.textContent = vaFormatDate(v);
   el.appendChild(t);
 }
+
+// Header standard: menu mobile e "Gestisci cookie" (come nella home).
+function toggleMenu() { var m = document.getElementById('mobile-menu'); if (!m) return; var open = m.classList.toggle('open'); var b = document.querySelector('.ham'); if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+function closeMenu() { var m = document.getElementById('mobile-menu'); if (m) m.classList.remove('open'); var b = document.querySelector('.ham'); if (b) b.setAttribute('aria-expanded', 'false'); }
+function openCookieSettings() { window.location.href = '/cookie-policy'; }

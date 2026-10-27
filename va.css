@@ -22,3 +22,43 @@ input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #
 .va-on-dark .va-err-msg{color:#E9A08A}
 .va-on-dark .va-err-msg::before{background:#E9A08A;color:#1C1914}
 .va-on-dark input[aria-invalid="true"]{border-color:#E9A08A!important;box-shadow:0 0 0 1px #E9A08A}
+
+/* Header e footer standard (stesso markup della home; usati anche da /about, /sponsor e 404). */
+.va-hdr.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid #CEC3B2}
+.va-hdr .nav{max-width:1120px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.va-hdr .nav-links{display:flex;align-items:center;gap:28px}
+.va-hdr .nav-link{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:#4F545F;text-decoration:none;transition:.15s}
+.va-hdr .nav-link:hover{color:#1C1914}
+.va-hdr .nav-cta{height:38px;padding:0 18px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;text-decoration:none}
+.va-hdr .nav-tool{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid color-mix(in srgb,#0039A4 42%,#CEC3B2);background:color-mix(in srgb,#0039A4 9%,transparent);color:#0039A4;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;border-radius:999px;white-space:nowrap;text-decoration:none;transition:.18s}
+.va-hdr .nav-tool:hover{background:color-mix(in srgb,#0039A4 16%,transparent);border-color:#0039A4;color:#00266E}
+.va-hdr .tdot{width:6px;height:6px;border-radius:50%;background:#0039A4;flex:none}
+.va-hdr .ham{display:none;background:none;border:none;flex-direction:column;gap:5px;cursor:pointer}
+.va-hdr .ham span{width:24px;height:2px;background:#1C1914;display:block}
+.va-menu.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:#F0EBE1;border-bottom:1px solid #CEC3B2;z-index:99;padding:18px 24px;box-shadow:0 16px 40px rgba(28,25,20,.08)}
+.va-menu.mobile-menu.open{display:block}
+.va-menu.mobile-menu a{display:block;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#1C1914;padding:14px 0;border-bottom:1px solid #CEC3B2;text-decoration:none}
+.va-menu.mobile-menu a.mob-tool{display:flex;align-items:center;gap:8px;color:#0039A4}
+.va-menu.mobile-menu .mob-cta{margin-top:12px;padding:13px 18px;text-align:center;border-radius:999px;border-bottom:none}
+.va-ftr{background:#E7DFD2;border-top:1px solid #CEC3B2}
+.va-ftr .footer{max-width:1120px;margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.va-ftr .footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.va-ftr .footer-links a{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#4F545F;text-decoration:none}
+.va-ftr .legal-note{max-width:1120px;margin:0 auto;padding:0 24px 26px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;color:#4F545F;line-height:1.7}
+.va-ftr .legal-note a{color:inherit;text-decoration:underline}
+@media(max-width:920px){
+  .va-hdr .nav{height:74px;padding:0 22px}.va-hdr .nav-links{display:none}.va-hdr .ham{display:flex}.va-hdr .ham span{width:30px;height:2px}.va-menu.mobile-menu{top:74px}
+  .va-ftr .footer{display:block;padding:26px 22px}.va-ftr .footer-links{margin-top:14px;gap:14px}
+}
+
+/* Box di iscrizione standard (stesso aspetto del form in alto della home). */
+.va-box{border:1px solid #CEC3B2;background:rgba(255,253,248,.55);padding:16px;border-radius:22px;max-width:620px;scroll-margin-top:90px}
+.va-box .signup-row{display:flex;gap:10px}
+.va-box .email{flex:1;min-width:0;height:52px;border:1px solid #CEC3B2;background:#FFFDF8;border-radius:999px;padding:0 22px;color:#1C1914;font-family:'Source Serif 4',Georgia,serif;font-size:18px}
+.va-box .email:focus{border-color:#1C1914}
+.va-box .submit{height:52px;border-radius:999px;padding:0 24px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.va-box .success{display:none;margin-bottom:12px;padding:11px 13px;background:#E4EDE7;color:#1B4332;border-left:3px solid #1B4332;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;border-radius:8px}
+.va-box .success.err{background:#F4E2DF;color:#9A3A2F;border-left-color:#9A3A2F}
+.va-box .success.info{background:#F1EAD9;color:#7A5C1E;border-left-color:#C8A97A}
+.va-box-h{font-family:'Source Serif 4',Georgia,serif;font-size:24px;font-weight:600;letter-spacing:-.3px;line-height:1.15;margin:0 0 12px;color:#1C1914}
+@media(max-width:520px){.va-box .submit{min-width:132px;padding:0 18px}.va-box .email{padding:0 18px}}
