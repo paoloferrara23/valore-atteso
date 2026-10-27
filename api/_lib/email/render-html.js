@@ -108,11 +108,10 @@ function kpiBlock(kpi) {
   if (!kpi.length) return '';
   const w = Math.floor(590 / kpi.length);
   const cells = kpi.map((k, i) => {
-    const sep = i ? `border-left:1px solid ${C.line2};` : '';
-    const mso = i ? `<!--[if mso]></td><td width="${w}" valign="top"><![endif]-->` : '';
+    const mso = i ? `<!--[if mso]></td><td width="${w}" valign="top" style="border-left:1px solid ${C.line2};"><![endif]-->` : '';
     return `${mso}<div class="kpi${i ? '' : ' kpi-first'}" style="display:inline-block;width:100%;min-width:180px;max-width:196px;vertical-align:top;">
-<table ${T} width="100%"><tr><td class="kpi-c ln" style="padding:14px 16px;${sep}">
-<p class="ff-d kpi-v lk num" style="margin:0;font-family:${FD};font-size:24px;line-height:1.15;font-weight:700;color:${C.blue};${nowrap(k.value)}${NUM}">${esc(k.value)}</p>
+<table ${T} width="100%"><tr><td class="kpi-c ln" style="padding:14px 16px;">
+<p class="ff-n kpi-v lk num" style="margin:0;font-family:${FN};font-size:24px;line-height:1.15;font-weight:700;color:${C.blue};${nowrap(k.value)}${NUM}">${esc(k.value)}</p>
 <p class="ff-t kpi-l mu" style="margin:4px 0 0;font-family:${FT};font-size:12.5px;line-height:1.4;color:${C.muted};">${esc(k.label)}</p>
 </td></tr></table></div>`;
   }).join('');
@@ -134,12 +133,12 @@ function barsModule(m) {
       : `<td width="${pct}%" bgcolor="${C.blue}" height="18" class="bar" style="height:18px;font-size:0;line-height:0;background:${C.blue};">&nbsp;</td><td bgcolor="${C.line}" height="18" class="track" style="height:18px;font-size:0;line-height:0;background:${C.line};">&nbsp;</td>`;
     return `<tr>
 <td class="bl ff-t t" width="110" style="width:110px;${nowrap(r.label)}font-family:${FT};font-size:13px;line-height:18px;color:${C.text};padding:6px 10px 6px 0;">${esc(r.label)}</td>
-<td class="bv ff-d t num" width="96" style="width:96px;${nowrap(r.display)}font-family:${FD};font-size:15px;line-height:18px;font-weight:700;color:${C.ink};padding:6px 10px 6px 0;${NUM}">${esc(r.display)}</td>
+<td class="bv ff-n t tab" width="96" align="right" style="width:96px;${nowrap(r.display)}font-family:${FN};font-size:15px;line-height:18px;font-weight:700;color:${C.ink};text-align:right;padding:6px 10px 6px 0;font-variant-numeric:tabular-nums lining-nums;">${esc(r.display)}</td>
 <td class="bt" style="padding:6px 0;"><table ${T} width="100%"><tr>${bar}</tr></table></td>
 </tr>`;
   }).join('');
-  return `<table ${T} width="100%" class="box box-bd" bgcolor="${C.white}" style="background:${C.white};border:1px solid ${C.line};margin:0 0 16px;"><tr><td style="padding:16px 16px 8px;">
-<p class="ff-m mu" style="margin:0 0 8px;${label(11, C.muted)}">${esc(m.title || '')}</p>
+  return `<table ${T} width="100%" class="box box-bd" bgcolor="${C.white}" style="background:${C.white};border:1px solid ${C.line};margin:0 0 16px;"><tr><td style="padding:14px 16px;">
+<p class="ff-m mu" style="margin:0 0 8px;${label(11, C.muted)}line-height:16px;font-weight:600;">${esc(m.title || '')}</p>
 <table ${T} width="100%">${rows}</table>
 </td></tr></table>`;
 }
@@ -149,9 +148,11 @@ function dealModule(m) {
 <td class="ff-m mu ln" width="38%" valign="top" style="width:38%;${label(11, C.muted, 'letter-spacing:.1em;')}line-height:16px;padding:12px 8px 12px 0;border-bottom:1px solid ${C.line2};word-break:break-word;">${esc(r.key)}</td>
 <td class="ff-t t ln num" valign="top" style="font-family:${FT};font-size:14px;line-height:1.45;color:${C.ink};padding:10px 0;border-bottom:1px solid ${C.line2};word-break:break-word;${NUM}">${esc(r.value)}</td>
 </tr>`).join('');
-  return `<table ${T} width="100%" style="margin:0 0 16px;">
+  return `<table ${T} width="100%" class="box box-bd" bgcolor="${C.white}" style="background:${C.white};border:1px solid ${C.line};margin:0 0 16px;"><tr><td style="padding:14px 16px;">
+<table ${T} width="100%">
 <tr><td colspan="2" class="ff-m t rule-ink" style="${label(11, C.ink)}font-weight:600;padding:0 0 8px;border-bottom:2px solid ${C.ink};">${esc(m.title || 'Scheda del deal')}</td></tr>
-${rows}</table>`;
+${rows}</table>
+</td></tr></table>`;
 }
 
 function vsModule(m) {
@@ -161,12 +162,14 @@ ${m.columns.map(col => `<td class="ff-m t rule-ink" width="31%" align="right" st
 </tr>`;
   const rows = m.rows.map(r => `<tr>
 <td class="ff-m mu ln" valign="top" style="${label(11, C.muted, 'letter-spacing:.1em;')}line-height:16px;padding:12px 8px 12px 0;border-bottom:1px solid ${C.line2};word-break:break-word;">${esc(r.label)}</td>
-${[r.a, r.b].map(v => `<td class="ff-d lk ln tab" valign="top" align="right" style="font-family:${FD};font-size:16px;line-height:1.3;font-weight:700;color:${C.blue};text-align:right;padding:10px 0 10px 8px;border-bottom:1px solid ${C.line2};word-break:break-word;font-variant-numeric:tabular-nums lining-nums;">${esc(v)}</td>`).join('')}
+${[r.a, r.b].map(v => `<td class="ff-t t ln tab" valign="top" align="right" style="font-family:${FT};font-size:14px;line-height:1.45;font-weight:600;color:${C.ink};text-align:right;padding:10px 0 10px 8px;border-bottom:1px solid ${C.line2};word-break:break-word;font-variant-numeric:tabular-nums lining-nums;">${esc(v)}</td>`).join('')}
 </tr>`).join('');
   const note = m.note
     ? `<tr><td colspan="3" class="ff-t mu" style="font-family:${FT};font-size:12px;line-height:1.5;color:${C.muted};padding:8px 0 0;">${t(m.note)}</td></tr>`
     : '';
-  return `<table ${T} width="100%" style="margin:0 0 16px;">${head}${rows}${note}</table>`;
+  return `<table ${T} width="100%" class="box box-bd" bgcolor="${C.white}" style="background:${C.white};border:1px solid ${C.line};margin:0 0 16px;"><tr><td style="padding:14px 16px;">
+<table ${T} width="100%">${head}${rows}${note}</table>
+</td></tr></table>`;
 }
 
 const MODULES = { bars: barsModule, deal: dealModule, vs: vsModule, none: () => '' };
@@ -175,20 +178,20 @@ const MODULES = { bars: barsModule, deal: dealModule, vs: vsModule, none: () => 
 function section(s) {
   const first = s.n === 1;
   const paras = s.body.map(p => `<p class="ff-t t" style="margin:0 0 16px;font-family:${FT};font-size:16px;line-height:1.6;color:${C.text};">${t(p)}</p>`).join('\n');
-  return `<tr><td class="px${first ? ' sec1' : ' ln'}" id="s${s.n}" style="padding:32px 24px 24px;${first ? '' : `border-top:1px solid ${C.line};`}">
+  return `<tr><td class="px pg${first ? ' sec1' : ' ln'}" id="s${s.n}" bgcolor="${C.cream}" style="background:${C.cream};padding:32px 24px 24px;${first ? '' : `border-top:1px solid ${C.line};`}">
 <a name="s${s.n}"></a>
 <table ${T}><tr>
-<td class="ff-d lk num" valign="bottom" style="font-family:${FD};font-size:34px;line-height:1;font-weight:700;color:${C.blue};padding:0 12px 0 0;${NUM}">${pad2(s.n)}</td>
+<td class="ff-n lk num" valign="bottom" style="font-family:${FN};font-size:34px;line-height:1;font-weight:700;color:${C.blue};padding:0 12px 0 0;${NUM}">${pad2(s.n)}</td>
 <td class="ff-m gl" valign="bottom" style="${label(11, C.goldLight)}line-height:16px;font-weight:600;padding:0 0 4px;">${esc(s.label)}</td>
 </tr></table>
 <h2 class="ff-d h2 t num" style="margin:12px 0 18px;font-family:${FD};font-size:23px;line-height:1.22;font-weight:700;color:${C.ink};${NUM}">${t(s.title)}</h2>
 ${kpiBlock(s.kpi)}${MODULES[s.module.type](s.module)}
 ${paras}
-<table ${T} width="100%" class="rd bdi" style="margin:8px 0 0;"><tr>
+<table ${T} width="100%" class="rd" style="margin:8px 0 0;"><tr>
 <td width="4" bgcolor="${C.goldBar}" style="width:4px;background:${C.goldBar};font-size:0;line-height:0;">&nbsp;</td>
-<td class="rd-c" bgcolor="${C.ink}" style="background:${C.ink};padding:16px 20px;">
-<p class="ff-m" style="margin:0 0 8px;${label(11, C.goldDark)}line-height:16px;font-weight:600;">${esc(cfg.copy.reading)}</p>
-<p class="ff-t" style="margin:0;font-family:${FT};font-size:16px;line-height:1.55;color:${C.cream};">${t(s.reading)}</p>
+<td class="rd-c box ln" bgcolor="${C.white}" style="background:${C.white};padding:16px 20px;border-top:1px solid ${C.line};border-right:1px solid ${C.line};border-bottom:1px solid ${C.line};">
+<p class="ff-m gl" style="margin:0 0 8px;${label(11, C.goldLight)}line-height:16px;font-weight:600;">${esc(cfg.copy.reading)}</p>
+<p class="ff-t t" style="margin:0;font-family:${FT};font-size:16px;line-height:1.55;color:${C.ink};">${t(s.reading)}</p>
 </td></tr></table>
 </td></tr>`;
 }
@@ -291,6 +294,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .motto{letter-spacing:.14em !important;}
 .sum-in{border-left:1px solid ${C.line} !important;}
 .sum-c1 .sum-in{border-left:0 !important;}
+.kpi-c{border-left:1px solid ${C.line2} !important;}
+.kpi-first .kpi-c{border-left:0 !important;}
 }
 @media only screen and (max-width:600px){
 .wrap{width:100% !important;}
