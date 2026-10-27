@@ -78,7 +78,7 @@ function measure() {
     let box = el.getBoundingClientRect();
     if (el.type === 'checkbox' && el.closest('label')) box = el.closest('label').getBoundingClientRect();
     // Link dentro un paragrafo di testo: eccezione "inline" di WCAG, contati a parte.
-    const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline' && el.closest('p, li, .legal-note, span') && !el.closest('nav, footer, .footer, .nav');
+    const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline' && !!el.closest('p, li, .legal-note, .va-ci, .secondary-cta, label') && !el.closest('nav, .nav, .footer-links');
     if (inline) { o.inlineLinks++; return; }
     if (box.height < 43.5 || box.width < 43.5) o.taps.push(`${Math.round(box.width)}×${Math.round(box.height)} ${el.tagName.toLowerCase()} «${(el.textContent || el.getAttribute('aria-label') || el.name || el.type || '').trim().slice(0, 30)}»`);
   });

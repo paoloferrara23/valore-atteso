@@ -38,7 +38,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .nav-logo{font-family:var(--sf);font-size:2rem;font-weight:600;letter-spacing:-.8px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
 .nav-links{display:flex;gap:28px;align-items:center;min-width:0}
-.nav-a{font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
+.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
 .nav-a:hover,.nav-a.active{color:var(--ink)}
 .nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s;text-decoration:none}
 .nav-cta:hover{background:transparent;color:var(--ink)}
@@ -77,7 +77,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 /* ARTICOLO BASE */
 .article{max-width:900px;margin:0 auto;padding:0}
 .article-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:12px}
-.art-back{font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:.15s}
+.art-back{min-height:44px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:.15s}
 .art-back::before{content:'←'}
 .art-back:hover{color:var(--ink)}
 
@@ -256,7 +256,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24px;margin-top:0}
 .footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
 .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.footer-links a{font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:.15s}
+.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:.15s}
 .footer-links a:hover{color:var(--ink)}
 
 @media(max-width:920px){
@@ -310,6 +310,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 <link rel="stylesheet" href="/va.css">
 </head>
 <body>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
 
 <nav>
   <div class="nav">
@@ -323,7 +324,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
   </div>
 </nav>
 
-<div class="container">
+<div class="container" id="contenuto">
 
   <!-- LISTA EDIZIONI -->
   <div class="ed-list-wrap" id="list-wrap">

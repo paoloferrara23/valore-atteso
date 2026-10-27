@@ -73,6 +73,7 @@ margin-bottom:24px;
 .back{
 display:inline-flex;
 align-items:center;
+min-height:44px;
 margin-top:16px;
 font-family:var(--mn);
 font-size:11px;
@@ -125,7 +126,8 @@ line-height:1.75;
 </head>
 
 <body>
-<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button></nav></div>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
 <div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <main id="contenuto">

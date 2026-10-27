@@ -62,3 +62,22 @@ input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #
 .va-box .success.info{background:#F1EAD9;color:#7A5C1E;border-left-color:#C8A97A}
 .va-box-h{font-family:'Source Serif 4',Georgia,serif;font-size:24px;font-weight:600;letter-spacing:-.3px;line-height:1.15;margin:0 0 12px;color:#1C1914}
 @media(max-width:520px){.va-box .submit{min-width:132px;padding:0 18px}.va-box .email{padding:0 18px}}
+
+/* Focus visibile e target di tocco ≥44px (padding, senza ingrandire il testo). */
+:focus-visible{outline:2px solid #0039A4;outline-offset:2px}
+.va-on-dark :focus-visible,.final-cta :focus-visible,.strip :focus-visible,.preview-card :focus-visible,.art-masthead :focus-visible,.gate :focus-visible,#va-scroll-cta :focus-visible,.cta-strip :focus-visible{outline-color:#F3EFE6}
+.va-skip{position:absolute;left:12px;top:-60px;z-index:1000;padding:12px 18px;min-height:44px;background:#0039A4;color:#F3EFE6;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none}
+.va-skip:focus{top:10px}
+.va-hdr .nav-link{display:inline-flex;align-items:center;min-height:44px}
+.va-hdr .nav-cta{min-height:44px;height:auto}
+.va-hdr .nav-tool{position:relative;isolation:isolate;height:44px;border-color:transparent;background:none}
+.va-hdr .nav-tool::before{content:'';position:absolute;left:0;right:0;top:7px;bottom:7px;border:1px solid color-mix(in srgb,#0039A4 42%,#CEC3B2);background:color-mix(in srgb,#0039A4 9%,#F0EBE1);border-radius:999px;z-index:-1;transition:.18s}
+.va-hdr .nav-tool:hover{background:none}
+.va-hdr .nav-tool:hover::before{background:color-mix(in srgb,#0039A4 16%,#F0EBE1);border-color:#0039A4}
+.va-hdr .ham{width:44px;height:44px;align-items:center;justify-content:center;margin-right:-8px}
+.va-ftr .footer-links a{display:inline-flex;align-items:center;min-height:44px}
+.va-ftr .footer-links{column-gap:18px;row-gap:0}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+.va-hdr .nav-link,.va-ftr .footer-links a{min-width:44px;justify-content:center}
+label.privacy{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+label.privacy input{width:20px;height:20px;flex:0 0 20px;margin:0}

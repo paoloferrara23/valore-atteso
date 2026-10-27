@@ -236,7 +236,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-
 .nav{max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .nav-logo{font-family:var(--sf);font-size:1.9rem;font-weight:600;letter-spacing:-.8px}
 .nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 .nav-a:hover{color:var(--ink)}
 .nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
 .wrap{max-width:var(--max);margin:0 auto;padding:56px 24px 88px}
@@ -286,11 +286,13 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
 #va-scroll-cta .vaform-status{color:#9BE3B0}
 .foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
+.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
 </style>
 </head>
 <body>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
 <nav><div class="nav">
   <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
   <div class="nav-links">
@@ -300,7 +302,7 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
   </div>
 </div></nav>
 
-<article class="wrap">
+<article class="wrap" id="contenuto">
   <div class="kicker">Edizione #${esc(ed.num)} · ${timeTag(ed.date)}</div>
   <h1>${esc(ed.title)}</h1>
   ${ed.subtitle ? `<div class="sub">${esc(ed.subtitle)}</div>` : ''}
