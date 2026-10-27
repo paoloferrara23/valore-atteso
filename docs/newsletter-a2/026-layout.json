@@ -1,0 +1,56 @@
+{
+  "_nota": "Campi del layout A2 che la pipeline oggi NON produce. Testi trascritti dai mock concept-A2.png / concept-A2-mobile.png (assistente creativo), numeri tutti presenti nel testo della #026. DA APPROVARE da Paolo prima di qualsiasi uso.",
+  "read_min": 8,
+  "sponsor": null,
+  "summary": [
+    { "section_n": 1, "label": "Il Bilancio", "number": "-€24M", "thesis": "Il primo rosso dopo tre utili, mentre il mercato è da Champions." },
+    { "section_n": 2, "label": "Il Deal", "number": "€1,25 mld", "thesis": "Il Valencia vale questo con i debiti: il 42% va a Pitchwise per finire lo stadio." },
+    { "section_n": 3, "label": "La Metrica", "number": "€607M", "thesis": "Il debito netto del Barça. Real e Barça sopra il miliardo, ma solo il Real chiude in utile." }
+  ],
+  "sections": [
+    {
+      "module": {
+        "type": "bars",
+        "title": "Premi UEFA all'anno, ciclo 2024-2027",
+        "rows": [
+          { "label": "Champions", "value": 2470, "display": "€2,47 mld" },
+          { "label": "Europa League", "value": 565, "display": "€565M" }
+        ]
+      }
+    },
+    {
+      "kpi": [],
+      "module": {
+        "type": "deal",
+        "title": "Scheda del deal",
+        "rows": [
+          { "key": "Acquirente", "value": "Pitchwise Holdings (USA)" },
+          { "key": "Quota", "value": "42%" },
+          { "key": "Venditore", "value": "Meriton (famiglia Lim), resta maggioranza" },
+          { "key": "Valore d'impresa", "value": "€1,25 mld (≈ $1,4 mld)" },
+          { "key": "Capitale nuovo", "value": "€100M" },
+          { "key": "Stato", "value": "In attesa di autorizzazioni" }
+        ]
+      }
+    },
+    {
+      "kpi": [],
+      "module": {
+        "type": "vs",
+        "columns": ["Real Madrid", "Barcellona"],
+        "rows": [
+          { "label": "Ricavi", "a": "€1.221M", "b": "€1.060M" },
+          { "label": "Risultato netto", "a": "+€26,3M", "b": "≈ -€18M" },
+          { "label": "Debito netto", "a": "≈ €9M*", "b": "€607M" },
+          { "label": "Anni di fila in utile", "a": "26", "b": "–" }
+        ],
+        "note": "* escluso lo stadio. I due club non calcolano i ricavi allo stesso modo: differenza da leggere come ordine di grandezza."
+      }
+    }
+  ],
+  "watch": [
+    { "label": "Il Bilancio", "text": "Il ritorno in Champions nel 2027/28: da lì dipende quanto pesano gli ammortamenti." },
+    { "label": "Il Deal", "text": "Le autorizzazioni dell'operazione e il prezzo delle azioni pagato a Lim, oggi non reso noto." },
+    { "label": "La Metrica", "text": "La parte dei finanziamenti del nuovo Camp Nou che resta fuori dal debito netto calcolato con le regole della Liga." }
+  ]
+}
