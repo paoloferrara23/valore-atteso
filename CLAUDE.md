@@ -56,7 +56,14 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Supabase**, project ID: `xxnmkiwnjpppfzrftvuv`. RLS attiva su tutte le tabelle.
 - **Resend**, sender: info@valoreatteso.com.
 - **Anthropic API** via env var. Opus per Writer/Editor.
-- Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono. Palette: crema `#F4EFE6`, dark, oro.
+- Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono (Inter per consenso ed errori dei form, Playfair Display per alcuni titoli). Palette: crema, ink, blu `#0039A4` per le CTA, oro testo `#7A5C1E`.
+
+**Sito: file condivisi (restyling fase 1, ottobre 2026).**
+- `va.css` (logo, form, header/footer standard, focus) e `va.js` (form di iscrizione, date in italiano, menu) sono caricati dalle pagine pubbliche e dalle pagine edizione.
+- Header e footer standard (classi `va-hdr`, `va-ftr`) sono quelli della home, copiati in `/about`, `/sponsor` e `404.html`.
+- Form: bottone sempre attivo e blu (`va-btn-primary`), consenso ed email controllati al click; payload `{email, source}` invariato.
+- Loghi in `brand/svg/` (ricostruzioni, da sostituire con i master mantenendo i nomi), favicon e `og.png` in root.
+- QA: `node scripts/qa-fase-1.js . dopo` (dati simulati, nessuna richiesta reale), report in `qa/fase-1/` (escluso dal deploy).
 
 **Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` (pubblica, solo letture pubbliche), `SUPABASE_SECRET_KEY` / `SUPABASE_SERVICE_ROLE_KEY` / `SUPABASE_SERVICE_KEY` (servizio, usata dal server), `RESEND_KEY`, `BREVO_KEY`, `APPROVAL_EMAIL`, `CR_ADMIN_SECRET` (password Control Room, minimo 5 caratteri), `AGENT_API_SECRET` (agenti GitHub → API, anche come secret GitHub), `GH_TOKEN`/`GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
 
