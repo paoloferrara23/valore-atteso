@@ -74,6 +74,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Dati della Control Room** via proxy `/api/admin-db/rest/v1/<tabella>` (chiave di servizio, tabelle in whitelist). Il browser non usa più la chiave pubblica per le scritture.
 - **Invii massivi** (newsletter, comunicazioni, reinvii, promemoria) richiedono conferma esplicita (numero edizione o `INVIA`) e vengono registrati in `agent_runs`.
 - **Codice non pubblico:** il codice condiviso sta in `api/_lib/` (non servito); `scripts/`, `docs/`, `sql/`, `.github/`, `*.md` sono esclusi dal deploy con `.vercelignore`.
+- **Colonne pubbliche di `editions` (ottobre 2026):** la chiave pubblica legge solo `id, num, title, subtitle, date, opener, sections, tags, published, created_at` (grant per colonna, migrazione `editions_public_columns_only`). `sent_to`, `sent_count`, `sent_at`, `section_options`, `factcheck`, `draft_token`, `email` solo con la chiave di servizio. Nelle pagine pubbliche mai `select=*` su `editions`: elencare le colonne (con `*` la richiesta fallisce). Una nuova colonna da mostrare sul sito va aggiunta al grant.
 - **Header** CSP, X-Frame-Options, Referrer-Policy, nosniff in `vercel.json`; niente più CORS `*`.
 - **Regola:** niente password di riserva nel codice (`process.env.X || 'valore'`): se manca una env var, si fallisce.
 - **Git history** contiene la vecchia password della Control Room: è stata dismessa, quindi è innocua; per pulizia totale `git filter-repo`.
