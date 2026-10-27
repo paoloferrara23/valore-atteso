@@ -1,7 +1,7 @@
 # Restyling fase 1 · Quick win · report QA
 
 Branch `restyle/fase-1-quick-win`. Consegna solo in anteprima Vercel: nessun merge, nessun deploy in produzione.
-URL anteprima: [[PREVIEW_URL]]
+URL anteprima (alias stabile del branch): https://valore-atteso-git-restyle-2f07cf-paoloferrara23-3103s-projects.vercel.app · verificato sull'anteprima: `/pagina-che-non-esiste` risponde 404 con la pagina brandizzata, `site.webmanifest` 200.
 
 ## Come è stato misurato
 - `scripts/qa-fase-1.js`: server locale che imita Vercel (cleanUrls, `404.html` con status 404, CSP di `vercel.json`), Playwright 1440×900 e 375×812 DPR 2.
