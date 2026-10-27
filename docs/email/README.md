@@ -19,7 +19,7 @@ Stato: **branch di lavoro `claude/eager-davinci-5do7lb`, nessun merge, nessun in
 | `email/brand/*.png` | Monogramma 128×88 e lockup 360×120 @2x, generati da `docs/brand/*.svg` (ricostruzioni) |
 | `dist/026/`, `dist/027/` | `preview.html`, `email.txt`, `report*.md/json`, `qa.md/json`, `screens/` |
 | `sql/2026-10-27_editions_email.sql` | Colonna `editions.email` (jsonb): **proposta, non applicata** |
-| `.github/workflows/email-test.yml` + `scripts/email-send-test.js` | Invio di prova solo a info@valoreatteso.com, dopo il tuo ok |
+| `.github/workflows/newsletter-a2-test.yml` + `scripts/email-send-test.js` | Invio di prova solo a info@valoreatteso.com, dopo il tuo ok |
 
 ## Come si usa
 ```
