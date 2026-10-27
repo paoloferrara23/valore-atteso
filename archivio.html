@@ -555,7 +555,7 @@ async function openArt(num){
   const el = document.getElementById('art-content');
   el.innerHTML = '<div class="arch-loading">Caricamento edizione...</div>';
   try {
-    const eds = await sfetch('/rest/v1/editions?num=eq.'+num+'&published=eq.true&select=*');
+    const eds = await sfetch('/rest/v1/editions?num=eq.'+num+'&published=eq.true&select=id,num,title,subtitle,date,opener,sections,tags');
     const e = eds&&eds[0];
     if(!e){el.innerHTML='<p>Edizione non trovata.</p>';return;}
     currentEditionId = e.id;

@@ -217,7 +217,7 @@ function firstSentence(text){const clean=String(text||'').replace(/\s+/g,' ').tr
 
 async function loadLatestPreview(){
   try{
-    const r=await fetch(SURL+'/rest/v1/editions?select=*&published=eq.true&order=num.desc&limit=1',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
+    const r=await fetch(SURL+'/rest/v1/editions?select=num,title,subtitle,opener,sections&published=eq.true&order=num.desc&limit=1',{headers:{apikey:SKEY,Authorization:'Bearer '+SKEY}});
     const rows=await r.json();
     const e=rows&&rows[0];
     if(!e)return;
