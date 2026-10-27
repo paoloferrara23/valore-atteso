@@ -1,0 +1,99 @@
+{
+ "index.html": {
+  "solo_prima": [],
+  "solo_dopo": [
+   "Vai al contenuto"
+  ]
+ },
+ "archivio.html": {
+  "solo_prima": [
+   "Valore Atteso"
+  ],
+  "solo_dopo": [
+   "Vai al contenuto"
+  ]
+ },
+ "about.html": {
+  "solo_prima": [],
+  "solo_dopo": [
+   "Vai al contenuto",
+   "Newsletter",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "About",
+   "Sponsorizza",
+   "Iscriviti gratis",
+   "Home",
+   "Newsletter",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "Sponsorizza",
+   "Iscriviti gratis",
+   "Ogni martedì, una nuova analisi.",
+   "✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.",
+   "Iscriviti →",
+   "Accetto la",
+   "Privacy Policy",
+   "e il trattamento dati. Cancellabile in un click.",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "Chi siamo",
+   "Contatti",
+   "Privacy",
+   "Cookie",
+   "Gestisci cookie",
+   "Disclaimer",
+   "Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il",
+   "disclaimer completo",
+   "."
+  ]
+ },
+ "sponsor.html": {
+  "solo_prima": [
+   "Valore Atteso",
+   "Torna alla newsletter"
+  ],
+  "solo_dopo": [
+   "Vai al contenuto",
+   "Newsletter",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "About",
+   "Sponsorizza",
+   "Iscriviti gratis",
+   "Home",
+   "Newsletter",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "Sponsorizza",
+   "Iscriviti gratis",
+   "Archivio",
+   "Club Intelligence",
+   "Glossario",
+   "Chi siamo",
+   "Contatti",
+   "Privacy",
+   "Cookie",
+   "Gestisci cookie",
+   "Disclaimer",
+   "Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il",
+   "disclaimer completo"
+  ]
+ },
+ "edizione-26.html": {
+  "solo_prima": [
+   "Valore Atteso",
+   "Edizione #026 · 2026-10-27"
+  ],
+  "solo_dopo": [
+   "Vai al contenuto",
+   "Edizione #026 ·",
+   "27 ott 2026"
+  ]
+ }
+}

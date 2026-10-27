@@ -7,19 +7,17 @@
 <meta name="description" content="Valore Atteso — Il calcio dei numeri, non dei goal. Ogni martedì in 8 minuti: un bilancio, un deal, una metrica.">
 <title>Valore Atteso | Il calcio dei numeri, non dei goal</title>
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://valoreatteso.com">
-<meta property="og:title" content="Valore Atteso | Il calcio dei numeri, non dei goal">
-<meta property="og:description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
-<meta property="og:image" content="https://www.valoreatteso.com/og.png">
 <meta property="og:locale" content="it_IT">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--gold2:#B08A4A;--deepgold:#8E6B33;--green:#1B4332;--white:#FFFDF8;--dp:'Playfair Display',Georgia,serif;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:1120px}
+:root{--cream:#F0EBE1;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#4C453D;--muted:#4F545F;--rule:#CEC3B2;--gold:#C8A97A;--gold2:#B08A4A;--deepgold:#7A5C1E;--green:#1B4332;--white:#FFFDF8;--dp:'Playfair Display',Georgia,serif;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace;--max:1120px}
 html{scroll-behavior:smooth}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.58;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
@@ -29,16 +27,14 @@ button,input,textarea,select{font:inherit}
 .nav{max-width:var(--max);margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .logo{font-family:var(--sf);font-size:2rem;font-weight:600;letter-spacing:-.8px;color:var(--ink)}
 .nav-links{display:flex;align-items:center;gap:28px}
-.nav-link{font-family:var(--mn);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);transition:.15s}
+.nav-link{font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);transition:.15s}
 .nav-link:hover{color:var(--ink)}
-.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s}
+.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s}
 .nav-cta:hover{background:transparent;color:var(--ink)}
-.nav-tool{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid color-mix(in srgb,#0099E5 42%,var(--rule));background:color-mix(in srgb,#0099E5 9%,transparent);color:#0A77B8;font-family:var(--mn);font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;border-radius:999px;white-space:nowrap;transition:.18s}
-.nav-tool:hover{background:color-mix(in srgb,#0099E5 16%,transparent);border-color:#0099E5;color:#0364A0}
-.nav-tool .tdot,.mobile-menu a.mob-tool .tdot{width:6px;height:6px;border-radius:50%;background:#0099E5;flex:none}
-.nav-tool .tdot{animation:toolPulse 2.2s ease-out infinite}
-@keyframes toolPulse{0%{box-shadow:0 0 0 0 rgba(0,153,229,.5)}70%{box-shadow:0 0 0 6px rgba(0,153,229,0)}100%{box-shadow:0 0 0 0 rgba(0,153,229,0)}}
-.mobile-menu a.mob-tool{display:flex;align-items:center;gap:8px;color:#0A77B8}
+.nav-tool{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border:1px solid color-mix(in srgb,#0039A4 42%,var(--rule));background:color-mix(in srgb,#0039A4 9%,transparent);color:#0039A4;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;border-radius:999px;white-space:nowrap;transition:.18s}
+.nav-tool:hover{background:color-mix(in srgb,#0039A4 16%,transparent);border-color:#0039A4;color:#00266E}
+.nav-tool .tdot,.mobile-menu a.mob-tool .tdot{width:6px;height:6px;border-radius:50%;background:#0039A4;flex:none}
+.mobile-menu a.mob-tool{display:flex;align-items:center;gap:8px;color:#0039A4}
 .ham{display:none;background:none;border:none;flex-direction:column;gap:5px;cursor:pointer}
 .ham span{width:24px;height:2px;background:var(--ink);display:block}
 .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:var(--cream);border-bottom:1px solid var(--rule);z-index:99;padding:18px 24px;box-shadow:0 16px 40px rgba(28,25,20,.08)}
@@ -47,27 +43,27 @@ button,input,textarea,select{font:inherit}
 .mobile-menu .mob-cta{margin-top:12px;padding:13px 18px;background:var(--ink);color:var(--cream);text-align:center;border-radius:999px;border-bottom:none}
 
 .hero{max-width:var(--max);margin:0 auto;padding:46px 24px 34px;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.86fr);gap:36px;align-items:center;min-height:auto;scroll-margin-top:64px}
-.hero-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:15px}
+.hero-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:15px}
 .hero-kicker::before{content:'';width:30px;height:1px;background:var(--deepgold)}
 .hero h1{font-family:var(--sf);font-size:clamp(2.2rem,4.2vw,3.7rem);font-weight:600;letter-spacing:-.8px;line-height:1.02;margin-bottom:16px}
-.hero h1 span{color:#9C7A42;font-weight:700}
+.hero h1 span{color:#7A5C1E;font-weight:700}
 .hero-sub{font-size:17px;color:var(--ink2);font-weight:300;line-height:1.68;max-width:620px;margin-bottom:18px}
 
 .signup-card{border:1px solid var(--rule);background:rgba(255,253,248,.55);padding:16px;border-radius:22px;box-shadow:0 24px 60px rgba(28,25,20,.07);max-width:620px;margin:0 0 16px;scroll-margin-top:80px}
 .signup-row{display:flex;gap:10px}
-.email{flex:1;min-width:0;height:52px;border:1px solid var(--rule);background:var(--white);border-radius:999px;padding:0 22px;color:var(--ink);outline:none;font-family:var(--sf);font-size:18px}
+.email{flex:1;min-width:0;height:52px;border:1px solid var(--rule);background:var(--white);border-radius:999px;padding:0 22px;color:var(--ink);font-family:var(--sf);font-size:18px}
 .email:focus{border-color:var(--ink)}
-.submit{height:52px;border-radius:999px;padding:0 24px;border:none;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.15s}
+.submit{height:52px;border-radius:999px;padding:0 24px;border:none;background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:.15s}
 .submit:hover{background:var(--gold);color:var(--ink)}
 .submit:disabled{opacity:.45;cursor:not-allowed}
-.check{display:flex;gap:10px;align-items:flex-start;margin-top:10px;color:var(--muted);font-family:var(--mn);font-size:9px;line-height:1.55;letter-spacing:.03em}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:10px;color:var(--muted);font-family:var(--mn);font-size:12px;line-height:1.55;letter-spacing:.03em}
 .check input{margin-top:3px;accent-color:var(--ink)}
 .check a{text-decoration:underline}
-.success{display:none;margin-bottom:12px;padding:11px 13px;background:#E4EDE7;color:var(--green);border-left:3px solid var(--green);font-family:var(--mn);font-size:10px;letter-spacing:.04em;border-radius:8px}
+.success{display:none;margin-bottom:12px;padding:11px 13px;background:#E4EDE7;color:var(--green);border-left:3px solid var(--green);font-family:var(--mn);font-size:12px;letter-spacing:.04em;border-radius:8px}
 .success.err{background:#F4E2DF;color:#B93A2F;border-left-color:#B93A2F}
-.success.info{background:#F1EAD9;color:#8E6B33;border-left-color:#C8A97A}
+.success.info{background:#F1EAD9;color:#7A5C1E;border-left-color:#C8A97A}
 .btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
-.preview-inline{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--cream);padding:11px 16px;border-radius:999px;font-family:var(--mn);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);transition:.16s}
+.preview-inline{display:inline-flex;align-items:center;min-height:44px;gap:10px;background:var(--ink);color:var(--cream);padding:11px 16px;border-radius:999px;font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);transition:.16s}
 .preview-inline:hover{background:transparent;color:var(--ink)}
 .preview-inline span{color:var(--gold)}
 .hero-microcopy{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;padding-top:14px;border-top:1px solid rgba(28,25,20,.08);max-width:620px}
@@ -75,16 +71,16 @@ button,input,textarea,select{font:inherit}
 .hero-microcopy div strong{display:block;color:var(--ink);font-size:18px;font-weight:600;letter-spacing:-.2px;margin-bottom:2px}
 .hero-microcopy div span{display:block;color:var(--muted);font-size:14px}
 .audience-note{margin-top:12px;font-family:var(--sf);font-size:15px;color:var(--ink2);line-height:1.5}
-.credibility{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:7px 12px;border:1px solid rgba(142,107,51,.26);border-radius:999px;background:rgba(255,253,248,.34);font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold)}
+.credibility{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:7px 12px;border:1px solid rgba(142,107,51,.26);border-radius:999px;background:rgba(255,253,248,.34);font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--deepgold)}
 
 .preview-card{background:#1F1B17;color:var(--cream);border:1px solid rgba(200,169,122,.12);border-radius:24px;padding:20px;box-shadow:0 12px 30px rgba(28,25,20,.08);position:relative;overflow:hidden}
 .preview-top{position:relative;display:flex;justify-content:space-between;gap:14px;align-items:center;border-bottom:1px solid rgba(240,235,225,.16);padding-bottom:16px;margin-bottom:18px}
 .preview-logo{font-family:var(--sf);font-size:25px;font-weight:600;letter-spacing:-.4px}
-.preview-badge{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,169,122,.34);border-radius:999px;padding:5px 9px}
+.preview-badge{font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,169,122,.34);border-radius:999px;padding:5px 9px}
 .preview-title{position:relative;font-family:var(--sf);font-size:28px;line-height:1.07;font-weight:700;letter-spacing:-.3px;margin-bottom:14px}
 .preview-text{position:relative;color:rgba(240,235,225,.72);font-size:15px;line-height:1.65;margin-bottom:18px;font-weight:300}
 .kpi-box{position:relative;background:rgba(240,235,225,.07);border:1px solid rgba(240,235,225,.12);border-radius:18px;padding:14px;margin-bottom:14px}
-.kpi-row{display:flex;justify-content:space-between;gap:20px;padding:7px 0;border-bottom:1px solid rgba(240,235,225,.11);font-family:var(--mn);font-size:10px}
+.kpi-row{display:flex;justify-content:space-between;gap:20px;padding:7px 0;border-bottom:1px solid rgba(240,235,225,.11);font-family:var(--mn);font-size:12px}
 .kpi-row:last-child{border-bottom:none}
 .kpi-row span:first-child{color:rgba(240,235,225,.54)}
 .kpi-row span:last-child{color:var(--cream);font-weight:600}
@@ -94,7 +90,7 @@ button,input,textarea,select{font:inherit}
 .bar.b2{left:30%;height:55%}
 .bar.b3{left:50%;height:43%}
 .bar.b4{left:70%;height:78%}
-.preview-foot{position:relative;font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.preview-foot{position:relative;font-family:var(--mn);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
 
 .strip{background:var(--ink);color:var(--cream);border-top:1px solid rgba(240,235,225,.08);border-bottom:1px solid rgba(240,235,225,.08)}
 .strip-in{max-width:var(--max);margin:0 auto;padding:18px 24px;display:flex;gap:14px;justify-content:space-between;flex-wrap:wrap}
@@ -102,16 +98,16 @@ button,input,textarea,select{font:inherit}
 .pillar span{color:var(--gold);margin-right:7px}
 
 .section{max-width:var(--max);margin:0 auto;padding:68px 24px}
-.eyebrow{font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:12px}
+.eyebrow{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:12px}
 .h2{font-family:var(--sf);font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.06;letter-spacing:-.5px;font-weight:600;margin:0 auto 18px;max-width:760px}
 .lead{max-width:760px;margin:0 auto;color:var(--ink2);font-size:18px;font-weight:300;line-height:1.82}
 .featured-head{display:grid;grid-template-columns:minmax(0,760px);justify-content:center;text-align:center;gap:14px;margin:0 auto 30px}
 .editorial-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
 .editorial-main{background:rgba(255,253,248,.42);border:1px solid var(--rule);border-radius:22px;padding:30px;min-height:auto;display:flex;flex-direction:column;justify-content:space-between}
-.editorial-kicker{font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:14px}
+.editorial-kicker{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:14px}
 .editorial-main h3{font-family:var(--sf);font-size:36px;line-height:1.02;letter-spacing:-.5px;margin-bottom:18px;font-weight:600}
 .editorial-main p{font-size:17px;line-height:1.82;color:var(--ink2);font-weight:300;max-width:520px}
-.text-link{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:26px;display:inline-flex}
+.text-link{font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:14px;display:inline-flex;align-items:center;min-height:44px}
 .editorial-side{border-top:1px solid var(--rule)}
 .editorial-row{display:grid;grid-template-columns:48px 145px 1fr;gap:16px;align-items:start;padding:24px 0;border-bottom:1px solid var(--rule)}
 .editorial-row span{font-family:var(--mn);font-size:12px;color:var(--muted);letter-spacing:.08em}
@@ -127,7 +123,7 @@ button,input,textarea,select{font:inherit}
 .manifesto-quote{font-family:var(--sf);font-size:clamp(2rem,3.8vw,3.6rem);line-height:1;letter-spacing:-.6px;font-weight:600}
 .manifesto-copy p{color:var(--ink2);font-size:18px;line-height:1.82;font-weight:300;margin-bottom:18px}
 .manifesto-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px}
-.manifesto-item{border:1px solid var(--rule);background:rgba(255,253,248,.45);border-radius:999px;padding:11px 15px;font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.manifesto-item{border:1px solid var(--rule);background:rgba(255,253,248,.45);border-radius:999px;padding:11px 15px;font-family:var(--mn);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
 .manifesto-item::before{content:'→';color:var(--deepgold);margin-right:8px}
 .who-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px}
 .who-card{border:1px solid var(--rule);border-radius:24px;padding:28px;background:rgba(255,253,248,.42)}
@@ -152,31 +148,51 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 .footer{max-width:var(--max);margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
 .footer-logo{font-family:var(--sf);font-size:1.6rem;font-weight:600;letter-spacing:-.5px;color:var(--ink)}
 .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.footer-links a{font-family:var(--mn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.legal-note{max-width:var(--max);margin:0 auto;padding:0 24px 26px;font-family:var(--mn);font-size:9px;letter-spacing:.04em;color:var(--muted);line-height:1.7}
+.footer-links a{font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.legal-note{max-width:var(--max);margin:0 auto;padding:0 24px 26px;font-family:var(--mn);font-size:12px;letter-spacing:.04em;color:var(--muted);line-height:1.7}
 
 @media(max-width:920px){
   body{font-size:16px;background:linear-gradient(180deg,#F7F2EA 0%,var(--cream) 100%)}
   .nav{height:74px;padding:0 22px}.logo{font-size:1.85rem;letter-spacing:-1px}.nav-links{display:none}.ham{display:flex}.ham span{width:30px;height:2px}.mobile-menu{top:74px}
-  .hero{display:block;padding:48px 22px 38px;min-height:auto}.hero-kicker{font-size:10px;letter-spacing:.17em;margin-bottom:24px}.hero-kicker::before{width:36px}
-  .hero h1{font-size:clamp(2.72rem,11.2vw,3.7rem);line-height:1.04;letter-spacing:-1.35px;margin-bottom:22px;max-width:720px}.hero h1 span{display:inline;color:#9C7A42;white-space:nowrap}.hero-sub{font-size:19px;line-height:1.58;margin-bottom:28px;color:var(--ink2);max-width:680px}
-  .signup-card{padding:16px;border-radius:22px;margin-bottom:18px;box-shadow:none;background:rgba(255,253,248,.64);border-color:#D4C9B8}.signup-row{flex-direction:row;gap:10px;align-items:center}.email{width:auto;flex:1;height:52px;font-size:18px;padding:0 22px;line-height:52px;background:#FFFDF8}.email::placeholder{font-size:18px;color:#837B71;opacity:.9}.submit{width:auto;height:52px;font-size:10px;letter-spacing:.12em;background:var(--ink);color:var(--cream);border-radius:999px;min-width:150px}.submit:disabled{opacity:.45;background:var(--ink);color:var(--cream)}.check{font-size:9px;line-height:1.55;gap:10px;letter-spacing:.03em;font-family:var(--mn);color:var(--muted);margin-top:10px}.check input{width:16px;height:16px;flex:0 0 16px;margin-top:2px}
+  .hero{display:block;padding:48px 22px 38px;min-height:auto}.hero-kicker{font-size:12px;letter-spacing:.17em;margin-bottom:24px}.hero-kicker::before{width:36px}
+  .hero h1{font-size:clamp(2.72rem,11.2vw,3.7rem);line-height:1.04;letter-spacing:-1.35px;margin-bottom:22px;max-width:720px}.hero h1 span{display:inline;color:#7A5C1E;white-space:nowrap}.hero-sub{font-size:19px;line-height:1.58;margin-bottom:28px;color:var(--ink2);max-width:680px}
+  .signup-card{padding:16px;border-radius:22px;margin-bottom:18px;box-shadow:none;background:rgba(255,253,248,.64);border-color:#D4C9B8}.signup-row{flex-direction:row;gap:10px;align-items:center}.email{width:auto;flex:1;height:52px;font-size:18px;padding:0 22px;line-height:52px;background:#FFFDF8}.email::placeholder{font-size:18px;color:#837B71;opacity:.9}.submit{width:auto;height:52px;font-size:12px;letter-spacing:.12em;background:var(--ink);color:var(--cream);border-radius:999px;min-width:150px}.submit:disabled{opacity:.45;background:var(--ink);color:var(--cream)}.check{font-size:12px;line-height:1.55;gap:10px;letter-spacing:.03em;font-family:var(--mn);color:var(--muted);margin-top:10px}.check input{width:16px;height:16px;flex:0 0 16px;margin-top:2px}
   .btn-row{margin-bottom:26px}.preview-inline{width:100%;justify-content:center;min-height:62px;border-radius:999px;font-size:13px;letter-spacing:.04em;text-transform:none;font-family:var(--sf);font-weight:400;background:var(--ink);color:var(--cream);gap:8px}.preview-inline::before{content:'▦';font-size:21px;margin-right:8px;color:var(--cream)}.preview-inline span{font-family:var(--sf);font-size:18px;text-transform:none;letter-spacing:0;color:var(--cream);font-weight:400}.preview-inline span::after{content:' · ';color:var(--cream);margin-left:6px}.preview-inline{color:var(--gold)}
-  .hero-microcopy{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px;padding-top:10px;border-top:none;max-width:none}.hero-microcopy div{border:1px solid var(--rule);background:rgba(255,253,248,.48);border-radius:16px;padding:12px 14px;text-align:left;font-family:var(--sf);line-height:1.28;color:var(--ink2)}.hero-microcopy div strong{display:block;font-family:var(--sf);font-size:18px;color:var(--ink);font-weight:600;letter-spacing:-.2px;margin-bottom:2px}.hero-microcopy div span{display:block;color:var(--muted);font-size:15px}.audience-note{font-size:15px;margin-top:12px}.credibility{display:flex;justify-content:center;text-align:center;font-size:9px;letter-spacing:.12em;line-height:1.6;margin:18px auto 0;max-width:max-content}.preview-card{display:none}
-  .strip{overflow:hidden}.strip-in{padding:14px 18px;gap:0;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}.strip-in::-webkit-scrollbar{display:none}.pillar{width:auto;flex:0 0 auto;font-size:10px;letter-spacing:.12em;padding-right:22px;white-space:nowrap}.section{padding:58px 22px}.featured-head{display:block;text-align:left;margin-bottom:30px}.featured-head .lead{margin-top:12px}.h2{font-size:clamp(2.25rem,9vw,3.2rem);letter-spacing:-1.2px;line-height:1.05}.lead{font-size:18px;line-height:1.65;margin:0;max-width:none}.who-grid,.manifesto-grid,.editorial-layout{grid-template-columns:1fr}.editorial-main{padding:24px;border-radius:22px;min-height:auto}.editorial-main h3{font-size:32px}.editorial-main p{font-size:17px;line-height:1.65}.editorial-row{grid-template-columns:40px 1fr;gap:12px;padding:22px 0}.editorial-row strong{font-size:24px}.editorial-row em{grid-column:2;font-size:16px}.manifesto-grid{padding:62px 22px;gap:28px}.manifesto-quote{font-size:clamp(2.4rem,9vw,3.3rem);letter-spacing:-1.1px;line-height:1.02}.manifesto-copy p{font-size:17px;line-height:1.68}.manifesto-list{grid-template-columns:1fr}.compact-section{padding-top:48px;padding-bottom:40px}.clean-head{display:block;text-align:left;padding:30px 0 34px}.why-lead{margin:0;font-size:17px;line-height:1.7;max-width:none}.who-card{padding:24px;border-radius:22px}.who-card h3{font-size:25px}.who-card li{font-size:16px}.final-inner{padding:64px 22px}.final-inner h2{font-size:clamp(2.3rem,10vw,3.4rem);letter-spacing:-1.3px}.final-inner p{font-size:18px}.final-signup{padding:18px;border-radius:24px}.footer{display:block;padding:26px 22px}.footer-logo{font-size:1.55rem}.footer-links{margin-top:14px;gap:14px}
+  .hero-microcopy{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px;padding-top:10px;border-top:none;max-width:none}.hero-microcopy div{border:1px solid var(--rule);background:rgba(255,253,248,.48);border-radius:16px;padding:12px 14px;text-align:left;font-family:var(--sf);line-height:1.28;color:var(--ink2)}.hero-microcopy div strong{display:block;font-family:var(--sf);font-size:18px;color:var(--ink);font-weight:600;letter-spacing:-.2px;margin-bottom:2px}.hero-microcopy div span{display:block;color:var(--muted);font-size:15px}.audience-note{font-size:15px;margin-top:12px}.credibility{display:flex;justify-content:center;text-align:center;font-size:12px;letter-spacing:.12em;line-height:1.6;margin:18px auto 0;max-width:max-content}.preview-card{display:none}
+  .strip{overflow:hidden}.strip-in{padding:14px 18px;gap:0;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}.strip-in::-webkit-scrollbar{display:none}.pillar{width:auto;flex:0 0 auto;font-size:12px;letter-spacing:.12em;padding-right:22px;white-space:nowrap}.section{padding:58px 22px}.featured-head{display:block;text-align:left;margin-bottom:30px}.featured-head .lead{margin-top:12px}.h2{font-size:clamp(2.25rem,9vw,3.2rem);letter-spacing:-1.2px;line-height:1.05}.lead{font-size:18px;line-height:1.65;margin:0;max-width:none}.who-grid,.manifesto-grid,.editorial-layout{grid-template-columns:1fr}.editorial-main{padding:24px;border-radius:22px;min-height:auto}.editorial-main h3{font-size:32px}.editorial-main p{font-size:17px;line-height:1.65}.editorial-row{grid-template-columns:40px 1fr;gap:12px;padding:22px 0}.editorial-row strong{font-size:24px}.editorial-row em{grid-column:2;font-size:16px}.manifesto-grid{padding:62px 22px;gap:28px}.manifesto-quote{font-size:clamp(2.4rem,9vw,3.3rem);letter-spacing:-1.1px;line-height:1.02}.manifesto-copy p{font-size:17px;line-height:1.68}.manifesto-list{grid-template-columns:1fr}.compact-section{padding-top:48px;padding-bottom:40px}.clean-head{display:block;text-align:left;padding:30px 0 34px}.why-lead{margin:0;font-size:17px;line-height:1.7;max-width:none}.who-card{padding:24px;border-radius:22px}.who-card h3{font-size:25px}.who-card li{font-size:16px}.final-inner{padding:64px 22px}.final-inner h2{font-size:clamp(2.3rem,10vw,3.4rem);letter-spacing:-1.3px}.final-inner p{font-size:18px}.final-signup{padding:18px;border-radius:24px}.footer{display:block;padding:26px 22px}.footer-logo{font-size:1.55rem}.footer-links{margin-top:14px;gap:14px}
 }
 @media(max-width:520px){
   .hero{padding:42px 18px 36px}.hero h1{font-size:clamp(2.5rem,10.7vw,3.25rem);letter-spacing:-1.15px;line-height:1.06}.hero-sub{font-size:18px}.signup-card{padding:14px;border-radius:22px}.email{height:52px;font-size:18px}.email::placeholder{font-size:18px}.submit{height:52px;min-width:132px}.preview-inline{min-height:60px}.hero-microcopy{grid-template-columns:1fr}.hero-microcopy div{padding:12px 14px}.hero-microcopy div strong{font-size:18px}.pillar{width:auto}.final-signup .signup-row{flex-direction:row}
 }
 
 </style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Valore Atteso">
+<meta property="og:title" content="Valore Atteso | Il calcio dei numeri, non dei goal">
+<meta property="og:description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
+<meta property="og:url" content="https://valoreatteso.com">
+<meta property="og:image" content="https://www.valoreatteso.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Valore Atteso | Il calcio dei numeri, non dei goal">
+<meta name="twitter:description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
+<meta name="twitter:image" content="https://www.valoreatteso.com/og.png">
+<meta name="twitter:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 </head>
 <body>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
 
-<div class="nav-wrap"><nav class="nav"><a class="logo" href="/">Valore Atteso</a><div class="nav-links"><a class="nav-link" href="#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta" href="#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button></nav></div>
-<div class="mobile-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta" href="#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
 
-<section class="hero"><div><div class="hero-kicker">Finance</div><h1>Il calcio dei numeri,<br><span>non dei goal.</span></h1><p class="hero-sub">Bilanci, M&A e strategie di crescita<br>nel business dello sport.</p><div class="signup-card" id="signup-top"><div class="success" id="form-ok">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="form-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit" id="form-btn" onclick="doSignup('form-email','form-btn','form-ok','form-check')" disabled>Iscriviti →</button></div><div class="audience-note">Per advisor, investitori, manager e operatori del settore sportivo.</div><label class="check"><input type="checkbox" id="form-check" onchange="toggleBtn('form-btn','form-check')"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label></div><div class="btn-row"><a class="preview-inline" id="preview-link" href="/archivio"><span>Ultima edizione</span> Leggi preview →</a></div><div class="hero-microcopy"><div><strong>1 email</strong><span>ogni martedì</span></div><div><strong>8 minuti</strong><span>lettura essenziale</span></div><div><strong>Gratuita</strong><span>accesso libero</span></div></div><div class="credibility">Corporate Finance · Sport Business · Analisi indipendente</div></div><aside class="preview-card" aria-label="Ultima edizione newsletter"><div class="preview-top"><div class="preview-logo">Valore Atteso</div><div class="preview-badge" id="preview-badge">Ultima edizione</div></div><div class="preview-title" id="preview-title">Ultima edizione</div><p class="preview-text" id="preview-text">Ogni martedì: bilancio, deal e metrica del business del calcio europeo.</p><div class="kpi-box"><div class="kpi-row"><span>Framework</span><span id="preview-focus">Finance</span></div><div class="kpi-row"><span>Lettura</span><span>~8 min</span></div><div class="kpi-row"><span>Frequenza</span><span>Martedì</span></div></div><div class="mini-chart"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span></div><div class="preview-foot">Bilanci · Deal · Metriche</div></aside></section>
+<section class="hero" id="contenuto"><div><div class="hero-kicker">Finance</div><h1>Il calcio dei numeri,<br><span>non dei goal.</span></h1><p class="hero-sub">Bilanci, M&A e strategie di crescita<br>nel business dello sport.</p><div class="signup-card" id="signup-top"><div class="success" id="form-ok" role="status" aria-live="polite">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="form-email" type="email" aria-label="Email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit va-btn-primary" id="form-btn" type="button" onclick="doSignup('form-email','form-btn','form-ok','form-check')">Iscriviti →</button></div><div class="audience-note">Per advisor, investitori, manager e operatori del settore sportivo.</div><label class="check va-consent"><input type="checkbox" id="form-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label></div><div class="btn-row"><a class="preview-inline" id="preview-link" href="/archivio"><span>Ultima edizione</span> Leggi preview →</a></div><div class="hero-microcopy"><div><strong>1 email</strong><span>ogni martedì</span></div><div><strong>8 minuti</strong><span>lettura essenziale</span></div><div><strong>Gratuita</strong><span>accesso libero</span></div></div><div class="credibility">Corporate Finance · Sport Business · Analisi indipendente</div></div><aside class="preview-card" aria-label="Ultima edizione newsletter"><div class="preview-top"><div class="preview-logo">Valore Atteso</div><div class="preview-badge" id="preview-badge">Ultima edizione</div></div><div class="preview-title" id="preview-title">Ultima edizione</div><p class="preview-text" id="preview-text">Ogni martedì: bilancio, deal e metrica del business del calcio europeo.</p><div class="kpi-box"><div class="kpi-row"><span>Framework</span><span id="preview-focus">Finance</span></div><div class="kpi-row"><span>Lettura</span><span>~8 min</span></div><div class="kpi-row"><span>Frequenza</span><span>Martedì</span></div></div><div class="mini-chart"><span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span></div><div class="preview-foot">Bilanci · Deal · Metriche</div></aside></section>
 
 <section class="strip"><div class="strip-in"><div class="pillar"><span>01</span>Club finance</div><div class="pillar"><span>02</span>UEFA & FFP</div><div class="pillar"><span>03</span>Private equity</div><div class="pillar"><span>04</span>M&A</div><div class="pillar"><span>05</span>Debito</div><div class="pillar"><span>06</span>Strategy</div></div></section>
 
@@ -188,30 +204,15 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 
 <section class="section" style="padding-top:10px"><div class="featured-head" style="margin-bottom:20px"></div><div class="featured-head" style="margin-bottom:36px"><div><div class="eyebrow">Fa per te</div></div></div><div class="who-grid"><div class="who-card yes"><h3>È per te se…</h3><ul><li>Lavori in finanza, consulenza, M&A, sport business o investimenti</li><li>Vuoi capire il calcio come settore economico</li><li>Ti interessano bilanci, deal, governance e sostenibilità</li><li>Preferisci analisi concise a rumore quotidiano</li></ul></div><div class="who-card no"><h3>Non è per te se…</h3><ul><li>Cerchi formazioni, pagelle e commenti post-partita</li><li>Vuoi indiscrezioni di mercato non verificabili</li><li>Ti interessa solo il risultato del weekend</li><li>Preferisci hype a numeri e fonti</li></ul></div></div></section>
 
-<section class="final-cta"><div class="final-inner"><h2>Ogni martedì, una nuova <em>analisi.</em></h2><p>Una email a settimana per leggere lo sport con una lente finanziaria.</p><div class="final-signup"><div class="success" id="cta-ok">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="cta-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit" id="cta-btn" onclick="doSignup('cta-email','cta-btn','cta-ok','cta-check')" disabled>Iscriviti →</button></div><label class="check"><input type="checkbox" id="cta-check" onchange="toggleBtn('cta-btn','cta-check')"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label></div></div></section>
+<section class="final-cta va-on-dark"><div class="final-inner"><h2>Ogni martedì, una nuova <em>analisi.</em></h2><p>Una email a settimana per leggere lo sport con una lente finanziaria.</p><div class="final-signup"><div class="success" id="cta-ok" role="status" aria-live="polite">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="cta-email" type="email" aria-label="Email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit va-btn-primary" id="cta-btn" type="button" onclick="doSignup('cta-email','cta-btn','cta-ok','cta-check')">Iscriviti →</button></div><label class="check va-consent"><input type="checkbox" id="cta-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label></div></div></section>
 
-<footer><div class="footer"><div class="footer-logo">Valore Atteso</div><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 
+<script src="/va.js"></script>
 <script>
 const SURL='https://xxnmkiwnjpppfzrftvuv.supabase.co';
 const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4bm1raXduanBwcGZ6cmZ0dnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTkwNTUsImV4cCI6MjA5MTk5NTA1NX0.2EePZNm_OCc9WscYSG7CL_mbFV6E8ifwV9sP2WxkUo4';
-// Tracking canale iscrizioni: cattura gli utm dalla URL al caricamento pagina.
-// Fallback 'direct' se non ci sono utm. Formato: utm_source[:utm_medium[:utm_campaign]].
-// Usato in doSignup per sapere da quale canale (e quale form) arriva ogni iscritto.
-var VA_SOURCE=(function(){
-  try{
-    var p=new URLSearchParams(window.location.search);
-    var s=(p.get('utm_source')||'').trim()||'direct';
-    var parts=[s];
-    var m=(p.get('utm_medium')||'').trim();if(m)parts.push(m);
-    var c=(p.get('utm_campaign')||'').trim();if(c)parts.push(c);
-    return parts.join(':').slice(0,100);
-  }catch(e){return 'direct';}
-})();
-
 function decodeHtml(s){const t=document.createElement('textarea');t.innerHTML=s;return t.value}
-function toggleMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
-function closeMenu(){document.getElementById('mobile-menu').classList.remove('open')}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function firstSentence(text){const clean=String(text||'').replace(/\s+/g,' ').trim();if(!clean)return '';return clean.length>170?clean.slice(0,170).replace(/\s+\S*$/,'')+'…':clean}
 
@@ -232,57 +233,6 @@ async function loadLatestPreview(){
   }catch(err){console.error('Errore preview ultima edizione',err);}
 }
 
-function toggleBtn(btnId,checkId){
-  const btn=document.getElementById(btnId);
-  const checked=document.getElementById(checkId).checked;
-  btn.disabled=!checked;
-}
-
-async function doSignup(emailId,btnId,okId,checkId){
-  const emailEl=document.getElementById(emailId);
-  const email=emailEl.value.trim();
-  const btn=document.getElementById(btnId);
-  const ok=document.getElementById(okId);
-  const check=document.getElementById(checkId);
-  if(!check.checked)return;
-  if(!email||!email.includes('@')){emailEl.style.borderColor='#B93A2F';emailEl.focus();return}
-  emailEl.style.borderColor='';
-  btn.disabled=true;
-  const old=btn.textContent;
-  btn.textContent='Iscrizione...';
-  ok.className='success';
-  try{
-    const formPos=(emailId==='cta-email')?'cta':'hero';
-    const source=VA_SOURCE+'__'+formPos;
-    const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,source})});
-    const d=await r.json().catch(()=>({}));
-    if(r.status===429){
-      ok.className='success info';
-      ok.textContent='Troppi tentativi ravvicinati. Riprova tra qualche minuto: il link di conferma è in arrivo.';
-      ok.style.display='block';btn.disabled=false;btn.textContent=old;return;
-    }
-    if(!r.ok||!d.ok)throw new Error(d.error||'Errore iscrizione');
-    if(d.already){
-      ok.className='success';
-      ok.textContent='✓ Sei già iscritto e confermato. Sei a posto, niente da fare.';
-      ok.style.display='block';emailEl.value='';btn.textContent='Fatto ✓';return;
-    }
-    ok.className='success';
-    ok.textContent='✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma. Se non lo vedi, guarda in spam o promozioni.';
-    ok.style.display='block';
-    emailEl.value='';
-    btn.textContent='Fatto ✓';
-  }catch(e){
-    btn.disabled=false;
-    btn.textContent=old;
-    emailEl.style.borderColor='#B93A2F';
-    ok.className='success err';
-    ok.textContent='Iscrizione non riuscita. Controlla l\'email e riprova, oppure scrivici a info@valoreatteso.com';
-    ok.style.display='block';
-  }
-}
-
-function openCookieSettings(){window.location.href='/cookie-policy';}
 loadLatestPreview();
 </script>
 
