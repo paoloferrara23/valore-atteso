@@ -9,7 +9,7 @@
 <meta name="description" content="Valore Atteso è una newsletter indipendente che analizza il business del calcio attraverso strumenti di corporate finance e strategia.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -121,10 +121,14 @@ line-height:1.75;
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 </head>
 
 <body>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
+<main id="contenuto">
 <div class="wrap">
 
 <div class="kicker">Valore Atteso · About</div>
@@ -159,9 +163,20 @@ Valore Atteso utilizza sistemi di intelligenza artificiale per la ricerca, l'ana
 Usiamo una gerarchia precisa. Diamo la priorità alle fonti primarie e istituzionali: bilanci ufficiali dei club, documenti depositati, organi di governo (UEFA, FIFA, FIGC, leghe, ECA) e report pubblicati da società come Deloitte, KPMG e PwC. Quando una fonte primaria non è disponibile, ricorriamo solo a testate autorevoli (Reuters, Financial Times, Bloomberg, The Athletic, BBC). Non citiamo blog di tifosi, aggregatori o rumor. Ogni sezione riporta le fonti in fondo, così puoi verificare tu stesso.
 </p>
 
+<div class="va-box" id="iscriviti" style="margin:48px 0 8px">
+<h2 class="va-box-h">Ogni martedì, una nuova analisi.</h2>
+<div class="success" id="ab-ok" role="status" aria-live="polite">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div>
+<div class="signup-row"><input class="email" id="ab-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email" aria-label="Email"><button class="submit va-btn-primary" id="ab-btn" type="button" onclick="doSignup('ab-email','ab-btn','ab-ok','ab-check','about')">Iscriviti →</button></div>
+<label class="check va-consent"><input type="checkbox" id="ab-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label>
+</div>
+
 <a class="back" href="/">← Torna alla homepage</a>
 
 </div>
+</main>
 
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
+
+<script src="/va.js"></script>
 </body>
 </html>
