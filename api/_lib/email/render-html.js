@@ -212,42 +212,44 @@ function watch(c) {
 }
 
 // ── Inoltro, filetto oro, footer ink ────────────────────────────────────────
-function button(href, text, solid) {
-  const bg = solid ? C.cream : C.blue;
-  const fg = solid ? C.blue : C.cream;
-  return `<table ${T} width="100%"><tr><td align="center" bgcolor="${bg}" style="background:${bg};border:1px solid ${C.cream};mso-padding-alt:16px;">
-<a href="${esc(href)}" target="_blank" class="ff-m" style="display:block;padding:16px;font-family:${FM};font-size:12px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:${fg};">${esc(text)}</a>
+// Bottoni bulletproof: WhatsApp oro con testo ink (anche in dark), email navy con contorno crema.
+function button(href, text, gold) {
+  const bg = gold ? C.goldDark : C.blue;
+  const bd = gold ? C.goldDark : C.cream;
+  const fg = gold ? C.ink : C.cream;
+  return `<table ${T} width="100%"><tr><td align="center" bgcolor="${bg}" style="background:${bg};border:1px solid ${bd};mso-padding-alt:16px 12px;">
+<a href="${esc(href)}" target="_blank" class="ff-m" style="display:block;padding:16px 12px;font-family:${FM};font-size:12px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:${fg};">${arrow(text)}</a>
 </td></tr></table>`;
 }
 
 function shareAndFooter(c, img) {
   const e = c.edition;
-  const link = (href, text, extra = '') => `<a href="${esc(href)}" target="_blank" class="ff-t" style="display:inline-block;padding:12px 0;font-family:${FT};font-size:14px;line-height:20px;font-weight:600;color:${C.cream};text-decoration:none;${extra}">${esc(text)}</a>`;
+  const link = (href, text, extra = '') => `<a href="${esc(href)}" target="_blank" class="ff-t" style="display:inline-block;padding:12px 0;font-family:${FT};font-size:14px;line-height:20px;font-weight:600;color:${C.cream};text-decoration:underline;white-space:nowrap;${extra}">${arrow(text)}</a>`;
   const sep = `<span style="font-family:${FT};font-size:14px;color:${C.inkText2};">&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span>`;
   const legalP = (inner, last) => `<p class="ff-t" style="margin:0 0 ${last ? 0 : 8}px;font-family:${FT};font-size:12px;line-height:1.6;color:${C.legal};">${inner}</p>`;
   const legalLink = (href, text, mail) => `<a href="${esc(href)}"${mail ? '' : ' target="_blank"'} style="display:inline-block;padding:12px 0;margin:-12px 0;line-height:20px;color:${C.cream};text-decoration:underline;white-space:nowrap;">${esc(text)}</a>`;
   const owner = cfg.legal.ownerAddress ? `${esc(cfg.legal.owner)}, ${esc(cfg.legal.ownerAddress)}` : esc(cfg.legal.owner);
   const tagline = esc(cfg.copy.tagline).replace(/ ([^ ]+)$/, '&nbsp;$1').replace('in 8 minuti', 'in&nbsp;8&nbsp;minuti');
 
-  return `<tr><td class="px bdb" bgcolor="${C.blue}" style="background:${C.blue};padding:32px 24px 16px;">
-<p class="ff-d num" style="margin:0 0 8px;font-family:${FD};font-size:21px;line-height:1.3;font-weight:700;color:${C.cream};text-align:center;${NUM}">${t(cfg.copy.shareHeadline(e))}</p>
-<p class="ff-t" style="margin:0 0 16px;font-family:${FT};font-size:13px;line-height:1.5;color:${C.blue200};text-align:center;">${t(cfg.copy.shareSubline)}</p>
+  return `<tr><td id="ino" class="px bdb" bgcolor="${C.blue}" style="background:${C.blue};padding:32px 24px 16px;">
+<p class="ff-n num" style="margin:0 0 6px;font-family:${FN};font-size:21px;line-height:1.3;font-weight:700;color:${C.cream};text-align:center;${NUM}">${t(cfg.copy.shareHeadline(e))}</p>
+<p class="ff-t" style="margin:0 0 18px;font-family:${FT};font-size:13px;line-height:1.5;color:${C.blue200};text-align:center;">${t(cfg.copy.shareSubline)}</p>
 <table ${T} width="100%">
 <tr><td style="padding:0 0 8px;">${button(whatsappHref(c), cfg.copy.shareWhatsapp, true)}</td></tr>
 <tr><td style="padding:0 0 8px;">${button(mailtoHref(c), cfg.copy.shareEmail, false)}</td></tr>
 </table>
-<p class="ff-t" style="margin:4px 0 0;font-family:${FT};font-size:13px;line-height:20px;color:${C.blue200};text-align:center;">${esc(cfg.copy.forwarded)} <a href="${esc(vaUrl('/', 'inoltrata_iscriviti', e))}" target="_blank" style="display:inline-block;padding:12px 2px;color:${C.cream};font-weight:600;text-decoration:underline;">${esc(cfg.copy.signup)}</a></p>
+<p class="ff-t" style="margin:4px 0 0;font-family:${FT};font-size:13px;line-height:20px;color:${C.blue200};text-align:center;">${esc(cfg.copy.forwarded)} <a href="${esc(vaUrl('/', 'inoltrata_iscriviti', e))}" target="_blank" style="display:inline-block;padding:12px 2px;color:${C.cream};font-weight:600;text-decoration:underline;">${arrow(cfg.copy.signup)}</a></p>
 </td></tr>
 <tr><td bgcolor="${C.goldBar}" height="3" style="height:3px;line-height:3px;font-size:0;background:${C.goldBar};">&nbsp;</td></tr>
-<tr><td class="px bdi" bgcolor="${C.ink}" style="background:${C.ink};padding:32px 24px 24px;">
+<tr><td id="ftr" class="px bdi" bgcolor="${C.ink}" style="background:${C.ink};padding:32px 24px 24px;">
 <table ${T} width="100%"><tr>
 <td class="stack" valign="middle" width="204" style="width:204px;padding:0 0 16px;"><a href="${esc(vaUrl('/', 'footer_logo', e))}" target="_blank" style="text-decoration:none;display:inline-block;">${img.lockup}</a></td>
-<td class="stack" valign="middle" style="padding:0 0 16px;"><p class="ff-d" style="margin:0;font-family:${FD};font-style:italic;font-size:17px;line-height:1.45;color:${C.inkText2};">${tagline}</p></td>
+<td class="stack" valign="middle" style="padding:0 0 18px;"><p class="ff-d" style="margin:0;font-family:${FD};font-style:italic;font-size:17px;line-height:1.45;color:${C.inkText2};">${tagline}</p></td>
 </tr></table>
 <table ${T} width="100%"><tr><td style="border-top:1px solid ${C.lineDark};border-bottom:1px solid ${C.lineDark};padding:0;">
 ${link(vaUrl(editionPath(c), 'footer_leggi_online', e), cfg.copy.linkOnline)}${sep}${link(vaUrl('/archivio', 'footer_archivio', e), cfg.copy.linkArchive)}${sep}${link(cfg.preferencesHref, cfg.copy.linkPreferences)}
 </td></tr></table>
-<p class="ff-t" style="margin:8px 0 16px;font-family:${FT};font-size:13px;line-height:20px;color:${C.inkText2};">${esc(cfg.copy.contact).replace(/ ([^ ]+ [^ ]+)$/, ' <span style="white-space:nowrap;">$1')} <a href="${esc(contactHref(e))}" style="display:inline-block;padding:12px 0;color:${C.cream};font-weight:600;text-decoration:underline;white-space:nowrap;">${esc(cfg.legal.contact)}</a></span></p>
+<p class="ff-t" style="margin:12px 0;font-family:${FT};font-size:13px;line-height:20px;color:${C.inkText2};">${esc(cfg.copy.contact).replace(/ ([^ ]+ [^ ]+)$/, ' <span style="white-space:nowrap;">$1')} <a href="${esc(contactHref(e))}" style="display:inline-block;padding:12px 0;color:${C.cream};font-weight:600;text-decoration:underline;white-space:nowrap;">${esc(cfg.legal.contact)}</a></span></p>
 ${legalP(esc(cfg.copy.legalData))}
 ${legalP(esc(cfg.copy.legalAi))}
 ${legalP(`${esc(cfg.copy.legalOwner)} ${owner} &middot; <span style="white-space:nowrap;">${esc(cfg.copy.privacy)} ${legalLink(privacyUrl(), privacyUrl().replace('https://', ''))}</span> &middot; <span style="white-space:nowrap;">${esc(cfg.copy.contactLabel)} ${legalLink(`mailto:${cfg.legal.contact}`, cfg.legal.contact, true)}</span>`)}
