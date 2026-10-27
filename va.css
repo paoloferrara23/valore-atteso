@@ -1,0 +1,8 @@
+/* va.css: elementi condivisi del sito Valore Atteso (restyling fase 1). */
+
+/* Logo: lockup orizzontale ink in header, monogramma ink nel footer (SVG del pacchetto, mai ricolorati). */
+.va-logo{display:inline-flex;align-items:center;min-height:44px;flex-shrink:0}
+.va-logo img{display:block;height:32px;width:auto}
+.va-mono{display:inline-flex;align-items:center}
+.va-mono img{display:block;height:44px;width:auto}
+@media(max-width:920px){.va-logo img{height:28px}}

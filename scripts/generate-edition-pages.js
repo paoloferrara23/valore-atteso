@@ -213,6 +213,11 @@ function buildEditionHtml(ed) {
 <meta name="twitter:description" content="${esc(desc)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -272,14 +277,14 @@ h1{font-size:clamp(2rem,5vw,3rem);font-weight:600;letter-spacing:-.8px;line-heig
 #va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
 #va-scroll-cta .vaform-status{color:#9BE3B0}
-.foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
 .foot a:hover{color:var(--ink)}
 @media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
 </style>
 </head>
 <body>
 <nav><div class="nav">
-  <a href="/" class="nav-logo">Valore Atteso</a>
+  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
   <div class="nav-links">
     <a href="/archivio" class="nav-a">Archivio</a>
     <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
@@ -300,6 +305,7 @@ ${ciCta}
 ${scrollBar('edizione-' + ed.num + '__scroll')}
 
 <footer class="foot">
+  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44"></a>
   <a href="/">Home</a>
   <a href="/archivio">Archivio</a>
   <a href="/club-intelligence">Club Intelligence</a>

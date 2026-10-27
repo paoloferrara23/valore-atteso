@@ -1,0 +1,11 @@
+{
+  "name": "Valore Atteso",
+  "short_name": "Valore Atteso",
+  "icons": [
+    { "src": "/icon-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon-180x180.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "theme_color": "#0039A4",
+  "background_color": "#F3EFE6",
+  "display": "browser"
+}
