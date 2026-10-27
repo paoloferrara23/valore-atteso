@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://valoreatteso.com/schema/edizione-email.json",
+  "title": "Valore Atteso, contratto dati dell'edizione email",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["edition", "date", "read_min", "subject", "preheader", "kicker", "title", "dek", "intro", "sponsor", "summary", "sections", "watch", "share", "approvals"],
+  "properties": {
+    "$comment": { "type": "string" },
+    "edition": { "type": "string", "pattern": "^[0-9]{3}$" },
+    "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "read_min": { "type": "integer", "minimum": 1, "maximum": 30 },
+    "subject": { "type": "string", "minLength": 1 },
+    "preheader": { "type": "string", "minLength": 1 },
+    "kicker": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "dek": { "type": "string", "minLength": 1 },
+    "intro": { "type": ["string", "null"] },
+    "sponsor": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false, "required": ["name", "url", "approved"],
+          "properties": { "name": { "type": "string", "minLength": 1 }, "url": { "type": "string", "minLength": 1 }, "approved": { "type": "boolean" } }
+        }
+      ]
+    },
+    "summary": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["section_n", "label", "number", "thesis"],
+        "properties": {
+          "section_n": { "type": "integer", "enum": [1, 2, 3] },
+          "label": { "type": "string", "enum": ["Il Bilancio", "Il Deal", "La Metrica"] },
+          "number": { "type": "string", "minLength": 1 },
+          "thesis": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "sections": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["n", "label", "title", "kpi", "module", "body", "reading", "sources"],
+        "properties": {
+          "n": { "type": "integer", "enum": [1, 2, 3] },
+          "label": { "type": "string", "enum": ["Il Bilancio", "Il Deal", "La Metrica"] },
+          "title": { "type": "string", "minLength": 1 },
+          "kpi": {
+            "type": "array", "maxItems": 3,
+            "items": {
+              "type": "object", "additionalProperties": false, "required": ["value", "label"],
+              "properties": { "value": { "type": "string", "minLength": 1 }, "label": { "type": "string", "minLength": 1 } }
+            }
+          },
+          "module": {
+            "type": "object", "required": ["type"],
+            "properties": {
+              "type": { "type": "string", "enum": ["bars", "deal", "vs", "none"] },
+              "title": { "type": "string" },
+              "rows": { "type": "array" },
+              "columns": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "note": { "type": "string" }
+            }
+          },
+          "body": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "reading": { "type": "string", "minLength": 1 },
+          "sources": {
+            "type": "array", "minItems": 1, "maxItems": 4,
+            "items": {
+              "type": "object", "additionalProperties": false, "required": ["testo", "url"],
+              "properties": { "testo": { "type": "string", "minLength": 1 }, "url": { "type": "string", "minLength": 1 } }
+            }
+          }
+        }
+      }
+    },
+    "watch": {
+      "type": "array", "minItems": 1, "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["label", "text"],
+        "properties": { "label": { "type": "string", "minLength": 1 }, "text": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "share": {
+      "type": "object", "additionalProperties": false, "required": ["headline", "subline", "text"],
+      "properties": {
+        "headline": { "type": "string", "minLength": 1 },
+        "subline": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "approvals": {
+      "type": "object", "additionalProperties": false, "required": ["copy", "factcheck", "paolo"],
+      "properties": { "copy": { "type": "boolean" }, "factcheck": { "type": "boolean" }, "paolo": { "type": "boolean" } }
+    }
+  }
+}
