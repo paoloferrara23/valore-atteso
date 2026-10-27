@@ -56,7 +56,7 @@ function hero(c, img) {
   const cols = c.summary.map((r, i) => {
     const mso = i ? `<!--[if mso]></td><td width="196" valign="top" style="border-left:1px solid ${C.line};"><![endif]-->` : '';
     return `${mso}<div class="sum-col${i ? '' : ' sum-c1'}" style="display:inline-block;width:100%;max-width:196px;vertical-align:top;">
-<table ${T} width="100%"><tr><td class="sum-in" valign="top" style="padding:0 16px;${i ? '' : 'padding-left:0;'}">
+<table ${T} width="100%"><tr><td class="sum-in${i ? ' sum-in2' : ''}" valign="top" style="padding:0 16px 16px 0;">
 <div class="sum-row">
 <p class="sum-n ff-n num lk" style="margin:0 0 10px;font-family:${FN};font-size:34px;line-height:38px;font-weight:700;color:${C.blue700};${nowrap(r.number)}word-break:break-word;${NUM}">${esc(r.number)}</p>
 <div class="sum-t">
@@ -71,7 +71,7 @@ function hero(c, img) {
 <table ${T} width="100%">
 <tr><td class="px" style="padding:16px 24px 0;">
 <table ${T} width="100%"><tr>
-<td class="ff-m" valign="top" style="${label(11, C.blue200)}line-height:16px;">Edizione #${esc(c.edition)} &middot; ${esc(c.read_min)} min</td>
+<td class="ff-m" valign="top" style="${label(11, C.blue200)}line-height:16px;white-space:nowrap;">Edizione #${esc(c.edition)} &middot; ${esc(c.read_min)} min</td>
 <td class="ff-m hide-m" align="right" valign="top" style="${label(11, C.blue200)}line-height:16px;padding-left:16px;">${formatDate(c.date)}</td>
 </tr></table>
 </td></tr>
@@ -282,7 +282,7 @@ function renderHtml(c, opts = {}) {
 <title>${esc(c.title)} · Valore Atteso #${esc(c.edition)}</title>
 <!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=Inter:wght@400;600&amp;family=Playfair+Display:wght@700&amp;display=swap" rel="stylesheet"><!--<![endif]-->
 <!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
-<style>.ff-d{font-family:Georgia,serif !important;}.ff-n{font-family:'Times New Roman',serif !important;}.ff-t{font-family:Arial,sans-serif !important;}.ff-m{font-family:'Courier New',monospace !important;}.hdc{padding:12px 24px 14px !important;}.motto{letter-spacing:.14em !important;}</style><![endif]-->
+<style>.ff-d{font-family:Georgia,serif !important;}.ff-n{font-family:'Times New Roman',serif !important;}.ff-t{font-family:Arial,sans-serif !important;}.ff-m{font-family:'Courier New',monospace !important;}.hdc{padding:12px 24px 14px !important;}.motto{letter-spacing:.14em !important;}.sum-in{padding-bottom:0 !important;}.sum-in2{padding-left:16px !important;}</style><![endif]-->
 <style>
 :root{color-scheme:light dark;supported-color-schemes:light dark;}
 body{margin:0;padding:0;width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
@@ -294,8 +294,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 @media only screen and (min-width:601px){
 .hdc{padding:12px 24px 14px !important;}
 .motto{letter-spacing:.14em !important;}
-.sum-in{border-left:1px solid ${C.line} !important;}
-.sum-c1 .sum-in{border-left:0 !important;}
+.sum-in{padding-bottom:0 !important;}
+.sum-in2{border-left:1px solid ${C.line} !important;padding-left:16px !important;}
 .kpi-c{border-left:1px solid ${C.line2} !important;}
 .kpi-first .kpi-c{border-left:0 !important;}
 }
