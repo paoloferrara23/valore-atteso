@@ -518,6 +518,27 @@ function updateHome(editions, file = path.join(ROOT, 'index.html'), linkText = '
   return ed.num;
 }
 
+// ---------- archivio: lista statica delle card ----------
+// Le card di /archivio sono scritte nell'HTML tra i marcatori (stessi dati letti dal browser prima): nessun salto
+// di layout al caricamento. Il lettore interno e il codice admin di archivio.html non cambiano.
+const ARCH_START = '<!-- va:archivio:start -->';
+const ARCH_END = '<!-- va:archivio:end -->';
+
+function buildArchiveCards(editions) {
+  return editions.map(e => `<a class="ed-card" href="/${slug(e.num)}"><div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
+    + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}</a>`).join('');
+}
+
+function updateArchive(editions, file = path.join(ROOT, 'archivio.html')) {
+  if (!fs.existsSync(file)) return false;
+  const html = fs.readFileSync(file, 'utf8');
+  const a = html.indexOf(ARCH_START), b = html.indexOf(ARCH_END);
+  if (a < 0 || b < a) { console.warn('[generate-edition-pages] marcatori assenti in archivio.html: archivio non aggiornato'); return false; }
+  const next = html.slice(0, a + ARCH_START.length) + buildArchiveCards(editions) + html.slice(b);
+  if (next !== html) fs.writeFileSync(file, next);
+  return editions.length;
+}
+
 // ---------- data ----------
 
 async function fetchEditions() {
@@ -547,13 +568,14 @@ async function main() {
     written++;
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
+  updateArchive(valid);
   let home = false;
   for (const t of HOME_TARGETS) home = updateHome(valid, path.join(ROOT, t.file), t.linkText) || home;
 
   console.log(`[generate-edition-pages] ${written} pagine edizione + sitemap.xml (${valid.length} URL edizioni)` + (home ? ` + KPI home dalla #${home}` : ''));
 }
 
-module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate };
+module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate, buildArchiveCards, updateArchive };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
