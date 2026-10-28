@@ -24,6 +24,16 @@
       "source": "/edizione-0(\\d+)",
       "destination": "/edizione-$1",
       "permanent": true
+    },
+    {
+      "source": "/00(\\d)",
+      "destination": "/edizione-$1",
+      "permanent": true
+    },
+    {
+      "source": "/0(\\d+)",
+      "destination": "/edizione-$1",
+      "permanent": true
     }
   ],
   "rewrites": [

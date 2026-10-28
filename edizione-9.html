@@ -19,10 +19,10 @@
 <meta property="og:image" content="https://www.valoreatteso.com/og/edizione-9.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Valore Atteso #009. Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.">
+<meta property="og:image:alt" content="Valore Atteso #009 · Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.">
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:image" content="https://www.valoreatteso.com/og/edizione-9.png">
-<meta name="twitter:image:alt" content="Valore Atteso #009. Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.">
+<meta name="twitter:image:alt" content="Valore Atteso #009 · Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
@@ -39,15 +39,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -66,7 +67,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -86,6 +87,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -131,7 +140,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -139,21 +148,12 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #009 · <time datetime="2026-06-30">30 giu 2026</time></div>
@@ -167,33 +167,34 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <span class="sk-v">~560 milioni €</span>
       <span class="sk-l">Perdite cumulative</span>
       <span class="sk-s">2021-2024 sotto scrutinio UEFA</span>
-      <a class="sk-a" href="#s1">Leggi ↓</a>
+      <a class="sk-a" href="#bilancio">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">IL DEAL</span>
       <span class="sk-v">+567%</span>
       <span class="sk-l">Rendimento Investimento</span>
       <span class="sk-s">ROI buy-back e rivendita</span>
-      <a class="sk-a" href="#s2">Leggi ↓</a>
+      <a class="sk-a" href="#deal">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">LA METRICA</span>
       <span class="sk-v">90 giorni</span>
       <span class="sk-l">Fan Base Growth</span>
       <span class="sk-s">Post-annuncio metrica Enterprise Value</span>
-      <a class="sk-a" href="#s3">Leggi ↓</a>
+      <a class="sk-a" href="#metrica">Leggi ↓</a>
     </li></ol></section>
-  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">IL BILANCIO</a><a href="#s2">IL DEAL</a><a href="#s3">LA METRICA</a></div></nav>
+  
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#bilancio">IL BILANCIO</a><a href="#deal">IL DEAL</a><a href="#metrica">LA METRICA</a></div><div class="secbar-prog" aria-hidden="true"></div></nav>
   <p class="opener">Tre operazioni, tre logiche diverse. Il PSG cede asset a valore di libro per restare nei parametri UEFA non per fare cassa. Il Real Madrid esercita un buy-back a 9 milioni e rivende a 60 milioni nello stesso giorno: non è mercato, è private equity applicato al talento. E poi c&#39;è Ravenna, club di categoria minore, che tenta di usare il nome di un ex Pallone d&#39;Oro come leva commerciale.</p>
-  <section class="sec" id="s1">
+  <section class="sec" id="bilancio">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">PSG Financial Fair Play: la cessione di Gonçalo Ramos è una exit strategy, non una vendita</h2>
       <p class="sec-body">Il PSG ha ceduto Gonçalo Ramos per circa 70 milioni di euro. In superficie sembra un ottimo affare, ma scavando nei numeri è quasi un pareggio. Il club aveva comprato Ramos nel 2023 per circa 80 milioni complessivi.</p><p class="sec-body">Nel calcio, il costo di acquisto di un giocatore non pesa subito per intero, ma viene diviso, o &quot;ammortizzato&quot;, per gli anni del suo contratto. Vendendolo oggi a 70 milioni, il PSG registra una &quot;plusvalenza&quot;, cioè un guadagno contabile, solo perché il valore a bilancio del giocatore è sceso nel tempo grazie agli ammortamenti, arrivando a circa 40 milioni.</p><p class="sec-body">Il guadagno reale e l&#39;impatto sulla cassa, quindi, sono molto modesti. Ma il vero punto è il contesto. Con perdite cumulative stimate in circa 560 milioni tra il 2021 e il 2024, il PSG è sotto la stretta lente della UEFA, che in passato lo ha già sanzionato. Le nuove regole di sostenibilità (Squad Cost Rule) impongono un limite rigido: le spese complessive per la squadra non potranno superare il 70% dei ricavi.</p><p class="sec-body">Ecco perché vendere Ramos non è una mossa di mercato, ma un obbligo per rispettare le norme. L&#39;obiettivo non è arricchirsi, ma tagliare i costi per evitare penalizzazioni. Nel calcio di oggi, la compravendita dei giocatori ha cambiato volto: da strumento per generare profitto è diventata una leva necessaria per la sopravvivenza finanziaria dei club.</p>
       <div class="sec-src">Fonti: UEFA Club Licensing and Financial Sustainability Regulations · Transfermarkt.it</div>
-    </section><section class="sec" id="s2">
+    </section><section class="sec" id="deal">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Nico Paz: la struttura del deal che trasforma il Real Madrid in un fondo VC</h2>
       <p class="sec-body">Il 25 giugno 2026, il Real Madrid ha esercitato il diritto di buy-back su Nico Paz pagando 9 milioni di euro al Como. Nello stesso giorno ha rivenduto il giocatore allo stesso club per 60 milioni.</p><p class="sec-body">Rendimento sull&#39;investimento: +567%. Non è una storia di calcio. È una storia di architettura contrattuale. Tutto nasce nel 2024, quando il Como acquista Paz dal Real Madrid per 6 milioni di euro. Nel contratto è già codificata una clausola di buy-back: il Real può riprendersi il giocatore per 9 milioni entro una data stabilita. Il club spagnolo esercita l&#39;opzione e cede immediatamente l&#39;asset all&#39;acquirente originale per 60 milioni.</p><p class="sec-body">L&#39;operazione netta genera 51 milioni di margine lordo su un&#39;esposizione iniziale di appena 9 milioni. Ma c&#39;è di più: nel nuovo contratto di rivendita è già prevista l&#39;inclusione di una nuova clausola di recompra, che secondo le stime permetterà al Real Madrid di riacquistare Paz nel 2027 per 80 milioni.</p><p class="sec-body">La struttura replica esattamente la logica del Venture Capital: piccola esposizione iniziale, monetizzazione intermedia per generare liquidità, e mantenimento di un&#39;opzione sul futuro upside. Il Real Madrid utilizza queste clausole da anni, ma il caso Paz ne rende visibile la meccanica con una chiarezza insolita: è un modello waterfall (struttura di distribuzione dei proventi per strati successivi) applicato a un asset sportivo.</p>
       <div class="sec-src">Fonti: Transfermarkt.it</div>
-    </section><section class="sec" id="s3">
+    </section><section class="sec" id="metrica">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Ronaldinho-Ravenna: quanto vale un Pallone d&#39;Oro per un club di provincia?</h2>
       <p class="sec-body">L&#39;associazione tra Ronaldinho e il Ravenna Calcio (Serie D) fa notizia, ma per chi analizza i bilanci non è una questione di nostalgia. è una manovra di pura ingegneria commerciale. I dettagli contrattuali esatti (costo, natura dell&#39;equity, ruolo di ambassador) non sono ancora pubblici.</p><p class="sec-body">Speculare oggi sulle cifre sarebbe un errore. Quello che possiamo fare è costruire il corretto framework analitico, perché operazioni simili ricalcano logiche misurabili, come dimostrato recentemente dal &quot;caso Wrexham&quot;: la trasformazione di un club delle serie minori in un asset mediatico globale. Ronaldinho porta in dote una cassa di risonanza da circa 80 milioni di follower.</p><p class="sec-body">Per un club dilettantistico, la cui esposizione media si ferma a poche decine di migliaia di contatti, si tratta di una leva asimmetrica. Questa operazione apre istantaneamente un mercato di sponsorizzazioni internazionali, specialmente in Sud America e Asia, inaccessibile per una normale squadra di categoria.</p><p class="sec-body">Il Ritorno sull&#39;Investimento (ROI) si misurerà su tre driver precisi:</p><p class="sec-body">1- Crescita della fan base: nei 90 giorni post-annuncio, metrica che i modelli di valutazione legano ormai direttamente all&#39;Enterprise Value del club. 
@@ -218,6 +219,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti gratis</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
@@ -232,21 +234,15 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
   </div>
 </div>
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 <script src="/va.js"></script>
 <script>
 (function(){
@@ -265,6 +261,28 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
     window.removeEventListener("scroll",onScroll);
   }
   window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
 })();
 </script>
 </body>

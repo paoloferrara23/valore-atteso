@@ -16,19 +16,19 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Il calcio europeo parla sempre più americano">
 <meta name="twitter:description" content="Il Qatar sonda Oaktree per una quota dell&#39;Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milion…">
-<meta property="og:image" content="https://www.valoreatteso.com/og/edizione-25.png">
+<meta property="og:image" content="https://www.valoreatteso.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Valore Atteso #025. Il calcio europeo parla sempre più americano">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
 <meta property="og:locale" content="it_IT">
-<meta name="twitter:image" content="https://www.valoreatteso.com/og/edizione-25.png">
-<meta name="twitter:image:alt" content="Valore Atteso #025. Il calcio europeo parla sempre più americano">
+<meta name="twitter:image" content="https://www.valoreatteso.com/og.png">
+<meta name="twitter:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/va.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Il calcio europeo parla sempre più americano","description":"Il Qatar sonda Oaktree per una quota dell'Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milion…","image":"https://www.valoreatteso.com/og/edizione-25.png","datePublished":"2026-10-20","dateModified":"2026-10-20","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-25"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Il calcio europeo parla sempre più americano","description":"Il Qatar sonda Oaktree per una quota dell'Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milion…","datePublished":"2026-10-20","dateModified":"2026-10-20","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-25"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
 /* Pagina edizione (fase 2 D): testata navy, card "In sintesi" sovrapposta, barra delle sezioni, colonna 760. */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -39,15 +39,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -66,7 +67,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -86,6 +87,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -131,7 +140,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -139,26 +148,17 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #025 · <time datetime="2026-10-20">20 ott 2026</time></div>
   <h1>Il calcio europeo parla sempre più americano</h1>
-  <p class="sub">Il Qatar sonda Oaktree per una quota dell&#39;Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milioni l&#39;anno: tre mosse in cui il calcio europeo cambia mani.</p>
+  
 </div></div>
 
 <article class="wrap" id="contenuto">
@@ -167,33 +167,34 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <span class="sk-v">€518M</span>
       <span class="sk-l">Ricavi 2025/26</span>
       <span class="sk-s">secondo risultato di sempre</span>
-      <a class="sk-a" href="#s1">Leggi ↓</a>
+      <a class="sk-a" href="#bilancio">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">Il Deal</span>
       <span class="sk-v">2027-2033</span>
       <span class="sk-l">Mandato club UEFA</span>
       <span class="sk-s">sei stagioni</span>
-      <a class="sk-a" href="#s2">Leggi ↓</a>
+      <a class="sk-a" href="#deal">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">La Metrica</span>
       <span class="sk-v">£60M/anno</span>
       <span class="sk-l">Sponsor maglia Liverpool</span>
       
-      <a class="sk-a" href="#s3">Leggi ↓</a>
+      <a class="sk-a" href="#metrica">Leggi ↓</a>
     </li></ol></section>
-  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">Il Bilancio</a><a href="#s2">Il Deal</a><a href="#s3">La Metrica</a></div></nav>
+  <p class="sub-light">Il Qatar sonda Oaktree per una quota dell&#39;Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milioni l&#39;anno: tre mosse in cui il calcio europeo cambia mani.</p>
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#bilancio">Il Bilancio</a><a href="#deal">Il Deal</a><a href="#metrica">La Metrica</a></div><div class="secbar-prog" aria-hidden="true"></div></nav>
   <p class="opener">Il Qatar sonda Oaktree per entrare nell&#39;Inter, Relevent riunisce i diritti commerciali di club e nazionali UEFA e il Liverpool firma una maglia da 60 milioni l&#39;anno. Tre storie diverse, con una domanda in comune: quanto vale oggi un pezzo di calcio europeo, e chi è pronto a pagarlo.</p>
-  <section class="sec" id="s1">
+  <section class="sec" id="bilancio">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">Il Bilancio</span></div>
       <h2 class="sec-title">Inter in utile per il secondo anno, e il Qatar sonda Oaktree</h2>
       <p class="sec-body">Il 12 ottobre i soci dell&#39;Inter hanno approvato il bilancio 2025/26: ricavi per 518 milioni di euro e utile netto di 22,7 milioni. È il secondo anno di fila in utile, dopo i 35,4 milioni del 2024/25, ma con ricavi in calo rispetto al record di 567 milioni dell&#39;anno prima.</p><p class="sec-body">Per restare in utile con meno incassi, il club ha ridotto i costi di circa 20 milioni, il 4%. Il patrimonio netto, cioè la differenza tra ciò che il club possiede e ciò che deve, è tornato positivo: 10,4 milioni, contro un valore negativo di 12 milioni dodici mesi prima.</p><p class="sec-body">Qui entra in gioco Oaktree. Il fondo statunitense controlla l&#39;Inter dal maggio 2024, quando Suning non ha rimborsato il prestito da 275 milioni ricevuto nel 2021, salito con gli interessi a circa 395 milioni: le quote date in garanzia sono passate a Oaktree. Due anni dopo i conti sono in utile: è il tipo di risultato che rende un club più facile da valutare per chi vuole entrare come socio.</p><p class="sec-body">E nelle stesse settimane è emerso un possibile nuovo socio. Secondo indiscrezioni della stampa italiana del 15 ottobre, Al Mirqab, il family office di Doha che gestisce il patrimonio dell&#39;ex primo ministro del Qatar Hamad bin Jassim Al Thani, avrebbe sondato Oaktree per una quota di minoranza. I contatti sarebbero solo verbali, senza offerte vincolanti. Oaktree non commenta, Al Mirqab non ha risposto, nessuno ha confermato.</p><p class="sec-body">Al Mirqab non va confuso con Qatar Sports Investments, che controlla il Paris Saint-Germain: sono soggetti diversi. Le stime sul valore dell&#39;Inter divergono: circa 1,8 miliardi di dollari per Forbes (valore d&#39;impresa, cioè capitale più debito netto), 1,5 miliardi per CNBC.</p>
       <div class="sec-src">Fonti: Inter, risultati 2025/26 (24/09 e 12/10/2026) · Inside World Football, 13/10/2026 · Bloomberg, 22/05/2024 · Forbes e CNBC, 29/05/2026</div>
-    </section><section class="sec" id="s2">
+    </section><section class="sec" id="deal">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">Il Deal</span></div>
       <h2 class="sec-title">Una sola agenzia statunitense per i diritti commerciali di club e nazionali UEFA</h2>
       <p class="sec-body">Il 13 ottobre l&#39;UEFA ha scelto Relevent, agenzia statunitense, per vendere i diritti commerciali delle sue nazionali dal 2028 al 2036: sponsor, media e licenze di Europei 2032 e 2036, Nations League e qualificazioni europee. Relevent ha battuto CAA Eleven, che svolgeva questo ruolo da oltre un decennio.</p><p class="sec-body">Non è la prima volta che Relevent vince con l&#39;UEFA. Dal 2027/28 al 2032/33 venderà già i diritti commerciali di Champions League, Europa League e Conference League al posto di Team Marketing, in carica dal 1992. Quel mandato è stato assegnato da UC3, la società che l&#39;UEFA gestisce insieme all&#39;associazione dei club europei.</p><p class="sec-body">Il punto è questo: finora i due pacchetti erano in mani diverse, Team per i club e CAA Eleven per le nazionali. Dal 2028 saranno entrambi di Relevent, con due contratti separati e date diverse. Per l&#39;UEFA significa un interlocutore solo e la possibilità di vendere insieme sponsor di club e di nazionali. Il valore del contratto e la garanzia minima non sono stati resi noti.</p><p class="sec-body">Il rovescio si chiama rischio di controparte: se chi vende i diritti per conto dell&#39;UEFA ha un problema, ne risentono club e federazioni insieme. Non ci sono segnali di difficoltà di Relevent: è solo la conseguenza di avere un unico interlocutore.</p>
       <div class="sec-src">Fonti: ESPN, 13/10/2026 · Inside World Football, 14/10/2026 · UEFA (UC3), annuncio del mandato per le competizioni per club, marzo 2025</div>
-    </section><section class="sec" id="s3">
+    </section><section class="sec" id="metrica">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">La Metrica</span></div>
       <h2 class="sec-title">60 milioni l&#39;anno sulla maglia: per il Liverpool quasi un quinto dei ricavi commerciali</h2>
       <p class="sec-body">L&#39;8 settembre il Liverpool ha annunciato Turkish Airlines come nuovo sponsor principale di maglia. Il club non ha comunicato la cifra: secondo il Times vale oltre 60 milioni di sterline l&#39;anno, più di 300 milioni in cinque anni.</p><p class="sec-body">Il contratto parte il 1° giugno 2027. Oggi sulla maglia c&#39;è ancora Standard Chartered, dopo 17 anni, con un accordo che la stampa stima intorno ai 50 milioni a stagione. Se le cifre sono giuste, l&#39;aumento è del 20%.</p><p class="sec-body">Per capire il peso di quei 60 milioni serve un confronto. Nell&#39;ultimo bilancio pubblicato, l&#39;anno chiuso al 31 maggio 2025, i ricavi commerciali del Liverpool (sponsor, merchandising e simili) sono stati di 323 milioni di sterline, su 703 milioni totali. Una sola firma varrebbe quindi quasi un quinto di quella voce: 60 diviso 323 fa circa il 19%. Quella voce include già il contratto attuale con Standard Chartered.</p><p class="sec-body">Due cautele. La cifra arriva da una fonte giornalistica, non dal club. E il Liverpool presenta il contratto come il più ricco della storia della Premier League: è la posizione del club, non una classifica ufficiale, e altri accordi, come quello dello United con Snapdragon, sono stimati su livelli simili.</p>
@@ -216,6 +217,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti gratis</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
@@ -230,21 +232,15 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
   </div>
 </div>
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 <script src="/va.js"></script>
 <script>
 (function(){
@@ -263,6 +259,28 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
     window.removeEventListener("scroll",onScroll);
   }
   window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
 })();
 </script>
 </body>

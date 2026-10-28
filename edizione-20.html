@@ -19,10 +19,10 @@
 <meta property="og:image" content="https://www.valoreatteso.com/og/edizione-20.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Valore Atteso #020. Dollari, Squad Cost e il miracolo di Como">
+<meta property="og:image:alt" content="Valore Atteso #020 · Dollari, Squad Cost e il miracolo di Como">
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:image" content="https://www.valoreatteso.com/og/edizione-20.png">
-<meta name="twitter:image:alt" content="Valore Atteso #020. Dollari, Squad Cost e il miracolo di Como">
+<meta name="twitter:image:alt" content="Valore Atteso #020 · Dollari, Squad Cost e il miracolo di Como">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
@@ -39,15 +39,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -66,7 +67,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -86,6 +87,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -131,7 +140,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -139,21 +148,12 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #020 · <time datetime="2026-09-15">15 set 2026</time></div>
@@ -167,33 +167,34 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <span class="sk-v">€50,5M</span>
       <span class="sk-l">Ricavi 2025</span>
       <span class="sk-s">da €0,8M in 6 anni</span>
-      <a class="sk-a" href="#s1">Leggi ↓</a>
+      <a class="sk-a" href="#bilancio">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">Il Deal</span>
       <span class="sk-v">12/20</span>
       <span class="sk-l">Club PL a maggioranza USA</span>
       <span class="sk-s">60% della lega</span>
-      <a class="sk-a" href="#s2">Leggi ↓</a>
+      <a class="sk-a" href="#deal">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">La Metrica</span>
       <span class="sk-v">85%</span>
       <span class="sk-l">Tetto SCR Premier League</span>
       <span class="sk-s">in vigore dal 2026/27</span>
-      <a class="sk-a" href="#s3">Leggi ↓</a>
+      <a class="sk-a" href="#metrica">Leggi ↓</a>
     </li></ol></section>
-  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">Il Bilancio</a><a href="#s2">Il Deal</a><a href="#s3">La Metrica</a></div></nav>
+  
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#bilancio">Il Bilancio</a><a href="#deal">Il Deal</a><a href="#metrica">La Metrica</a></div><div class="secbar-prog" aria-hidden="true"></div></nav>
   <p class="opener">Il calcio europeo ha un nuovo padrone, e parla inglese americano. Dodici club su venti in Premier League sono controllati da capitali USA, il Como ha trasformato una squadra di Serie B in un progetto da decine di milioni grazie a una proprietà straniera, e la regola dello Squad Cost Ratio premia chi costruisce ricavi, non chi taglia costi. Il filo è lo stesso: conta chi porta soldi dentro, non chi li risparmia.</p>
-  <section class="sec" id="s1">
+  <section class="sec" id="bilancio">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">Il Bilancio</span></div>
       <h2 class="sec-title">Como 1907: ricavi moltiplicati per 60, perdite coperte dalla proprietà. Un modello di crescita finanziata.</h2>
       <p class="sec-body">In sei anni, il Como è passato dalla Serie D alla Serie A. I ricavi caratteristici (al netto delle plusvalenze) sono andati da 0,8 milioni a 50,5 milioni. È una crescita reale, ma racconta solo metà della storia.</p><p class="sec-body">L&#39;altra metà è il costo del personale: 85,7 milioni nel 2025. Cioè 169% dei ricavi. Ogni 100 euro incassati, il club ne spende 169 solo in stipendi. Per capire la proporzione: un club ben gestito punta a stare sotto il 60-70%.</p><p class="sec-body">Il risultato sono perdite cumulate di circa 190 milioni in sei stagioni. La proprietà indonesiana (famiglia Hartono) ha coperto quasi tutto, versando circa 220 milioni di capitale fresco. Non è debito bancario: è denaro dei soci immesso direttamente nell&#39;azienda. Zero esposizione verso le banche.</p><p class="sec-body">Questo è il punto chiave per un lettore finanziario. Il Como non è un club in crisi di liquidità: è un club in fase di investimento accelerato, con una proprietà che sceglie di assorbire le perdite anziché ricorrere al credito esterno. Il rischio non è il debito, ma la dipendenza totale dalla capacità e dalla volontà dei soci di continuare a mettere soldi.</p><p class="sec-body">La domanda che conta non è &quot;quanto perdono&quot;, ma &quot;fino a quando la proprietà è disposta a farlo&quot; e &quot;quando i ricavi iniziano a reggere da soli il modello&quot;.</p>
       <div class="sec-src">Fonti: Como 1907, bilanci depositati, 2019-2025</div>
-    </section><section class="sec" id="s2">
+    </section><section class="sec" id="deal">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">Il Deal</span></div>
       <h2 class="sec-title">12 club su 20: la Premier League è diventata una lega americana</h2>
       <p class="sec-body">Dodici club su venti in Premier League hanno oggi una proprietà a maggioranza statunitense. Non è una tendenza: è una struttura. E secondo il report annuale di Norton Rose Fulbright, non riguarda solo i club di vertice.</p><p class="sec-body">Il capitale USA è sceso lungo tutta la piramide del calcio inglese, fino alla League Two (quarta divisione). Questo cambia il profilo del mercato M&amp;A calcistico in modo sostanziale: gli acquirenti americani non cercano solo i marchi globali. Cercano asset con margini di crescita, spesso nei club di seconda e terza fascia dove i multipli di ingresso (cioè il prezzo pagato rispetto ai ricavi del club) sono ancora bassi.</p><p class="sec-body">Il dato globale conferma l&#39;accelerazione. Nel 2025 sono stati conclusi 78 deal M&amp;A nel calcio, un record degli ultimi cinque anni. L&#39;anno prima erano 62. Oltre la metà di questi deal ha coinvolto investitori con base negli Stati Uniti.</p><p class="sec-body">Perché questo conta per chi guarda il mercato oggi? Perché la competizione per gli asset di qualità si è intensificata, i prezzi salgono e le finestre di accesso si restringono. Chi vuole entrare nel calcio inglese trova meno club disponibili e valutazioni più alte. Chi è già dentro ha un vantaggio strutturale difficile da replicare.</p>
       <div class="sec-src">Fonti: Norton Rose Fulbright, Keeping Possession (7ª ed.), 06/09/2026</div>
-    </section><section class="sec" id="s3">
+    </section><section class="sec" id="metrica">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">La Metrica</span></div>
       <h2 class="sec-title">SCR: vinci chi incassa di più, non chi spende meno</h2>
       <p class="sec-body">La Premier League ha approvato un nuovo sistema finanziario. Dal 2026/27 entra in vigore lo Squad Cost Ratio (SCR): il costo della rosa, comprensivo di stipendi e ammortamenti dei cartellini, non può superare l&#39;85% dei ricavi calcistici netti del club.</p><p class="sec-body">La logica è semplice. Prima si controllava quanto un club perdeva. Ora si controlla il rapporto tra quello che spende sulla rosa e quello che incassa. Se spendi tanto, devi incassare tanto. Non esiste un tetto assoluto di spesa: esiste un moltiplicatore dei ricavi.</p><p class="sec-body">Questo cambia tutto per un fondo di private equity che entra in un club inglese. La domanda non è più &quot;quante perdite posso coprire con iniezioni di capitale?&quot; La domanda è &quot;di quanto posso far crescere i ricavi commerciali?&quot; Più sponsor porti, più diritti vendi, più abbonamenti generi: più puoi spendere sulla rosa. Il mercato dei giocatori diventa una funzione del revenue model.</p><p class="sec-body">La soglia UEFA, per i club che giocano in Europa, è più severa: 70% invece di 85%. Quindi un club che scala dalla Premier League alle coppe si trova con meno spazio di manovra, non di più. Paradossalmente, vincere l&#39;accesso all&#39;Europa stringe i cordoni.</p><p class="sec-body">Per un advisor M&amp;A, il messaggio è chiaro. I multipli di acquisizione si giustificano solo se c&#39;è un piano concreto di crescita dei ricavi. Un club mid-table con ricavi commerciali piatti non ha upside di roster. Un club con brand internazionale sviluppabile ha margine strutturale.</p>
@@ -216,6 +217,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti gratis</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
@@ -230,21 +232,15 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
   </div>
 </div>
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 <script src="/va.js"></script>
 <script>
 (function(){
@@ -263,6 +259,28 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
     window.removeEventListener("scroll",onScroll);
   }
   window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
 })();
 </script>
 </body>

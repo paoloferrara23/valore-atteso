@@ -1,0 +1,74 @@
+# QA fase 3: prima
+
+- **home-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.74:1) · su gradiente 1 su 65 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 342-390, bottone fino a 446, consenso fino a 500
+  - 2.1:1 «analisi.»
+- **home-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.74:1) · su gradiente 1 su 65 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 342-390, bottone fino a 446, consenso fino a 500
+  - 2.1:1 «analisi.»
+- **home-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.74:1) · su gradiente 2 su 65 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 346-394, bottone fino a 394, consenso fino a 453
+  - 2.1:1 «non dei goal.»
+  - 2.1:1 «analisi.»
+- **home-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 36 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 461-509, bottone fino a 509, consenso fino a 568
+  - 2.1:1 «analisi.»
+- **home-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 36 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 461-509, bottone fino a 509, consenso fino a 568
+  - 2.1:1 «analisi.»
+- **home-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 36 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 461-509, bottone fino a 509, consenso fino a 568
+  - 2.1:1 «analisi.»
+- **home-320** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.74:1) · su gradiente 1 su 65 (min 2.1:1) · KPI troncati 0 · errori console 0 · email 341-389, bottone fino a 445, consenso fino a 516
+  - 2.1:1 «analisi.»
+- **archivio-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 2 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - 335×40 input «La tua email»
+  - 28×40 button «×»
+  - Failed to load resource: net::ERR_FAILED
+- **archivio-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 2 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - 335×40 input «La tua email»
+  - 28×40 button «×»
+  - Failed to load resource: net::ERR_FAILED
+- **archivio-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - Failed to load resource: net::ERR_FAILED
+- **archivio-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - Failed to load resource: net::ERR_FAILED
+- **archivio-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - Failed to load resource: net::ERR_FAILED
+- **archivio-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 1
+  - Failed to load resource: net::ERR_FAILED
+- **edizione-26-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.7:1) · KPI troncati 0 · errori console 0
+- **edizione-26-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.7:1) · KPI troncati 0 · errori console 0
+- **edizione-26-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 0 · errori console 0
+- **edizione-26-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.88:1) · KPI troncati 0 · errori console 0
+- **edizione-26-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.96:1) · KPI troncati 0 · errori console 0
+- **edizione-26-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.96:1) · KPI troncati 0 · errori console 0
+- **edizione-25-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.68:1) · KPI troncati 0 · errori console 0
+- **edizione-25-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.68:1) · KPI troncati 0 · errori console 0
+- **edizione-25-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 1 · errori console 0
+- **edizione-25-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.88:1) · KPI troncati 2 · errori console 0
+- **edizione-25-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.96:1) · KPI troncati 2 · errori console 0
+- **edizione-25-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.96:1) · KPI troncati 2 · errori console 0
+- **edizione-17-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.7:1) · KPI troncati 0 · errori console 0
+- **edizione-17-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.7:1) · KPI troncati 0 · errori console 0
+- **edizione-17-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 0 · errori console 0
+- **edizione-17-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 8 (min 2.47:1) · KPI troncati 0 · errori console 0
+  - 2.47:1 «La Lazio senza tifosi, l'RB Li»
+- **edizione-17-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 8 (min 2.47:1) · KPI troncati 0 · errori console 0
+  - 2.47:1 «La Lazio senza tifosi, l'RB Li»
+- **edizione-17-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 1 su 8 (min 2.47:1) · KPI troncati 0 · errori console 0
+  - 2.47:1 «La Lazio senza tifosi, l'RB Li»
+- **edizione-1-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 0 · errori console 0
+- **edizione-1-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 0 · errori console 0
+- **edizione-1-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.88:1) · KPI troncati 0 · errori console 0
+- **edizione-1-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 5.03:1) · KPI troncati 0 · errori console 0
+- **edizione-1-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 5.07:1) · KPI troncati 0 · errori console 0
+- **edizione-1-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 5.07:1) · KPI troncati 0 · errori console 0
+- **edizione-18-375** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.62:1) · KPI troncati 0 · errori console 0
+- **edizione-18-375-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.62:1) · KPI troncati 0 · errori console 0
+- **edizione-18-640** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.77:1) · KPI troncati 0 · errori console 0
+- **edizione-18-1280** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.79:1) · KPI troncati 0 · errori console 0
+- **edizione-18-1440** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.86:1) · KPI troncati 0 · errori console 0
+- **edizione-18-1440-reduced-motion** (200): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 8 (min 4.86:1) · KPI troncati 0 · errori console 0
+- **edizione-27-375** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+- **edizione-27-375-reduced-motion** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+- **edizione-27-640** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+- **edizione-27-1280** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+- **edizione-27-1440** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+- **edizione-27-1440-reduced-motion** (404): h1 1 · overflow false · testo piccolo 0 · target <44px 0 · contrasti sotto soglia 0 (min 5.42:1) · su gradiente 0 su 0 (min 99:1) · KPI troncati 0 · errori console 0
+
+Rete: /api/subscribe 0 (tutte simulate) · /api/admin-db 0 (bloccate) · esterne bloccate 6 https://xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/editions
