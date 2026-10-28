@@ -67,7 +67,7 @@ input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #
 .va-ftr{background:#E7DFD2;border-top:1px solid var(--va-line)}
 .va-ftr .footer{max-width:1120px;margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
 .va-ftr .footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.va-ftr .footer-links a{font-family:var(--va-font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#4F545F;text-decoration:none}
+.va-ftr .footer-links a{font-family:var(--va-font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#4F545F;text-decoration:none}
 .va-ftr .legal-note{max-width:1120px;margin:0 auto;padding:0 24px 26px;font-family:var(--va-font-mono);font-size:12px;letter-spacing:.04em;color:#4F545F;line-height:1.7}
 .va-ftr .legal-note a{color:inherit;text-decoration:underline}
 @media(max-width:920px){
@@ -111,3 +111,5 @@ input[type="email"],input[type="text"],input[type="search"],input[type="tel"],in
 input::placeholder,textarea::placeholder{color:var(--va-muted);opacity:1}
 .va-on-dark input[type="email"]{border-color:rgba(243,239,230,.6)}
 .va-on-dark input[type="email"]::placeholder{color:var(--va-muted-dark)}
+/* Fase 4: testo solo per lettori di schermo (etichette di ricerca, didascalie). */
+.va-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}

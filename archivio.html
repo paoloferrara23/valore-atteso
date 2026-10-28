@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js');</script>
 <link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Archivio — Valore Atteso</title>
@@ -32,15 +33,6 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17
 a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--va-font-display);font-size:2rem;font-weight:800;letter-spacing:-.8px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
-.nav-links{display:flex;gap:28px;align-items:center;min-width:0}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
-.nav-a:hover,.nav-a.active{color:var(--ink)}
-.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s;text-decoration:none}
-.nav-cta:hover{background:transparent;color:var(--ink)}
 
 /* LAYOUT */
 .container{max-width:var(--max);margin:0 auto;padding:72px 24px 88px}
@@ -49,7 +41,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-
 
 /* HERO ARCHIVIO */
 .archive-hero{max-width:760px;margin:0 auto 48px;padding-top:4px}
-.page-label{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;font-weight:600}
+.page-label{font-family:var(--mn);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;font-weight:600}
 .page-label::before{content:'';width:28px;height:1px;background:var(--deepgold)}
 .page-title{font-family:var(--va-font-display);font-size:clamp(2.35rem,5.2vw,3.85rem);font-weight:800;letter-spacing:-1px;line-height:1.02;margin-bottom:18px;color:var(--ink)}
 .page-title span{display:none}
@@ -241,19 +233,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-
 #btn-edit,#btn-cancel{background:rgba(255,253,248,.65)!important;border:1px solid var(--rule)!important;color:var(--ink)!important}
 #btn-save{background:var(--ink)!important;color:var(--cream)!important;border:none!important}
 
-/* FOOTER */
-footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24px;margin-top:0}
-.footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:.15s}
-.footer-links a:hover{color:var(--ink)}
 
 @media(max-width:920px){
-  .nav{height:64px;padding:0 20px;gap:14px}
-  .nav-logo{font-size:1.55rem;letter-spacing:-.9px;max-width:none;white-space:nowrap}
-  .nav-links{gap:14px}
-  .nav-links .nav-a{display:none}
-  .nav-cta{height:36px;padding:0 14px;font-size:12px;letter-spacing:.1em;background:var(--ink);border-color:var(--ink);color:var(--cream)}
   .container{padding:52px 20px 70px}
   .archive-hero{max-width:760px;margin-bottom:42px}
   .page-title{font-size:clamp(2.35rem,9.5vw,3.35rem);letter-spacing:-1.4px;line-height:1.04;font-family:var(--va-font-display);font-weight:800}
@@ -262,16 +243,11 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 }
 @media(max-width:620px){
   body{font-size:16px}
-  .nav{padding:0 18px}
-  .nav-logo{font-size:1.45rem;letter-spacing:-.8px}
-  .nav-cta{height:34px;padding:0 12px;font-size:12px;letter-spacing:.08em}
   .page-label{font-size:12px;margin-bottom:14px}
   .page-title{font-size:clamp(2.25rem,10vw,3rem);letter-spacing:-1.2px;margin-bottom:14px;font-family:var(--va-font-display);font-weight:800}
   .art-title{letter-spacing:-1.1px;font-size:clamp(2rem,9vw,3rem);font-family:var(--va-font-display);font-weight:800}
   .art-body{font-size:17px}
   .article-top{align-items:flex-start}
-  .footer-inner{display:block}
-  .footer-links{margin-top:14px}
 }
 </style>
 <link rel="canonical" href="https://www.valoreatteso.com/archivio">
@@ -296,6 +272,20 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/va.css">
 <style>
+/* Fase 4: header e footer standard (.va-hdr/.va-ftr), come nelle altre pagine. */
+:root{--hdr-h:60px;--pad:20px}
+@media(min-width:640px){:root{--hdr-h:64px;--pad:24px}}
+@media(min-width:1280px){:root{--hdr-h:72px}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:12px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 /* Fase 2 D: archivio a card (1/2/3 colonne a 375/640/1280), anteprima di 2 righe dal sottotitolo. */
 .ed-list.ed-list{max-width:none;display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .ed-card{display:flex;flex-direction:column;gap:8px;padding:18px;border:1px solid rgba(28,25,20,.14);border-radius:12px;background:#FFFFFF;color:#1C1914;text-decoration:none;transition:border-color .15s,box-shadow .15s}
@@ -314,6 +304,41 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 #va-scroll-cta .va-err-msg{color:#E9A08A}
 #va-scroll-cta .va-err-msg::before{background:#E9A08A;color:#1C1914}
 #va-scroll-cta input[type="email"]{border-color:rgba(243,239,230,.6)}
+/* Fase 4: card-dato. In testa il primo KPI della sezione attiva (Il Bilancio senza JS), con altezza fissa così il
+   cambio di filtro non sposta la griglia. Valore Playfair 32/36, etichetta Inter 14, nota Plex Mono 12. */
+.ed-card{gap:6px}
+.ed-kpi{display:flex;flex-direction:column;gap:2px;padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid rgba(28,25,20,.12);min-height:104px}
+.ed-kv{display:block;height:40px;font-family:var(--va-font-display);font-weight:800;font-size:32px;line-height:40px;font-variant-numeric:lining-nums;color:#1C1914;overflow-wrap:anywhere}
+.ed-kv.neg{color:#9A3A2F}
+.ed-kl{font-family:var(--va-font-text);font-size:14px;line-height:1.4;color:#4F545F;min-height:20px}
+.ed-ks{font-family:var(--va-font-mono);font-size:12px;line-height:1.4;color:#4F545F;min-height:17px}
+.ed-kpi-na{justify-content:center}
+.ed-kna{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4F545F}
+.js .ed-kv{white-space:nowrap;overflow:hidden;overflow-wrap:normal}
+.ed-kpi>span{transition:opacity .24s ease,transform .24s ease}
+.ed-kpi.out>span{opacity:0;transform:translateY(6px)}
+@media(prefers-reduced-motion:reduce){.ed-kpi>span{transition:none}}
+@media(min-width:1280px){.ed-kv{height:44px;font-size:36px;line-height:44px}.ed-kpi{min-height:108px}}
+
+/* Fase 4: filtri per sezione e ricerca, solo con JS. Bordi 1,5px #6B6358 (5,15:1 su crema), target 44px. */
+.arch-tools{display:none}
+.js .arch-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:0 0 24px}
+.arch-filt{display:flex;flex-wrap:wrap;gap:8px}
+.arch-filt button{min-height:44px;padding:0 16px;border:1.5px solid #6B6358;border-radius:999px;background:transparent;color:#1C1914;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.arch-filt button:hover{border-color:#1C1914}
+.arch-filt button[aria-pressed="true"]{background:#1C1914;border-color:#1C1914;color:#F3EFE6}
+.arch-search{flex:1 1 100%;min-width:0}
+.arch-search input[type="search"]{width:100%;height:48px;padding:0 16px;border:1.5px solid #6B6358;border-radius:999px;background:#FFFFFF;color:#1C1914;font-family:var(--va-font-text);font-size:16px}
+.arch-search input[type="search"]:focus{border-color:#0039A4}
+.arch-count{flex:1 1 100%;margin:0;font-family:var(--va-font-mono);font-size:12px;letter-spacing:.06em;color:#4F545F}
+.arch-none{margin:8px 0 0;padding:28px 20px;border:1px dashed #6B6358;border-radius:12px;text-align:center}
+.arch-none[hidden]{display:none}
+.arch-none p{margin:0 0 14px;font-size:16px;line-height:1.5;color:#2B2824}
+.arch-none button{min-height:44px;padding:0 20px;border:1.5px solid #1C1914;border-radius:999px;background:#1C1914;color:#F3EFE6;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.ed-card[hidden]{display:none}
+.arch-cf{margin:8px 0 0}
+.arch-cf a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#0039A4}
+@media(min-width:640px){.arch-search{flex:1 1 260px}.arch-count{flex:0 0 auto}}
 @media(min-width:640px){.ed-list.ed-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:1280px){.ed-list.ed-list{grid-template-columns:repeat(3,minmax(0,1fr))}.ed-card{padding:24px}.ed-card .ed-title{font-size:22px}}
 </style>
@@ -321,17 +346,8 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
 
-<nav>
-  <div class="nav">
-    <a class="nav-logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-    <div class="nav-links">
-      <a class="nav-a active" href="/archivio">Archivio</a>
-      <a class="nav-a" href="/glossario">Glossario</a>
-      <a class="nav-a" href="/#about">About</a>
-      <a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a>
-    </div>
-  </div>
-</nav>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio" aria-current="page">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="/#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="container" id="contenuto">
 
@@ -342,10 +358,24 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
         <div class="page-label">Tutte le edizioni</div>
         <h1 class="page-title">Archivio.</h1>
         <p class="page-desc">Ogni martedì un bilancio, un deal e una metrica del business del calcio globale. Dati verificati, nessun filler.</p>
+        <p class="arch-cf"><a href="/confronto">Confronta due club sugli stessi numeri →</a></p>
       </div>
     </div>
+    <div class="arch-tools">
+      <div class="arch-filt" role="group" aria-label="Numero mostrato sulle card">
+        <button type="button" data-sez="bilancio" aria-pressed="true">Il Bilancio</button>
+        <button type="button" data-sez="deal" aria-pressed="false">Il Deal</button>
+        <button type="button" data-sez="metrica" aria-pressed="false">La Metrica</button>
+      </div>
+      <div class="arch-search" role="search">
+        <label class="va-sr" for="arch-q">Cerca nell'archivio</label>
+        <input id="arch-q" type="search" placeholder="Cerca nel titolo o nei numeri (es. Milan)" autocomplete="off" spellcheck="false">
+      </div>
+      <p class="arch-count" id="arch-count" aria-live="polite"></p>
+    </div>
+    <div class="arch-none" id="arch-none" hidden><p>Nessuna edizione trovata per «<span id="arch-none-q"></span>». Prova con un altro nome.</p><button type="button" id="arch-reset">Azzera</button></div>
     <div class="ed-list" id="arch-list">
-      <!-- va:archivio:start --><a class="ed-card" href="/edizione-26"><div class="ed-meta">#026 · <span><time datetime="2026-10-27">27 ott 2026</time></span></div><h2 class="ed-title">Il Milan spende, il Valencia apre ai soci, il Real incassa</h2><p class="ed-prev">Il Milan fa mercato da Champions giocando l&#39;Europa League, il Valencia vende il 42% per finire lo stadio, Real e Barça superano il miliardo ma solo uno chiude in utile.</p></a><a class="ed-card" href="/edizione-25"><div class="ed-meta">#025 · <span><time datetime="2026-10-20">20 ott 2026</time></span></div><h2 class="ed-title">Il calcio europeo parla sempre più americano</h2><p class="ed-prev">Il Qatar sonda Oaktree per una quota dell&#39;Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milioni l&#39;anno: tre mosse in cui il calcio europeo cambia mani.</p></a><a class="ed-card" href="/edizione-24"><div class="ed-meta">#024 · <span><time datetime="2026-10-13">13 ott 2026</time></span></div><h2 class="ed-title">Il rosso del Milan, l&#39;Everton in vendita, il prezzo di una partita del Mondiale per Club</h2><p class="ed-prev">Milan in rosso dopo tre anni, Everton in vendita a 800 milioni, Mondiale per Club costa un miliardo.</p></a><a class="ed-card" href="/edizione-23"><div class="ed-meta">#023 · <span><time datetime="2026-10-06">6 ott 2026</time></span></div><h2 class="ed-title">Messi, i Lewis e il City: tre modi di prezzare il rischio nel calcio</h2></a><a class="ed-card" href="/edizione-22"><div class="ed-meta">#022 · <span><time datetime="2026-09-29">29 set 2026</time></span></div><h2 class="ed-title">Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)</h2><p class="ed-prev">Inter torna in utile, Mbappé cambia sponsor: il calcio ridisegna i conti (e i rischi).</p></a><a class="ed-card" href="/edizione-21"><div class="ed-meta">#021 · <span><time datetime="2026-09-22">22 set 2026</time></span></div><h2 class="ed-title">Milan, West Ham, Siviglia: chi decide quanto vale un club</h2><p class="ed-prev">Milan leader in ricavi commerciali, West Ham e il prezzo negoziato, Siviglia tra valore e debiti.</p></a><a class="ed-card" href="/edizione-20"><div class="ed-meta">#020 · <span><time datetime="2026-09-15">15 set 2026</time></span></div><h2 class="ed-title">Dollari, Squad Cost e il miracolo di Como</h2><p class="ed-prev">Proprietà americana e crescita finanziaria: come cambia il calcio europeo con nuovi modelli economici.</p></a><a class="ed-card" href="/edizione-19"><div class="ed-meta">#019 · <span><time datetime="2026-09-08">8 set 2026</time></span></div><h2 class="ed-title">Il tesoretto del Napoli, il primo addio del PIF, il muro dei 3,5 miliardi della Premier</h2><p class="ed-prev">Napoli con tesoreria record, PIF cede asset calcistici, Premier domina mercato con 3,5 miliardi di spesa estiva.</p></a><a class="ed-card" href="/edizione-18"><div class="ed-meta">#018 · <span><time datetime="2026-09-01">1 set 2026</time></span></div><h2 class="ed-title">L&#39;Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero</h2><p class="ed-prev">Villa vende talenti per l&#39;Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.</p></a><a class="ed-card" href="/edizione-17"><div class="ed-meta">#017 · <span><time datetime="2026-08-25">25 ago 2026</time></span></div><h2 class="ed-title">La Lazio senza tifosi, l&#39;RB Lipsia che gioca a fare il fondo, il mito della maglia</h2><p class="ed-prev">Crisi Lazio, modello Lipsia e il falso mito della maglia che ripaga gli acquisti.</p></a><a class="ed-card" href="/edizione-16"><div class="ed-meta">#016 · <span><time datetime="2026-08-18">18 ago 2026</time></span></div><h2 class="ed-title">La Juve riempie lo stadio, Bezos compra un&#39;opzione, il calcio batte il buyout</h2><p class="ed-prev">Juventus riempie lo stadio, Bezos acquista opzione sul Liverpool, il calcio sfida i buyout fund.</p></a><a class="ed-card" href="/edizione-15"><div class="ed-meta">#015 · <span><time datetime="2026-08-11">11 ago 2026</time></span></div><h2 class="ed-title">Il valore nascosto dello sponsor</h2><p class="ed-prev">Sponsor premium ridisegna il calcio: dai bundle emirates ai multi-club di Leiweke, il valore vero è nella struttura.</p></a><a class="ed-card" href="/edizione-14"><div class="ed-meta">#014 · <span><time datetime="2026-08-04">4 ago 2026</time></span></div><h2 class="ed-title">Stadi senza proprietà, spin-off senza struttura, multipli senza contesto</h2><p class="ed-prev">Proprietà fragile, strutture vuote, multipli ingannatori nel calcio italiano e globale.</p></a><a class="ed-card" href="/edizione-13"><div class="ed-meta">#013 · <span><time datetime="2026-07-28">28 lug 2026</time></span></div><h2 class="ed-title">Quanto vale una maglia: il record del Real, il vuoto del Chelsea e il vero senso delle tournée</h2><p class="ed-prev">Real Madrid a 100 milioni annui: lo sponsor di maglia più caro della storia del calcio mondiale.</p></a><a class="ed-card" href="/edizione-12"><div class="ed-meta">#012 · <span><time datetime="2026-07-21">21 lug 2026</time></span></div><h2 class="ed-title">Mondiali 2026: il campo è già venduto, l&#39;intervallo è un asset, la Spagna incassa sui campioni che ha cresciuto</h2><p class="ed-prev">Mondiali 2026: vivaio spagnolo, intervallo venduto, prato merce. Il calcio è finalmente asset.</p></a><a class="ed-card" href="/edizione-11"><div class="ed-meta">#011 · <span><time datetime="2026-07-14">14 lug 2026</time></span></div><h2 class="ed-title">Mondiali, Mercato e Biglietti: il valore nascosto dietro i grandi numeri del calcio</h2><p class="ed-prev">Mondiali, mercato e biglietti: come il calcio trasforma sport in asset finanziari globali.</p></a><a class="ed-card" href="/edizione-10"><div class="ed-meta">#010 · <span><time datetime="2026-07-07">7 lug 2026</time></span></div><h2 class="ed-title">Non è calciomercato. È gestione del rischio, scouting e geopolitica</h2><p class="ed-prev">Norvegia e Africa ridisegnano il mercato: dal talento sistemico ai flussi migratori del calcio globale.</p></a><a class="ed-card" href="/edizione-9"><div class="ed-meta">#009 · <span><time datetime="2026-06-30">30 giu 2026</time></span></div><h2 class="ed-title">Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.</h2><p class="ed-prev">Strategie finanziarie nascoste: PSG in equilibrio, Real Madrid come venture capitalist, Ronaldinho valore commerciale.</p></a><a class="ed-card" href="/edizione-8"><div class="ed-meta">#008 · <span><time datetime="2026-06-23">23 giu 2026</time></span></div><h2 class="ed-title">Oaktree, FIFA e il salary cap: tre lenti per leggere il futuro del calcio come asset class</h2><p class="ed-prev">Dal debito al salary cap, la finanza governa il futuro dello sport.</p></a><a class="ed-card" href="/edizione-7"><div class="ed-meta">#007 · <span><time datetime="2026-06-16">16 giu 2026</time></span></div><h2 class="ed-title">Chi sta vincendo davvero il business del Calcio</h2><p class="ed-prev">UEFA riforma i conti della Serie A mentre FIFA costruisce il Mondiale più commerciale della storia.</p></a><a class="ed-card" href="/edizione-6"><div class="ed-meta">#006 · <span><time datetime="2026-06-09">9 giu 2026</time></span></div><h2 class="ed-title">Juventus accumula. Inter ottimizza. Friedkin costruisce. Il Parlamento legifera.</h2><p class="ed-prev">Debiti record e strategie diverse: Juventus accumula, Inter ottimizza, Friedkin costruisce il suo impero.</p></a><a class="ed-card" href="/edizione-5"><div class="ed-meta">#005 · <span><time datetime="2026-06-02">2 giu 2026</time></span></div><h2 class="ed-title">Asimmetrie di valore: Il collasso economico dell&#39;Italia, il record del Real e il private equity a Parigi.</h2><p class="ed-prev">Italia fuori dai Mondiali: -570 milioni. Real Madrid record. PSG convalida modello Arctos.</p></a><a class="ed-card" href="/edizione-4"><div class="ed-meta">#004 · <span><time datetime="2026-05-26">26 mag 2026</time></span></div><h2 class="ed-title">Arsenal, San Siro e il private capital che ridisegna il calcio</h2><p class="ed-prev">Private equity ridisegna il calcio europeo: da mega-acquisizioni a minoranze strategiche e reti multi-club.</p></a><a class="ed-card" href="/edizione-3"><div class="ed-meta">#003 · <span><time datetime="2026-05-19">19 mag 2026</time></span></div><h2 class="ed-title">Ramos compra il Siviglia: 450 milioni per tornare a casa</h2><p class="ed-prev">Il difensore guida Five Eleven Capital nell&#39;acquisizione dell&#39;80% del club andaluso. Chelsea sotto doppio regime sanzionatorio. Premier League cambia le regole del gioco.</p></a><a class="ed-card" href="/edizione-2"><div class="ed-meta">#002 · <span><time datetime="2026-05-12">12 mag 2026</time></span></div><h2 class="ed-title">Prestiti, Premi Champions e Distressed M&amp;A: il vero stato finanziario del calcio europeo</h2><p class="ed-prev">Sheffield Wednesday, il laboratorio del distressed M&amp;A inglese</p></a><a class="ed-card" href="/edizione-1"><div class="ed-meta">#001 · <span><time datetime="2026-05-05">5 mag 2026</time></span></div><h2 class="ed-title">Serie A, Private Equity e lo Stadio come Bancomat</h2><p class="ed-prev">Bilanci Serie A 2024/25 · PE nel calcio europeo · Stadium yield</p></a><!-- va:archivio:end -->
+      <!-- va:archivio:start --><a class="ed-card" href="/edizione-26#bilancio" data-u="/edizione-26" data-bilancio="-€24M|Perdita netta 2025/26|primo rosso dopo tre utili" data-deal="42%|Quota Pitchwise|Lim resta in maggioranza" data-metrica="€1.221M|Ricavi Real 2025/26|record del club"><div class="ed-kpi"><span class="ed-kv neg">-€24M</span><span class="ed-kl">Perdita netta 2025/26</span><span class="ed-ks">primo rosso dopo tre utili</span></div><div class="ed-meta">#026 · <span><time datetime="2026-10-27">27 ott 2026</time></span></div><h2 class="ed-title">Il Milan spende, il Valencia apre ai soci, il Real incassa</h2><p class="ed-prev">Il Milan fa mercato da Champions giocando l&#39;Europa League, il Valencia vende il 42% per finire lo stadio, Real e Barça superano il miliardo ma solo uno chiude in utile.</p></a><a class="ed-card ed-card-x" href="/edizione-25" data-u="/edizione-25"><div class="ed-kpi ed-kpi-na"><span class="ed-kna">Numeri in revisione</span></div><div class="ed-meta">#025 · <span><time datetime="2026-10-20">20 ott 2026</time></span></div><h2 class="ed-title">Il calcio europeo parla sempre più americano</h2><p class="ed-prev">Il Qatar sonda Oaktree per una quota dell&#39;Inter, Relevent prende i diritti commerciali di club e nazionali UEFA, Liverpool firma una maglia da 60 milioni l&#39;anno: tre mosse in cui il calcio europeo cambia mani.</p></a><a class="ed-card ed-card-x" href="/edizione-24" data-u="/edizione-24"><div class="ed-kpi ed-kpi-na"><span class="ed-kna">Numeri in revisione</span></div><div class="ed-meta">#024 · <span><time datetime="2026-10-13">13 ott 2026</time></span></div><h2 class="ed-title">Il rosso del Milan, l&#39;Everton in vendita, il prezzo di una partita del Mondiale per Club</h2><p class="ed-prev">Milan in rosso dopo tre anni, Everton in vendita a 800 milioni, Mondiale per Club costa un miliardo.</p></a><a class="ed-card" href="/edizione-23#bilancio" data-u="/edizione-23" data-bilancio="£320M|Equity Lewis (12 mesi)|ultima tranche £120M" data-deal="2|Club spagnoli acquisiti|aprile-ottobre 2026" data-metrica="40 punti|Soglia retrocessione|oltre 50% prob. (Opta)"><div class="ed-kpi"><span class="ed-kv">£320M</span><span class="ed-kl">Equity Lewis (12 mesi)</span><span class="ed-ks">ultima tranche £120M</span></div><div class="ed-meta">#023 · <span><time datetime="2026-10-06">6 ott 2026</time></span></div><h2 class="ed-title">Messi, i Lewis e il City: tre modi di prezzare il rischio nel calcio</h2></a><a class="ed-card" href="/edizione-22#bilancio" data-u="/edizione-22" data-bilancio="€22,7M|Utile netto 2025/26|secondo consecutivo" data-deal="10 anni|Durata accordo On|stampa, non ufficiale" data-metrica="9 su 20|Serie A in difficoltà|5 fragili, 4 in tensione"><div class="ed-kpi"><span class="ed-kv">€22,7M</span><span class="ed-kl">Utile netto 2025/26</span><span class="ed-ks">secondo consecutivo</span></div><div class="ed-meta">#022 · <span><time datetime="2026-09-29">29 set 2026</time></span></div><h2 class="ed-title">Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)</h2><p class="ed-prev">Inter torna in utile, Mbappé cambia sponsor: il calcio ridisegna i conti (e i rischi).</p></a><a class="ed-card" href="/edizione-21#bilancio" data-u="/edizione-21" data-bilancio="€494,5M|Ricavi totali|bilancio 2024/25" data-deal="£600M|Valutazione implicita|fissata dall&#39;offerta Staveley" data-metrica="~€450M|Valutazione annunciata|debiti inclusi"><div class="ed-kpi"><span class="ed-kv">€494,5M</span><span class="ed-kl">Ricavi totali</span><span class="ed-ks">bilancio 2024/25</span></div><div class="ed-meta">#021 · <span><time datetime="2026-09-22">22 set 2026</time></span></div><h2 class="ed-title">Milan, West Ham, Siviglia: chi decide quanto vale un club</h2><p class="ed-prev">Milan leader in ricavi commerciali, West Ham e il prezzo negoziato, Siviglia tra valore e debiti.</p></a><a class="ed-card" href="/edizione-20#bilancio" data-u="/edizione-20" data-bilancio="€50,5M|Ricavi 2025|da €0,8M in 6 anni" data-deal="12/20|Club PL a maggioranza USA|60% della lega" data-metrica="85%|Tetto SCR Premier League|in vigore dal 2026/27"><div class="ed-kpi"><span class="ed-kv">€50,5M</span><span class="ed-kl">Ricavi 2025</span><span class="ed-ks">da €0,8M in 6 anni</span></div><div class="ed-meta">#020 · <span><time datetime="2026-09-15">15 set 2026</time></span></div><h2 class="ed-title">Dollari, Squad Cost e il miracolo di Como</h2><p class="ed-prev">Proprietà americana e crescita finanziaria: come cambia il calcio europeo con nuovi modelli economici.</p></a><a class="ed-card ed-card-x" href="/edizione-19" data-u="/edizione-19"><div class="ed-kpi ed-kpi-na"><span class="ed-kna">Numeri in revisione</span></div><div class="ed-meta">#019 · <span><time datetime="2026-09-08">8 set 2026</time></span></div><h2 class="ed-title">Il tesoretto del Napoli, il primo addio del PIF, il muro dei 3,5 miliardi della Premier</h2><p class="ed-prev">Napoli con tesoreria record, PIF cede asset calcistici, Premier domina mercato con 3,5 miliardi di spesa estiva.</p></a><a class="ed-card ed-card-x" href="/edizione-18" data-u="/edizione-18"><div class="ed-kpi ed-kpi-na"><span class="ed-kna">Numeri in revisione</span></div><div class="ed-meta">#018 · <span><time datetime="2026-09-01">1 set 2026</time></span></div><h2 class="ed-title">L&#39;Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero</h2><p class="ed-prev">Villa vende talenti per l&#39;Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.</p></a><a class="ed-card" href="/edizione-17#bilancio" data-u="/edizione-17" data-bilancio="~4.000|Abbonamenti 2026/27|minimo era Lotito" data-deal="€25M|Sesko: comprato|nel 2023, dal Salisburgo" data-metrica="80-90%|A chi produce e vende la maglia|del prezzo al dettaglio"><div class="ed-kpi"><span class="ed-kv">~4.000</span><span class="ed-kl">Abbonamenti 2026/27</span><span class="ed-ks">minimo era Lotito</span></div><div class="ed-meta">#017 · <span><time datetime="2026-08-25">25 ago 2026</time></span></div><h2 class="ed-title">La Lazio senza tifosi, l&#39;RB Lipsia che gioca a fare il fondo, il mito della maglia</h2><p class="ed-prev">Crisi Lazio, modello Lipsia e il falso mito della maglia che ripaga gli acquisti.</p></a><a class="ed-card" href="/edizione-16#bilancio" data-u="/edizione-16" data-bilancio="97,7%|Riempimento medio 2025/26|98,9% escluso ospiti" data-deal="&gt;$7 mld|Valutazione minoranza|circa 1,65 mld £ per il 30%" data-metrica="~18%|Rendimento implicito FSG|annuo, su 16 anni"><div class="ed-kpi"><span class="ed-kv">97,7%</span><span class="ed-kl">Riempimento medio 2025/26</span><span class="ed-ks">98,9% escluso ospiti</span></div><div class="ed-meta">#016 · <span><time datetime="2026-08-18">18 ago 2026</time></span></div><h2 class="ed-title">La Juve riempie lo stadio, Bezos compra un&#39;opzione, il calcio batte il buyout</h2><p class="ed-prev">Juventus riempie lo stadio, Bezos acquista opzione sul Liverpool, il calcio sfida i buyout fund.</p></a><a class="ed-card" href="/edizione-15#bilancio" data-u="/edizione-15" data-bilancio="fino a £70M/a|Contratto Arsenal (max)|incl. ~£15M bonus, al 2033" data-deal="$114M|Investimento Venezia|quota minoranza, mag 2026" data-metrica="&gt;£1 mld|Spesa Premier finora|finestra aperta al 1 set"><div class="ed-kpi"><span class="ed-kv">fino a £70M/a</span><span class="ed-kl">Contratto Arsenal (max)</span><span class="ed-ks">incl. ~£15M bonus, al 2033</span></div><div class="ed-meta">#015 · <span><time datetime="2026-08-11">11 ago 2026</time></span></div><h2 class="ed-title">Il valore nascosto dello sponsor</h2><p class="ed-prev">Sponsor premium ridisegna il calcio: dai bundle emirates ai multi-club di Leiweke, il valore vero è nella struttura.</p></a><a class="ed-card" href="/edizione-14#bilancio" data-u="/edizione-14" data-bilancio="150-200 milioni EUR|Costo ristrutturazione|Investimento progetto stadio" data-deal="$15 miliardi|Ricavi Mondiali annuali|Asset commerciale totale" data-metrica="6x|EV/Revenue Liverpool|Multiplo valutazione su ricavi"><div class="ed-kpi"><span class="ed-kv">150-200 milioni EUR</span><span class="ed-kl">Costo ristrutturazione</span><span class="ed-ks">Investimento progetto stadio</span></div><div class="ed-meta">#014 · <span><time datetime="2026-08-04">4 ago 2026</time></span></div><h2 class="ed-title">Stadi senza proprietà, spin-off senza struttura, multipli senza contesto</h2><p class="ed-prev">Proprietà fragile, strutture vuote, multipli ingannatori nel calcio italiano e globale.</p></a><a class="ed-card" href="/edizione-13#bilancio" data-u="/edizione-13" data-bilancio="~100M€/a|Real Madrid, Emirates|rinnovo 2026, record storico" data-deal="~80M£/a|Buco da divieto|ricavi persi in Premier" data-metrica="~$10M|Ricavo tour big|per una grande squadra"><div class="ed-kpi"><span class="ed-kv">~100M€/a</span><span class="ed-kl">Real Madrid, Emirates</span><span class="ed-ks">rinnovo 2026, record storico</span></div><div class="ed-meta">#013 · <span><time datetime="2026-07-28">28 lug 2026</time></span></div><h2 class="ed-title">Quanto vale una maglia: il record del Real, il vuoto del Chelsea e il vero senso delle tournée</h2><p class="ed-prev">Real Madrid a 100 milioni annui: lo sponsor di maglia più caro della storia del calcio mondiale.</p></a><a class="ed-card" href="/edizione-12#bilancio" data-u="/edizione-12" data-bilancio="€200 milioni|Valore di mercato|Lamine Yamal luglio 2026" data-deal="7 milioni USD|Costo spot pubblicitario|Super Bowl 2025 benchmark" data-metrica="$13 milioni|Costo asset creato|Investimento pubblico MetLife Stadium"><div class="ed-kpi"><span class="ed-kv">€200 milioni</span><span class="ed-kl">Valore di mercato</span><span class="ed-ks">Lamine Yamal luglio 2026</span></div><div class="ed-meta">#012 · <span><time datetime="2026-07-21">21 lug 2026</time></span></div><h2 class="ed-title">Mondiali 2026: il campo è già venduto, l&#39;intervallo è un asset, la Spagna incassa sui campioni che ha cresciuto</h2><p class="ed-prev">Mondiali 2026: vivaio spagnolo, intervallo venduto, prato merce. Il calcio è finalmente asset.</p></a><a class="ed-card" href="/edizione-11#bilancio" data-u="/edizione-11" data-bilancio="13 mld $|Giro d&#39;affari FIFA|Ciclo Mondiale 2026" data-deal="85%|Squad Cost Ratio|Tetto Premier League" data-metrica="3,3 mld $|Impatto economico|Regione NY/NJ"><div class="ed-kpi"><span class="ed-kv">13 mld $</span><span class="ed-kl">Giro d&#39;affari FIFA</span><span class="ed-ks">Ciclo Mondiale 2026</span></div><div class="ed-meta">#011 · <span><time datetime="2026-07-14">14 lug 2026</time></span></div><h2 class="ed-title">Mondiali, Mercato e Biglietti: il valore nascosto dietro i grandi numeri del calcio</h2><p class="ed-prev">Mondiali, mercato e biglietti: come il calcio trasforma sport in asset finanziari globali.</p></a><a class="ed-card" href="/edizione-10#bilancio" data-u="/edizione-10" data-bilancio="~100%|ROI plusvalenze|Costo a libro ~0" data-deal="1-1,5x|Club europei|Multiplo su ricavi" data-metrica="In crescita|Export calciatori|Marocco-Europa, 2022-25"><div class="ed-kpi"><span class="ed-kv">~100%</span><span class="ed-kl">ROI plusvalenze</span><span class="ed-ks">Costo a libro ~0</span></div><div class="ed-meta">#010 · <span><time datetime="2026-07-07">7 lug 2026</time></span></div><h2 class="ed-title">Non è calciomercato. È gestione del rischio, scouting e geopolitica</h2><p class="ed-prev">Norvegia e Africa ridisegnano il mercato: dal talento sistemico ai flussi migratori del calcio globale.</p></a><a class="ed-card" href="/edizione-9#bilancio" data-u="/edizione-9" data-bilancio="~560 milioni €|Perdite cumulative|2021-2024 sotto scrutinio UEFA" data-deal="+567%|Rendimento Investimento|ROI buy-back e rivendita" data-metrica="90 giorni|Fan Base Growth|Post-annuncio metrica Enterprise Value"><div class="ed-kpi"><span class="ed-kv">~560 milioni €</span><span class="ed-kl">Perdite cumulative</span><span class="ed-ks">2021-2024 sotto scrutinio UEFA</span></div><div class="ed-meta">#009 · <span><time datetime="2026-06-30">30 giu 2026</time></span></div><h2 class="ed-title">Dietro le quinte del mercato: l&#39;illusione del PSG, il playbook del Real e l&#39;effetto Ronaldinho.</h2><p class="ed-prev">Strategie finanziarie nascoste: PSG in equilibrio, Real Madrid come venture capitalist, Ronaldinho valore commerciale.</p></a><a class="ed-card" href="/edizione-8#bilancio" data-u="/edizione-8" data-bilancio="35,4 milioni €|Utile netto esercizio|Rottura rosso strutturale" data-deal="355M €|Compensazione FIFA 2026|vs 209M Qatar 2022" data-metrica="70%|Squad Cost Rule|dei ricavi annuali"><div class="ed-kpi"><span class="ed-kv">35,4 milioni €</span><span class="ed-kl">Utile netto esercizio</span><span class="ed-ks">Rottura rosso strutturale</span></div><div class="ed-meta">#008 · <span><time datetime="2026-06-23">23 giu 2026</time></span></div><h2 class="ed-title">Oaktree, FIFA e il salary cap: tre lenti per leggere il futuro del calcio come asset class</h2><p class="ed-prev">Dal debito al salary cap, la finanza governa il futuro dello sport.</p></a><a class="ed-card" href="/edizione-7#bilancio" data-u="/edizione-7" data-bilancio="70%|Squad Cost Ratio|Limite UEFA 2025-26" data-deal="2,7 miliardi USD|Ricavi sponsorship totali|Programma commerciale Mondiale 2026" data-metrica="13 miliardi USD|Ricavi FIFA 2023-2026|Ciclo quadriennale completo"><div class="ed-kpi"><span class="ed-kv">70%</span><span class="ed-kl">Squad Cost Ratio</span><span class="ed-ks">Limite UEFA 2025-26</span></div><div class="ed-meta">#007 · <span><time datetime="2026-06-16">16 giu 2026</time></span></div><h2 class="ed-title">Chi sta vincendo davvero il business del Calcio</h2><p class="ed-prev">UEFA riforma i conti della Serie A mentre FIFA costruisce il Mondiale più commerciale della storia.</p></a><a class="ed-card" href="/edizione-6#bilancio" data-u="/edizione-6" data-bilancio="4,89 mld €|Debito Serie A|al 30 giugno 2025" data-deal="£750-800 mln|Stadio Everton|costo costruzione" data-metrica="5,5 mld €|Debito sistema|calcio professionistico"><div class="ed-kpi"><span class="ed-kv">4,89 mld €</span><span class="ed-kl">Debito Serie A</span><span class="ed-ks">al 30 giugno 2025</span></div><div class="ed-meta">#006 · <span><time datetime="2026-06-09">9 giu 2026</time></span></div><h2 class="ed-title">Juventus accumula. Inter ottimizza. Friedkin costruisce. Il Parlamento legifera.</h2><p class="ed-prev">Debiti record e strategie diverse: Juventus accumula, Inter ottimizza, Friedkin costruisce il suo impero.</p></a><a class="ed-card" href="/edizione-5#bilancio" data-u="/edizione-5" data-bilancio="€570M|Impatto totale stimato|costo mancata qualificazione" data-deal="€1,185Mld|Ricavi operativi 2024/25|primo club oltre 1Mld nella storia" data-metrica="€837M|Ricavi operativi PSG|stagione certificata pre-Champions"><div class="ed-kpi"><span class="ed-kv">€570M</span><span class="ed-kl">Impatto totale stimato</span><span class="ed-ks">costo mancata qualificazione</span></div><div class="ed-meta">#005 · <span><time datetime="2026-06-02">2 giu 2026</time></span></div><h2 class="ed-title">Asimmetrie di valore: Il collasso economico dell&#39;Italia, il record del Real e il private equity a Parigi.</h2><p class="ed-prev">Italia fuori dai Mondiali: -570 milioni. Real Madrid record. PSG convalida modello Arctos.</p></a><a class="ed-card" href="/edizione-4#bilancio" data-u="/edizione-4" data-bilancio="€117M|Premi UEFA Champions|stagione 2024/25" data-deal="0.5–1.0x|Premium valutativo stadio|EV/Revenue aggiuntivo" data-metrica="345|Club in reti MCO|reti multi-squadra globali"><div class="ed-kpi"><span class="ed-kv">€117M</span><span class="ed-kl">Premi UEFA Champions</span><span class="ed-ks">stagione 2024/25</span></div><div class="ed-meta">#004 · <span><time datetime="2026-05-26">26 mag 2026</time></span></div><h2 class="ed-title">Arsenal, San Siro e il private capital che ridisegna il calcio</h2><p class="ed-prev">Private equity ridisegna il calcio europeo: da mega-acquisizioni a minoranze strategiche e reti multi-club.</p></a><a class="ed-card" href="/edizione-3#bilancio" data-u="/edizione-3" data-bilancio="£10.75M|Multa Premier League|Pagamenti occulti 2011-2018" data-deal="€450M|Equity deal|Acquisizione 80% Siviglia FC" data-metrica="85%|Soglia verde SCR|Limite annuale costi rosa"><div class="ed-kpi"><span class="ed-kv">£10.75M</span><span class="ed-kl">Multa Premier League</span><span class="ed-ks">Pagamenti occulti 2011-2018</span></div><div class="ed-meta">#003 · <span><time datetime="2026-05-19">19 mag 2026</time></span></div><h2 class="ed-title">Ramos compra il Siviglia: 450 milioni per tornare a casa</h2><p class="ed-prev">Il difensore guida Five Eleven Capital nell&#39;acquisizione dell&#39;80% del club andaluso. Chelsea sotto doppio regime sanzionatorio. Premier League cambia le regole del gioco.</p></a><a class="ed-card" href="/edizione-2#bilancio" data-u="/edizione-2" data-bilancio="€172M|Impatto prestiti Serie A|Ammortamenti da riassorbire" data-deal="£20-30M|Valutazione deal|Distressed acquisition" data-metrica="€142M|Premi Arsenal|Ante finale Budapest"><div class="ed-kpi"><span class="ed-kv">€172M</span><span class="ed-kl">Impatto prestiti Serie A</span><span class="ed-ks">Ammortamenti da riassorbire</span></div><div class="ed-meta">#002 · <span><time datetime="2026-05-12">12 mag 2026</time></span></div><h2 class="ed-title">Prestiti, Premi Champions e Distressed M&amp;A: il vero stato finanziario del calcio europeo</h2><p class="ed-prev">Sheffield Wednesday, il laboratorio del distressed M&amp;A inglese</p></a><a class="ed-card" href="/edizione-1#bilancio" data-u="/edizione-1" data-bilancio="€4.04 mld|Ricavi Serie A|Massimo storico 2024/25" data-deal="4-5x|Multiplo PE|Vs 15-18x NBA" data-metrica="€137|Stadium yield Bernabéu|Per spettatore 2024/25"><div class="ed-kpi"><span class="ed-kv">€4.04 mld</span><span class="ed-kl">Ricavi Serie A</span><span class="ed-ks">Massimo storico 2024/25</span></div><div class="ed-meta">#001 · <span><time datetime="2026-05-05">5 mag 2026</time></span></div><h2 class="ed-title">Serie A, Private Equity e lo Stadio come Bancomat</h2><p class="ed-prev">Bilanci Serie A 2024/25 · PE nel calcio europeo · Stadium yield</p></a><!-- va:archivio:end -->
     </div>
   </div>
 
@@ -365,19 +395,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/glossario">Glossario</a>
-      <a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/cookie-policy">Cookie</a>
-      <a href="/disclaimer">Disclaimer</a>
-      <a href="mailto:info@valoreatteso.com">Contatti</a>
-    </div>
-  </div>
-</footer>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 
 <script src="/va.js"></script>
 <script>
@@ -1037,6 +1055,69 @@ document.addEventListener('keydown', function(e){
 });
 
 checkAdmin();
+</script>
+<script>
+/* Fase 4: archivio card-dato. Filtro per sezione (?sezione=deal|metrica, condivisibile), ricerca senza
+   distinzione di maiuscole e accenti su titolo, sottotitolo e KPI pubblicati, contatore e stato vuoto.
+   Solo dati già nell'HTML (data-*): nessuna richiesta di rete. */
+(function(){
+  var list=document.getElementById('arch-list'); if(!list) return;
+  var cards=[].slice.call(list.querySelectorAll('.ed-card')); if(!cards.length) return;
+  var btns=[].slice.call(document.querySelectorAll('.arch-filt [data-sez]'));
+  var input=document.getElementById('arch-q'), count=document.getElementById('arch-count');
+  var none=document.getElementById('arch-none'), noneQ=document.getElementById('arch-none-q'), reset=document.getElementById('arch-reset');
+  var KEYS=['bilancio','deal','metrica'];
+  var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var norm=function(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();};
+  var sez=(new URLSearchParams(location.search).get('sezione')||'').toLowerCase();
+  if(KEYS.indexOf(sez)<0) sez='bilancio';
+
+  function fit(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>20){s-=2;el.style.fontSize=s+'px';}}
+  function paint(card){
+    var box=card.querySelector('.ed-kpi'); if(!box||card.classList.contains('ed-card-x')) return;
+    var raw=card.getAttribute('data-'+sez), k=null;
+    k=raw?raw.split('|'):null;
+    var v=box.querySelector('.ed-kv'),l=box.querySelector('.ed-kl'),s=box.querySelector('.ed-ks');
+    v.textContent=k?k[0]:''; l.textContent=k?k[1]:''; s.textContent=k?k[2]:'';
+    v.classList.toggle('neg',!!k&&/^\s*[-−]/.test(k[0]));
+    box.classList.toggle('ed-kpi-empty',!k);
+    card.setAttribute('href',card.getAttribute('data-u')+(raw!==null?'#'+sez:''));
+    fit(v);
+  }
+  function setSez(next,animate){
+    sez=next;
+    btns.forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-sez')===sez?'true':'false');});
+    var u=new URL(location.href); if(sez==='bilancio') u.searchParams.delete('sezione'); else u.searchParams.set('sezione',sez);
+    history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    var vis=cards.filter(function(c){return !c.hidden;});
+    if(!animate||reduced){cards.forEach(paint);return;}
+    vis.forEach(function(c,i){
+      var box=c.querySelector('.ed-kpi'); if(!box||c.classList.contains('ed-card-x')) return;
+      var d=Math.min(i,8)*12;
+      setTimeout(function(){box.classList.add('out');setTimeout(function(){paint(c);box.classList.remove('out');},120);},d);
+    });
+    cards.filter(function(c){return c.hidden;}).forEach(paint);
+  }
+  // Testo di ricerca: titolo, sottotitolo e KPI pubblicati della card (le escluse non hanno KPI).
+  cards.forEach(function(c){
+    var parts=[(c.querySelector('.ed-title')||{}).textContent,(c.querySelector('.ed-prev')||{}).textContent];
+    KEYS.forEach(function(k){var r=c.getAttribute('data-'+k);if(r) parts.push(r.split('|').join(' '));});
+    c.__q=norm(parts.join(' '));
+  });
+  function search(){
+    var q=norm(input.value), words=q?q.split(' '):[], n=0;
+    cards.forEach(function(c){var t=c.__q||'';var ok=words.every(function(w){return t.indexOf(w)>=0;});c.hidden=!ok;if(ok)n++;});
+    count.textContent=n+(n===1?' edizione':' edizioni');
+    none.hidden=n>0; if(n===0) noneQ.textContent=input.value.trim();
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){var n=b.getAttribute('data-sez');if(n!==sez)setSez(n,true);});});
+  var t; input.addEventListener('input',function(){clearTimeout(t);t=setTimeout(search,150);});
+  input.addEventListener('search',search);
+  reset.addEventListener('click',function(){input.value='';search();input.focus();});
+  setSez(sez,false); search();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){cards.forEach(function(c){var v=c.querySelector('.ed-kv');if(v)fit(v);});});
+  var rt; addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){cards.forEach(function(c){var v=c.querySelector('.ed-kv');if(v)fit(v);});},150);});
+})();
 </script>
 </body>
 </html>

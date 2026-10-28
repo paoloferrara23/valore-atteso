@@ -20,6 +20,7 @@ const STATIC_PAGES = [
   { loc: '/club-intelligence', changefreq: 'weekly', priority: '0.9' },
   { loc: '/about', changefreq: 'monthly', priority: '0.7' },
   { loc: '/come-lavoriamo', changefreq: 'monthly', priority: '0.6' },
+  { loc: '/confronto', changefreq: 'monthly', priority: '0.6' },
   { loc: '/glossario', changefreq: 'monthly', priority: '0.6' },
   { loc: '/sponsor', changefreq: 'monthly', priority: '0.5' },
   { loc: '/privacy', changefreq: 'yearly', priority: '0.3' },
@@ -579,9 +580,51 @@ function updateTerminal(editions, file = path.join(ROOT, 'index.html')) {
 const ARCH_START = '<!-- va:archivio:start -->';
 const ARCH_END = '<!-- va:archivio:end -->';
 
+// Card dell'archivio (Fase 4): in testa il primo KPI della sezione attiva (Il Bilancio senza JS), stringhe identiche
+// alla fonte; i KPI di Deal e Metrica e il testo per la ricerca stanno in attributi data-*. Le edizioni escluse dalle
+// vetrine restano card senza numeri. KPI o note con nomi di testate non si mostrano e non entrano nella ricerca.
+// Formato compatto: data-deal="valore|etichetta|nota" (il testo di ricerca lo ricava il browser da card e data-*).
+const ARCH_KEYS = ['bilancio', 'deal', 'metrica'];
+const ARCH_NA = 'Numeri in revisione';
+
+function archiveKpis(ed) {
+  const sections = Array.isArray(ed.sections) ? ed.sections : [];
+  const anchors = sectionAnchors(sections);
+  const out = {};
+  for (const key of ARCH_KEYS) {
+    const i = anchors.indexOf(key);
+    const k = i >= 0 ? ((Array.isArray(sections[i].kpis) ? sections[i].kpis : [])[0] || {}) : {};
+    out[key] = k.value && k.label && !hasBlockedName(k.value) && !hasBlockedName(k.label)
+      ? { v: String(k.value), l: String(k.label), s: k.sub && !hasBlockedName(k.sub) ? String(k.sub) : '', anchor: true }
+      : (i >= 0 ? { anchor: true } : null);
+  }
+  return out;
+}
+
+function archiveKpiHtml(k) {
+  if (!k || !k.v) return '<div class="ed-kpi ed-kpi-empty"><span class="ed-kv"></span><span class="ed-kl"></span><span class="ed-ks"></span></div>';
+  const neg = /^\s*[-−]/.test(k.v);
+  return `<div class="ed-kpi"><span class="ed-kv${neg ? ' neg' : ''}">${esc(k.v)}</span><span class="ed-kl">${esc(k.l)}</span><span class="ed-ks">${esc(k.s)}</span></div>`;
+}
+
 function buildArchiveCards(editions) {
-  return editions.map(e => `<a class="ed-card" href="/${slug(e.num)}"><div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
-    + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}</a>`).join('');
+  return editions.map(e => {
+    const url = '/' + slug(e.num);
+    const head = `<div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
+      + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}`;
+    if (isExcluded(e.num)) {
+      return `<a class="ed-card ed-card-x" href="${url}" data-u="${url}">`
+        + `<div class="ed-kpi ed-kpi-na"><span class="ed-kna">${ARCH_NA}</span></div>${head}</a>`;
+    }
+    const k = archiveKpis(e);
+    const data = ARCH_KEYS.map(key => {
+      const x = k[key];
+      if (!x) return '';
+      return ` data-${key}="${x.v ? esc([x.v, x.l, x.s].map(t => t.replace(/\|/g, '/')).join('|')) : ''}"`;
+    }).join('');
+    const href = k.bilancio ? `${url}#bilancio` : url;
+    return `<a class="ed-card" href="${href}" data-u="${url}"${data}>${archiveKpiHtml(k.bilancio)}${head}</a>`;
+  }).join('');
 }
 
 function updateArchive(editions, file = path.join(ROOT, 'archivio.html')) {
@@ -592,6 +635,129 @@ function updateArchive(editions, file = path.join(ROOT, 'archivio.html')) {
   const next = html.slice(0, a + ARCH_START.length) + buildArchiveCards(editions) + html.slice(b);
   if (next !== html) fs.writeFileSync(file, next);
   return editions.length;
+}
+
+// ---------- /confronto: coppie da scripts/confronto-config.js ----------
+// Ogni citazione deve comparire identica nel testo della sezione indicata (edizione pubblicata, non esclusa) e il
+// numero mostrato deve stare dentro la citazione: se una riga non torna, la coppia intera non va in pagina.
+// La differenza si calcola solo per le righe marcate `differenza: true`, con valori esatti (niente circa, ~, oltre,
+// fino a): sottrazione esatta con i decimali della fonte più precisa.
+
+const CF_START = '<!-- va:confronto:start -->';
+const CF_END = '<!-- va:confronto:end -->';
+const CF_UNIT = 'milioni di euro';
+const CF_SECTION = { bilancio: 'Il Bilancio', deal: 'Il Deal', metrica: 'La Metrica' };
+const CF_APPROX = /\b(circa|oltre|fino a|stima|stimat\w*)\b|~/i;
+
+const cfDecimals = t => { const m = String(t).match(/,(\d+)/); return m ? m[1].length : 0; };
+const cfNumber = t => Number(String(t).replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.'));
+function cfFormat(n, dec) {
+  const [i, d] = Math.abs(n).toFixed(dec).split('.');
+  return i.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (d ? ',' + d : '');
+}
+const cfRef = (ed, sez) => `#${String(ed).padStart(3, '0')} · ${CF_SECTION[sez]}`;
+const cfHref = (ed, sez) => `/${slug(ed)}#${sez}`;
+
+// Restituisce { pairs, problems }: pairs con le differenze calcolate, problems con le righe scartate e il perché.
+function validateConfronto(editions, config) {
+  const problems = [];
+  const body = (num, sez) => {
+    const ed = editions.find(e => parseInt(e.num, 10) === parseInt(num, 10));
+    if (!ed) return { err: `#${num} non pubblicata` };
+    if (isExcluded(ed.num)) return { err: `#${num} è tra le edizioni escluse` };
+    const sections = Array.isArray(ed.sections) ? ed.sections : [];
+    const i = sectionAnchors(sections).indexOf(sez);
+    if (i < 0) return { err: `#${num} senza sezione ${sez}` };
+    return { text: bodyToText(sections[i].body) };
+  };
+  const checkQuote = (q, where) => {
+    const b = body(q.ed, q.sez);
+    if (b.err) return problems.push(`${where}: ${b.err}`), false;
+    if (!b.text.includes(q.cit)) return problems.push(`${where}: citazione non trovata in ${cfRef(q.ed, q.sez)}`), false;
+    return true;
+  };
+  const pairs = [];
+  for (const p of config) {
+    let ok = true;
+    const rows = p.righe.map(r => {
+      const where = `${p.id} · ${r.metrica}`;
+      for (const side of ['a', 'b']) {
+        const v = r[side];
+        if (!checkQuote(v, `${where} (${p[side]})`)) { ok = false; continue; }
+        if (!v.cit.includes(v.testo)) { problems.push(`${where} (${p[side]}): «${v.testo}» non è nella citazione`); ok = false; }
+        if (cfNumber(v.testo) !== Math.abs(v.valore)) { problems.push(`${where} (${p[side]}): «${v.testo}» ≠ ${v.valore}`); ok = false; }
+      }
+      if (r.nota && !checkQuote(r.nota, `${where} (nota)`)) ok = false;
+      let diff = null;
+      if (r.differenza) {
+        const exact = ['a', 'b'].every(s => !CF_APPROX.test(r[s].testo) && !CF_APPROX.test(r[s].cit) && r[s].valore >= 0);
+        if (!exact) { problems.push(`${where}: differenza chiesta su valori non esatti`); ok = false; }
+        else {
+          const dec = Math.max(cfDecimals(r.a.testo), cfDecimals(r.b.testo));
+          const k = 10 ** dec, d = Math.round(r.a.valore * k) - Math.round(r.b.valore * k);
+          diff = d === 0 ? null : { club: d > 0 ? p.a : p.b, side: d > 0 ? 'a' : 'b', text: cfFormat(Math.abs(d) / k, dec), value: Math.abs(d) / k };
+        }
+      }
+      return Object.assign({}, r, { diff });
+    });
+    if (p.lettura && !checkQuote(p.lettura, `${p.id} · lettura`)) ok = false;
+    if (ok) pairs.push(Object.assign({}, p, { righe: rows }));
+  }
+  return { pairs, problems };
+}
+
+function cfSide(p, r, side, max) {
+  const v = r[side], neg = v.valore < 0 || v.segno === 'perdita';
+  const w = max ? Math.abs(v.valore) / max * 100 : 0;
+  const ex = r.diff && r.diff.side === side ? r.diff.value / Math.abs(v.valore) * 100 : 0;
+  const sign = v.segno ? `<span class="cf-sg${neg ? ' neg' : ''}">${esc(v.segno)}</span>` : '';
+  return `<div class="cf-side cf-${side}">${sign}<span class="cf-v${neg ? ' neg' : ''}"><span class="va-sr">${esc(p[side])}${v.segno ? ', ' + esc(v.segno) : ''}: </span>${esc(v.testo)}</span>`
+    + `<span class="cf-track" aria-hidden="true"><span class="cf-bar${neg ? ' neg' : ''}" style="width:${w.toFixed(1)}%">`
+    + (ex ? `<span class="cf-ex" style="width:${ex.toFixed(1)}%"></span>` : '') + '</span></span></div>';
+}
+
+function buildConfronto(pairs) {
+  if (!pairs.length) return '<p class="cf-empty">Nessun confronto disponibile.</p>';
+  const tabs = `<div class="cf-tabs" role="tablist" aria-label="Scegli il confronto">${pairs.map((p, i) =>
+    `<button type="button" role="tab" id="cf-tab-${p.id}" aria-controls="cf-${p.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(p.tab)}</button>`).join('')}</div>`;
+  const panels = pairs.map(p => {
+    const refs = [];
+    const addRef = (ed, sez) => { const k = ed + sez; if (!refs.some(x => x.k === k)) refs.push({ k, ed, sez }); };
+    const rows = p.righe.map(r => {
+      addRef(r.a.ed, r.a.sez); addRef(r.b.ed, r.b.sez);
+      const max = Math.max(Math.abs(r.a.valore), Math.abs(r.b.valore));
+      const note = r.diff
+        ? `<p class="cf-diff"><span class="cf-sw cf-sw-ex" aria-hidden="true"></span>${esc(r.diff.club)} +${esc(r.diff.text)} ${CF_UNIT} di ${esc(r.metrica.charAt(0).toLowerCase() + r.metrica.slice(1))} (${esc(p.stagione)})</p>`
+        : r.nota
+          ? `<p class="cf-note">«${esc(r.nota.cit)}» (<a href="${cfHref(r.nota.ed, r.nota.sez)}">${cfRef(r.nota.ed, r.nota.sez)}</a>): niente differenza.</p>`
+          : r.motivo ? `<p class="cf-note">${esc(r.motivo)}</p>` : '';
+      return `<div class="cf-row"><h3 class="cf-m">${esc(r.metrica)}</h3><div class="cf-bars">${cfSide(p, r, 'a', max)}${cfSide(p, r, 'b', max)}</div>${note}</div>`;
+    }).join('');
+    const read = p.lettura
+      ? `<figure class="cf-read"><figcaption>La nostra lettura</figcaption><blockquote>«${esc(p.lettura.cit)}»</blockquote>`
+        + `<a href="${cfHref(p.lettura.ed, p.lettura.sez)}">Da ${cfRef(p.lettura.ed, p.lettura.sez)} →</a></figure>`
+      : '';
+    return `<section class="cf-pair" id="cf-${p.id}" role="tabpanel" aria-labelledby="cf-tab-${p.id}">`
+      + `<div class="cf-card"><div class="cf-head"><h2>${esc(p.a)} <span class="cf-vs">vs</span> ${esc(p.b)}</h2>`
+      + `<p class="cf-season">Stagione ${esc(p.stagione)} · ${CF_UNIT}</p>`
+      + `<ul class="cf-leg"><li><span class="cf-sw cf-sw-a" aria-hidden="true"></span>${esc(p.a)}</li><li><span class="cf-sw cf-sw-b" aria-hidden="true"></span>${esc(p.b)}</li>`
+      + (p.righe.some(r => r.diff) ? '<li><span class="cf-sw cf-sw-ex" aria-hidden="true"></span>Differenza (valori esatti e omogenei)</li>' : '')
+      + (p.righe.some(r => r.a.segno === 'perdita' || r.b.segno === 'perdita') ? '<li><span class="cf-sw cf-sw-neg" aria-hidden="true"></span>Perdita</li>' : '')
+      + `</ul></div>${rows}<p class="cf-src">Dati da ${refs.map(x => `<a href="${cfHref(x.ed, x.sez)}">${cfRef(x.ed, x.sez)}</a>`).join(', ')}</p></div>${read}</section>`;
+  }).join('');
+  return tabs + panels;
+}
+
+function updateConfronto(editions, file = path.join(ROOT, 'confronto.html')) {
+  if (!fs.existsSync(file)) return null;
+  const { pairs, problems } = validateConfronto(editions, require('./confronto-config.js'));
+  problems.forEach(p => console.warn('[generate-edition-pages] confronto: ' + p));
+  const html = fs.readFileSync(file, 'utf8');
+  const a = html.indexOf(CF_START), b = html.indexOf(CF_END);
+  if (a < 0 || b < a) { console.warn('[generate-edition-pages] marcatori assenti in confronto.html'); return null; }
+  const next = html.slice(0, a + CF_START.length) + buildConfronto(pairs) + html.slice(b);
+  if (next !== html) fs.writeFileSync(file, next);
+  return pairs.length;
 }
 
 // ---------- data ----------
@@ -625,13 +791,14 @@ async function main() {
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
   updateArchive(valid);
   updateTerminal(valid);
+  updateConfronto(valid);
   let home = false;
   for (const t of HOME_TARGETS) home = updateHome(valid, path.join(ROOT, t.file), t.linkText) || home;
 
   console.log(`[generate-edition-pages] ${written} pagine edizione + sitemap.xml (${valid.length} URL edizioni)` + (home ? ` + KPI home dalla #${home}` : ''));
 }
 
-module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate, buildArchiveCards, updateArchive, terminalRows, buildTerminal, updateTerminal };
+module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate, buildArchiveCards, updateArchive, terminalRows, buildTerminal, updateTerminal, validateConfronto, buildConfronto, updateConfronto };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });

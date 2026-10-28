@@ -1,0 +1,960 @@
+{
+ "pages": {
+  "archivio": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0.005,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "archivio-deal": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0.005,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "archivio-metrica": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "archivio-ricerca-milan": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H2 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "archivio-ricerca-vuota": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1",
+    "cls": 0.004,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1",
+    "cls": 0.005,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "confronto-real-barcellona": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "confronto-milan-inter-2024-25": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "confronto-milan-inter-2025-26": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "ci-classifica": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3 H2 H3",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3 H2 H3",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3 H2 H3",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3 H2 H3",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2 H3 H3 H3 H3 H2 H3",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   }
+  },
+  "ci-inter": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.001,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.002,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   }
+  },
+  "ci-milan": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.001,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.001,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   }
+  },
+  "ci-atalanta": {
+   "320": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "375": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "640": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1280": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.001,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   },
+   "1440": {
+    "small": [],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H2 H2 H3 H3 H2",
+    "cls": 0.001,
+    "errors": [],
+    "net": [
+     "GET supabase /rest/v1/clubs?select=*&order=sort_order.asc",
+     "GET supabase /rest/v1/club_financials?select=*&order=season.desc&verified=eq.true",
+     "GET supabase /rest/v1/club_deals?select=*&order=sort_order.asc"
+    ]
+   }
+  },
+  "about": {
+   "320": {
+    "small": [
+     "11px «Valore Atteso · About»",
+     "11px «Trasparenza IA»",
+     "11px «Le nostre fonti»",
+     "11px «Iscriviti →»",
+     "11px «← Torna alla homepage»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [
+     "11px «Valore Atteso · About»",
+     "11px «Trasparenza IA»",
+     "11px «Le nostre fonti»",
+     "11px «Iscriviti →»",
+     "11px «← Torna alla homepage»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [
+     "11px «Valore Atteso · About»",
+     "11px «Trasparenza IA»",
+     "11px «Le nostre fonti»",
+     "11px «Iscriviti →»",
+     "11px «← Torna alla homepage»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [
+     "11px «Valore Atteso · About»",
+     "11px «Trasparenza IA»",
+     "11px «Le nostre fonti»",
+     "11px «Iscriviti →»",
+     "11px «← Torna alla homepage»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [
+     "11px «Valore Atteso · About»",
+     "11px «Trasparenza IA»",
+     "11px «Le nostre fonti»",
+     "11px «Iscriviti →»",
+     "11px «← Torna alla homepage»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [],
+    "h": "H1 H2",
+    "cls": 0,
+    "errors": [],
+    "net": []
+   }
+  },
+  "home": {
+   "320": {
+    "small": [
+     "11px «Iscriviti gratis»",
+     "11px «Formato editoriale»",
+     "11px «Dentro ogni edizione»",
+     "11px «Leggi l'archivio →»",
+     "11px «Bilanci depositati»",
+     "11px «Report di settore»",
+     "11px «Comunicati ufficiali»",
+     "11px «Analisi indipendente»",
+     "11px «Perché leggerla»",
+     "11px «Fa per te»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [
+     "IMG.hero-wm",
+     "DIV.pillar",
+     "DIV.pillar",
+     "SPAN.",
+     "DIV.pillar"
+    ],
+    "h": "H1 H2 H3 H3 H3 H2",
+    "cls": 0.005,
+    "errors": [],
+    "net": []
+   },
+   "375": {
+    "small": [
+     "11px «Iscriviti gratis»",
+     "11px «Formato editoriale»",
+     "11px «Dentro ogni edizione»",
+     "11px «Leggi l'archivio →»",
+     "11px «Bilanci depositati»",
+     "11px «Report di settore»",
+     "11px «Comunicati ufficiali»",
+     "11px «Analisi indipendente»",
+     "11px «Perché leggerla»",
+     "11px «Fa per te»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [
+     "IMG.hero-wm",
+     "DIV.pillar",
+     "DIV.pillar",
+     "SPAN.",
+     "DIV.pillar"
+    ],
+    "h": "H1 H2 H3 H3 H3 H2",
+    "cls": 0.006,
+    "errors": [],
+    "net": []
+   },
+   "640": {
+    "small": [
+     "11px «Formato editoriale»",
+     "11px «Dentro ogni edizione»",
+     "11px «Leggi l'archivio →»",
+     "11px «Bilanci depositati»",
+     "11px «Report di settore»",
+     "11px «Comunicati ufficiali»",
+     "11px «Analisi indipendente»",
+     "11px «Perché leggerla»",
+     "11px «Fa per te»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [
+     "IMG.hero-wm",
+     "DIV.pillar",
+     "SPAN.",
+     "TABLE.tm",
+     "THEAD."
+    ],
+    "h": "H1 H2 H3 H3 H3 H2",
+    "cls": 0.007,
+    "errors": [],
+    "net": []
+   },
+   "1280": {
+    "small": [
+     "11px «Club finance»",
+     "11px «01»",
+     "11px «UEFA & FFP»",
+     "11px «02»",
+     "11px «Private equity»",
+     "11px «03»",
+     "11px «M&A»",
+     "11px «04»",
+     "11px «Debito»",
+     "11px «05»",
+     "11px «Strategy»",
+     "11px «06»",
+     "11px «Formato editoriale»",
+     "11px «Dentro ogni edizione»",
+     "11px «Leggi l'archivio →»",
+     "11px «Bilanci depositati»",
+     "11px «Report di settore»",
+     "11px «Comunicati ufficiali»",
+     "11px «Analisi indipendente»",
+     "11px «Perché leggerla»",
+     "11px «Fa per te»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [
+     "IMG.hero-wm"
+    ],
+    "h": "H1 H2 H3 H3 H3 H2",
+    "cls": 0.003,
+    "errors": [],
+    "net": []
+   },
+   "1440": {
+    "small": [
+     "11px «Club finance»",
+     "11px «01»",
+     "11px «UEFA & FFP»",
+     "11px «02»",
+     "11px «Private equity»",
+     "11px «03»",
+     "11px «M&A»",
+     "11px «04»",
+     "11px «Debito»",
+     "11px «05»",
+     "11px «Strategy»",
+     "11px «06»",
+     "11px «Formato editoriale»",
+     "11px «Dentro ogni edizione»",
+     "11px «Leggi l'archivio →»",
+     "11px «Bilanci depositati»",
+     "11px «Report di settore»",
+     "11px «Comunicati ufficiali»",
+     "11px «Analisi indipendente»",
+     "11px «Perché leggerla»",
+     "11px «Fa per te»"
+    ],
+    "taps": [],
+    "overflow": false,
+    "overflowOutside": [
+     "IMG.hero-wm"
+    ],
+    "h": "H1 H2 H3 H3 H3 H2",
+    "cls": 0.003,
+    "errors": [],
+    "net": []
+   }
+  }
+ },
+ "net": {
+  "supabaseNonGet": 0,
+  "apiReal": 0,
+  "external": []
+ },
+ "nojs": {
+  "cards": 26,
+  "visibili": 26,
+  "kpi": 22,
+  "tools": "none"
+ },
+ "archivio": {
+  "ok": 78,
+  "ko": 0
+ },
+ "confronto": {
+  "ok": 9,
+  "ko": 0,
+  "problems": []
+ }
+}

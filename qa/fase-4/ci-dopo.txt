@@ -1,0 +1,1197 @@
+## stato
+dati verificati · serie a 2024/25
+6 club · serie a · 2024/25
+valore atteso · club intelligence
+classifica · serie a 2024/25
+● verificato
+## club in navigazione
+classifica
+club · 2024/25
+im
+inter
+j
+juventus
+n
+napoli
+as
+as roma
+m
+ac milan
+at
+atalanta
+## home: testata e insight
+◆ by valore atteso · club intelligence
+la salute finanziaria del calcio, leggibile in 30 secondi.
+trasformiamo i bilanci depositati, centinaia di pagine di numeri, in profili chiari e comparabili. gli stessi dati verificati che alimentano la newsletter valore atteso, ora interattivi: confronta, esplora, capisci.
+bilanci ufficiali depositati
+ogni numero tracciabile
+6 club · serie a 2024/25
+esplora la classifica ↓
+ogni club è cliccabile nella classifica
+confronta due club →
+lo sapevi che…
+inter · chiude in utile d’esercizio
++€35,4m
+## classifica revenue_total
+ricavi totali · meglio se alto
+◆ come leggerla — il motore economico del club. più ricavi = più spazio per competere restando nei vincoli uefa. in vetta chi genera di più, al netto delle plusvalenze.
+1° | im inter | €567,0m
+2° | j juventus | €529,6m
+3° | m ac milan | €494,5m
+4° | at atalanta | €320,8m
+5° | n napoli | €290,8m
+6° | as as roma | €270,2m
+## classifica net_result
+risultato netto · meglio se alto
+◆ come leggerla — utile o perdita dell'esercizio. nel calcio la perdita è la norma: conta la tendenza nel tempo e chi la copre (soci o plusvalenze). verde = utile, rosso = perdita.
+1° | at atalanta | +€37,9m
+2° | im inter | +€35,4m
+3° | m ac milan | +€2,9m
+4° | n napoli | −€21,4m
+5° | as as roma | −€53,9m
+6° | j juventus | −€58,1m
+## classifica net_debt
+posizione finanziaria netta · cassa netta in verde
+◆ come leggerla — quanto il club dipende dai finanziamenti. cassa netta (verde, +€) = più liquidità che debiti; debito netto (rosso, −€) = esposizione finanziaria da servire.
+1° | n napoli | +€137,0m
+2° | at atalanta | −€11,1m
+3° | m ac milan | −€92,6m
+4° | im inter | −€279,7m
+5° | j juventus | −€280,2m
+6° | as as roma | −€382,8m
+## classifica wage_ratio
+costo personale / ricavi · meglio se basso
+◆ come leggerla — sostenibilità del monte ingaggi. riferimento uefa per la squad cost rule: sotto il 70% dei ricavi. più è basso, più margine ha il club per investire e restare in regola.
+1° | m ac milan | 38,2%
+2° | at atalanta | 38,4%
+3° | im inter | 44,7%
+4° | j juventus | 46,1%
+5° | n napoli | 48,8%
+6° | as as roma | 56,5%
+## classifica player_trading
+plusvalenze da cessioni · meglio se alto
+◆ come leggerla — ricavi dalla vendita dei cartellini. utili ma volatili: chi ne dipende troppo ha un modello fragile, perché non si ripetono ogni anno.
+1° | n napoli | €102,6m
+2° | at atalanta | €100,9m
+3° | j juventus | €89,7m
+4° | m ac milan | €83,2m
+5° | as as roma | €48,7m
+6° | im inter | €21,5m
+## classifica equity
+patrimonio netto · meglio se alto
+◆ come leggerla — il cuscinetto di capitale che assorbe le perdite. se scende o va in negativo servono ricapitalizzazioni dei soci per continuare a operare.
+1° | at atalanta | +€248,2m
+2° | m ac milan | +€199,4m
+3° | n napoli | +€190,2m
+4° | j juventus | +€13,2m
+5° | im inter | −€12,3m
+6° | as as roma | −€316,6m
+## club inter · panoramica
+im
+f.c. internazionale milano
+serie a
+oaktree capital management
+giuseppe meazza · 75.923
+fondata 1908
+↩ classifica
+2024/25
+im
+serie a · bilancio 2024/25
+f.c. internazionale milano
+ricavi
+€567,0m
+risultato netto
++€35,4m
+pos. fin. netta
+−€279,7m
+wage / revenue
+44,7%
+composizione ricavi · 2024/25
+da dove arrivano i €567m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€264,4m
+commerciali / sponsor
+€142,3m
+stadio / gare
+€98,8m
+gestione calciatori
+€21,5m
+altri ricavi
+€39,9m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
+−€279,7m
+indebitamento finanziario netto
+patrimonio netto
+−€12,3m
+negativo
+plusvalenze
+€21,5m
+proventi gestione calciatori
+ebitda
+€175,9m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio consolidato fc internazionale 2024/25 (deposito 15 ott 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. primo utile netto in 15 anni. media: serie a €91.4m + ucl €136.6m + fifa cwc €31.4m. bond €350m a 4.52% emesso giu 2025 (scad. 2030). equity consolidato negativo ma in forte recupero da -99.7m.
+## club inter · conto
+im
+f.c. internazionale milano
+serie a
+oaktree capital management
+giuseppe meazza · 75.923
+fondata 1908
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €264,4m
+commerciali / sponsor €142,3m
+ricavi da gare / stadio €98,8m
+gestione diritti calciatori €21,5m
+altri ricavi €39,9m
+valore della produzione +€567m
+% yoy +19,8%
+costo delle materie prime −€16,7m
+servizi −€80m
+per godimento di beni di terzi −€17m
+costo del personale −€253,2m
+oneri diversi di gestione −€15,3m
+accantonamenti −€8,9m
+ebitda +€175,9m
+ebitda % 31%
+ammortamenti −€82,1m
+svalutazioni −€8,9m
+ebit +€85m
+% su valore produzione 15%
+saldo gestione finanziaria −€35,9m
+saldo gestione straordinaria +€0,8m
+ebt +€49,9m
+% su valore produzione 8,8%
+imposte −€14,5m
+reddito netto +€35,4m
+% su valore produzione 6,2%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€567m · 100%
+ebitda
++€175,9m · 31%
+ebit
++€85m · 15%
+reddito netto
++€35,4m · 6,2%
+◆ dati verificati. fonte: bilancio consolidato fc internazionale 2024/25 (deposito 15 ott 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. primo utile netto in 15 anni. media: serie a €91.4m + ucl €136.6m + fifa cwc €31.4m. bond €350m a 4.52% emesso giu 2025 (scad. 2030). equity consolidato negativo ma in forte recupero da -99.7m.
+## club inter · sostenibilita
+im
+f.c. internazionale milano
+serie a
+oaktree capital management
+giuseppe meazza · 75.923
+fondata 1908
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+44,7%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+0,86
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+● sostenibile
+lettura
+inter
+cosa dicono i numeri.
+monte ingaggi
+€253,2m
+costo del personale
+patrimonio netto
+−€12,3m
+negativo, da monitorare
+pfn
+−€279,7m
+debito finanziario netto
+risultato netto
++€35,4m
+autofinanziamento
+costo del personale al 44,7% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in utile (+€35,4m): genera autofinanziamento. patrimonio netto ancora negativo: equilibrio da ricostruire.
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio consolidato fc internazionale 2024/25 (deposito 15 ott 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. primo utile netto in 15 anni. media: serie a €91.4m + ucl €136.6m + fifa cwc €31.4m. bond €350m a 4.52% emesso giu 2025 (scad. 2030). equity consolidato negativo ma in forte recupero da -99.7m.
+## club inter · deal
+im
+f.c. internazionale milano
+serie a
+oaktree capital management
+giuseppe meazza · 75.923
+fondata 1908
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+◆ proprietà
+oaktree capital prende il controllo
+a maggio 2024, zhang jindong non rimborsa il prestito da $395m garantito sul 99.6% delle azioni inter. oaktree, già creditore, acquisisce la proprietà esecutiva del club, trasformandosi da hedge fund a proprietario calcistico.
+$395m (debito originario)
+◆ finanziamento · bond
+bond €350m al 4,52%: rifinanziamento debito
+giugno 2025: inter emette un nuovo high-yield bond da €350m con cedola 4.52% e scadenza 2030, sostituendo il precedente bond da €415m emesso nel 2022. tasso più basso segnala migliorata percezione di rischio da parte del mercato.
+€350m, cedola 4,52%
+term sheet bond · senior secured notes
+emittente
+inter media and communication
+importo
+€350m
+cedola
+4,52% fissa
+scadenza
+2030
+emissione
+giugno 2025
+bond rifinanziato
+€415m (2022)
+il nuovo bond riduce l’importo (da €415m a €350m) e migliora il costo del debito: segnale che il mercato percepisce l’inter come meno rischiosa dopo il subentro di oaktree e il ritorno all’utile.
+◆ dati verificati. fonte: bilancio consolidato fc internazionale 2024/25 (deposito 15 ott 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. primo utile netto in 15 anni. media: serie a €91.4m + ucl €136.6m + fifa cwc €31.4m. bond €350m a 4.52% emesso giu 2025 (scad. 2030). equity consolidato negativo ma in forte recupero da -99.7m.
+## club juventus · panoramica
+j
+juventus football club s.p.a.
+serie a
+exor n.v. (famiglia agnelli)
+allianz stadium · 41.507
+fondata 1897
+↩ classifica
+2024/25
+j
+serie a · bilancio 2024/25
+juventus football club s.p.a.
+ricavi
+€529,6m
+risultato netto
+−€58,1m
+pos. fin. netta
+−€280,2m
+wage / revenue
+46,1%
+composizione ricavi · 2024/25
+da dove arrivano i €529,6m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€177,4m
+commerciali / sponsor
+€115,9m
+stadio / gare
+€65,4m
+gestione calciatori
+€89,7m
+altri ricavi
+€81,2m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
+−€280,2m
+indebitamento finanziario netto
+patrimonio netto
++€13,2m
+positivo
+plusvalenze
+€89,7m
+proventi gestione calciatori
+ebitda
+€124m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio consolidato juventus fc 2024/25 (verificato su documento ufficiale, relazione finanziaria annuale al 30/06/2025, rev. deloitte) (deposito 26 set 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. assenza sponsor front jersey gran parte stagione (ricavi comm. giù da 160.5m a 115.9m). media: serie a €81.3m + ucl €67.5m + fifa cwc €27m. plusvalenze €89.7m driver principale miglioramento. ammort. cartellini €124.9m su €153.9m totali. | riconciliato 2026-07-31 su bilancio ufficiale (drive): totale 529,6m, ammort. 153,9m, ebit -29,9m, netto -58,1m, pn 13,2m, ifn post-ifrs16 280,2m, plusvalenze 89,7m confermati. scomposizione ricavi legacy (broadcast 177,4/comm 115,9) non conforme al bilancio: voci ufficiali salvate in pnl.ricavi_ufficiali_2024_25.
+## club juventus · conto
+j
+juventus football club s.p.a.
+serie a
+exor n.v. (famiglia agnelli)
+allianz stadium · 41.507
+fondata 1897
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €177,4m
+commerciali / sponsor €115,9m
+ricavi da gare / stadio €65,4m
+gestione diritti calciatori €89,7m
+altri ricavi €81,2m
+valore della produzione +€529,6m
+% yoy +34,2%
+costo delle materie prime −€7m
+servizi −€94,7m
+per godimento di beni di terzi n/d
+costo del personale −€244,7m
+oneri diversi di gestione −€59,4m
+accantonamenti n/d
+ebitda +€124m
+ebitda % 23,4%
+ammortamenti −€137,1m
+svalutazioni −€16,8m
+ebit −€29,9m
+% su valore produzione -5,6%
+saldo gestione finanziaria −€20,4m
+saldo gestione straordinaria +€0,4m
+ebt −€50m
+% su valore produzione -9,4%
+imposte −€8,2m
+reddito netto −€58,1m
+% su valore produzione -11%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€529,6m · 100%
+ebitda
++€124m · 23,4%
+ebit
+−€29,9m · -5,6%
+reddito netto
+−€58,1m · -11%
+◆ dati verificati. fonte: bilancio consolidato juventus fc 2024/25 (verificato su documento ufficiale, relazione finanziaria annuale al 30/06/2025, rev. deloitte) (deposito 26 set 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. assenza sponsor front jersey gran parte stagione (ricavi comm. giù da 160.5m a 115.9m). media: serie a €81.3m + ucl €67.5m + fifa cwc €27m. plusvalenze €89.7m driver principale miglioramento. ammort. cartellini €124.9m su €153.9m totali. | riconciliato 2026-07-31 su bilancio ufficiale (drive): totale 529,6m, ammort. 153,9m, ebit -29,9m, netto -58,1m, pn 13,2m, ifn post-ifrs16 280,2m, plusvalenze 89,7m confermati. scomposizione ricavi legacy (broadcast 177,4/comm 115,9) non conforme al bilancio: voci ufficiali salvate in pnl.ricavi_ufficiali_2024_25.
+## club juventus · sostenibilita
+j
+juventus football club s.p.a.
+serie a
+exor n.v. (famiglia agnelli)
+allianz stadium · 41.507
+fondata 1897
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+46,1%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+n/d
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+in attesa dei dati di stato patrimoniale
+lettura
+juventus
+cosa dicono i numeri.
+monte ingaggi
+€244m
+costo del personale
+patrimonio netto
++€13,2m
+positivo
+pfn
+−€280,2m
+debito finanziario netto
+risultato netto
+−€58,1m
+assorbe equity
+costo del personale al 46,1% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in perdita (−€58,1m), in larga parte coperta dalle plusvalenze (€89,7m).
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio consolidato juventus fc 2024/25 (verificato su documento ufficiale, relazione finanziaria annuale al 30/06/2025, rev. deloitte) (deposito 26 set 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. assenza sponsor front jersey gran parte stagione (ricavi comm. giù da 160.5m a 115.9m). media: serie a €81.3m + ucl €67.5m + fifa cwc €27m. plusvalenze €89.7m driver principale miglioramento. ammort. cartellini €124.9m su €153.9m totali. | riconciliato 2026-07-31 su bilancio ufficiale (drive): totale 529,6m, ammort. 153,9m, ebit -29,9m, netto -58,1m, pn 13,2m, ifn post-ifrs16 280,2m, plusvalenze 89,7m confermati. scomposizione ricavi legacy (broadcast 177,4/comm 115,9) non conforme al bilancio: voci ufficiali salvate in pnl.ricavi_ufficiali_2024_25.
+## club juventus · deal
+j
+juventus football club s.p.a.
+serie a
+exor n.v. (famiglia agnelli)
+allianz stadium · 41.507
+fondata 1897
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+◆ commerciale · sponsor
+crisi sponsor: assenza front jersey per 10 mesi
+juve inizia la stagione 2024/25 senza sponsor principale sulla maglia dopo la fine del contratto con jeep (12 anni, €45m/anno). dp world firma solo nella seconda metà della stagione. impatto diretto: ricavi commerciali crollano da €160.5m a €115.9m (-27.8%).
+−€44,6m ricavi commerciali
+◆ mercato · plusvalenze
+plusvalenze €89,7m: cessioni strategiche
+la juventus genera €89.7m netti da cessioni di diritti calciatori nella stagione 2024/25, confermando la cessione come leva strutturale di bilancio. la voce copre quasi interamente la perdita operativa e riduce il rosso a -€58.1m vs -€199.2m anno precedente.
+€89,7m netti
+◆ finanziamento · bond
+bond quotato su borsa italiana: struttura debitoria
+juventus fc s.p.a. è quotata su borsa italiana (segmento mta) ed emette obbligazioni quotate per finanziare operazioni straordinarie. pfn al 30/06/2025: -€280.2m. patrimonio netto consolidato: +€13.2m, al limite della soglia di sostenibilità.
+pfn −€280,2m
+struttura finanziaria · 2024/25
+proprietà
+exor n.v. (famiglia agnelli)
+posizione fin. netta
+−€280,2m
+patrimonio netto
++€13,2m
+stadio
+allianz stadium · 41.507
+patrimonio netto positivo; sostenibilità legata a gestione operativa e player trading.
+◆ dati verificati. fonte: bilancio consolidato juventus fc 2024/25 (verificato su documento ufficiale, relazione finanziaria annuale al 30/06/2025, rev. deloitte) (deposito 26 set 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. assenza sponsor front jersey gran parte stagione (ricavi comm. giù da 160.5m a 115.9m). media: serie a €81.3m + ucl €67.5m + fifa cwc €27m. plusvalenze €89.7m driver principale miglioramento. ammort. cartellini €124.9m su €153.9m totali. | riconciliato 2026-07-31 su bilancio ufficiale (drive): totale 529,6m, ammort. 153,9m, ebit -29,9m, netto -58,1m, pn 13,2m, ifn post-ifrs16 280,2m, plusvalenze 89,7m confermati. scomposizione ricavi legacy (broadcast 177,4/comm 115,9) non conforme al bilancio: voci ufficiali salvate in pnl.ricavi_ufficiali_2024_25.
+## club napoli · panoramica
+n
+società sportiva calcio napoli s.p.a.
+serie a
+aurelio de laurentiis (filmauro s.r.l.)
+stadio diego armando maradona · 54.726
+fondata 1926
+↩ classifica
+2024/25
+n
+serie a · bilancio 2024/25
+società sportiva calcio napoli s.p.a.
+ricavi
+€290,8m
+risultato netto
+−€21,4m
+pos. fin. netta
++€137,0m
+wage / revenue
+48,8%
+composizione ricavi · 2024/25
+da dove arrivano i €290,8m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€78,1m
+commerciali / sponsor
+€68,1m
+stadio / gare
+€24,1m
+gestione calciatori
+€102,6m
+altri ricavi
+€18m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
++€137m
+cassa netta (liquidità > debito)
+patrimonio netto
++€190,2m
+positivo
+plusvalenze
+€102,6m
+proventi gestione calciatori
+ebitda
+€93,5m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio d'esercizio ssc napoli al 30/06/2025. estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. stagione senza coppe europee dopo il 10° posto 2023/24: diritti tv da €142,2m a €78,1m e ricavi da €326,2m a €290,8m, perdita −€21,4m dopo l'utile record +€63,0m dell'anno scudetto. plusvalenze €102,6m a bilanciare. patrimonio netto €190,2m e posizione finanziaria netta positiva: cassa €174,4m contro €37,4m di soli debiti bancari (cassa netta +€137,0m), nessun bond.
+## club napoli · conto
+n
+società sportiva calcio napoli s.p.a.
+serie a
+aurelio de laurentiis (filmauro s.r.l.)
+stadio diego armando maradona · 54.726
+fondata 1926
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €78,1m
+commerciali / sponsor €68,1m
+ricavi da gare / stadio €24,1m
+gestione diritti calciatori €102,6m
+altri ricavi €18m
+valore della produzione +€290,8m
+% yoy −10,9%
+costo delle materie prime −€6,5m
+servizi −€36m
+per godimento di beni di terzi −€6,7m
+costo del personale −€142,1m
+oneri diversi di gestione −€6,2m
+accantonamenti €0,0m
+ebitda +€93,5m
+ebitda % 32,2%
+ammortamenti −€115,6m
+svalutazioni −€2,7m
+ebit −€24,7m
+% su valore produzione -8,5%
+saldo gestione finanziaria +€4,1m
+saldo gestione straordinaria €0m
+ebt −€20,6m
+% su valore produzione -7,1%
+imposte −€0,8m
+reddito netto −€21,4m
+% su valore produzione -7,4%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€290,8m · 100%
+ebitda
++€93,5m · 32,2%
+ebit
+−€24,7m · -8,5%
+reddito netto
+−€21,4m · -7,4%
+◆ dati verificati. fonte: bilancio d'esercizio ssc napoli al 30/06/2025. estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. stagione senza coppe europee dopo il 10° posto 2023/24: diritti tv da €142,2m a €78,1m e ricavi da €326,2m a €290,8m, perdita −€21,4m dopo l'utile record +€63,0m dell'anno scudetto. plusvalenze €102,6m a bilanciare. patrimonio netto €190,2m e posizione finanziaria netta positiva: cassa €174,4m contro €37,4m di soli debiti bancari (cassa netta +€137,0m), nessun bond.
+## club napoli · sostenibilita
+n
+società sportiva calcio napoli s.p.a.
+serie a
+aurelio de laurentiis (filmauro s.r.l.)
+stadio diego armando maradona · 54.726
+fondata 1926
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+48,8%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+1,56
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+● sostenibile
+lettura
+napoli
+cosa dicono i numeri.
+monte ingaggi
+€142,1m
+costo del personale
+patrimonio netto
++€190,2m
+positivo
+pfn
++€137m
+cassa netta
+risultato netto
+−€21,4m
+assorbe equity
+costo del personale al 48,8% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in perdita (−€21,4m), in larga parte coperta dalle plusvalenze (€102,6m). posizione finanziaria netta positiva (cassa > debito): solidità elevata.
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio d'esercizio ssc napoli al 30/06/2025. estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. stagione senza coppe europee dopo il 10° posto 2023/24: diritti tv da €142,2m a €78,1m e ricavi da €326,2m a €290,8m, perdita −€21,4m dopo l'utile record +€63,0m dell'anno scudetto. plusvalenze €102,6m a bilanciare. patrimonio netto €190,2m e posizione finanziaria netta positiva: cassa €174,4m contro €37,4m di soli debiti bancari (cassa netta +€137,0m), nessun bond.
+## club napoli · deal
+n
+società sportiva calcio napoli s.p.a.
+serie a
+aurelio de laurentiis (filmauro s.r.l.)
+stadio diego armando maradona · 54.726
+fondata 1926
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+◆ mercato · plusvalenze
+plusvalenze record €102,6m
+le cessioni dei diritti calciatori generano €102,6m di plusvalenze nel 2024/25: la voce ribalta la perdita operativa (ebit −€24,7m) e contiene il rosso d'esercizio a −€21,4m dopo l'anno dello scudetto.
+€102,6m
+◆ finanziamento · bond
+cassa netta +€137,0m: zero bond
+modello de laurentiis: €174,4m di liquidità contro €37,4m di soli debiti bancari e nessun prestito obbligazionario. posizione finanziaria netta positiva (+€137,0m di cassa netta), tra le strutture più solide della serie a.
++€137,0m cassa netta
+struttura finanziaria · 2024/25
+proprietà
+aurelio de laurentiis (filmauro s.r.l.)
+posizione fin. netta
++€137m · cassa netta
+patrimonio netto
++€190,2m
+stadio
+stadio diego armando maradona · 54.726
+liquidità superiore al debito finanziario: posizione finanziaria netta positiva, tra le strutture più solide della categoria.
+◆ dati verificati. fonte: bilancio d'esercizio ssc napoli al 30/06/2025. estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. stagione senza coppe europee dopo il 10° posto 2023/24: diritti tv da €142,2m a €78,1m e ricavi da €326,2m a €290,8m, perdita −€21,4m dopo l'utile record +€63,0m dell'anno scudetto. plusvalenze €102,6m a bilanciare. patrimonio netto €190,2m e posizione finanziaria netta positiva: cassa €174,4m contro €37,4m di soli debiti bancari (cassa netta +€137,0m), nessun bond.
+## club as-roma · panoramica
+as
+a.s. roma s.r.l.
+serie a
+neep roma holding s.r.l. (friedkin group / romulus and remus investments llc)
+stadio olimpico · 0
+fondata 1927
+↩ classifica
+2024/25
+as
+serie a · bilancio 2024/25
+a.s. roma s.r.l.
+ricavi
+€270,2m
+risultato netto
+−€53,9m
+pos. fin. netta
+−€382,8m
+wage / revenue
+56,5%
+composizione ricavi · 2024/25
+da dove arrivano i €270,2m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€90,4m
+commerciali / sponsor
+€71,7m
+stadio / gare
+€44,5m
+gestione calciatori
+€48,7m
+altri ricavi
+€15,1m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
+−€382,8m
+indebitamento finanziario netto
+patrimonio netto
+−€316,6m
+negativo
+plusvalenze
+€48,7m
+proventi gestione calciatori
+ebitda
+€24,2m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio consolidato gruppo as roma al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. l'esercizio 2024-25 si e chiuso con una perdita consolidata di 53,9m, in miglioramento di 27,5m rispetto alla perdita di 81,4m del 2023-24, grazie alla riduzione dei costi operativi (-69,6m). il patrimonio netto consolidato resta negativo per 316,6m.
+## club as-roma · conto
+as
+a.s. roma s.r.l.
+serie a
+neep roma holding s.r.l. (friedkin group / romulus and remus investments llc)
+stadio olimpico · 0
+fondata 1927
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €90,4m
+commerciali / sponsor €71,7m
+ricavi da gare / stadio €44,5m
+gestione diritti calciatori €48,7m
+altri ricavi €15,1m
+valore della produzione +€270,2m
+% yoy −9,9%
+costo delle materie prime −€12,9m
+servizi −€54m
+per godimento di beni di terzi −€13,8m
+costo del personale −€152,7m
+oneri diversi di gestione −€14,1m
+accantonamenti −€7m
+ebitda +€24,2m
+ebitda % 9%
+ammortamenti −€51,4m
+svalutazioni −€0,8m
+ebit −€35m
+% su valore produzione -13%
+saldo gestione finanziaria −€13,9m
+saldo gestione straordinaria n/d
+ebt −€48,9m
+% su valore produzione -18,1%
+imposte −€5m
+reddito netto −€53,9m
+% su valore produzione -19,9%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€270,2m · 100%
+ebitda
++€24,2m · 9%
+ebit
+−€35m · -13%
+reddito netto
+−€53,9m · -19,9%
+◆ dati verificati. fonte: bilancio consolidato gruppo as roma al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. l'esercizio 2024-25 si e chiuso con una perdita consolidata di 53,9m, in miglioramento di 27,5m rispetto alla perdita di 81,4m del 2023-24, grazie alla riduzione dei costi operativi (-69,6m). il patrimonio netto consolidato resta negativo per 316,6m.
+## club as-roma · sostenibilita
+as
+a.s. roma s.r.l.
+serie a
+neep roma holding s.r.l. (friedkin group / romulus and remus investments llc)
+stadio olimpico · 0
+fondata 1927
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+56,5%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+0,79
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+● sostenibile
+lettura
+as roma
+cosa dicono i numeri.
+monte ingaggi
+€152,7m
+costo del personale
+patrimonio netto
+−€316,6m
+negativo, da monitorare
+pfn
+−€382,8m
+debito finanziario netto
+risultato netto
+−€53,9m
+assorbe equity
+costo del personale al 56,5% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in perdita (−€53,9m), in larga parte coperta dalle plusvalenze (€48,7m). patrimonio netto ancora negativo: equilibrio da ricostruire.
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio consolidato gruppo as roma al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. l'esercizio 2024-25 si e chiuso con una perdita consolidata di 53,9m, in miglioramento di 27,5m rispetto alla perdita di 81,4m del 2023-24, grazie alla riduzione dei costi operativi (-69,6m). il patrimonio netto consolidato resta negativo per 316,6m.
+## club as-roma · deal
+as
+a.s. roma s.r.l.
+serie a
+neep roma holding s.r.l. (friedkin group / romulus and remus investments llc)
+stadio olimpico · 0
+fondata 1927
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+◆ finanziamento · bond
+prestito obbligazionario mediaco 2022
+obbligazioni emesse da asr media and sponsorship s.r.l. il 26 ottobre 2022, successivamente trasformate in titoli di debito ex art. 2483 c.c., sottoscritte integralmente da investitori qualificati, da rimborsare alla scadenza del 30 ottobre 2027.
+€175m, cedola fissa 6,04%, scadenza 30/10/2027
+◆ finanziamento · bond
+finanziamenti soci rri/neep
+romulus and remus investments llc, tramite neep, ha erogato nell'esercizio 82,3m come finanziamenti soci e convertito 145m in riserva azionisti c/aumento di capitale. debiti verso soci per finanziamenti pari a 234,8m al 30/06/2025.
+€82,3m erogati + €145m convertiti; debito residuo €234,8m
+struttura finanziaria · 2024/25
+proprietà
+neep roma holding s.r.l. (friedkin group / romulus and remus investments llc)
+posizione fin. netta
+−€382,8m
+patrimonio netto
+−€316,6m
+stadio
+stadio olimpico · 0
+patrimonio netto sottile/negativo: equilibrio dipendente da aumenti di capitale e plusvalenze; sostenibilità legata a gestione operativa e player trading.
+◆ dati verificati. fonte: bilancio consolidato gruppo as roma al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. l'esercizio 2024-25 si e chiuso con una perdita consolidata di 53,9m, in miglioramento di 27,5m rispetto alla perdita di 81,4m del 2023-24, grazie alla riduzione dei costi operativi (-69,6m). il patrimonio netto consolidato resta negativo per 316,6m.
+## club milan · panoramica
+m
+associazione calcio milan s.p.a.
+serie a
+acm bidco b.v. (redbird capital)
+san siro (giuseppe meazza) · 0
+fondata 1899
+↩ classifica
+2024/25
+m
+serie a · bilancio 2024/25
+associazione calcio milan s.p.a.
+ricavi
+€494,5m
+risultato netto
++€2,9m
+pos. fin. netta
+−€92,6m
+wage / revenue
+38,2%
+composizione ricavi · 2024/25
+da dove arrivano i €494,5m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€154,2m
+commerciali / sponsor
+€152,3m
+stadio / gare
+€69,5m
+gestione calciatori
+€83,2m
+altri ricavi
+€35,3m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
+−€92,6m
+indebitamento finanziario netto
+patrimonio netto
++€199,4m
+positivo
+plusvalenze
+€83,2m
+proventi gestione calciatori
+ebitda
+€135,8m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio consolidato gruppo ac milan s.p.a. al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. il gruppo milan chiude il consolidato 2024/2025 con utile di 2,9m e valore della produzione di 494,5m (+10%), trainato dalle plusvalenze di giugno 2025 (reijnders, kalulu, pellegrino). posizione finanziaria netta in peggioramento a -92,6m.
+## club milan · conto
+m
+associazione calcio milan s.p.a.
+serie a
+acm bidco b.v. (redbird capital)
+san siro (giuseppe meazza) · 0
+fondata 1899
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €154,2m
+commerciali / sponsor €152,3m
+ricavi da gare / stadio €69,5m
+gestione diritti calciatori €83,2m
+altri ricavi €35,3m
+valore della produzione +€494,5m
+% yoy +9,8%
+costo delle materie prime −€22,8m
+servizi −€91,4m
+per godimento di beni di terzi −€15,8m
+costo del personale −€188,7m
+oneri diversi di gestione −€27,9m
+accantonamenti −€11,8m
+ebitda +€135,8m
+ebitda % 27,5%
+ammortamenti −€99m
+svalutazioni −€21m
+ebit +€16m
+% su valore produzione 3,2%
+saldo gestione finanziaria −€7m
+saldo gestione straordinaria +€0,8m
+ebt +€9,8m
+% su valore produzione 2%
+imposte −€6,8m
+reddito netto +€2,9m
+% su valore produzione 0,6%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€494,5m · 100%
+ebitda
++€135,8m · 27,5%
+ebit
++€16m · 3,2%
+reddito netto
++€2,9m · 0,6%
+◆ dati verificati. fonte: bilancio consolidato gruppo ac milan s.p.a. al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. il gruppo milan chiude il consolidato 2024/2025 con utile di 2,9m e valore della produzione di 494,5m (+10%), trainato dalle plusvalenze di giugno 2025 (reijnders, kalulu, pellegrino). posizione finanziaria netta in peggioramento a -92,6m.
+## club milan · sostenibilita
+m
+associazione calcio milan s.p.a.
+serie a
+acm bidco b.v. (redbird capital)
+san siro (giuseppe meazza) · 0
+fondata 1899
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+38,2%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+0,56
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+● critico
+lettura
+ac milan
+cosa dicono i numeri.
+monte ingaggi
+€188,7m
+costo del personale
+patrimonio netto
++€199,4m
+positivo
+pfn
+−€92,6m
+debito finanziario netto
+risultato netto
++€2,9m
+autofinanziamento
+costo del personale al 38,2% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in utile (+€2,9m): genera autofinanziamento.
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio consolidato gruppo ac milan s.p.a. al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. il gruppo milan chiude il consolidato 2024/2025 con utile di 2,9m e valore della produzione di 494,5m (+10%), trainato dalle plusvalenze di giugno 2025 (reijnders, kalulu, pellegrino). posizione finanziaria netta in peggioramento a -92,6m.
+## club milan · deal
+m
+associazione calcio milan s.p.a.
+serie a
+acm bidco b.v. (redbird capital)
+san siro (giuseppe meazza) · 0
+fondata 1899
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+◆ finanziamento · bond
+factoring diritti audiovisivi banco bpm e banca sistema
+contratti di factoring con cessione pro solvendo dei crediti relativi ai diritti audiovisivi nazionali di serie a per le stagioni 2024/2025-2028/2029, in sostituzione di analogo finanziamento estinto a giugno 2024.
+banco bpm €23,3m + banca sistema €9,3m
+◆ finanziamento · bond
+finanziamento committed factorit su contratto puma
+linea committed fino al 30/09/2025 per la cessione dei crediti del contratto sponsoring and licensing con puma international (annualita 2024-25, 2025-26, 2026-27).
+€25,3m
+◆ finanziamento · bond
+factoring banca ifis su sponsorizzazione emirates
+contratto di factoring con cessione pro-solvendo dei crediti rivenienti dal contratto di sponsorizzazione ufficiale emirates (residuo annualita 2024-25 e annualita 2025-26).
+€20,3m
+struttura finanziaria · 2024/25
+proprietà
+acm bidco b.v. (redbird capital)
+posizione fin. netta
+−€92,6m
+patrimonio netto
++€199,4m
+stadio
+san siro (giuseppe meazza) · 0
+patrimonio netto positivo; sostenibilità legata a gestione operativa e player trading.
+◆ dati verificati. fonte: bilancio consolidato gruppo ac milan s.p.a. al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. il gruppo milan chiude il consolidato 2024/2025 con utile di 2,9m e valore della produzione di 494,5m (+10%), trainato dalle plusvalenze di giugno 2025 (reijnders, kalulu, pellegrino). posizione finanziaria netta in peggioramento a -92,6m.
+## club atalanta · panoramica
+at
+atalanta bergamasca calcio s.p.a.
+serie a
+stephen pagliuca e famiglia percassi
+gewiss stadium · 24.950
+fondata 1907
+↩ classifica
+2024/25
+at
+serie a · bilancio 2024/25
+atalanta bergamasca calcio s.p.a.
+ricavi
+€320,8m
+risultato netto
++€37,9m
+pos. fin. netta
+−€11,1m
+wage / revenue
+38,4%
+composizione ricavi · 2024/25
+da dove arrivano i €320,8m
+€m
+le voci del valore della produzione.
+diritti tv / uefa
+€129,3m
+commerciali / sponsor
+€39,9m
+stadio / gare
+€21,7m
+gestione calciatori
+€100,9m
+altri ricavi
+€29m
+struttura patrimoniale
+a fine esercizio
+debito, equity e leva sul trading.
+pfn
+−€11,1m
+indebitamento finanziario netto
+patrimonio netto
++€248,2m
+positivo
+plusvalenze
+€100,9m
+proventi gestione calciatori
+ebitda
+€135,7m
+margine operativo lordo
+pfn (posizione finanziaria netta) = debiti finanziari − disponibilità liquide − attività finanziarie liquide. +€ = cassa netta (più liquidità che debiti) · −€ = indebitamento netto.
+approfondisci
+conto economico
+→
+il percorso dai ricavi al risultato netto, voce per voce.
+sostenibilità
+→
+wage/revenue, debito ed equity rispetto alle soglie.
+deal & bond
+→
+bond, sponsor, proprietà: le operazioni dell’esercizio.
+◆ dati verificati. fonte: bilancio consolidato di gruppo atalanta al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. bilancio consolidato di gruppo al 30/06/2025 (stagione 2024/25), primo anno di champions league. ricavi da 243,7m a 320,8m (+32%), trainati dai diritti tv 129,3m (di cui 67,1m dalla champions, 53,7m serie a) e da plusvalenze record 100,9m. utile netto 37,9m dopo 20,7m di imposte. ebitda 135,7m (42,3%). patrimonio netto 248,2m, indebitamento finanziario netto contenuto (debiti bancari 54,8m contro 43,7m di liquidità, leva 0,04x il patrimonio). costo del lavoro 123,2m, ammortamenti e svalutazioni 76,6m. a differenza del napoli, l'atalanta ha una pfn a debito ma minima, e chiude in forte utile grazie al player trading.
+## club atalanta · conto
+at
+atalanta bergamasca calcio s.p.a.
+serie a
+stephen pagliuca e famiglia percassi
+gewiss stadium · 24.950
+fondata 1907
+↩ classifica
+2024/25
+conto economico riclassificato · 2024/25
+conto economico (€m) 2024/25
+diritti tv / audiovisivi €129,3m
+commerciali / sponsor €39,9m
+ricavi da gare / stadio €21,7m
+gestione diritti calciatori €100,9m
+altri ricavi €29m
+valore della produzione +€320,8m
+% yoy +31,6%
+costo delle materie prime −€5m
+servizi −€36,7m
+per godimento di beni di terzi −€1,8m
+costo del personale −€123,2m
+oneri diversi di gestione −€19,8m
+accantonamenti −€0,3m
+ebitda +€135,7m
+ebitda % 42,3%
+ammortamenti −€73,4m
+svalutazioni €0,0m
+ebit +€59,1m
+% su valore produzione 18,4%
+saldo gestione finanziaria −€0,5m
+saldo gestione straordinaria €0m
+ebt +€58,6m
+% su valore produzione 18,3%
+imposte −€20,7m
+reddito netto +€37,9m
+% su valore produzione 11,8%
+cascata dei margini
+% su valore produzione
+quanto resta scendendo dal valore della produzione al risultato netto.
+valore produzione
++€320,8m · 100%
+ebitda
++€135,7m · 42,3%
+ebit
++€59,1m · 18,4%
+reddito netto
++€37,9m · 11,8%
+◆ dati verificati. fonte: bilancio consolidato di gruppo atalanta al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. bilancio consolidato di gruppo al 30/06/2025 (stagione 2024/25), primo anno di champions league. ricavi da 243,7m a 320,8m (+32%), trainati dai diritti tv 129,3m (di cui 67,1m dalla champions, 53,7m serie a) e da plusvalenze record 100,9m. utile netto 37,9m dopo 20,7m di imposte. ebitda 135,7m (42,3%). patrimonio netto 248,2m, indebitamento finanziario netto contenuto (debiti bancari 54,8m contro 43,7m di liquidità, leva 0,04x il patrimonio). costo del lavoro 123,2m, ammortamenti e svalutazioni 76,6m. a differenza del napoli, l'atalanta ha una pfn a debito ma minima, e chiude in forte utile grazie al player trading.
+## club atalanta · sostenibilita
+at
+atalanta bergamasca calcio s.p.a.
+serie a
+stephen pagliuca e famiglia percassi
+gewiss stadium · 24.950
+fondata 1907
+↩ classifica
+2024/25
+sostenibilità finanziaria · 2024/25
+indicatori di sostenibilità
+soglie indicative
+costo del lavoro (riferimento uefa: 70%) e liquidità (indicatore figc per le licenze nazionali).
+38,4%
+limite 70%
+costo personale / ricavi
+monte ingaggi su ricavi.
+riferimento sostenibilità ~70%
+● sostenibile
+0,96
+soglia min 0,7
+indicatore di liquidità
+attività correnti ÷ passività correnti.
+soglia figc 24/25 ≥ 0,70
+● sostenibile
+lettura
+atalanta
+cosa dicono i numeri.
+monte ingaggi
+€123,2m
+costo del personale
+patrimonio netto
++€248,2m
+positivo
+pfn
+−€11,1m
+debito finanziario netto
+risultato netto
++€37,9m
+autofinanziamento
+costo del personale al 38,4% dei ricavi, sotto la soglia di sostenibilità. l’esercizio chiude in utile (+€37,9m): genera autofinanziamento.
+◆ nota metodologica. lo squad cost ratio uefa completo (costo rosa + ammortamenti cartellini + commissioni agenti ÷ ricavi, limite 70% dal 2025/26) richiede voci non sempre esposte nei bilanci caricati. qui mostriamo il rapporto costo del personale / ricavi, voce verificata e comparabile. indicatore di liquidità (figc): attività correnti (liquidità + crediti entro 12 mesi) ÷ passività correnti (debiti entro 12 mesi), soglia minima 0,7 (2024/25) e 0,8 (2025/26). pfn: +€ = cassa netta, −€ = indebitamento netto.
+◆ dati verificati. fonte: bilancio consolidato di gruppo atalanta al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. bilancio consolidato di gruppo al 30/06/2025 (stagione 2024/25), primo anno di champions league. ricavi da 243,7m a 320,8m (+32%), trainati dai diritti tv 129,3m (di cui 67,1m dalla champions, 53,7m serie a) e da plusvalenze record 100,9m. utile netto 37,9m dopo 20,7m di imposte. ebitda 135,7m (42,3%). patrimonio netto 248,2m, indebitamento finanziario netto contenuto (debiti bancari 54,8m contro 43,7m di liquidità, leva 0,04x il patrimonio). costo del lavoro 123,2m, ammortamenti e svalutazioni 76,6m. a differenza del napoli, l'atalanta ha una pfn a debito ma minima, e chiude in forte utile grazie al player trading.
+## club atalanta · deal
+at
+atalanta bergamasca calcio s.p.a.
+serie a
+stephen pagliuca e famiglia percassi
+gewiss stadium · 24.950
+fondata 1907
+↩ classifica
+2024/25
+operazioni dell’esercizio · 2024/25
+struttura finanziaria · 2024/25
+proprietà
+stephen pagliuca e famiglia percassi
+posizione fin. netta
+−€11,1m
+patrimonio netto
++€248,2m
+stadio
+gewiss stadium · 24.950
+patrimonio netto positivo; sostenibilità legata a gestione operativa e player trading.
+◆ dati verificati. fonte: bilancio consolidato di gruppo atalanta al 30/06/2025 (deposito 30 giu 2025). estratti dal database valore atteso, stessa logica di tracciabilità della newsletter. bilancio consolidato di gruppo al 30/06/2025 (stagione 2024/25), primo anno di champions league. ricavi da 243,7m a 320,8m (+32%), trainati dai diritti tv 129,3m (di cui 67,1m dalla champions, 53,7m serie a) e da plusvalenze record 100,9m. utile netto 37,9m dopo 20,7m di imposte. ebitda 135,7m (42,3%). patrimonio netto 248,2m, indebitamento finanziario netto contenuto (debiti bancari 54,8m contro 43,7m di liquidità, leva 0,04x il patrimonio). costo del lavoro 123,2m, ammortamenti e svalutazioni 76,6m. a differenza del napoli, l'atalanta ha una pfn a debito ma minima, e chiude in forte utile grazie al player trading.
+## errori console
+## rete
+GET /club-intelligence
+GET /fonts/playfair-display-800-latin.woff2
+GET /va.css
+GET /va.js
+GET /brand/svg/monogramma-crema.svg
+GET /fonts/ibm-plex-mono-400-latin.woff2
+GET /fonts/inter-400-600-latin.woff2
+GET /fonts/ibm-plex-mono-600-latin.woff2
+GET xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/clubs?select=*&order=sort_order.asc
+GET xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/club_financials?select=*&order=season.desc&verified=eq.true
+GET xxnmkiwnjpppfzrftvuv.supabase.co/rest/v1/club_deals?select=*&order=sort_order.asc
