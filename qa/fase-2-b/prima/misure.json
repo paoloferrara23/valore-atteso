@@ -1,0 +1,98 @@
+{
+  "label": "prima",
+  "pages": {
+    "home-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.74,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "home-640": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.74,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 640,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "home-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "home-1440": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 1440,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    }
+  },
+  "network": {
+    "subscribeRequests": 0,
+    "subscribePayloads": [],
+    "supabaseQueries": [
+      "editions?select=num,title,subtitle,opener,sections&published=eq.true&order=num.desc&limit=1"
+    ],
+    "blockedExternal": []
+  },
+  "extra": {}
+}
