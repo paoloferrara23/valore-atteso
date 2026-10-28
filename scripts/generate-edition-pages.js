@@ -582,9 +582,9 @@ const ARCH_END = '<!-- va:archivio:end -->';
 // Card dell'archivio (Fase 4): in testa il primo KPI della sezione attiva (Il Bilancio senza JS), stringhe identiche
 // alla fonte; i KPI di Deal e Metrica e il testo per la ricerca stanno in attributi data-*. Le edizioni escluse dalle
 // vetrine restano card senza numeri. KPI o note con nomi di testate non si mostrano e non entrano nella ricerca.
+// Formato compatto: data-deal="valore|etichetta|nota" (il testo di ricerca lo ricava il browser da card e data-*).
 const ARCH_KEYS = ['bilancio', 'deal', 'metrica'];
 const ARCH_NA = 'Numeri in revisione';
-const searchText = parts => parts.filter(Boolean).join(' ').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 
 function archiveKpis(ed) {
   const sections = Array.isArray(ed.sections) ? ed.sections : [];
@@ -612,18 +612,17 @@ function buildArchiveCards(editions) {
     const head = `<div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
       + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}`;
     if (isExcluded(e.num)) {
-      return `<a class="ed-card ed-card-x" href="${url}" data-u="${url}" data-q="${esc(searchText([e.title, e.subtitle]))}">`
+      return `<a class="ed-card ed-card-x" href="${url}" data-u="${url}">`
         + `<div class="ed-kpi ed-kpi-na"><span class="ed-kna">${ARCH_NA}</span></div>${head}</a>`;
     }
     const k = archiveKpis(e);
     const data = ARCH_KEYS.map(key => {
       const x = k[key];
       if (!x) return '';
-      return ` data-${key}="${x.v ? esc(JSON.stringify([x.v, x.l, x.s])) : ''}"`;
+      return ` data-${key}="${x.v ? esc([x.v, x.l, x.s].map(t => t.replace(/\|/g, '/')).join('|')) : ''}"`;
     }).join('');
-    const q = searchText([e.title, e.subtitle].concat(...ARCH_KEYS.map(key => k[key] && k[key].v ? [k[key].v, k[key].l, k[key].s] : [])));
     const href = k.bilancio ? `${url}#bilancio` : url;
-    return `<a class="ed-card" href="${href}" data-u="${url}"${data} data-q="${esc(q)}">${archiveKpiHtml(k.bilancio)}${head}</a>`;
+    return `<a class="ed-card" href="${href}" data-u="${url}"${data}>${archiveKpiHtml(k.bilancio)}${head}</a>`;
   }).join('');
 }
 
