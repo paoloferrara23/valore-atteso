@@ -1,0 +1,2060 @@
+{
+ "variants": {
+  "navy": {
+   "320": {
+    "geo": {
+     "header": {
+      "top": 0,
+      "bottom": 60,
+      "h": 60,
+      "w": 320
+     },
+     "email": {
+      "top": 341,
+      "bottom": 389,
+      "h": 48,
+      "w": 280
+     },
+     "button": {
+      "top": 397,
+      "bottom": 445,
+      "h": 48,
+      "w": 280
+     },
+     "consent": {
+      "top": 475,
+      "bottom": 495,
+      "h": 20,
+      "w": 20
+     },
+     "consentLabel": {
+      "top": 455,
+      "bottom": 516,
+      "h": 61,
+      "w": 280
+     },
+     "kpi": {
+      "top": 597,
+      "bottom": 1152,
+      "h": 556,
+      "w": 280
+     },
+     "kpiValues": [
+      {
+       "v": "-€24M",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "42%",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "€1.221M",
+       "size": 34,
+       "fits": true
+      }
+     ],
+     "overflow": false,
+     "h1s": 1
+    },
+    "solidHeaderBg": "rgba(243, 239, 230, 0.94)",
+    "errors": [],
+    "contrastFails": [],
+    "contrastMin": 5.84,
+    "contrastSample": [
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 11,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Finance",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Il calcio dei numeri,",
+      "fg": "#F3EFE6",
+      "bg": "#003090",
+      "size": 38,
+      "ratio": 10.02,
+      "ok": true
+     },
+     {
+      "text": "non dei goal.",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 38,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Bilanci, M&A e strategie di crescita nel",
+      "fg": "#D7D3CB",
+      "bg": "#002A84",
+      "size": 16,
+      "ratio": 8.45,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 12,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati. Cancel",
+      "fg": "#D7D3CB",
+      "bg": "#002A78",
+      "size": 14,
+      "ratio": 8.78,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 14,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "Per advisor, investitori, manager e oper",
+      "fg": "#D7D3CB",
+      "bg": "#002472",
+      "size": 15,
+      "ratio": 9.41,
+      "ok": true
+     },
+     {
+      "text": "In sintesi · 3 numeri",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "#026 ·",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "27 ott 2026",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "Il Milan spende, il Valencia apre ai soc",
+      "fg": "#F3EFE6",
+      "bg": "#00246C",
+      "size": 20,
+      "ratio": 12.46,
+      "ok": true
+     },
+     {
+      "text": "Il Bilancio",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "-€24M",
+      "fg": "#E9A08A",
+      "bg": "#002466",
+      "size": 34,
+      "ratio": 6.83,
+      "ok": true
+     },
+     {
+      "text": "Perdita netta 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 15,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "primo rosso dopo tre utili",
+      "fg": "#A9B1CC",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 6.82,
+      "ok": true
+     },
+     {
+      "text": "Il Deal",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "42%",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 34,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Quota Pitchwise",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 15,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "Lim resta in maggioranza",
+      "fg": "#A9B1CC",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 7.27,
+      "ok": true
+     },
+     {
+      "text": "La Metrica",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "€1.221M",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 34,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Ricavi Real 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 15,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "record del club",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "Leggi →",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 13,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "1 email",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "ogni martedì",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "8 minuti",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "lettura essenziale",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Gratuita",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "accesso libero",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Corporate Finance · Sport Business · Ana",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "Ogni martedì, una nuova",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 36.8,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "analisi.",
+      "fg": "#E5962E",
+      "bg": "#002472",
+      "size": 36.8,
+      "ratio": 5.84,
+      "ok": true
+     },
+     {
+      "text": "Una email a settimana per leggere lo spo",
+      "fg": "#D7D3CB",
+      "bg": "#00246C",
+      "size": 18,
+      "ratio": 9.58,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#1C1914",
+      "bg": "#E4962A",
+      "size": 12,
+      "ratio": 7.25,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati.",
+      "fg": "#D7D3CB",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 10.39,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#001E66",
+      "size": 14,
+      "ratio": 13.28,
+      "ok": true
+     }
+    ]
+   },
+   "375": {
+    "geo": {
+     "header": {
+      "top": 0,
+      "bottom": 60,
+      "h": 60,
+      "w": 375
+     },
+     "email": {
+      "top": 342,
+      "bottom": 390,
+      "h": 48,
+      "w": 335
+     },
+     "button": {
+      "top": 398,
+      "bottom": 446,
+      "h": 48,
+      "w": 335
+     },
+     "consent": {
+      "top": 468,
+      "bottom": 488,
+      "h": 20,
+      "w": 20
+     },
+     "consentLabel": {
+      "top": 456,
+      "bottom": 500,
+      "h": 44,
+      "w": 335
+     },
+     "kpi": {
+      "top": 581,
+      "bottom": 1136,
+      "h": 556,
+      "w": 335
+     },
+     "kpiValues": [
+      {
+       "v": "-€24M",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "42%",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "€1.221M",
+       "size": 34,
+       "fits": true
+      }
+     ],
+     "overflow": false,
+     "h1s": 1
+    },
+    "solidHeaderBg": "rgba(243, 239, 230, 0.94)",
+    "errors": [],
+    "contrastFails": [],
+    "contrastMin": 5.84,
+    "contrastSample": [
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 11,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Finance",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Il calcio dei numeri,",
+      "fg": "#F3EFE6",
+      "bg": "#00308A",
+      "size": 38.25,
+      "ratio": 10.22,
+      "ok": true
+     },
+     {
+      "text": "non dei goal.",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 38.25,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Bilanci, M&A e strategie di crescita nel",
+      "fg": "#D7D3CB",
+      "bg": "#002A84",
+      "size": 16,
+      "ratio": 8.45,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 12,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati. Cancel",
+      "fg": "#D7D3CB",
+      "bg": "#002A78",
+      "size": 14,
+      "ratio": 8.78,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#00246C",
+      "size": 14,
+      "ratio": 12.46,
+      "ok": true
+     },
+     {
+      "text": "Per advisor, investitori, manager e oper",
+      "fg": "#D7D3CB",
+      "bg": "#002472",
+      "size": 15,
+      "ratio": 9.41,
+      "ok": true
+     },
+     {
+      "text": "In sintesi · 3 numeri",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "#026 ·",
+      "fg": "#CCD2E3",
+      "bg": "#001E5A",
+      "size": 12,
+      "ratio": 10.42,
+      "ok": true
+     },
+     {
+      "text": "27 ott 2026",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "Il Milan spende, il Valencia apre ai soc",
+      "fg": "#F3EFE6",
+      "bg": "#00246C",
+      "size": 20,
+      "ratio": 12.46,
+      "ok": true
+     },
+     {
+      "text": "Il Bilancio",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "-€24M",
+      "fg": "#E9A08A",
+      "bg": "#002466",
+      "size": 34,
+      "ratio": 6.83,
+      "ok": true
+     },
+     {
+      "text": "Perdita netta 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 15,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "primo rosso dopo tre utili",
+      "fg": "#A9B1CC",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 6.82,
+      "ok": true
+     },
+     {
+      "text": "Il Deal",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "42%",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 34,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Quota Pitchwise",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 15,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "Lim resta in maggioranza",
+      "fg": "#A9B1CC",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 7.27,
+      "ok": true
+     },
+     {
+      "text": "La Metrica",
+      "fg": "#CCD2E3",
+      "bg": "#001E5A",
+      "size": 12,
+      "ratio": 10.42,
+      "ok": true
+     },
+     {
+      "text": "€1.221M",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 34,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Ricavi Real 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 15,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "record del club",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "Leggi →",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 13,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "1 email",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "ogni martedì",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "8 minuti",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "lettura essenziale",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Gratuita",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "accesso libero",
+      "fg": "#A9B1CC",
+      "bg": "#0C2A5A",
+      "size": 14,
+      "ratio": 6.59,
+      "ok": true
+     },
+     {
+      "text": "Corporate Finance · Sport Business · Ana",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "Ogni martedì, una nuova",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 37.5,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "analisi.",
+      "fg": "#E5962E",
+      "bg": "#002472",
+      "size": 37.5,
+      "ratio": 5.84,
+      "ok": true
+     },
+     {
+      "text": "Una email a settimana per leggere lo spo",
+      "fg": "#D7D3CB",
+      "bg": "#002472",
+      "size": 18,
+      "ratio": 9.41,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#1C1914",
+      "bg": "#E4962A",
+      "size": 12,
+      "ratio": 7.25,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati.",
+      "fg": "#D7D3CB",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 10.39,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 12.67,
+      "ok": true
+     }
+    ]
+   },
+   "640": {
+    "geo": {
+     "header": {
+      "top": 0,
+      "bottom": 64,
+      "h": 64,
+      "w": 640
+     },
+     "email": {
+      "top": 346,
+      "bottom": 394,
+      "h": 48,
+      "w": 364
+     },
+     "button": {
+      "top": 346,
+      "bottom": 394,
+      "h": 48,
+      "w": 196
+     },
+     "consent": {
+      "top": 421,
+      "bottom": 441,
+      "h": 20,
+      "w": 20
+     },
+     "consentLabel": {
+      "top": 409,
+      "bottom": 453,
+      "h": 44,
+      "w": 576
+     },
+     "kpi": {
+      "top": 512,
+      "bottom": 786,
+      "h": 274,
+      "w": 576
+     },
+     "kpiValues": [
+      {
+       "v": "-€24M",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "42%",
+       "size": 34,
+       "fits": true
+      },
+      {
+       "v": "€1.221M",
+       "size": 34,
+       "fits": true
+      }
+     ],
+     "overflow": false,
+     "h1s": 1
+    },
+    "solidHeaderBg": "rgba(243, 239, 230, 0.94)",
+    "errors": [],
+    "contrastFails": [],
+    "contrastMin": 5.84,
+    "contrastSample": [
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 12,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Finance",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 12,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Il calcio dei numeri,",
+      "fg": "#F3EFE6",
+      "bg": "#002A7E",
+      "size": 44.08,
+      "ratio": 11.21,
+      "ok": true
+     },
+     {
+      "text": "non dei goal.",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 44.08,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Bilanci, M&A e strategie di crescita nel",
+      "fg": "#D7D3CB",
+      "bg": "#002A78",
+      "size": 17.18,
+      "ratio": 8.78,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 13,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati. Cancel",
+      "fg": "#D7D3CB",
+      "bg": "#00246C",
+      "size": 14,
+      "ratio": 9.58,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "Per advisor, investitori, manager e oper",
+      "fg": "#D7D3CB",
+      "bg": "#00246C",
+      "size": 15,
+      "ratio": 9.58,
+      "ok": true
+     },
+     {
+      "text": "In sintesi · 3 numeri",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "#026 ·",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "27 ott 2026",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "Il Milan spende, il Valencia apre ai soc",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 20,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "Il Bilancio",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "-€24M",
+      "fg": "#E9A08A",
+      "bg": "#001854",
+      "size": 34,
+      "ratio": 7.83,
+      "ok": true
+     },
+     {
+      "text": "Perdita netta 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 15,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "primo rosso dopo tre utili",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Il Deal",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "42%",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 34,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Quota Pitchwise",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 15,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "Lim resta in maggioranza",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "La Metrica",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "€1.221M",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 34,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Ricavi Real 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 15,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "record del club",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "Leggi →",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 13,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "1 email",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "ogni martedì",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "8 minuti",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "lettura essenziale",
+      "fg": "#A9B1CC",
+      "bg": "#0C2A5A",
+      "size": 14,
+      "ratio": 6.59,
+      "ok": true
+     },
+     {
+      "text": "Gratuita",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "accesso libero",
+      "fg": "#A9B1CC",
+      "bg": "#0C2A60",
+      "size": 14,
+      "ratio": 6.5,
+      "ok": true
+     },
+     {
+      "text": "Corporate Finance · Sport Business · Ana",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "Ogni martedì, una nuova",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 54.4,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "analisi.",
+      "fg": "#E5962E",
+      "bg": "#002472",
+      "size": 54.4,
+      "ratio": 5.84,
+      "ok": true
+     },
+     {
+      "text": "Una email a settimana per leggere lo spo",
+      "fg": "#D7D3CB",
+      "bg": "#00246C",
+      "size": 18,
+      "ratio": 9.58,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#1C1914",
+      "bg": "#E4962A",
+      "size": 13,
+      "ratio": 7.25,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati.",
+      "fg": "#D7D3CB",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 9.74,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#001E66",
+      "size": 14,
+      "ratio": 13.28,
+      "ok": true
+     }
+    ]
+   },
+   "1280": {
+    "geo": {
+     "header": {
+      "top": 0,
+      "bottom": 72,
+      "h": 72,
+      "w": 1200
+     },
+     "email": {
+      "top": 461,
+      "bottom": 509,
+      "h": 48,
+      "w": 256
+     },
+     "button": {
+      "top": 461,
+      "bottom": 509,
+      "h": 48,
+      "w": 196
+     },
+     "consent": {
+      "top": 536,
+      "bottom": 556,
+      "h": 20,
+      "w": 20
+     },
+     "consentLabel": {
+      "top": 524,
+      "bottom": 568,
+      "h": 44,
+      "w": 468
+     },
+     "kpi": {
+      "top": 215,
+      "bottom": 652,
+      "h": 436,
+      "w": 592
+     },
+     "kpiValues": [
+      {
+       "v": "-€24M",
+       "size": 40,
+       "fits": true
+      },
+      {
+       "v": "42%",
+       "size": 40,
+       "fits": true
+      },
+      {
+       "v": "€1.221M",
+       "size": 40,
+       "fits": true
+      }
+     ],
+     "overflow": false,
+     "h1s": 1
+    },
+    "solidHeaderBg": "rgba(243, 239, 230, 0.94)",
+    "errors": [],
+    "contrastFails": [],
+    "contrastMin": 5.84,
+    "contrastSample": [
+     {
+      "text": "Newsletter",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "Archivio",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "Club Intelligence",
+      "fg": "#F3EFE6",
+      "bg": "#12367E",
+      "size": 12,
+      "ratio": 9.87,
+      "ok": true
+     },
+     {
+      "text": "Glossario",
+      "fg": "#CCD2E3",
+      "bg": "#002A7E",
+      "size": 12,
+      "ratio": 8.51,
+      "ok": true
+     },
+     {
+      "text": "About",
+      "fg": "#CCD2E3",
+      "bg": "#002A84",
+      "size": 12,
+      "ratio": 8.35,
+      "ok": true
+     },
+     {
+      "text": "Sponsorizza",
+      "fg": "#CCD2E3",
+      "bg": "#003090",
+      "size": 12,
+      "ratio": 7.61,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 12,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Finance",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 12,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Il calcio dei numeri,",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 54,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "non dei goal.",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 54,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Bilanci, M&A e strategie di crescita nel",
+      "fg": "#D7D3CB",
+      "bg": "#001E60",
+      "size": 19,
+      "ratio": 10.39,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 13,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati. Cancel",
+      "fg": "#D7D3CB",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 11.18,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "Per advisor, investitori, manager e oper",
+      "fg": "#D7D3CB",
+      "bg": "#001854",
+      "size": 15,
+      "ratio": 11.18,
+      "ok": true
+     },
+     {
+      "text": "In sintesi · 3 numeri",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "#026 ·",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "27 ott 2026",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "Il Milan spende, il Valencia apre ai soc",
+      "fg": "#F3EFE6",
+      "bg": "#00246C",
+      "size": 22,
+      "ratio": 12.46,
+      "ok": true
+     },
+     {
+      "text": "Il Bilancio",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "-€24M",
+      "fg": "#E9A08A",
+      "bg": "#001E60",
+      "size": 40,
+      "ratio": 7.28,
+      "ok": true
+     },
+     {
+      "text": "Perdita netta 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 15,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "primo rosso dopo tre utili",
+      "fg": "#A9B1CC",
+      "bg": "#001E66",
+      "size": 14,
+      "ratio": 7.15,
+      "ok": true
+     },
+     {
+      "text": "Il Deal",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "42%",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 40,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Quota Pitchwise",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 15,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "Lim resta in maggioranza",
+      "fg": "#A9B1CC",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 7.27,
+      "ok": true
+     },
+     {
+      "text": "La Metrica",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "€1.221M",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 40,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Ricavi Real 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 15,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "record del club",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "Leggi →",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 13,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "1 email",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "ogni martedì",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "8 minuti",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "lettura essenziale",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Gratuita",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "accesso libero",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Corporate Finance · Sport Business · Ana",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "Ogni martedì, una nuova",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 53.76,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "analisi.",
+      "fg": "#E5962E",
+      "bg": "#002472",
+      "size": 53.76,
+      "ratio": 5.84,
+      "ok": true
+     },
+     {
+      "text": "Una email a settimana per leggere lo spo",
+      "fg": "#D7D3CB",
+      "bg": "#002472",
+      "size": 17,
+      "ratio": 9.41,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#1C1914",
+      "bg": "#E4962A",
+      "size": 13,
+      "ratio": 7.25,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati.",
+      "fg": "#D7D3CB",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 9.74,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 12.67,
+      "ok": true
+     }
+    ]
+   },
+   "1440": {
+    "geo": {
+     "header": {
+      "top": 0,
+      "bottom": 72,
+      "h": 72,
+      "w": 1200
+     },
+     "email": {
+      "top": 461,
+      "bottom": 509,
+      "h": 48,
+      "w": 256
+     },
+     "button": {
+      "top": 461,
+      "bottom": 509,
+      "h": 48,
+      "w": 196
+     },
+     "consent": {
+      "top": 536,
+      "bottom": 556,
+      "h": 20,
+      "w": 20
+     },
+     "consentLabel": {
+      "top": 524,
+      "bottom": 568,
+      "h": 44,
+      "w": 468
+     },
+     "kpi": {
+      "top": 215,
+      "bottom": 652,
+      "h": 436,
+      "w": 592
+     },
+     "kpiValues": [
+      {
+       "v": "-€24M",
+       "size": 40,
+       "fits": true
+      },
+      {
+       "v": "42%",
+       "size": 40,
+       "fits": true
+      },
+      {
+       "v": "€1.221M",
+       "size": 40,
+       "fits": true
+      }
+     ],
+     "overflow": false,
+     "h1s": 1
+    },
+    "solidHeaderBg": "rgba(243, 239, 230, 0.94)",
+    "errors": [],
+    "contrastFails": [],
+    "contrastMin": 5.84,
+    "contrastSample": [
+     {
+      "text": "Newsletter",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "Archivio",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "Club Intelligence",
+      "fg": "#F3EFE6",
+      "bg": "#12367E",
+      "size": 12,
+      "ratio": 9.87,
+      "ok": true
+     },
+     {
+      "text": "Glossario",
+      "fg": "#CCD2E3",
+      "bg": "#002A7E",
+      "size": 12,
+      "ratio": 8.51,
+      "ok": true
+     },
+     {
+      "text": "About",
+      "fg": "#CCD2E3",
+      "bg": "#002A84",
+      "size": 12,
+      "ratio": 8.35,
+      "ok": true
+     },
+     {
+      "text": "Sponsorizza",
+      "fg": "#CCD2E3",
+      "bg": "#00308A",
+      "size": 12,
+      "ratio": 7.76,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 12,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Finance",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 12,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Il calcio dei numeri,",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 54,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "non dei goal.",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 54,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Bilanci, M&A e strategie di crescita nel",
+      "fg": "#D7D3CB",
+      "bg": "#001E60",
+      "size": 19,
+      "ratio": 10.39,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#00266E",
+      "bg": "#F0EAE4",
+      "size": 13,
+      "ratio": 11.71,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati. Cancel",
+      "fg": "#D7D3CB",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 11.18,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "Per advisor, investitori, manager e oper",
+      "fg": "#D7D3CB",
+      "bg": "#001854",
+      "size": 15,
+      "ratio": 11.18,
+      "ok": true
+     },
+     {
+      "text": "In sintesi · 3 numeri",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "#026 ·",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "27 ott 2026",
+      "fg": "#CCD2E3",
+      "bg": "#00246C",
+      "size": 12,
+      "ratio": 9.46,
+      "ok": true
+     },
+     {
+      "text": "Il Milan spende, il Valencia apre ai soc",
+      "fg": "#F3EFE6",
+      "bg": "#00246C",
+      "size": 22,
+      "ratio": 12.46,
+      "ok": true
+     },
+     {
+      "text": "Il Bilancio",
+      "fg": "#CCD2E3",
+      "bg": "#002466",
+      "size": 12,
+      "ratio": 9.62,
+      "ok": true
+     },
+     {
+      "text": "-€24M",
+      "fg": "#E9A08A",
+      "bg": "#001E60",
+      "size": 40,
+      "ratio": 7.28,
+      "ok": true
+     },
+     {
+      "text": "Perdita netta 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 15,
+      "ratio": 12.67,
+      "ok": true
+     },
+     {
+      "text": "primo rosso dopo tre utili",
+      "fg": "#A9B1CC",
+      "bg": "#001E66",
+      "size": 14,
+      "ratio": 7.15,
+      "ok": true
+     },
+     {
+      "text": "Il Deal",
+      "fg": "#CCD2E3",
+      "bg": "#001E60",
+      "size": 12,
+      "ratio": 10.26,
+      "ok": true
+     },
+     {
+      "text": "42%",
+      "fg": "#E5962E",
+      "bg": "#001E60",
+      "size": 40,
+      "ratio": 6.45,
+      "ok": true
+     },
+     {
+      "text": "Quota Pitchwise",
+      "fg": "#F3EFE6",
+      "bg": "#001E60",
+      "size": 15,
+      "ratio": 13.51,
+      "ok": true
+     },
+     {
+      "text": "Lim resta in maggioranza",
+      "fg": "#A9B1CC",
+      "bg": "#001E60",
+      "size": 14,
+      "ratio": 7.27,
+      "ok": true
+     },
+     {
+      "text": "La Metrica",
+      "fg": "#CCD2E3",
+      "bg": "#062460",
+      "size": 12,
+      "ratio": 9.72,
+      "ok": true
+     },
+     {
+      "text": "€1.221M",
+      "fg": "#E5962E",
+      "bg": "#001E5A",
+      "size": 40,
+      "ratio": 6.55,
+      "ok": true
+     },
+     {
+      "text": "Ricavi Real 2025/26",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 15,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "record del club",
+      "fg": "#A9B1CC",
+      "bg": "#001E5A",
+      "size": 14,
+      "ratio": 7.39,
+      "ok": true
+     },
+     {
+      "text": "Leggi →",
+      "fg": "#F3EFE6",
+      "bg": "#001E5A",
+      "size": 13,
+      "ratio": 13.72,
+      "ok": true
+     },
+     {
+      "text": "1 email",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "ogni martedì",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "8 minuti",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "lettura essenziale",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Gratuita",
+      "fg": "#F3EFE6",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 14.54,
+      "ok": true
+     },
+     {
+      "text": "accesso libero",
+      "fg": "#A9B1CC",
+      "bg": "#001854",
+      "size": 14,
+      "ratio": 7.82,
+      "ok": true
+     },
+     {
+      "text": "Corporate Finance · Sport Business · Ana",
+      "fg": "#CCD2E3",
+      "bg": "#001854",
+      "size": 12,
+      "ratio": 11.04,
+      "ok": true
+     },
+     {
+      "text": "Ogni martedì, una nuova",
+      "fg": "#F3EFE6",
+      "bg": "#002472",
+      "size": 54.4,
+      "ratio": 12.24,
+      "ok": true
+     },
+     {
+      "text": "analisi.",
+      "fg": "#E5962E",
+      "bg": "#002472",
+      "size": 54.4,
+      "ratio": 5.84,
+      "ok": true
+     },
+     {
+      "text": "Una email a settimana per leggere lo spo",
+      "fg": "#D7D3CB",
+      "bg": "#002472",
+      "size": 17,
+      "ratio": 9.41,
+      "ok": true
+     },
+     {
+      "text": "Iscriviti gratis",
+      "fg": "#1C1914",
+      "bg": "#E4962A",
+      "size": 13,
+      "ratio": 7.25,
+      "ok": true
+     },
+     {
+      "text": "Accetto la e il trattamento dati.",
+      "fg": "#D7D3CB",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 9.74,
+      "ok": true
+     },
+     {
+      "text": "Privacy Policy",
+      "fg": "#F3EFE6",
+      "bg": "#002466",
+      "size": 14,
+      "ratio": 12.67,
+      "ok": true
+     }
+    ]
+   }
+  }
+ },
+ "form": {
+  "consenso": {
+   "url": "http://localhost:8790/",
+   "err": [
+    {
+     "text": "Per iscriverti accetta la Privacy Policy.",
+     "color": "rgb(233, 160, 138)",
+     "live": "polite"
+    }
+   ],
+   "ok": null,
+   "btn": "Iscriviti gratis",
+   "invalid": null,
+   "payloadKeys": null,
+   "source": null
+  },
+  "email": {
+   "url": "http://localhost:8790/",
+   "err": [
+    {
+     "text": "Inserisci un indirizzo email valido.",
+     "color": "rgb(233, 160, 138)",
+     "live": "polite"
+    }
+   ],
+   "ok": null,
+   "btn": "Iscriviti gratis",
+   "invalid": "true",
+   "payloadKeys": null,
+   "source": null
+  },
+  "successo": {
+   "url": "http://localhost:8790/",
+   "err": [],
+   "ok": "✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma. Se non lo vedi, guarda in spam o promozioni.",
+   "btn": "Fatto ✓",
+   "invalid": null,
+   "payloadKeys": [
+    "email",
+    "source"
+   ],
+   "source": "direct__hero"
+  },
+  "errore-server": {
+   "url": "http://localhost:8790/",
+   "err": [],
+   "ok": "Iscrizione non riuscita. Controlla l'email e riprova, oppure scrivici a info@valoreatteso.com",
+   "btn": "Iscriviti gratis",
+   "invalid": null,
+   "payloadKeys": [
+    "email",
+    "source"
+   ],
+   "source": "direct__hero"
+  }
+ },
+ "network": [],
+ "keyboard": [
+  "a «Vai al contenuto» outline solid rgb(0, 57, 164)",
+  "a «» outline solid rgb(229, 150, 46)",
+  "a «Newsletter» outline solid rgb(229, 150, 46)",
+  "a «Archivio» outline solid rgb(229, 150, 46)",
+  "a «Club Intelligence» outline solid rgb(229, 150, 46)",
+  "a «Glossario» outline solid rgb(229, 150, 46)",
+  "a «About» outline solid rgb(229, 150, 46)",
+  "a «Sponsorizza» outline solid rgb(229, 150, 46)",
+  "a «Iscriviti gratis» outline solid rgb(229, 150, 46)",
+  "input «Email» outline solid rgb(229, 150, 46)",
+  "button «Iscriviti gratis» outline solid rgb(229, 150, 46)",
+  "input «» outline solid rgb(229, 150, 46)",
+  "a «Privacy Policy» outline solid rgb(229, 150, 46)",
+  "a «Leggi →» outline solid rgb(229, 150, 46)"
+ ]
+}

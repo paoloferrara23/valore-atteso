@@ -1,0 +1,494 @@
+{
+  "label": "sito",
+  "pages": {
+    "home-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.74,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "home-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [
+        "1.32:1 #CCD2E3 su #F3EFE6 12px «Newsletter»",
+        "1.32:1 #CCD2E3 su #F3EFE6 12px «Archivio»",
+        "1.00:1 #F3EFE6 su #F3EFE6 12px «Club Intelligence»",
+        "1.32:1 #CCD2E3 su #F3EFE6 12px «Glossario»",
+        "1.32:1 #CCD2E3 su #F3EFE6 12px «About»",
+        "1.32:1 #CCD2E3 su #F3EFE6 12px «Sponsorizza»"
+      ],
+      "minContrast": 1,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+      "h1": [
+        "Il calcio dei numeri,non dei goal."
+      ]
+    },
+    "archivio-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "archivio-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "lettore-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio.",
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "lettore-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio.",
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "about-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Arial",
+        "Playfair Display"
+      ],
+      "title": "Chi siamo — Valore Atteso",
+      "h1": [
+        "Il calcio letto come un business."
+      ]
+    },
+    "about-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display",
+        "Arial"
+      ],
+      "title": "Chi siamo — Valore Atteso",
+      "h1": [
+        "Il calcio letto come un business."
+      ]
+    },
+    "sponsor-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Sponsorizza | Valore Atteso",
+      "h1": [
+        "Il tuo brand, nel contesto giusto."
+      ]
+    },
+    "sponsor-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 4.7,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Sponsorizza | Valore Atteso",
+      "h1": [
+        "Il tuo brand, nel contesto giusto."
+      ]
+    },
+    "404-375": {
+      "status": 404,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Arial",
+        "Playfair Display"
+      ],
+      "title": "Pagina non trovata — Valore Atteso",
+      "h1": [
+        "Pagina non trovata"
+      ]
+    },
+    "404-1280": {
+      "status": 404,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 2,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display",
+        "Arial"
+      ],
+      "title": "Pagina non trovata — Valore Atteso",
+      "h1": [
+        "Pagina non trovata"
+      ]
+    },
+    "edizione-26-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "edizione-26-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "glossario-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "Inter",
+        "Playfair Display",
+        "IBM Plex Mono"
+      ],
+      "title": "Glossario — Valore Atteso",
+      "h1": [
+        "Il vocabolario delbusiness del calcio."
+      ]
+    },
+    "glossario-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "Inter",
+        "Playfair Display",
+        "IBM Plex Mono"
+      ],
+      "title": "Glossario — Valore Atteso",
+      "h1": [
+        "Il vocabolario delbusiness del calcio."
+      ]
+    },
+    "privacy-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.02,
+      "taps": [],
+      "inlineLinks": 5,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "Inter",
+        "Playfair Display",
+        "IBM Plex Mono"
+      ],
+      "title": "Privacy Policy — Valore Atteso",
+      "h1": [
+        "Privacy Policy"
+      ]
+    },
+    "privacy-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.02,
+      "taps": [],
+      "inlineLinks": 5,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "Inter",
+        "Playfair Display",
+        "IBM Plex Mono"
+      ],
+      "title": "Privacy Policy — Valore Atteso",
+      "h1": [
+        "Privacy Policy"
+      ]
+    },
+    "cookie-policy-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "Inter",
+        "IBM Plex Mono",
+        "Playfair Display"
+      ],
+      "title": "Cookie Policy — Valore Atteso",
+      "h1": [
+        "Cookie Policy"
+      ]
+    },
+    "cookie-policy-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 3,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "Inter",
+        "IBM Plex Mono",
+        "Playfair Display"
+      ],
+      "title": "Cookie Policy — Valore Atteso",
+      "h1": [
+        "Cookie Policy"
+      ]
+    },
+    "disclaimer-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "Inter",
+        "IBM Plex Mono",
+        "Playfair Display"
+      ],
+      "title": "Disclaimer — Valore Atteso",
+      "h1": [
+        "Disclaimer"
+      ]
+    },
+    "disclaimer-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "Inter",
+        "IBM Plex Mono",
+        "Playfair Display"
+      ],
+      "title": "Disclaimer — Valore Atteso",
+      "h1": [
+        "Disclaimer"
+      ]
+    }
+  },
+  "network": {
+    "subscribeRequests": 0,
+    "subscribePayloads": [],
+    "supabaseQueries": [
+      "editions?select=num,title,date,tags,subtitle&order=num.desc&published=eq.true",
+      "editions?num=eq.026&published=eq.true&select=id,num,title,subtitle,date,opener,sections,tags"
+    ],
+    "blockedExternal": []
+  },
+  "extra": {}
+}

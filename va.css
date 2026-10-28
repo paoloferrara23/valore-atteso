@@ -48,7 +48,7 @@ input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #
 .va-on-dark input[aria-invalid="true"]{border-color:#E9A08A!important;box-shadow:0 0 0 1px #E9A08A}
 
 /* Header e footer standard (stesso markup della home; usati anche da /about, /sponsor e 404). */
-.va-hdr.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(240,235,225,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--va-line)}
+.va-hdr.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--va-line)}
 .va-hdr .nav{max-width:1120px;margin:0 auto;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .va-hdr .nav-links{display:flex;align-items:center;gap:28px}
 .va-hdr .nav-link{font-family:var(--va-font-mono);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:#4F545F;text-decoration:none;transition:.15s}

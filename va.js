@@ -28,6 +28,7 @@ function vaFieldMsg(field, anchor, text) {
   if (!msg) {
     msg = document.createElement('div');
     msg.className = 'va-err-msg';
+    msg.setAttribute('aria-live', 'polite');
     if (!field.id) field.id = 'va-f' + Math.random().toString(36).slice(2, 8);
     msg.id = field.id + '-err';
     anchor.parentNode.insertBefore(msg, anchor.nextSibling);
