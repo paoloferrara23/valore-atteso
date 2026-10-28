@@ -156,7 +156,7 @@ function buildEditionHtml(ed, nav = {}) {
   const ogUrl = og || `${SITE}/og.png`;
   const ogAlt = og ? `Valore Atteso #${ed.num}. ${ed.title}` : 'Valore Atteso. Il calcio dei numeri, non dei goal.';
 
-  // Card "In sintesi": il primo KPI di ogni sezione, con il salto alla sezione.
+  // Card "In sintesi": il primo KPI di ogni sezione, con il salto alla sezione (sub con nomi di testate omesso).
   const kpiCells = sections.map((s, i) => {
     const k = (Array.isArray(s.kpis) ? s.kpis : [])[0] || {};
     if (!k.value && !k.label) return '';
@@ -165,7 +165,7 @@ function buildEditionHtml(ed, nav = {}) {
       ${s.label ? `<span class="sk-sez">${esc(s.label)}</span>` : ''}
       <span class="sk-v${neg ? ' neg' : ''}">${esc(k.value || '')}</span>
       <span class="sk-l">${esc(k.label || k.key || '')}</span>
-      ${k.sub ? `<span class="sk-s">${esc(k.sub)}</span>` : ''}
+      ${k.sub && !hasBlockedName(k.sub) ? `<span class="sk-s">${esc(k.sub)}</span>` : ''}
       <a class="sk-a" href="#s${i + 1}">Leggi ↓</a>
     </li>`;
   }).filter(Boolean).join('');
