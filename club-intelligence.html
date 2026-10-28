@@ -241,6 +241,11 @@
   .footnote.warn b{color:var(--gold)}
 
   @keyframes growW{from{width:0}}
+  /* Movimento ridotto: niente dissolvenze, barre e anelli già pieni (oltre al controllo JS dei contatori). */
+  @media(prefers-reduced-motion:reduce){
+    #stage,.insight-item,.pfill,.split-row .fill,.casc-row .cfill,.ring-fg{animation:none!important}
+    .prow,.nav-item,.chip,.tab,.jump,.btn-primary,.vs-btn{transition:none!important}
+  }
 
   /* Sotto i 1280px la sidebar diventa uno scroller orizzontale in alto (unico overflow voluto, con sfumatura). */
   @media(max-width:1279.98px){
@@ -698,7 +703,15 @@ function startInsight(){
     insightIx++;
   }
   show();
-  if(!prefersReduced) insightTimer=setInterval(show,3200);
+  // Fase 4: un solo giro (si ferma tornando al primo), in pausa con mouse o focus sopra; niente rotazione con movimento ridotto.
+  var paused=false;
+  slot.onmouseenter=function(){ paused=true; }; slot.onmouseleave=function(){ paused=false; };
+  slot.onfocusin=function(){ paused=true; }; slot.onfocusout=function(){ paused=false; };
+  if(!prefersReduced && arr.length>1) insightTimer=setInterval(function(){
+    if(paused) return;
+    show();
+    if(insightIx>arr.length){ clearInterval(insightTimer); insightTimer=null; }
+  },3200);
 }
 function dataNumMetric(m,v){
   if(v==null) return '<span class="nd">n/d</span>';
