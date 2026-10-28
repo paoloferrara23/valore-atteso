@@ -1,0 +1,65 @@
+# Club Intelligence: diff testuale prima/dopo (scripts/qa-ci-snapshot.js)
+# Stessi dati per le 3 GET (qa/fase-4/ci-dati.json, esportati in sola lettura il 28/10/2026). Testo minuscolo, spazi compattati.
+# Righe di dati diverse: 0. Righe diverse ammesse: etichetta LIVE (approvata), emoji sostituite da icone (approvato),
+# link «Confronta due club →» (nuovo, da approvare), richieste di rete a font, va.css, va.js e monogramma (stesso dominio).
+
+2c2
+< live · supabase
+---
+> dati verificati · serie a 2024/25
+6c6
+< ● live
+---
+> ● verificato
+26,33c26,28
+< 📄
+< bilanci ufficiali
+< depositati
+< 🔍 ogni numero
+< tracciabile
+< ⚖
+< 6 club
+< · serie a 2024/25
+---
+> bilanci ufficiali depositati
+> ogni numero tracciabile
+> 6 club · serie a 2024/25
+35a31
+> confronta due club →
+37d32
+< 📈
+1192a1188,1194
+> GET /fonts/playfair-display-800-latin.woff2
+> GET /va.css
+> GET /va.js
+> GET /brand/svg/monogramma-crema.svg
+> GET /fonts/ibm-plex-mono-400-latin.woff2
+> GET /fonts/inter-400-600-latin.woff2
+> GET /fonts/ibm-plex-mono-600-latin.woff2
+
+### stato senza dati live (snapshot incorporato)
+20,27c20,22
+< 📄
+< bilanci ufficiali
+< depositati
+< 🔍 ogni numero
+< tracciabile
+< ⚖
+< 3 club
+< · serie a 2024/25
+---
+> bilanci ufficiali depositati
+> ogni numero tracciabile
+> 3 club · serie a 2024/25
+29a25
+> confronta due club →
+31d26
+< 📈
+629a625,631
+> GET /fonts/playfair-display-800-latin.woff2
+> GET /va.css
+> GET /va.js
+> GET /brand/svg/monogramma-crema.svg
+> GET /fonts/ibm-plex-mono-400-latin.woff2
+> GET /fonts/inter-400-600-latin.woff2
+> GET /fonts/ibm-plex-mono-600-latin.woff2
