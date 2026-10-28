@@ -64,6 +64,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - Form: bottone sempre attivo e blu (`va-btn-primary`), consenso ed email controllati al click; payload `{email, source}` invariato.
 - Loghi in `brand/svg/` (ricostruzioni, da sostituire con i master mantenendo i nomi), favicon e `og.png` in root.
 - QA: `node scripts/qa-fase-1.js . dopo` (dati simulati, nessuna richiesta reale), report in `qa/fase-1/` (escluso dal deploy).
+- **Home, striscia "In sintesi · 3 numeri" (fase 2 B):** è HTML statico in `index.html` tra i marcatori `<!-- va:home-kpi:start -->` e `<!-- va:home-kpi:end -->`, scritto da `scripts/generate-edition-pages.js` (primo KPI di ogni sezione dell'ultima edizione pubblicata, escluse #018 e #019; il `sub` con nomi di testate si omette). Lo aggiorna il workflow `edition-pages` insieme alle pagine edizione: non modificare a mano il blocco. La home non legge più Supabase dal browser. QA della hero: `node scripts/qa-fase-2-b.js .`.
 
 **Env vars (nomi, mai valori):** `ANTHROPIC_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` (pubblica, solo letture pubbliche), `SUPABASE_SECRET_KEY` / `SUPABASE_SERVICE_ROLE_KEY` / `SUPABASE_SERVICE_KEY` (servizio, usata dal server), `RESEND_KEY`, `BREVO_KEY`, `APPROVAL_EMAIL`, `CR_ADMIN_SECRET` (password Control Room, minimo 5 caratteri), `AGENT_API_SECRET` (agenti GitHub → API, anche come secret GitHub), `GH_TOKEN`/`GITHUB_TOKEN`, `META_PAGE_TOKEN`, `META_VERIFY_TOKEN`, `SITE_URL`.
 
