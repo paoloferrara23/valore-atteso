@@ -14,6 +14,18 @@
       "includeFiles": "api/_admin/**"
     }
   },
+  "redirects": [
+    {
+      "source": "/edizione-00(\\d)",
+      "destination": "/edizione-$1",
+      "permanent": true
+    },
+    {
+      "source": "/edizione-0(\\d+)",
+      "destination": "/edizione-$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/admin",
