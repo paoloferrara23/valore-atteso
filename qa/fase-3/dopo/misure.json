@@ -1,0 +1,4377 @@
+{
+ "label": "dopo",
+ "pages": {
+  "home-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 342,
+     "bottom": 390
+    },
+    "button": {
+     "top": 398,
+     "bottom": 446
+    },
+    "consent": {
+     "top": 456,
+     "bottom": 500
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 5.9,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 9.84,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 5.22,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 8.11,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 8.73,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 8.91,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.7,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.7,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.18,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.41,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.75,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.57,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.78,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.73,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 6.18,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 13.13,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 7.06,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 10.13,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.4,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 13.52,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 7.29,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 9.16,
+     "ok": true
+    },
+    {
+     "t": "Formato editoriale",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una lettura fina",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì analizziamo club,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dentro ogni edizione",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dietro ogni numero, una strate",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non pubblichiamo una rassegna ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Leggi l'archivio →",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "01",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il bilancio",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Conti, ricavi, costi, player t",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "02",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il deal",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "M&A, fondi, multipli, razional",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "03",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "La metrica",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Un KPI spiegato e messo a benc",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Perché leggerla",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "I club non competono più solo ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Fa per te",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "È per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Lavori in finanza, consulenza,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi capire il calcio come set",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessano bilanci, deal, ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci analisi concise a r",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non è per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Cerchi formazioni, pagelle e c",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi indiscrezioni di mercato ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessa solo il risultato",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci hype a numeri e fon",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.35,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 8.88,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.77,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.57,
+     "ok": true
+    }
+   ]
+  },
+  "home-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 342,
+     "bottom": 390
+    },
+    "button": {
+     "top": 398,
+     "bottom": 446
+    },
+    "consent": {
+     "top": 456,
+     "bottom": 500
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 5.9,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 9.84,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 5.22,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 8.11,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 8.73,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 8.91,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.7,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.7,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.18,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.41,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.75,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.57,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.78,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.73,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 6.18,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 13.13,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 7.06,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 10.13,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.4,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 13.52,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 7.29,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 9.16,
+     "ok": true
+    },
+    {
+     "t": "Formato editoriale",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una lettura fina",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì analizziamo club,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dentro ogni edizione",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dietro ogni numero, una strate",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non pubblichiamo una rassegna ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Leggi l'archivio →",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "01",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il bilancio",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Conti, ricavi, costi, player t",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "02",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il deal",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "M&A, fondi, multipli, razional",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "03",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "La metrica",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Un KPI spiegato e messo a benc",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Perché leggerla",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "I club non competono più solo ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Fa per te",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "È per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Lavori in finanza, consulenza,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi capire il calcio come set",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessano bilanci, deal, ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci analisi concise a r",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non è per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Cerchi formazioni, pagelle e c",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi indiscrezioni di mercato ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessa solo il risultato",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci hype a numeri e fon",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.35,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 8.88,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.77,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.57,
+     "ok": true
+    }
+   ]
+  },
+  "home-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 346,
+     "bottom": 394
+    },
+    "button": {
+     "top": 346,
+     "bottom": 394
+    },
+    "consent": {
+     "top": 409,
+     "bottom": 453
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 6.18,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 10.35,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 5.71,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 8.54,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.18,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.95,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 9.26,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 13.38,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.41,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.43,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.71,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.01,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.07,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 8.88,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 5.65,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 11.9,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 6.42,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 8.43,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.16,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 13.16,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 6.25,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 6.49,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 6.48,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 9.16,
+     "ok": true
+    },
+    {
+     "t": "Formato editoriale",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una lettura fina",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì analizziamo club,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dentro ogni edizione",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dietro ogni numero, una strate",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non pubblichiamo una rassegna ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Leggi l'archivio →",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "01",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il bilancio",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Conti, ricavi, costi, player t",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "02",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il deal",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "M&A, fondi, multipli, razional",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "03",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "La metrica",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Un KPI spiegato e messo a benc",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Perché leggerla",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "I club non competono più solo ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Fa per te",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "È per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Lavori in finanza, consulenza,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi capire il calcio come set",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessano bilanci, deal, ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci analisi concise a r",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non è per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Cerchi formazioni, pagelle e c",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi indiscrezioni di mercato ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessa solo il risultato",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci hype a numeri e fon",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.48,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 9.04,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.69,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.6,
+     "ok": true
+    }
+   ]
+  },
+  "home-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 461,
+     "bottom": 509
+    },
+    "button": {
+     "top": 461,
+     "bottom": 509
+    },
+    "consent": {
+     "top": 524,
+     "bottom": 568
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 6.37,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 6.25,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 9.93,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 10.39,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 10.44,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.19,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.17,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.32,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.51,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.87,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.57,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.86,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.81,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 11.97,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 6.46,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 9.24,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.37,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 12.18,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 6.57,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.72,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 10.58,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.5,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 9.04,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.63,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.57,
+     "ok": true
+    }
+   ]
+  },
+  "home-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 461,
+     "bottom": 509
+    },
+    "button": {
+     "top": 461,
+     "bottom": 509
+    },
+    "consent": {
+     "top": 524,
+     "bottom": 568
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 6.27,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 6.18,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 9.93,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 10.39,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 10.44,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.19,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.19,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.32,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.51,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.88,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.57,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.86,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.81,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 6.27,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 12,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 6.46,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 9.24,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.37,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 12.18,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 6.57,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.72,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 10.58,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.5,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 9.07,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.66,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.43,
+     "ok": true
+    }
+   ]
+  },
+  "home-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 461,
+     "bottom": 509
+    },
+    "button": {
+     "top": 461,
+     "bottom": 509
+    },
+    "consent": {
+     "top": 524,
+     "bottom": 568
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 6.27,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 6.18,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 9.93,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 10.39,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 10.44,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.36,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.19,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.19,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.32,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.51,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.88,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.57,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.86,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.81,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 6.27,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 12,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 6.46,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 9.24,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.37,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 12.18,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 6.57,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.72,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 10.58,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.43,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 9.04,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.66,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.53,
+     "ok": true
+    }
+   ]
+  },
+  "home-320": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": {
+     "top": 341,
+     "bottom": 389
+    },
+    "button": {
+     "top": 397,
+     "bottom": 445
+    },
+    "consent": {
+     "top": 455,
+     "bottom": 516
+    }
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Finance",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "Il calcio dei numeri,",
+     "c": 9.81,
+     "ok": true
+    },
+    {
+     "t": "non dei goal.",
+     "c": 4.92,
+     "ok": true
+    },
+    {
+     "t": "Bilanci, M&A e strategie di cr",
+     "c": 8.06,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 8.73,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 11.42,
+     "ok": true
+    },
+    {
+     "t": "Per advisor, investitori, mana",
+     "c": 8.88,
+     "ok": true
+    },
+    {
+     "t": "In sintesi · 3 numeri",
+     "c": 12.04,
+     "ok": true
+    },
+    {
+     "t": "#026 ·",
+     "c": 9.51,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 9.51,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Il Bilancio",
+     "c": 9.38,
+     "ok": true
+    },
+    {
+     "t": "-€24M",
+     "c": 6.73,
+     "ok": true
+    },
+    {
+     "t": "Perdita netta 2025/26",
+     "c": 12.53,
+     "ok": true
+    },
+    {
+     "t": "primo rosso dopo tre utili",
+     "c": 6.76,
+     "ok": true
+    },
+    {
+     "t": "Il Deal",
+     "c": 9.7,
+     "ok": true
+    },
+    {
+     "t": "42%",
+     "c": 6.16,
+     "ok": true
+    },
+    {
+     "t": "Quota Pitchwise",
+     "c": 12.95,
+     "ok": true
+    },
+    {
+     "t": "Lim resta in maggioranza",
+     "c": 6.99,
+     "ok": true
+    },
+    {
+     "t": "La Metrica",
+     "c": 10,
+     "ok": true
+    },
+    {
+     "t": "€1.221M",
+     "c": 6.37,
+     "ok": true
+    },
+    {
+     "t": "Ricavi Real 2025/26",
+     "c": 13.38,
+     "ok": true
+    },
+    {
+     "t": "record del club",
+     "c": 7.22,
+     "ok": true
+    },
+    {
+     "t": "Leggi →",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "1 email",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "ogni martedì",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "8 minuti",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "lettura essenziale",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Gratuita",
+     "c": 13.93,
+     "ok": true
+    },
+    {
+     "t": "accesso libero",
+     "c": 7.5,
+     "ok": true
+    },
+    {
+     "t": "Corporate Finance · Sport Busi",
+     "c": 10.58,
+     "ok": true
+    },
+    {
+     "t": "Formato editoriale",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una lettura fina",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì analizziamo club,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dentro ogni edizione",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Dietro ogni numero, una strate",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non pubblichiamo una rassegna ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Leggi l'archivio →",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "01",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il bilancio",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Conti, ricavi, costi, player t",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "02",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Il deal",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "M&A, fondi, multipli, razional",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "03",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "La metrica",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Un KPI spiegato e messo a benc",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Perché leggerla",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "I club non competono più solo ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Fa per te",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "È per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Lavori in finanza, consulenza,",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi capire il calcio come set",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessano bilanci, deal, ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci analisi concise a r",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Non è per te se…",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Cerchi formazioni, pagelle e c",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Vuoi indiscrezioni di mercato ",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ti interessa solo il risultato",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Preferisci hype a numeri e fon",
+     "c": 99,
+     "ok": true
+    },
+    {
+     "t": "Ogni martedì, una nuova",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "analisi.",
+     "c": 5.53,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana per legg",
+     "c": 8.99,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.69,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.6,
+     "ok": true
+    }
+   ]
+  },
+  "archivio-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "archivio-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "archivio-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "archivio-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "archivio-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "archivio-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-26-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 4.86,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.05,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-26-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 4.86,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.05,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-26-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 4.96,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 11.97,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.61,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-26-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 5.11,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.81,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.34,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-26-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 5.14,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.8,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-26-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #026 ·",
+     "c": 5.14,
+     "ok": true
+    },
+    {
+     "t": "27 ott 2026",
+     "c": 5.8,
+     "ok": true
+    },
+    {
+     "t": "Il Milan spende, il Valencia a",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 4.97,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.13,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 11.97,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.62,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.04,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 4.97,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.13,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 11.97,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.62,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.04,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 4.96,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 11.97,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 5.11,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.81,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.34,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 5.14,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.8,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-25-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #025 ·",
+     "c": 5.14,
+     "ok": true
+    },
+    {
+     "t": "20 ott 2026",
+     "c": 5.8,
+     "ok": true
+    },
+    {
+     "t": "Il calcio europeo parla sempre",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.7,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 4.94,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.59,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.12,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.73,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.55,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.7,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 4.94,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.59,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.12,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.73,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.55,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.77,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 5.7,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.69,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.09,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.75,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.94,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 5.75,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.8,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.15,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.97,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.8,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.15,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-17-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #017 ·",
+     "c": 4.97,
+     "ok": true
+    },
+    {
+     "t": "25 ago 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "La Lazio senza tifosi, l'RB Li",
+     "c": 11.8,
+     "ok": true
+    },
+    {
+     "t": "Crisi Lazio, modello Lipsia e ",
+     "c": 10.15,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.63,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 4.77,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.03,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.56,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 10.07,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 4.77,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.03,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.56,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 10.07,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.66,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 4.88,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.76,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 9.99,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.61,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 5.03,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.8,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.8,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 9.99,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 5.07,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.75,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 10.09,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-1-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #001 ·",
+     "c": 5.07,
+     "ok": true
+    },
+    {
+     "t": "5 mag 2026",
+     "c": 5.75,
+     "ok": true
+    },
+    {
+     "t": "Serie A, Private Equity e lo S",
+     "c": 11.94,
+     "ok": true
+    },
+    {
+     "t": "Bilanci Serie A 2024/25 · PE n",
+     "c": 10.09,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.62,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 4.94,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.56,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.12,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.24,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.55,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.62,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 4.94,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.56,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.12,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.24,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.15,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.7,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.15,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.55,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.77,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 5.71,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.69,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.09,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.32,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.18,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.86,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.23,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.61,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.79,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 5.73,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.73,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.26,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.86,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 5.71,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.73,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.26,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-18-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [
+    true,
+    true,
+    true
+   ],
+   "gradSampled": [
+    {
+     "t": "Edizione #018 ·",
+     "c": 4.86,
+     "ok": true
+    },
+    {
+     "t": "1 set 2026",
+     "c": 5.71,
+     "ok": true
+    },
+    {
+     "t": "L'Aston Villa vende i gioielli",
+     "c": 11.73,
+     "ok": true
+    },
+    {
+     "t": "Villa vende talenti per l'Euro",
+     "c": 10.26,
+     "ok": true
+    },
+    {
+     "t": "Newsletter",
+     "c": 5.3,
+     "ok": true
+    },
+    {
+     "t": "Ricevila ogni martedì",
+     "c": 11.32,
+     "ok": true
+    },
+    {
+     "t": "Analisi, non rumore. Iscriviti",
+     "c": 8.78,
+     "ok": true
+    },
+    {
+     "t": "Accetto la e il trattamento da",
+     "c": 9.31,
+     "ok": true
+    },
+    {
+     "t": "Privacy Policy",
+     "c": 12.01,
+     "ok": true
+    },
+    {
+     "t": "Una email a settimana. Niente ",
+     "c": 9.53,
+     "ok": true
+    }
+   ]
+  },
+  "edizione-27-375": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-27-375-reduced-motion": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-27-640": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-27-1280": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-27-1440": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "edizione-27-1440-reduced-motion": {
+   "status": 404,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  }
+ },
+ "network": {
+  "subscribe": 0,
+  "adminDb": 0,
+  "external": []
+ },
+ "keyboard": {
+  "secbar": "Il Bilancio outline solid",
+  "anchor": "#bilancio attiva: Il Bilancio",
+  "pause": "true true",
+  "cell": "/edizione-26#bilancio"
+ }
+}
