@@ -518,6 +518,51 @@ function updateHome(editions, file = path.join(ROOT, 'index.html'), linkText = '
   return ed.num;
 }
 
+// ---------- home: Terminale (ticker + tabella delle ultime 8 edizioni non escluse) ----------
+// Primo KPI di Il Bilancio, Il Deal e La Metrica, identico alla fonte; ogni cella porta alla sezione da cui viene.
+// Testi nuovi segnati [[DA_APPROVARE]] nel commento accanto.
+const TERM_START = '<!-- va:terminale:start -->';
+const TERM_END = '<!-- va:terminale:end -->';
+const TERM_ROWS = 8;
+const TERM_COLS = [['bilancio', 'Il Bilancio'], ['deal', 'Il Deal'], ['metrica', 'La Metrica']];
+
+function terminalRows(editions) {
+  return editions.filter(e => !isExcluded(e.num)).slice(0, TERM_ROWS).map(ed => {
+    const sections = Array.isArray(ed.sections) ? ed.sections : [];
+    const anchors = sectionAnchors(sections);
+    const cells = TERM_COLS.map(([id]) => {
+      const i = anchors.indexOf(id);
+      const k = i >= 0 ? ((Array.isArray(sections[i].kpis) ? sections[i].kpis : [])[0] || {}) : {};
+      const ok = k.value && !hasBlockedName(k.value);
+      return { id, href: `/${slug(ed.num)}` + (i >= 0 ? `#${id}` : ''), value: ok ? k.value : '', label: ok && k.label && !hasBlockedName(k.label) ? k.label : '' };
+    });
+    return { ed, cells };
+  });
+}
+
+function buildTerminal(editions) {
+  const rows = terminalRows(editions);
+  const neg = v => /^\s*[-−]/.test(v);
+  const items = rows.flatMap(r => r.cells.filter(c => c.value).map(c =>
+    `<span class="tk-i"><span class="tk-n">#${esc(String(r.ed.num).padStart(3, '0'))}</span> <span class="tk-s">${esc(TERM_COLS.find(x => x[0] === c.id)[1])}</span> <span class="tk-v${neg(c.value) ? ' neg' : ''}">${esc(c.value)}</span></span>`)).join('');
+  const body = rows.map(r => `<tr><th scope="row"><a href="/${slug(r.ed.num)}"><span class="tm-n">#${esc(String(r.ed.num).padStart(3, '0'))}</span><span class="tm-d">${timeTag(r.ed.date)}</span></a></th>`
+    + r.cells.map(c => `<td><a href="${c.href}">${c.value ? `<span class="tm-v${neg(c.value) ? ' neg' : ''}">${esc(c.value)}</span>${c.label ? `<span class="tm-l">${esc(c.label)}</span>` : ''}` : ''}</a></td>`).join('') + '</tr>').join('');
+  return `${TERM_START}<div class="tm-head"><span class="tm-k"><span class="tm-dot" aria-hidden="true"></span>Terminale VA · ultime ${rows.length} edizioni</span><!-- [[DA_APPROVARE]] -->`
+    + `<button class="tm-pause" type="button" aria-pressed="false">Pausa</button><!-- [[DA_APPROVARE]] --></div>`
+    + `<div class="tk" role="marquee" aria-label="Ultimi numeri"><div class="tk-track"><div class="tk-run">${items}</div><div class="tk-run" aria-hidden="true">${items}</div></div></div>`
+    + `<div class="tm-scroll"><table class="tm"><caption>I primi numeri di Il Bilancio, Il Deal e La Metrica nelle ultime ${rows.length} edizioni, come pubblicati nella sintesi di ogni edizione.</caption><!-- [[DA_APPROVARE]] -->`
+    + `<thead><tr><th scope="col">Edizione</th>${TERM_COLS.map(([, l]) => `<th scope="col">${l}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>${TERM_END}`;
+}
+
+function updateTerminal(editions, file = path.join(ROOT, 'index.html')) {
+  const html = fs.readFileSync(file, 'utf8');
+  const a = html.indexOf(TERM_START), b = html.indexOf(TERM_END);
+  if (a < 0 || b < a) { console.warn('[generate-edition-pages] marcatori del Terminale assenti in index.html'); return false; }
+  const next = html.slice(0, a) + buildTerminal(editions) + html.slice(b + TERM_END.length);
+  if (next !== html) fs.writeFileSync(file, next);
+  return true;
+}
+
 // ---------- archivio: lista statica delle card ----------
 // Le card di /archivio sono scritte nell'HTML tra i marcatori (stessi dati letti dal browser prima): nessun salto
 // di layout al caricamento. Il lettore interno e il codice admin di archivio.html non cambiano.
@@ -569,13 +614,14 @@ async function main() {
   });
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
   updateArchive(valid);
+  updateTerminal(valid);
   let home = false;
   for (const t of HOME_TARGETS) home = updateHome(valid, path.join(ROOT, t.file), t.linkText) || home;
 
   console.log(`[generate-edition-pages] ${written} pagine edizione + sitemap.xml (${valid.length} URL edizioni)` + (home ? ` + KPI home dalla #${home}` : ''));
 }
 
-module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate, buildArchiveCards, updateArchive };
+module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate, buildArchiveCards, updateArchive, terminalRows, buildTerminal, updateTerminal };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
