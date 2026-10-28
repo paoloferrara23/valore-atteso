@@ -1,0 +1,295 @@
+{
+ "views": {
+  "320": {
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "email": {
+    "top": 289,
+    "bottom": 337,
+    "h": 48
+   },
+   "button": {
+    "top": 345,
+    "bottom": 393,
+    "h": 48
+   },
+   "consent": {
+    "top": 403,
+    "bottom": 464,
+    "h": 61
+   },
+   "card": {
+    "top": 496,
+    "bottom": 1107,
+    "h": 612
+   },
+   "kpi": [
+    {
+     "v": "-€24M",
+     "fits": true
+    },
+    {
+     "v": "42%",
+     "fits": true
+    },
+    {
+     "v": "€1.221M",
+     "fits": true
+    }
+   ],
+   "overflow": false,
+   "h1": 1,
+   "robots": "noindex, follow",
+   "inlineBytes": 10768,
+   "errors": [],
+   "requests": [
+    {
+     "url": "/iscriviti",
+     "bytes": 10762
+    },
+    {
+     "url": "/fonts/playfair-display-800-latin.woff2",
+     "bytes": 23272
+    },
+    {
+     "url": "/brand/svg/monogramma-ink.svg",
+     "bytes": 9770
+    },
+    {
+     "url": "/va.js",
+     "bytes": 9541
+    }
+   ],
+   "totalBytes": 53345
+  },
+  "375": {
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "email": {
+    "top": 271,
+    "bottom": 319,
+    "h": 48
+   },
+   "button": {
+    "top": 327,
+    "bottom": 375,
+    "h": 48
+   },
+   "consent": {
+    "top": 385,
+    "bottom": 429,
+    "h": 44
+   },
+   "card": {
+    "top": 461,
+    "bottom": 1049,
+    "h": 588
+   },
+   "kpi": [
+    {
+     "v": "-€24M",
+     "fits": true
+    },
+    {
+     "v": "42%",
+     "fits": true
+    },
+    {
+     "v": "€1.221M",
+     "fits": true
+    }
+   ],
+   "overflow": false,
+   "h1": 1,
+   "robots": "noindex, follow",
+   "inlineBytes": 10768,
+   "errors": [],
+   "requests": [
+    {
+     "url": "/iscriviti",
+     "bytes": 10762
+    },
+    {
+     "url": "/fonts/playfair-display-800-latin.woff2",
+     "bytes": 23272
+    },
+    {
+     "url": "/brand/svg/monogramma-ink.svg",
+     "bytes": 9770
+    },
+    {
+     "url": "/va.js",
+     "bytes": 9541
+    }
+   ],
+   "totalBytes": 53345
+  },
+  "640": {
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "email": {
+    "top": 231,
+    "bottom": 279,
+    "h": 48
+   },
+   "button": {
+    "top": 287,
+    "bottom": 335,
+    "h": 48
+   },
+   "consent": {
+    "top": 345,
+    "bottom": 389,
+    "h": 44
+   },
+   "card": {
+    "top": 421,
+    "bottom": 986,
+    "h": 565
+   },
+   "kpi": [
+    {
+     "v": "-€24M",
+     "fits": true
+    },
+    {
+     "v": "42%",
+     "fits": true
+    },
+    {
+     "v": "€1.221M",
+     "fits": true
+    }
+   ],
+   "overflow": false,
+   "h1": 1,
+   "robots": "noindex, follow",
+   "inlineBytes": 10768,
+   "errors": [],
+   "requests": [
+    {
+     "url": "/iscriviti",
+     "bytes": 10762
+    },
+    {
+     "url": "/brand/svg/monogramma-ink.svg",
+     "bytes": 9770
+    },
+    {
+     "url": "/fonts/playfair-display-800-latin.woff2",
+     "bytes": 23272
+    },
+    {
+     "url": "/va.js",
+     "bytes": 9541
+    }
+   ],
+   "totalBytes": 53345
+  },
+  "1280": {
+   "contrast": [],
+   "minContrast": 5.42,
+   "small": [],
+   "taps": [],
+   "email": {
+    "top": 231,
+    "bottom": 279,
+    "h": 48
+   },
+   "button": {
+    "top": 287,
+    "bottom": 335,
+    "h": 48
+   },
+   "consent": {
+    "top": 345,
+    "bottom": 389,
+    "h": 44
+   },
+   "card": {
+    "top": 421,
+    "bottom": 986,
+    "h": 565
+   },
+   "kpi": [
+    {
+     "v": "-€24M",
+     "fits": true
+    },
+    {
+     "v": "42%",
+     "fits": true
+    },
+    {
+     "v": "€1.221M",
+     "fits": true
+    }
+   ],
+   "overflow": false,
+   "h1": 1,
+   "robots": "noindex, follow",
+   "inlineBytes": 10768,
+   "errors": [],
+   "requests": [
+    {
+     "url": "/iscriviti",
+     "bytes": 10762
+    },
+    {
+     "url": "/fonts/playfair-display-800-latin.woff2",
+     "bytes": 23272
+    },
+    {
+     "url": "/brand/svg/monogramma-ink.svg",
+     "bytes": 9770
+    },
+    {
+     "url": "/va.js",
+     "bytes": 9541
+    }
+   ],
+   "totalBytes": 53345
+  }
+ },
+ "form": {
+  "consenso": {
+   "url": "/iscriviti",
+   "err": [
+    "Per iscriverti accetta la Privacy Policy."
+   ],
+   "msg": null,
+   "btn": "Iscriviti gratis",
+   "source": null,
+   "payloadKeys": null
+  },
+  "successo-utm": {
+   "url": "/iscriviti?utm_source=instagram&utm_medium=bio&utm_campaign=autunno",
+   "err": [],
+   "msg": "✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma. Se non lo vedi, guarda in spam o promozioni.",
+   "btn": "Fatto ✓",
+   "source": "instagram:bio:autunno__iscriviti",
+   "payloadKeys": [
+    "email",
+    "source"
+   ]
+  },
+  "errore-server": {
+   "url": "/iscriviti",
+   "err": [],
+   "msg": "Iscrizione non riuscita. Controlla l'email e riprova, oppure scrivici a info@valoreatteso.com",
+   "btn": "Iscriviti gratis",
+   "source": "direct__iscriviti",
+   "payloadKeys": [
+    "email",
+    "source"
+   ]
+  }
+ },
+ "external": []
+}
