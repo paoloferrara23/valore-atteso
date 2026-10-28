@@ -132,7 +132,7 @@
   .prow.first .prank{color:var(--gold)}
   .prow .pclub{display:flex;align-items:center;gap:11px;font-weight:600;font-size:16px}
   .ptrack{height:12px;background:rgba(243,239,230,.08);border-radius:6px;overflow:hidden}
-  .pfill{height:100%;border-radius:6px;animation:growW .9s cubic-bezier(.2,.8,.2,1)}
+  .pfill{display:block;height:100%;border-radius:6px;animation:growW .9s cubic-bezier(.2,.8,.2,1)}
   .pval{font-family:var(--mono);font-size:16px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
   .pmeta{font-family:var(--mono);font-size:12px;color:var(--txt3);letter-spacing:.04em}
   .board-note{margin-top:24px;padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;font-size:14px;color:var(--txt2);line-height:1.6}
@@ -230,6 +230,7 @@
   .jumpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
   .jump{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px 18px;color:var(--txt);transition:border-color .18s}
   .jump:hover{border-color:var(--line2)}
+  .jump .jt,.jump .jd{display:flex}
   .jump .jt{font-weight:600;font-size:16px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
   .jump .jt .arr{color:var(--gold);font-size:16px}
   .jump .jd{font-size:14px;color:var(--txt2);line-height:1.5}
@@ -257,7 +258,7 @@
     .row{grid-template-columns:minmax(0,1fr)!important}
   }
   @media(max-width:639.98px){
-    .deals,.gauges,.terms{grid-template-columns:1fr}
+    .deals,.gauges,.terms,.steps{grid-template-columns:1fr}
     .terms .cell:nth-child(odd){border-right:none}
     .jumpgrid,.hero-numbers{grid-template-columns:1fr 1fr}
     .hero-club{flex-direction:column;align-items:flex-start;gap:18px;padding:22px 18px}
@@ -319,7 +320,7 @@
       <img class="brand-logo" src="/brand/svg/monogramma-crema.svg" alt="Valore Atteso" width="46" height="32">
       <div><div class="brand-name">Club Intelligence</div><div class="brand-sub">by Valore Atteso</div></div>
     </a>
-    <div id="nav"></div>
+    <nav id="nav" aria-label="Classifica e club"></nav>
     <div class="nav-cap">In arrivo</div>
     <div class="nav-item soon">Atalanta</div>
     <div class="side-foot" id="foot"></div>
@@ -327,7 +328,7 @@
 
   <main class="main">
     <div id="head"></div>
-    <div class="tabs" id="tabs"></div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Sezioni della scheda club"></div>
     <div class="wrap"><div id="stage"></div></div>
     <footer class="ci-legal">
       Stemmi stilizzati: rielaborazioni grafiche originali, non riproduzioni dei marchi ufficiali. Marchi, denominazioni e loghi appartengono ai rispettivi club; Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Dati estratti da bilanci depositati e fonti pubbliche, a scopo esclusivamente informativo, non costituiscono consulenza finanziaria o di investimento. Analisi assistita da sistemi di IA, sotto supervisione e responsabilità editoriale umana. <a href="/disclaimer">Disclaimer completo →</a>
@@ -538,12 +539,13 @@ function render(){
 
   // sidebar nav
   el('nav').innerHTML =
-    '<div class="nav-item vs'+(mode==='home'?' active':'')+'" data-go="home">'+
+    '<button type="button" class="nav-item vs'+(mode==='home'?' active':'')+'" data-go="home"'+(mode==='home'?' aria-current="true"':'')+'>'+
       '<svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="4" y2="11"/><line x1="10" y1="20" x2="10" y2="4"/><line x1="16" y1="20" x2="16" y2="8"/><line x1="20" y1="20" x2="20" y2="14"/></svg>'+
-      'Classifica</div>'+
+      'Classifica</button>'+
     '<div class="nav-cap">Club · 2024/25</div>'+
     ks.map(function(k){ const cl=CLUBS[k];
-      return '<div class="nav-item'+(mode==='club'&&k===cur?' active':'')+'" data-club="'+k+'">'+crest(cl,22)+'<span>'+cl.name+'</span></div>';
+      var on=(mode==='club'&&k===cur);
+      return '<button type="button" class="nav-item'+(on?' active':'')+'" data-club="'+k+'"'+(on?' aria-current="true"':'')+'>'+crest(cl,22)+'<span>'+cl.name+'</span></button>';
     }).join('');
 
   el('foot').innerHTML='<div class="foot-line"><span class="live-dot"></span>'+(LIVE?'LIVE · SUPABASE':'SNAPSHOT VERIFICATO')+'</div>'+
@@ -553,6 +555,7 @@ function render(){
     setTheme();
     el('head').innerHTML = termHead();
     el('tabs').style.display='none';
+    el('stage').removeAttribute('role'); el('stage').removeAttribute('aria-labelledby');
     setStage(renderHome(ks));
     paintPeers(false);
     startInsight();
@@ -561,7 +564,8 @@ function render(){
     setTheme();
     el('head').innerHTML = clubHead(c);
     el('tabs').style.display='flex';
-    el('tabs').innerHTML = CLUB_TABS.map(function(t){ return '<div class="tab'+(t[0]===tab?' active':'')+'" data-tab="'+t[0]+'">'+t[1]+'</div>'; }).join('');
+    el('tabs').innerHTML = CLUB_TABS.map(function(t){ var on=t[0]===tab; return '<button type="button" role="tab" class="tab'+(on?' active':'')+'" id="tab-'+t[0]+'" data-tab="'+t[0]+'" aria-selected="'+on+'" aria-controls="stage" tabindex="'+(on?0:-1)+'">'+t[1]+'</button>'; }).join('');
+    el('stage').setAttribute('role','tabpanel'); el('stage').setAttribute('aria-labelledby','tab-'+tab);
     const r = {panoramica:viewPanoramica, conto:viewConto, sostenibilita:viewSosten, deal:viewDeal}[tab] || viewPanoramica;
     setStage(r(c));
   }
@@ -572,13 +576,25 @@ function setStage(html){
   s.innerHTML=html; animateCounts(s);
 }
 function bind(){
-  document.querySelectorAll('[data-go]').forEach(function(x){ x.onclick=function(){ mode=x.dataset.go; render(); scrollTop(); }; });
-  document.querySelectorAll('[data-club]').forEach(function(x){ x.onclick=function(){ mode='club'; cur=x.dataset.club; render(); scrollTop(); }; });
-  document.querySelectorAll('[data-tab]').forEach(function(x){ x.onclick=function(){ tab=x.dataset.tab; render(); scrollTop(); }; });
+  document.querySelectorAll('[data-go]').forEach(function(x){ x.onclick=function(){ var f=x.closest('#nav'); mode=x.dataset.go; render(); scrollTop(); if(f) refocus('#nav [data-go="home"]'); }; });
+  document.querySelectorAll('[data-club]').forEach(function(x){ x.onclick=function(){ var f=x.closest('#nav'); mode='club'; cur=x.dataset.club; render(); scrollTop(); refocus(f?'#nav [data-club="'+cur+'"]':'#tabs [data-tab="'+tab+'"]'); }; });
+  document.querySelectorAll('[data-tab]').forEach(function(x){ x.onclick=function(){ tab=x.dataset.tab; render(); scrollTop(); refocus('#tabs [data-tab="'+tab+'"]'); }; });
+  document.querySelectorAll('[role="tablist"]').forEach(function(list){
+    list.onkeydown=function(e){
+      var ts=[].slice.call(list.querySelectorAll('[role="tab"]')), i=ts.indexOf(document.activeElement), j=null;
+      if(i<0) return;
+      if(e.key==='ArrowRight') j=(i+1)%ts.length; else if(e.key==='ArrowLeft') j=(i-1+ts.length)%ts.length;
+      else if(e.key==='Home') j=0; else if(e.key==='End') j=ts.length-1;
+      if(j===null) return;
+      e.preventDefault(); var key=ts[j].dataset.metric||ts[j].dataset.tab; ts[j].click();
+      var t=document.querySelector('[role="tab"][data-metric="'+key+'"],#tabs [data-tab="'+key+'"]'); if(t) t.focus({preventScroll:true});
+    };
+  });
   document.querySelectorAll('[data-metric]').forEach(function(x){ x.onclick=function(){ metric=x.dataset.metric; paintPeers(true); }; });
-  document.querySelectorAll('[data-scroll]').forEach(function(x){ x.onclick=function(){ var t=el(x.dataset.scroll); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); }; });
+  document.querySelectorAll('[data-scroll]').forEach(function(x){ x.onclick=function(){ var t=el(x.dataset.scroll); if(t) t.scrollIntoView({behavior:prefersReduced?'auto':'smooth',block:'start'}); }; });
 }
-function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+function scrollTop(){ window.scrollTo({top:0,behavior:prefersReduced?'auto':'smooth'}); }
+function refocus(sel){ var t=document.querySelector(sel); if(t) t.focus({preventScroll:true}); }
 
 /* ── header bars ── */
 function termHead(){
@@ -589,7 +605,7 @@ function termHead(){
 function clubHead(c){
   return '<div class="chead">'+
     '<div class="chead-crest">'+crest(c,52)+'</div>'+
-    '<div class="chead-id"><div class="chead-name">'+c.full+'</div>'+
+    '<div class="chead-id"><h2 class="chead-name">'+c.full+'</h2>'+
       '<div class="chead-meta"><span>'+c.league+'</span><span>'+c.owner+'</span><span>'+c.stadium+' · '+intnum(c.capacity)+'</span><span>Fondata '+c.founded+'</span></div></div>'+
     '<div class="chead-right"><button class="vs-btn" data-go="home">↩ Classifica</button><div class="chead-season">'+c.fin.season+'</div></div>'+
   '</div>';
@@ -621,7 +637,7 @@ async function ciSubscribe(){
   }catch(e){ btn.disabled=false; btn.textContent=old; el.style.borderColor='#B93A2F'; }
 }
 function renderHome(ks){
-  return heroHTML(ks) + '<div class="sec-label">Come funziona</div>' + stepsHTML() + peersShellHTML(ks) + signupHTML();
+  return heroHTML(ks) + '<h2 class="sec-label">Come funziona</h2>' + stepsHTML() + peersShellHTML(ks) + signupHTML();
 }
 function heroHTML(ks){
   return '<div class="hero">'+
@@ -638,25 +654,26 @@ function heroHTML(ks){
     '<div class="hero-cta">'+
       '<button class="btn-primary" data-scroll="peersAnchor">Esplora la classifica ↓</button>'+
       '<span class="hero-hint">ogni club è cliccabile nella classifica</span>'+
+      '<a class="cf-link" href="/confronto">Confronta due club →</a>'+
     '</div>'+
     '<div class="insight"><div class="insight-lab">Lo sapevi che…</div><div id="insightSlot"></div></div>'+
   '</div>';
 }
 function stepsHTML(){
   return '<div class="steps">'+
-    '<div class="stepc"><div class="sn">01 · COS’È</div><div class="st">Un raggio X finanziario</div><div class="sd">Ricavi, costi, debito e plusvalenze di ogni club, riassunti in pochi indicatori leggibili.</div></div>'+
-    '<div class="stepc"><div class="sn">02 · FONTI</div><div class="st">Solo dati verificati</div><div class="sd">Numeri estratti dai bilanci depositati. Niente stime: ogni voce ha una fonte tracciabile.</div></div>'+
-    '<div class="stepc"><div class="sn">03 · COME SI USA</div><div class="st">Confronta o approfondisci</div><div class="sd">Ordina la classifica per qualsiasi metrica, poi apri un club per il dettaglio completo.</div></div>'+
-    '<div class="stepc"><div class="sn">04 · CHI</div><div class="st">by Valore Atteso</div><div class="sd">La newsletter italiana sul business del calcio europeo. <a href="/" style="color:var(--inter-cyan)">Scopri →</a></div></div>'+
+    '<div class="stepc"><div class="sn">01 · COS’È</div><h3 class="st">Un raggio X finanziario</h3><div class="sd">Ricavi, costi, debito e plusvalenze di ogni club, riassunti in pochi indicatori leggibili.</div></div>'+
+    '<div class="stepc"><div class="sn">02 · FONTI</div><h3 class="st">Solo dati verificati</h3><div class="sd">Numeri estratti dai bilanci depositati. Niente stime: ogni voce ha una fonte tracciabile.</div></div>'+
+    '<div class="stepc"><div class="sn">03 · COME SI USA</div><h3 class="st">Confronta o approfondisci</h3><div class="sd">Ordina la classifica per qualsiasi metrica, poi apri un club per il dettaglio completo.</div></div>'+
+    '<div class="stepc"><div class="sn">04 · CHI</div><h3 class="st">by Valore Atteso</h3><div class="sd">La newsletter italiana sul business del calcio europeo. <a href="/" style="color:var(--gold)">Scopri →</a></div></div>'+
   '</div>';
 }
 function peersShellHTML(ks){
-  const chips = METRICS.map(function(m){ return '<span class="chip'+(m.key===metric?' active':'')+'" data-metric="'+m.key+'">'+m.short+'</span>'; }).join('');
+  const chips = METRICS.map(function(m){ var on=m.key===metric; return '<button type="button" role="tab" class="chip'+(on?' active':'')+'" id="chip-'+m.key+'" data-metric="'+m.key+'" aria-selected="'+on+'" aria-controls="peersBody" tabindex="'+(on?0:-1)+'">'+m.short+'</button>'; }).join('');
   return '<div id="peersAnchor"></div>'+
-    '<div class="sec-label">Classifica Serie A · scegli la metrica</div>'+
-    '<div class="peers-head"><div class="chips">'+chips+'</div><div class="pmeta" id="metricNote"></div></div>'+
+    '<h2 class="sec-label">Classifica Serie A · scegli la metrica</h2>'+
+    '<div class="peers-head"><div class="chips" role="tablist" aria-label="Metrica della classifica">'+chips+'</div><div class="pmeta" id="metricNote"></div></div>'+
     '<div id="metricVerdict" style="font-family:var(--sans);font-size:13px;color:var(--txt2);line-height:1.55;margin:2px 0 16px;padding:11px 14px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--inter-cyan);border-radius:8px"></div>'+
-    '<div class="ptable" id="peersBody"></div>'+
+    '<div class="ptable" id="peersBody" role="tabpanel"></div>'+
     '<div class="board-note"><b style="color:var(--inter-cyan)">▲ Tocca una metrica</b> per riordinare la classifica, o <b style="color:var(--inter-cyan)">un club</b> per la scheda completa. Dati da bilanci consolidati depositati, estratti nel database Valore Atteso.</div>';
 }
 function insights(){
@@ -675,7 +692,7 @@ function startInsight(){
   function show(){
     var it=arr[insightIx%arr.length];
     var col = /\+/.test(it.v) ? 'var(--green)' : (/−/.test(it.v) ? 'var(--red)' : 'var(--inter-cyan)');
-    slot.innerHTML='<div class="insight-item" data-club="'+it.k+'"><span class="ic">'+it.ic+'</span><b>'+it.t+'</b><span class="ival" style="color:'+col+'">'+it.v+'</span></div>';
+    slot.innerHTML='<button type="button" class="insight-item" data-club="'+it.k+'"><span class="ic">'+it.ic+'</span><b>'+it.t+'</b><span class="ival" style="color:'+col+'">'+it.v+'</span></button>';
     var node=slot.querySelector('[data-club]');
     if(node) node.onclick=function(){ mode='club'; cur=it.k; render(); scrollTop(); };
     insightIx++;
@@ -709,12 +726,12 @@ function peerRows(mk){
     if(m.key==='net_debt') fill=(v<0?'var(--green)':'var(--red)');
     else if(m.key==='net_result'||m.key==='equity') fill=(neg?'var(--red)':'var(--gold2)');
     else fill='var(--gold2)';
-    return '<div class="prow'+(i===0?' first':'')+'" data-row="'+k+'" data-club="'+k+'">'+
-      '<div class="prank">'+(i+1)+'°</div>'+
-      '<div class="pclub">'+crest(c,28)+'<span>'+c.name+'</span></div>'+
-      '<div class="ptrack"><div class="pfill" style="width:'+w.toFixed(1)+'%;background:'+fill+'"></div></div>'+
-      '<div class="pval">'+dataNumMetric(m,v)+'</div>'+
-    '</div>';
+    return '<button type="button" class="prow'+(i===0?' first':'')+'" data-row="'+k+'" data-club="'+k+'">'+
+      '<span class="prank">'+(i+1)+'°</span>'+
+      '<span class="pclub">'+crest(c,28)+'<span>'+c.name+'</span></span>'+
+      '<span class="ptrack" aria-hidden="true"><span class="pfill" style="width:'+w.toFixed(1)+'%;background:'+fill+'"></span></span>'+
+      '<span class="pval">'+dataNumMetric(m,v)+'</span>'+
+    '</button>';
   }).join('');
 }
 function paintPeers(flip){
@@ -723,7 +740,8 @@ function paintPeers(flip){
   var prev={};
   if(flip && !prefersReduced){ body.querySelectorAll('[data-row]').forEach(function(r){ prev[r.dataset.row]=r.getBoundingClientRect().top; }); }
   body.innerHTML = peerRows(metric);
-  document.querySelectorAll('[data-metric]').forEach(function(ch){ ch.classList.toggle('active', ch.dataset.metric===metric); });
+  document.querySelectorAll('[data-metric]').forEach(function(ch){ var on=ch.dataset.metric===metric; ch.classList.toggle('active', on); ch.setAttribute('aria-selected', on); ch.tabIndex=on?0:-1; });
+  body.setAttribute('aria-labelledby','chip-'+metric);
   var note=el('metricNote'); if(note) note.textContent = m.label + (m.better==='low'?' · meglio se basso' : (m.better==='lowdebt'?' · cassa netta in verde' : ' · meglio se alto'));
   var vd=el('metricVerdict'); if(vd) vd.innerHTML = m.verdetto ? ('<b style="color:var(--inter-cyan)">◆ Come leggerla — </b>'+m.verdetto) : '';
   if(flip && !prefersReduced){
@@ -762,7 +780,7 @@ function viewPanoramica(c){
     '</div>'+
   '</div>'+
 
-  '<div class="sec-label">Composizione ricavi · '+f.season+'</div>'+
+  '<h2 class="sec-label">Composizione ricavi · '+f.season+'</h2>'+
   '<div class="row">'+
     '<div class="card">'+
       '<div class="card-h"><h3>Da dove arrivano i '+eur(f.revenue_total)+'</h3><span class="hint">€M</span></div>'+
@@ -788,7 +806,7 @@ function viewPanoramica(c){
     '</div>'+
   '</div>'+
 
-  '<div class="sec-label">Approfondisci</div>'+
+  '<h2 class="sec-label">Approfondisci</h2>'+
   '<div class="jumpgrid">'+
     jump('conto','Conto economico','Il percorso dai ricavi al risultato netto, voce per voce.')+
     jump('sostenibilita','Sostenibilità','Wage/revenue, debito ed equity rispetto alle soglie.')+
@@ -865,7 +883,7 @@ function viewConto(c){
     : '';
 
   return ''+
-  '<div class="sec-label">Conto economico riclassificato · '+f.season+'</div>'+
+  '<h2 class="sec-label">Conto economico riclassificato · '+f.season+'</h2>'+
   '<div class="row" style="grid-template-columns:minmax(0,1fr) minmax(0,.9fr);align-items:start">'+
     '<div class="card" style="padding:14px 18px"><table class="pnl ce">'+rows+'</table></div>'+
     '<div class="card">'+
@@ -895,7 +913,7 @@ function viewSosten(c){
   if(f.net_debt!=null && f.net_debt<0) lettura += ' <b style="color:var(--green)">Posizione finanziaria netta positiva</b> (cassa > debito): solidità elevata.';
   else if(f.equity!=null && f.equity<0) lettura += ' Patrimonio netto ancora negativo: equilibrio da ricostruire.';
   return ''+
-  '<div class="sec-label">Sostenibilità finanziaria · '+f.season+'</div>'+
+  '<h2 class="sec-label">Sostenibilità finanziaria · '+f.season+'</h2>'+
   '<div class="row" style="grid-template-columns:1fr 1fr">'+
     '<div class="card">'+
       '<div class="card-h"><h3>Indicatori di sostenibilità</h3><span class="hint">soglie indicative</span></div>'+
@@ -933,7 +951,7 @@ function viewDeal(c){
 
   let terms='';
   if(c.slug==='inter'){
-    terms='<div class="sec-label">Term sheet bond · Senior Secured Notes</div>'+
+    terms='<h2 class="sec-label">Term sheet bond · Senior Secured Notes</h2>'+
       '<div class="card"><div class="terms">'+
         cell('Emittente','Inter Media and Communication')+ cell('Importo','€350M')+
         cell('Cedola','4,52% fissa')+ cell('Scadenza','2030')+
@@ -947,7 +965,7 @@ function viewDeal(c){
     const nota = (f.net_debt!=null && f.net_debt<0)
       ? 'Liquidità superiore al debito finanziario: posizione finanziaria netta positiva, tra le strutture più solide della categoria.'
       : 'Patrimonio netto '+(f.equity!=null&&f.equity<0?'sottile/negativo: equilibrio dipendente da aumenti di capitale e plusvalenze':'positivo')+'; sostenibilità legata a gestione operativa e player trading.';
-    terms='<div class="sec-label">Struttura finanziaria · '+f.season+'</div>'+
+    terms='<h2 class="sec-label">Struttura finanziaria · '+f.season+'</h2>'+
       '<div class="card"><div class="terms">'+
         cell('Proprietà', c.owner)+ cell('Posizione fin. netta', pfnTxt)+
         cell('Patrimonio netto', eqTxt)+ cell('Stadio', c.stadium+' · '+intnum(c.capacity))+
@@ -957,7 +975,7 @@ function viewDeal(c){
   }
 
   return ''+
-  '<div class="sec-label">Operazioni dell’esercizio · '+f.season+'</div>'+
+  '<h2 class="sec-label">Operazioni dell’esercizio · '+f.season+'</h2>'+
   '<div class="deals">'+cards+'</div>'+ terms+ srcLine(f);
 }
 
@@ -968,7 +986,7 @@ function splitRow(k,v,tot){
     '<div class="v">€'+num(v)+'M</div></div>';
 }
 function stat(l,v,d){ return '<div class="stat"><div class="sl">'+l+'</div><div class="sv">'+v+'</div><div class="sd">'+d+'</div></div>'; }
-function jump(v,t,d){ return '<div class="jump" data-tab="'+v+'"><div class="jt">'+t+'<span class="arr">→</span></div><div class="jd">'+d+'</div></div>'; }
+function jump(v,t,d){ return '<button type="button" class="jump" data-tab="'+v+'"><span class="jt">'+t+'<span class="arr" aria-hidden="true">→</span></span><span class="jd">'+d+'</span></button>'; }
 function row(l,v,total,strong){
   const cls = total?' class="total"':''; const amtcls = strong?' style="color:#fff;font-weight:700"':'';
   return '<tr'+cls+'><td class="lbl">'+l+'</td><td class="amt"'+amtcls+'>'+v+'</td></tr>';
