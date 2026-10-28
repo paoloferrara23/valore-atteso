@@ -171,6 +171,8 @@ function ogImageFor(ed) {
 
 // Icona busta (SVG inline, monocromatica) per il bottone di condivisione via email.
 const ICON_MAIL = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+// Icona fumetto generica (nessun logo di terzi) per il bottone WhatsApp.
+const ICON_CHAT = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-5A8 8 0 1 1 21 12Z"/></svg>';
 
 // Ancora della sezione dal suo tag (Il Bilancio → bilancio…); i tag diversi delle prime edizioni non ne ricevono.
 const SECTION_ANCHORS = [['bilancio', /bilancio/i], ['deal', /\bdeal\b/i], ['metrica', /metrica/i]];
@@ -232,8 +234,13 @@ function buildEditionHtml(ed, nav = {}) {
   const secHtml = sections.map((s, i) => secFull(s, i + 1)).join('');
 
   // Condivisione: solo email (mailto), nessuno script o servizio esterno.
-  const mailHref = 'mailto:?subject=' + encodeURIComponent(`Valore Atteso #${ed.num}: ${ed.title}`) + '&body=' + encodeURIComponent(url);
-  const share = `<div class="share"><a class="share-btn" href="${esc(mailHref)}" aria-label="Condividi via email">${ICON_MAIL}<span>Email</span></a></div>`;
+  // I link condivisi portano un UTM: chi si iscrive da lì ha source "whatsapp:condivisione…" o "email:condivisione…"
+  // (stesso meccanismo di va.js, payload invariato). wa.me approvato da Paolo il 28/10/2026.
+  const shareUrl = medium => `${url}?utm_source=${medium}&utm_medium=condivisione`;
+  const mailHref = 'mailto:?subject=' + encodeURIComponent(`Valore Atteso #${ed.num}: ${ed.title}`) + '&body=' + encodeURIComponent(shareUrl('email'));
+  const waHref = 'https://wa.me/?text=' + encodeURIComponent(`Valore Atteso #${ed.num}: ${ed.title} ${shareUrl('whatsapp')}`);
+  const share = `<div class="share"><a class="share-btn" href="${esc(waHref)}" target="_blank" rel="noopener" aria-label="Condividi su WhatsApp">${ICON_CHAT}<span>WhatsApp</span></a>`
+    + `<a class="share-btn" href="${esc(mailHref)}" aria-label="Condividi via email">${ICON_MAIL}<span>Email</span></a></div>`;
 
   // Edizione precedente e successiva.
   const navLink = (e, rel, arrowFirst) => e ? `<a class="ednav-a ednav-${rel}" href="/${slug(e.num)}" rel="${rel}">
@@ -382,8 +389,8 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.sec-body{font-size:16px}}
 .sec-src{font-family:var(--mn);font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
 
-/* Condivisione: bottone ghost su chiaro, solo mailto. */
-.share{margin-top:40px;display:flex;gap:12px}
+/* Condivisione: bottoni ghost su chiaro, WhatsApp (wa.me) ed email (mailto). */
+.share{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px}
 .share-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:1.5px solid #0039A4;border-radius:999px;color:#0039A4;font-family:var(--mn);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .share-btn:hover{background:#0039A4;color:#F3EFE6}
 
