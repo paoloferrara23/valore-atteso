@@ -2,7 +2,8 @@ name: Edition Pages (SEO)
 
 # Genera una pagina statica indicizzabile per ogni edizione pubblicata
 # (anteprima + gate iscrizione), aggiorna sitemap.xml e la striscia KPI della home
-# (tra i marcatori va:home-kpi in index.html e iscriviti.html), poi committa su main.
+# (tra i marcatori va:home-kpi in index.html e iscriviti.html) e le immagini di condivisione in og/,
+# poi committa sul branch da cui è lanciato (main per il cron).
 # Le edizioni escono il martedì: gira ogni mattina (idempotente) + on demand.
 
 on:
@@ -21,6 +22,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      # Immagini di condivisione per edizione (og/edizione-N.png): se questo passo fallisce le pagine
+      # usano l'immagine generica /og.png, quindi non blocca la generazione delle pagine.
+      - name: Genera immagini di condivisione
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          npm install --no-save --no-package-lock playwright@1.48.2
+          npx playwright install --with-deps chromium
+          node scripts/generate-og-images.js
       - name: Genera pagine edizioni + sitemap
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -32,6 +45,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add edizione-*.html sitemap.xml index.html iscriviti.html
+          if [ -d og ]; then git add og/; fi
           if git diff --staged --quiet; then
             echo "Nessun cambiamento: sitemap e pagine gia aggiornate."
           else

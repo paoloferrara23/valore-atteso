@@ -1,0 +1,140 @@
+{
+  "label": "prima",
+  "pages": {
+    "archivio-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "archivio-640": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 640,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "archivio-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 0,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Archivio — Valore Atteso",
+      "h1": [
+        "Archivio."
+      ]
+    },
+    "edizione-26-375": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 375,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "edizione-26-640": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 640,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    },
+    "edizione-26-1280": {
+      "status": 200,
+      "consoleErrors": [],
+      "small": [],
+      "under12": [],
+      "contrast": [],
+      "minContrast": 5.42,
+      "taps": [],
+      "inlineLinks": 1,
+      "overflow": false,
+      "scrollWidth": 1280,
+      "fonts": [
+        "IBM Plex Mono",
+        "Inter",
+        "Playfair Display"
+      ],
+      "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa — Valore Atteso #026",
+      "h1": [
+        "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+      ]
+    }
+  },
+  "network": {
+    "subscribeRequests": 0,
+    "subscribePayloads": [],
+    "supabaseQueries": [
+      "editions?select=num,title,date,tags,subtitle&order=num.desc&published=eq.true"
+    ],
+    "blockedExternal": []
+  },
+  "extra": {}
+}
