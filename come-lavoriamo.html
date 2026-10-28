@@ -5,15 +5,24 @@
 <link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Come lavoriamo | Valore Atteso</title>
-<!-- BOZZA [[DA_APPROVARE]]: pagina non indicizzata, fuori dalla sitemap e non collegata dal menu finché Paolo non approva i testi. -->
-<meta name="robots" content="noindex, nofollow">
 <meta name="description" content="Come lavora Valore Atteso: il metodo, le fonti, l'uso dell'intelligenza artificiale con revisione umana e come segnalare un errore.">
+<link rel="canonical" href="https://www.valoreatteso.com/come-lavoriamo">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Valore Atteso">
+<meta property="og:title" content="Come lavoriamo | Valore Atteso">
+<meta property="og:description" content="Come lavora Valore Atteso: il metodo, le fonti, l&#39;uso dell&#39;intelligenza artificiale con revisione umana e come segnalare un errore.">
+<meta property="og:url" content="https://www.valoreatteso.com/come-lavoriamo">
+<meta property="og:image" content="https://www.valoreatteso.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<meta property="og:locale" content="it_IT">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="stylesheet" href="/va.css">
 <style>
-/* Come lavoriamo (fase 2 D, bozza): colonna 760 su crema, H1 50/32, sezioni con tag (pallino ink + etichetta). */
+/* Come lavoriamo (fase 3): colonna 760 su crema, H1 50/32, sezioni con tag (pallino ink + etichetta). */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--hdr-h:60px;--pad:20px}
 @media(min-width:640px){:root{--hdr-h:64px;--pad:24px}}
@@ -27,10 +36,9 @@ a{color:inherit}
 .va-hdr .nav-links>:not(.nav-cta){display:none}
 .va-hdr .nav-cta{font-size:11px;padding:0 16px}
 .va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
 @media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
 @media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
-.bozza{background:#F1EAD9;border-bottom:1px solid var(--va-line)}
-.bozza p{max-width:760px;margin:0 auto;padding:12px var(--pad);font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--va-gold-text-light)}
 .wrap{max-width:760px;margin:0 auto;padding:48px var(--pad) 64px}
 .kicker{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--va-gold-text-light);margin-bottom:16px}
 h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(2vw + 24.5px),50px);line-height:1.06;letter-spacing:-.01em;margin-bottom:20px}
@@ -50,7 +58,6 @@ h2{font-family:var(--va-font-display);font-weight:800;font-size:clamp(25px,calc(
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
 <div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
 <div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="/#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
-<div class="bozza" role="note"><p>Bozza da approvare: testi proposti, pagina non pubblicata e non indicizzata.</p></div>
 
 <main id="contenuto">
 <div class="wrap">
@@ -94,7 +101,7 @@ h2{font-family:var(--va-font-display);font-weight:800;font-size:clamp(25px,calc(
 </div>
 </main>
 
-<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 
 <script src="/va.js"></script>
 </body>
