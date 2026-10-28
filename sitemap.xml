@@ -21,6 +21,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.valoreatteso.com/come-lavoriamo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.valoreatteso.com/glossario</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
