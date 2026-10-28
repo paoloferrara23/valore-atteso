@@ -1,0 +1,113 @@
+{
+ "label": "bozza",
+ "pages": {
+  "come-lavoriamo-375": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "come-lavoriamo-375-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "come-lavoriamo-640": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "come-lavoriamo-1280": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "come-lavoriamo-1440": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  },
+  "come-lavoriamo-1440-reduced-motion": {
+   "status": 200,
+   "errors": [],
+   "contrast": [],
+   "minContrast": 5.19,
+   "small": [],
+   "taps": [],
+   "overflow": false,
+   "h1": 1,
+   "form": {
+    "email": null,
+    "button": null,
+    "consent": null
+   },
+   "kpiFit": [],
+   "gradSampled": []
+  }
+ },
+ "network": {
+  "subscribe": 0,
+  "adminDb": 0,
+  "external": []
+ },
+ "keyboard": {}
+}

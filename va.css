@@ -36,7 +36,7 @@ body{font-variant-numeric:lining-nums}
 .va-btn-primary.va-btn-primary:hover{background:#00266E;border-color:#00266E;color:#F3EFE6}
 .va-btn-primary.va-btn-primary[aria-busy="true"]{cursor:progress}
 .va-consent.va-consent{display:flex;gap:12px;align-items:center;min-height:44px;margin-top:8px;cursor:pointer;font-family:var(--va-font-text);font-size:13px;line-height:1.45;letter-spacing:0;color:#4F545F}
-.va-consent.va-consent input{width:20px;height:20px;flex:0 0 20px;margin:0;accent-color:#0039A4;cursor:pointer}
+.va-consent.va-consent input{width:20px;min-width:0;height:20px;flex:0 0 20px;margin:0;padding:0;accent-color:#0039A4;cursor:pointer}
 .va-consent a{text-decoration:underline;color:inherit}
 .va-err-msg{display:none;align-items:center;gap:8px;margin-top:6px;font-family:var(--va-font-text);font-size:13px;font-weight:500;line-height:1.4;color:#9A3A2F}
 .va-err-msg.on{display:flex}
