@@ -2,19 +2,18 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cancella iscrizione — Valore Atteso</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F0EBE1;--ink:#1C1914;--ink2:#4C453D;--muted:#777066;--rule:#CEC3B2;--gold:#C8A97A;--deepgold:#8E6B33;--green:#1B4332;--red:#B93A2F;--sf:'Source Serif 4',Georgia,serif;--mn:'JetBrains Mono',monospace}
+:root{--cream:#F3EFE6;--ink:#1C1914;--ink2:#2B2824;--muted:#4F545F;--rule:#CEC3B2;--gold:#E5962E;--deepgold:#7A5C1E;--green:#1B4332;--red:#9A3A2F;--sf:var(--va-font-text);--mn:var(--va-font-mono)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
-.card{background:#FFFDF8;border:1px solid var(--rule);border-radius:24px;padding:40px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(28,25,20,.06)}
-.logo{font-family:var(--sf);font-size:1.4rem;font-weight:600;letter-spacing:-.4px;color:var(--ink);margin-bottom:28px}
+.card{background:#FFFFFF;border:1px solid var(--rule);border-radius:24px;padding:40px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(28,25,20,.06)}
+.logo{font-family:var(--va-font-display);font-size:1.4rem;font-weight:800;letter-spacing:-.4px;color:var(--ink);margin-bottom:28px}
 .icon{font-size:36px;margin-bottom:16px}
-h1{font-family:var(--sf);font-size:1.6rem;font-weight:600;letter-spacing:-.4px;margin-bottom:10px}
-p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom:24px}
+h1{font-family:var(--va-font-display);font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
+p{color:var(--ink2);font-size:15px;font-weight:400;line-height:1.7;margin-bottom:24px}
 .email-display{font-family:var(--mn);font-size:12px;color:var(--muted);background:var(--cream);border:1px solid var(--rule);border-radius:999px;padding:8px 16px;display:inline-block;margin-bottom:24px}
 .btn{height:48px;padding:0 28px;border:none;border-radius:999px;font-family:var(--mn);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:.15s;display:inline-block;line-height:48px;text-decoration:none}
 .btn-primary{background:var(--ink);color:var(--cream)}
@@ -28,6 +27,7 @@ p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom
 .back:hover{color:var(--ink)}
 </style>
 <meta name="description" content="Cancella la tua iscrizione a Valore Atteso.">
+<meta name="robots" content="noindex">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Valore Atteso">
 <meta property="og:title" content="Cancella iscrizione — Valore Atteso">
@@ -47,6 +47,7 @@ p{color:var(--ink2);font-size:15px;font-weight:300;line-height:1.7;margin-bottom
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 </head>
 <body>
 <div class="card" id="card-confirm">

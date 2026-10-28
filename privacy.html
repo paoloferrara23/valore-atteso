@@ -2,20 +2,19 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
+<link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — Valore Atteso</title>
 <meta name="description" content="Privacy Policy di Valore Atteso, la newsletter sul business del calcio.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cream:#F5F2EB;--cream2:#EDE9E0;--cream3:#E2DDD4;
-  --ink:#1A1A1A;--ink2:#4A4845;--ink3:#9A9690;
+  --ink:#1A1A1A;--ink2:#4A4845;--ink3:#4F545F;
   --rule:#D0CBC0;--red:#C8251D;--green:#1B4332;
-  --dp:'Playfair Display',Georgia,serif;
-  --sf:'Source Serif 4',Georgia,serif;
-  --mn:'JetBrains Mono',monospace;
+  --dp:var(--va-font-display);
+  --sf:var(--va-font-text);
+  --mn:var(--va-font-mono);
   --max:720px;
 }
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
@@ -23,60 +22,61 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);-webkit-font
 /* NAV */
 nav{position:sticky;top:0;z-index:200;background:var(--cream);border-bottom:1px solid var(--rule);box-shadow:0 1px 12px rgba(0,0,0,.06)}
 .nav{max-width:var(--max);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:50px}
-.nav-logo{font-family:var(--dp);font-size:17px;font-weight:900;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
-.nav-back{font-family:var(--mn);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .15s}
+.nav-logo{font-family:var(--dp);font-size:17px;font-weight:800;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+.nav-back{display:inline-flex;align-items:center;min-height:44px;font-family:var(--mn);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .15s}
 .nav-back:hover{color:var(--red)}
 
 /* CONTENT */
 .wrap{max-width:var(--max);margin:0 auto;padding:56px 24px 80px}
 
-.page-label{font-family:var(--mn);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
-.page-title{font-family:var(--dp);font-size:clamp(2rem,5vw,3rem);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px}
-.page-date{font-family:var(--mn);font-size:10px;color:var(--ink3);letter-spacing:.06em;margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
+.page-label{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.page-title{font-family:var(--dp);font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px}
+.page-date{font-family:var(--mn);font-size:12px;color:var(--ink3);letter-spacing:.06em;margin-bottom:40px;padding-bottom:24px;border-bottom:2px solid var(--ink)}
 
 /* SOMMARIO */
 .summary{background:var(--cream2);border-left:4px solid var(--green);padding:20px 24px;margin-bottom:48px;border-radius:0 6px 6px 0}
-.summary-title{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
-.summary p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;line-height:1.75}
+.summary-title{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.summary p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:400;line-height:1.75}
 .summary strong{color:var(--ink);font-weight:400}
 
 /* SEZIONI */
 .section{margin-bottom:44px}
-.section h2{font-family:var(--dp);font-size:1.3rem;font-weight:700;letter-spacing:-.3px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
-.section h3{font-family:var(--dp);font-size:1rem;font-weight:700;margin:20px 0 8px}
-.section p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;line-height:1.8;margin-bottom:14px}
+.section h2{font-family:var(--dp);font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.section h3{font-family:var(--dp);font-size:1rem;font-weight:800;margin:20px 0 8px}
+.section p{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:400;line-height:1.8;margin-bottom:14px}
 .section p:last-child{margin-bottom:0}
 .section ul{list-style:none;margin:0 0 14px}
-.section ul li{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:300;padding:7px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start;line-height:1.55}
+.section ul li{font-family:var(--sf);font-size:15px;color:var(--ink2);font-weight:400;padding:7px 0;border-bottom:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start;line-height:1.55}
 .section ul li:last-child{border-bottom:none}
-.section ul li::before{content:'→';color:var(--red);flex-shrink:0;font-family:var(--mn);font-size:11px;margin-top:2px}
+.section ul li::before{content:'→';color:var(--red);flex-shrink:0;font-family:var(--mn);font-size:12px;margin-top:2px}
 .section a{color:var(--red);text-decoration:none}
 .section a:hover{text-decoration:underline}
 
 /* TABELLA */
 .table-wrap{overflow-x:auto;margin:16px 0}
-table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:11px}
+table{width:100%;border-collapse:collapse;font-family:var(--mn);font-size:12px}
 th{background:var(--ink);color:#fff;padding:10px 14px;text-align:left;letter-spacing:.06em;font-weight:500}
-td{padding:10px 14px;border-bottom:1px solid var(--rule);color:var(--ink2);font-family:var(--sf);font-size:13px;font-weight:300;line-height:1.5}
+td{padding:10px 14px;border-bottom:1px solid var(--rule);color:var(--ink2);font-family:var(--sf);font-size:13px;font-weight:400;line-height:1.5}
 tr:last-child td{border-bottom:none}
 tr:nth-child(even) td{background:var(--cream2)}
 
 /* CONTACT BOX */
 .contact-box{background:var(--ink);color:#fff;padding:28px;border-radius:6px;margin-top:48px}
-.contact-box .label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
-.contact-box h3{font-family:var(--dp);font-size:1.2rem;font-weight:700;margin-bottom:12px}
-.contact-box p{font-family:var(--sf);font-size:14px;color:rgba(255,255,255,.65);font-weight:300;line-height:1.7;margin-bottom:8px}
-.contact-box a{color:rgba(255,255,255,.65);text-decoration:underline}
+.contact-box .label{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+.contact-box h3{font-family:var(--dp);font-size:1.2rem;font-weight:800;margin-bottom:12px}
+.contact-box p{font-family:var(--sf);font-size:14px;color:rgba(255,255,255,.65);font-weight:400;line-height:1.7;margin-bottom:8px}
+.contact-box a{display:inline-block;padding:11px 0;color:rgba(255,255,255,.85);text-decoration:underline}
 
 /* FOOTER */
 footer{border-top:3px double var(--rule);padding:24px;background:var(--cream2)}
 .footer-in{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.footer-logo{font-family:var(--dp);font-size:16px;font-weight:700;letter-spacing:-.3px}
+.footer-logo{font-family:var(--dp);font-size:16px;font-weight:800;letter-spacing:-.3px}
 .footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{font-family:var(--mn);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none}
+.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);text-decoration:none}
 .footer-links a:hover{color:var(--ink)}
-.footer-r{font-family:var(--mn);font-size:9px;color:var(--ink3);letter-spacing:.04em}
+.footer-r{font-family:var(--mn);font-size:12px;color:var(--ink3);letter-spacing:.04em}
 </style>
+<link rel="canonical" href="https://www.valoreatteso.com/privacy">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Valore Atteso">
 <meta property="og:title" content="Privacy Policy — Valore Atteso">
