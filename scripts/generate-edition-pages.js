@@ -579,9 +579,52 @@ function updateTerminal(editions, file = path.join(ROOT, 'index.html')) {
 const ARCH_START = '<!-- va:archivio:start -->';
 const ARCH_END = '<!-- va:archivio:end -->';
 
+// Card dell'archivio (Fase 4): in testa il primo KPI della sezione attiva (Il Bilancio senza JS), stringhe identiche
+// alla fonte; i KPI di Deal e Metrica e il testo per la ricerca stanno in attributi data-*. Le edizioni escluse dalle
+// vetrine restano card senza numeri. KPI o note con nomi di testate non si mostrano e non entrano nella ricerca.
+const ARCH_KEYS = ['bilancio', 'deal', 'metrica'];
+const ARCH_NA = 'Numeri in revisione';
+const searchText = parts => parts.filter(Boolean).join(' ').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+function archiveKpis(ed) {
+  const sections = Array.isArray(ed.sections) ? ed.sections : [];
+  const anchors = sectionAnchors(sections);
+  const out = {};
+  for (const key of ARCH_KEYS) {
+    const i = anchors.indexOf(key);
+    const k = i >= 0 ? ((Array.isArray(sections[i].kpis) ? sections[i].kpis : [])[0] || {}) : {};
+    out[key] = k.value && k.label && !hasBlockedName(k.value) && !hasBlockedName(k.label)
+      ? { v: String(k.value), l: String(k.label), s: k.sub && !hasBlockedName(k.sub) ? String(k.sub) : '', anchor: true }
+      : (i >= 0 ? { anchor: true } : null);
+  }
+  return out;
+}
+
+function archiveKpiHtml(k) {
+  if (!k || !k.v) return '<div class="ed-kpi ed-kpi-empty"><span class="ed-kv"></span><span class="ed-kl"></span><span class="ed-ks"></span></div>';
+  const neg = /^\s*[-−]/.test(k.v);
+  return `<div class="ed-kpi"><span class="ed-kv${neg ? ' neg' : ''}">${esc(k.v)}</span><span class="ed-kl">${esc(k.l)}</span><span class="ed-ks">${esc(k.s)}</span></div>`;
+}
+
 function buildArchiveCards(editions) {
-  return editions.map(e => `<a class="ed-card" href="/${slug(e.num)}"><div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
-    + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}</a>`).join('');
+  return editions.map(e => {
+    const url = '/' + slug(e.num);
+    const head = `<div class="ed-meta">#${esc(e.num)} · <span>${timeTag(e.date)}</span></div>`
+      + `<h2 class="ed-title">${esc(e.title)}</h2>${e.subtitle ? `<p class="ed-prev">${esc(e.subtitle)}</p>` : ''}`;
+    if (isExcluded(e.num)) {
+      return `<a class="ed-card ed-card-x" href="${url}" data-u="${url}" data-q="${esc(searchText([e.title, e.subtitle]))}">`
+        + `<div class="ed-kpi ed-kpi-na"><span class="ed-kna">${ARCH_NA}</span></div>${head}</a>`;
+    }
+    const k = archiveKpis(e);
+    const data = ARCH_KEYS.map(key => {
+      const x = k[key];
+      if (!x) return '';
+      return ` data-${key}="${x.v ? esc(JSON.stringify([x.v, x.l, x.s])) : ''}"`;
+    }).join('');
+    const q = searchText([e.title, e.subtitle].concat(...ARCH_KEYS.map(key => k[key] && k[key].v ? [k[key].v, k[key].l, k[key].s] : [])));
+    const href = k.bilancio ? `${url}#bilancio` : url;
+    return `<a class="ed-card" href="${href}" data-u="${url}"${data} data-q="${esc(q)}">${archiveKpiHtml(k.bilancio)}${head}</a>`;
+  }).join('');
 }
 
 function updateArchive(editions, file = path.join(ROOT, 'archivio.html')) {
