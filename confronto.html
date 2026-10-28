@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confronto tra club | Valore Atteso</title>
+<meta name="description" content="Due club a confronto sugli stessi numeri, come pubblicati nelle edizioni di Valore Atteso. La differenza compare solo tra valori esatti e calcolati allo stesso modo.">
+<link rel="canonical" href="https://www.valoreatteso.com/confronto">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Valore Atteso">
+<meta property="og:title" content="Confronto tra club | Valore Atteso">
+<meta property="og:description" content="Due club a confronto sugli stessi numeri, come pubblicati nelle edizioni di Valore Atteso. La differenza compare solo tra valori esatti e calcolati allo stesso modo.">
+<meta property="og:url" content="https://www.valoreatteso.com/confronto">
+<meta property="og:image" content="https://www.valoreatteso.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<meta property="og:locale" content="it_IT">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+<link rel="stylesheet" href="/va.css">
+<style>
+/* Confronto vs (Fase 4): due club a specchio su card bianca. Club A blu #0039A4, club B ink, differenza ammessa in
+   oro grafico #D67F0D (solo su bianco), perdite #9A3A2F. Valori sempre in testo; i dati li scrive il generatore. */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--hdr-h:60px;--pad:20px}
+@media(min-width:640px){:root{--hdr-h:64px;--pad:24px}}
+@media(min-width:1280px){:root{--hdr-h:72px}}
+body{background:var(--va-cream);color:var(--va-ink);font-family:var(--va-font-text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:12px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
+.wrap{max-width:880px;margin:0 auto;padding:44px var(--pad) 64px}
+.kicker{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E;margin-bottom:14px}
+h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(2vw + 24.5px),50px);line-height:1.06;letter-spacing:-.01em;margin-bottom:16px}
+.lead{font-size:clamp(17px,calc(.3vw + 16px),19px);line-height:1.55;color:#2B2824;max-width:40em;margin-bottom:28px}
+.cf-tabs{display:none}
+.js .cf-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.cf-tabs button{min-height:44px;padding:0 16px;border:1.5px solid #6B6358;border-radius:999px;background:transparent;color:#1C1914;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.cf-tabs button:hover{border-color:#1C1914}
+.cf-tabs button[aria-selected="true"]{background:#1C1914;border-color:#1C1914;color:#F3EFE6}
+.cf-pair+.cf-pair{margin-top:32px}
+.js .cf-pair+.cf-pair{margin-top:0}
+.js .cf-pair[hidden]{display:none}
+.cf-card{background:#FFFFFF;border:1px solid rgba(28,25,20,.14);border-radius:12px;padding:20px 16px 16px}
+.cf-head h2{font-family:var(--va-font-display);font-weight:800;font-size:clamp(24px,calc(1vw + 20px),32px);line-height:1.15}
+.cf-vs{font-family:var(--va-font-mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4F545F;vertical-align:middle}
+.cf-season{margin-top:6px;font-family:var(--va-font-mono);font-size:12px;letter-spacing:.06em;color:#4F545F}
+.cf-leg{list-style:none;display:flex;flex-wrap:wrap;gap:6px 16px;margin:14px 0 6px;font-size:14px;color:#2B2824}
+.cf-leg li{display:inline-flex;align-items:center;gap:8px}
+.cf-sw{display:inline-block;width:12px;height:12px;border-radius:3px;flex:none}
+.cf-sw-a{background:#0039A4}.cf-sw-b{background:#1C1914}.cf-sw-ex{background:#D67F0D}.cf-sw-neg{background:#9A3A2F}
+.cf-row{padding:16px 0 14px;border-top:1px solid rgba(28,25,20,.12)}
+.cf-head+.cf-row{margin-top:10px}
+.cf-m{font-family:var(--va-font-text);font-weight:600;font-size:16px;margin-bottom:10px;text-align:center}
+.cf-bars{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.cf-side{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cf-a{align-items:flex-end;text-align:right;padding-right:10px;border-right:2px solid #1C1914}
+.cf-b{align-items:flex-start;padding-left:10px}
+.cf-v{font-family:var(--va-font-display);font-weight:800;font-size:22px;line-height:1.15;font-variant-numeric:lining-nums}
+.cf-sg{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4F545F;margin-bottom:-4px}
+.cf-sg.neg{color:#9A3A2F}
+.cf-a .cf-v{color:#0039A4}.cf-b .cf-v{color:#1C1914}.cf-v.neg.neg{color:#9A3A2F}
+.cf-track{display:flex;width:100%;height:14px}
+.cf-a .cf-track{justify-content:flex-end}
+.cf-bar{display:flex;height:100%;background:#0039A4;border-radius:3px 0 0 3px;overflow:hidden}
+.cf-b .cf-bar{background:#1C1914;justify-content:flex-end;border-radius:0 3px 3px 0}
+.cf-bar.neg.neg{background:#9A3A2F}
+.cf-ex{height:100%;background:#D67F0D}
+.js .cf-bar{transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.js .cf-a .cf-bar{transform-origin:100% 50%}.js .cf-b .cf-bar{transform-origin:0 50%}
+.js .cf-row:not(.in) .cf-bar{transform:scaleX(0)}
+@media(prefers-reduced-motion:reduce){.js .cf-bar{transition:none}.js .cf-row:not(.in) .cf-bar{transform:none}}
+.cf-diff,.cf-note{margin-top:10px;font-size:14px;line-height:1.5;text-align:center}
+.cf-diff{display:flex;justify-content:center;align-items:center;gap:8px;color:#1C1914;font-weight:600}
+.cf-note{color:#4F545F}
+.cf-note a,.cf-src a{color:#0039A4;text-underline-offset:3px}
+.cf-src{margin-top:6px;padding-top:12px;border-top:1px solid rgba(28,25,20,.12);font-family:var(--va-font-mono);font-size:12px;line-height:1.6;color:#4F545F}
+.cf-read{margin:20px 0 0;padding:4px 0 0 18px;border-left:3px solid #1C1914}
+.cf-read figcaption{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
+.cf-read blockquote{margin:8px 0 4px;font-size:18px;line-height:1.5;color:#1C1914}
+.cf-read a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.06em;color:#0039A4}
+.cf-more{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:36px}
+.cf-more a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0039A4}
+@media(min-width:640px){.cf-card{padding:28px 28px 20px}.cf-v{font-size:28px}.cf-a{padding-right:16px}.cf-b{padding-left:16px}.cf-track{height:16px}}
+@media(min-width:1280px){.wrap{padding-top:64px}.cf-v{font-size:32px}}
+</style>
+</head>
+<body>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="/#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
+
+<main id="contenuto">
+<div class="wrap">
+<div class="kicker">Club Intelligence · Confronto</div>
+<h1>Due club, gli stessi numeri</h1>
+<p class="lead">I valori sono quelli pubblicati nelle edizioni. La differenza compare solo quando i due numeri sono esatti e calcolati allo stesso modo; altrimenti restano affiancati, con il motivo.</p>
+<!-- va:confronto:start --><div class="cf-tabs" role="tablist" aria-label="Scegli il confronto"><button type="button" role="tab" id="cf-tab-real-barcellona-2025-26" aria-controls="cf-real-barcellona-2025-26" aria-selected="true" tabindex="0">Real Madrid · Barcellona</button><button type="button" role="tab" id="cf-tab-milan-inter-2024-25" aria-controls="cf-milan-inter-2024-25" aria-selected="false" tabindex="-1">Milan · Inter 2024/25</button><button type="button" role="tab" id="cf-tab-milan-inter-2025-26" aria-controls="cf-milan-inter-2025-26" aria-selected="false" tabindex="-1">Milan · Inter 2025/26</button></div><section class="cf-pair" id="cf-real-barcellona-2025-26" role="tabpanel" aria-labelledby="cf-tab-real-barcellona-2025-26"><div class="cf-card"><div class="cf-head"><h2>Real Madrid <span class="cf-vs">vs</span> Barcellona</h2><p class="cf-season">Stagione 2025/26 · milioni di euro</p><ul class="cf-leg"><li><span class="cf-sw cf-sw-a" aria-hidden="true"></span>Real Madrid</li><li><span class="cf-sw cf-sw-b" aria-hidden="true"></span>Barcellona</li><li><span class="cf-sw cf-sw-neg" aria-hidden="true"></span>Perdita</li></ul></div><div class="cf-row"><h3 class="cf-m">Ricavi</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Real Madrid: </span>1.221</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Barcellona: </span>1.060</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:86.8%"></span></span></div></div><p class="cf-note">«I due club non calcolano i ricavi esattamente allo stesso modo» (<a href="/edizione-26#metrica">#026 · La Metrica</a>): niente differenza.</p></div><div class="cf-row"><h3 class="cf-m">Risultato netto</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-sg">utile</span><span class="cf-v"><span class="va-sr">Real Madrid, utile: </span>26,3</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div><div class="cf-side cf-b"><span class="cf-sg neg">perdita</span><span class="cf-v neg"><span class="va-sr">Barcellona, perdita: </span>circa 18</span><span class="cf-track" aria-hidden="true"><span class="cf-bar neg" style="width:68.4%"></span></span></div></div><p class="cf-note">Il valore del Barcellona è «circa»: niente differenza.</p></div><div class="cf-row"><h3 class="cf-m">Debito netto</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Real Madrid: </span>circa 9</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:1.5%"></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Barcellona: </span>607</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div></div><p class="cf-note">Valore «circa» e metodi diversi (Real escluso lo stadio, Barcellona con le regole della Liga): niente differenza.</p></div><p class="cf-src">Dati da <a href="/edizione-26#metrica">#026 · La Metrica</a></p></div><figure class="cf-read"><figcaption>La nostra lettura</figcaption><blockquote>«Il Real ricava circa 160 milioni in più, il 15% (1.221 contro 1.060 milioni).»</blockquote><a href="/edizione-26#metrica">Da #026 · La Metrica →</a></figure></section><section class="cf-pair" id="cf-milan-inter-2024-25" role="tabpanel" aria-labelledby="cf-tab-milan-inter-2024-25"><div class="cf-card"><div class="cf-head"><h2>Milan <span class="cf-vs">vs</span> Inter</h2><p class="cf-season">Stagione 2024/25 · milioni di euro</p><ul class="cf-leg"><li><span class="cf-sw cf-sw-a" aria-hidden="true"></span>Milan</li><li><span class="cf-sw cf-sw-b" aria-hidden="true"></span>Inter</li><li><span class="cf-sw cf-sw-ex" aria-hidden="true"></span>Differenza (valori esatti e omogenei)</li></ul></div><div class="cf-row"><h3 class="cf-m">Ricavi commerciali</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Milan: </span>152,3</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"><span class="cf-ex" style="width:6.6%"></span></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Inter: </span>142,3</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:93.4%"></span></span></div></div><p class="cf-diff"><span class="cf-sw cf-sw-ex" aria-hidden="true"></span>Milan +10,0 milioni di euro di ricavi commerciali (2024/25)</p></div><div class="cf-row"><h3 class="cf-m">Diritti TV</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Milan: </span>154,2</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:58.3%"></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Inter: </span>264,4</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"><span class="cf-ex" style="width:41.7%"></span></span></span></div></div><p class="cf-diff"><span class="cf-sw cf-sw-ex" aria-hidden="true"></span>Inter +110,2 milioni di euro di diritti TV (2024/25)</p></div><div class="cf-row"><h3 class="cf-m">Ricavi totali</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Milan: </span>494,5</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:87.2%"></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Inter: </span>567</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div></div><p class="cf-note">Fonti diverse e perimetro dell’Inter non dichiarato: niente differenza.</p></div><div class="cf-row"><h3 class="cf-m">Risultato netto</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-sg">utile</span><span class="cf-v"><span class="va-sr">Milan, utile: </span>3,0</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:8.5%"></span></span></div><div class="cf-side cf-b"><span class="cf-sg">utile</span><span class="cf-v"><span class="va-sr">Inter, utile: </span>35,4</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div></div><p class="cf-note">Fonti diverse e perimetro dell’Inter non dichiarato: niente differenza.</p></div><p class="cf-src">Dati da <a href="/edizione-21#bilancio">#021 · Il Bilancio</a>, <a href="/edizione-22#bilancio">#022 · Il Bilancio</a></p></div><figure class="cf-read"><figcaption>La nostra lettura</figcaption><blockquote>«All&#39;Inter i diritti TV valgono 264,4 milioni contro 142,3 di commerciale, quasi il doppio.»</blockquote><a href="/edizione-21#bilancio">Da #021 · Il Bilancio →</a></figure></section><section class="cf-pair" id="cf-milan-inter-2025-26" role="tabpanel" aria-labelledby="cf-tab-milan-inter-2025-26"><div class="cf-card"><div class="cf-head"><h2>Milan <span class="cf-vs">vs</span> Inter</h2><p class="cf-season">Stagione 2025/26 · milioni di euro</p><ul class="cf-leg"><li><span class="cf-sw cf-sw-a" aria-hidden="true"></span>Milan</li><li><span class="cf-sw cf-sw-b" aria-hidden="true"></span>Inter</li><li><span class="cf-sw cf-sw-neg" aria-hidden="true"></span>Perdita</li></ul></div><div class="cf-row"><h3 class="cf-m">Ricavi</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-v"><span class="va-sr">Milan: </span>464,6</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:89.7%"></span></span></div><div class="cf-side cf-b"><span class="cf-v"><span class="va-sr">Inter: </span>518</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:100.0%"></span></span></div></div><p class="cf-note">Fonti diverse e perimetro non dichiarato: niente differenza.</p></div><div class="cf-row"><h3 class="cf-m">Risultato netto</h3><div class="cf-bars"><div class="cf-side cf-a"><span class="cf-sg neg">perdita</span><span class="cf-v neg"><span class="va-sr">Milan, perdita: </span>circa 24</span><span class="cf-track" aria-hidden="true"><span class="cf-bar neg" style="width:100.0%"></span></span></div><div class="cf-side cf-b"><span class="cf-sg">utile</span><span class="cf-v"><span class="va-sr">Inter, utile: </span>22,7</span><span class="cf-track" aria-hidden="true"><span class="cf-bar" style="width:94.6%"></span></span></div></div><p class="cf-note">Il valore del Milan è «circa»: niente differenza.</p></div><p class="cf-src">Dati da <a href="/edizione-26#bilancio">#026 · Il Bilancio</a>, <a href="/edizione-22#bilancio">#022 · Il Bilancio</a></p></div></section><!-- va:confronto:end -->
+<nav class="cf-more" aria-label="Altri strumenti"><a href="/club-intelligence">Esplora Club Intelligence →</a><a href="/archivio">Tutte le edizioni →</a></nav>
+</div>
+</main>
+
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
+
+<script src="/va.js"></script>
+<script>
+/* Confronto: tab accessibili (frecce, Home, Fine), coppia nell'URL (?coppia=), barre che si riempiono una volta
+   sola quando entrano nello schermo (transform, 600ms); con movimento ridotto sono già piene. */
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.cf-tabs [role="tab"]'));
+  var panels=[].slice.call(document.querySelectorAll('.cf-pair'));
+  if(!tabs.length) return;
+  function show(i,focus){
+    tabs.forEach(function(t,j){var on=j===i;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;panels[j].hidden=!on;});
+    if(focus) tabs[i].focus();
+    var id=panels[i].id.replace(/^cf-/,''),u=new URL(location.href);
+    if(i===0) u.searchParams.delete('coppia'); else u.searchParams.set('coppia',id);
+    history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    watch(panels[i]);
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){show(i,false);});
+    t.addEventListener('keydown',function(e){
+      var k=e.key,n=tabs.length,j=null;
+      if(k==='ArrowRight') j=(i+1)%n; else if(k==='ArrowLeft') j=(i-1+n)%n; else if(k==='Home') j=0; else if(k==='End') j=n-1;
+      if(j!==null){e.preventDefault();show(j,true);}
+    });
+  });
+  var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io=(!reduced&&'IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.3}):null;
+  function watch(panel){
+    panel.querySelectorAll('.cf-row:not(.in)').forEach(function(r){if(io) io.observe(r); else r.classList.add('in');});
+  }
+  var want=new URLSearchParams(location.search).get('coppia'),start=0;
+  panels.forEach(function(p,i){if(p.id==='cf-'+want) start=i;});
+  show(start,false);
+})();
+</script>
+</body>
+</html>
