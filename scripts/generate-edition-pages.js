@@ -340,13 +340,18 @@ function buildSitemap(editions) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticUrls.concat(edUrls).join('\n')}\n</urlset>\n`;
 }
 
-// ---------- home: striscia "In sintesi · 3 numeri" ----------
-// Il primo KPI di ogni sezione dell'ultima edizione pubblicata non esclusa, scritto statico in index.html
-// tra i marcatori: si aggiorna insieme alle pagine edizione, quindi il link punta sempre a una pagina esistente.
+// ---------- home e /iscriviti: striscia "In sintesi · 3 numeri" ----------
+// Il primo KPI di ogni sezione dell'ultima edizione pubblicata non esclusa, scritto statico in index.html e
+// iscriviti.html tra i marcatori: si aggiorna insieme alle pagine edizione, quindi il link punta sempre a una
+// pagina esistente.
 
 const HOME_KPI_EXCLUDED = ['018', '019'];
 const HOME_START = '<!-- va:home-kpi:start -->';
 const HOME_END = '<!-- va:home-kpi:end -->';
+const HOME_TARGETS = [
+  { file: 'index.html', linkText: 'Leggi →' },
+  { file: 'iscriviti.html', linkText: "Leggi l'ultima edizione →" },
+];
 const { blockedNames } = require('../api/_lib/email/config.js');
 // Oltre ai nomi vietati dell'email, testate citate per esteso nei KPI di alcune edizioni.
 const HOME_BLOCKED = blockedNames.concat(['Times', 'AFP', 'Agence France-Presse', 'Sportico', 'Gulf News']);
@@ -360,7 +365,7 @@ function homeKpis(ed) {
   return kpis;
 }
 
-function buildHomeKpi(ed, kpis) {
+function buildHomeKpi(ed, kpis, linkText = 'Leggi →') {
   const items = kpis.map(({ section, k }) => {
     const neg = /^\s*[-−]/.test(k.value);
     const sub = k.sub && !hasBlockedName(k.sub) ? `<span class="hk-s">${esc(k.sub)}</span>` : '';
@@ -369,17 +374,17 @@ function buildHomeKpi(ed, kpis) {
   const n = String(ed.num).padStart(3, '0');
   return `${HOME_START}<div class="hk-head"><span class="hk-kicker" id="hk-title">In sintesi · 3 numeri</span><span class="hk-ed">#${esc(n)} · ${timeTag(ed.date)}</span></div>`
     + `<p class="hk-t" id="hk-ed-title">${esc(ed.title)}</p><ol class="hk-list">${items}</ol>`
-    + `<a class="hk-link" href="/${slug(ed.num)}" aria-describedby="hk-ed-title">Leggi →</a>${HOME_END}`;
+    + `<a class="hk-link" href="/${slug(ed.num)}" aria-describedby="hk-ed-title">${esc(linkText)}</a>${HOME_END}`;
 }
 
-// Riscrive solo il blocco tra i marcatori; se mancano o nessuna edizione è adatta, lascia index.html com'è.
-function updateHome(editions, file = path.join(ROOT, 'index.html')) {
+// Riscrive solo il blocco tra i marcatori; se mancano o nessuna edizione è adatta, lascia il file com'è.
+function updateHome(editions, file = path.join(ROOT, 'index.html'), linkText = 'Leggi →') {
   const html = fs.readFileSync(file, 'utf8');
   const a = html.indexOf(HOME_START), b = html.indexOf(HOME_END);
-  if (a < 0 || b < a) { console.warn('[generate-edition-pages] marcatori KPI assenti in index.html: home non aggiornata'); return false; }
+  if (a < 0 || b < a) { console.warn(`[generate-edition-pages] marcatori KPI assenti in ${path.basename(file)}: non aggiornato`); return false; }
   const ed = editions.find(e => !HOME_KPI_EXCLUDED.includes(String(e.num).padStart(3, '0')) && homeKpis(e));
   if (!ed) { console.warn('[generate-edition-pages] nessuna edizione adatta per la striscia KPI della home'); return false; }
-  const next = html.slice(0, a) + buildHomeKpi(ed, homeKpis(ed)) + html.slice(b + HOME_END.length);
+  const next = html.slice(0, a) + buildHomeKpi(ed, homeKpis(ed), linkText) + html.slice(b + HOME_END.length);
   if (next !== html) fs.writeFileSync(file, next);
   return ed.num;
 }
@@ -412,7 +417,8 @@ async function main() {
     written++;
   }
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(valid));
-  const home = updateHome(valid);
+  let home = false;
+  for (const t of HOME_TARGETS) home = updateHome(valid, path.join(ROOT, t.file), t.linkText) || home;
 
   console.log(`[generate-edition-pages] ${written} pagine edizione + sitemap.xml (${valid.length} URL edizioni)` + (home ? ` + KPI home dalla #${home}` : ''));
 }

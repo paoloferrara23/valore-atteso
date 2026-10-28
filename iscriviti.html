@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valore Atteso | Il calcio dei numeri, non dei goal</title>
+<meta name="description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
+<!-- Landing per Instagram (fase 2 C): non indicizzata e fuori dalla sitemap, per non duplicare la home. -->
+<meta name="robots" content="noindex, follow">
+<link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:locale" content="it_IT">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Valore Atteso">
+<meta property="og:title" content="Valore Atteso | Il calcio dei numeri, non dei goal">
+<meta property="og:description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
+<meta property="og:url" content="https://www.valoreatteso.com/iscriviti">
+<meta property="og:image" content="https://www.valoreatteso.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Valore Atteso. Il calcio dei numeri, non dei goal.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Valore Atteso | Il calcio dei numeri, non dei goal">
+<meta name="twitter:description" content="Ogni martedì mattina: un bilancio analizzato, un deal sezionato, una metrica che cambia come guardi il settore. In 8 minuti.">
+<meta name="twitter:image" content="https://www.valoreatteso.com/og.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+<style>
+/* Landing /iscriviti: tutto inline, un solo font (Playfair 800, in preload); testo ed etichette sui font di sistema. */
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:800;font-display:swap;src:url(/fonts/playfair-display-800-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Playfair Fallback';src:local('Times New Roman'),local('Times');size-adjust:110%;ascent-override:98%;descent-override:23%;line-gap-override:0%}
+:root{
+  --va-cream:#F3EFE6;--va-white:#FFFFFF;--va-ink:#1C1914;--va-text:#2B2824;--va-muted:#4F545F;--va-blue:#0039A4;--va-navy:#00266E;
+  --va-gold-text-light:#7A5C1E;--va-gold-graphic:#D67F0D;--va-neg:#9A3A2F;--va-line:#DDD3C2;--va-field:#6B6358;
+  --va-font-display:'Playfair Display','Playfair Fallback','Times New Roman',Times,serif;
+  --va-font-text:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --va-font-mono:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--va-cream);color:var(--va-ink);font-family:var(--va-font-text);font-size:16px;line-height:1.55;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input{font:inherit}
+:focus-visible{outline:2px solid var(--va-blue);outline-offset:2px}
+.va-skip{position:absolute;left:12px;top:-60px;z-index:10;padding:12px 18px;min-height:44px;background:var(--va-blue);color:var(--va-cream);font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;text-decoration:none}
+.va-skip:focus{top:10px}
+
+.wrap{max-width:520px;margin:0 auto;padding:0 20px}
+.hdr{border-bottom:1px solid var(--va-line)}
+.hdr .wrap{height:60px;display:flex;align-items:center}
+.hdr a{display:inline-flex;align-items:center;min-height:44px}
+.hdr img{display:block;height:40px;width:auto}
+
+main{padding:32px 0 48px}
+.kicker{margin-bottom:16px;padding-left:12px;border-left:3px solid var(--va-gold-graphic);font-family:var(--va-font-mono);font-size:12px;font-weight:600;line-height:1.5;letter-spacing:.12em;text-transform:uppercase;color:var(--va-gold-text-light)}
+h1{margin:0 0 24px;font-family:var(--va-font-display);font-size:38px;font-weight:800;line-height:1.05;letter-spacing:-.01em;color:var(--va-ink)}
+h1 span{color:var(--va-gold-text-light);white-space:nowrap}
+
+/* Modulo: campo e bottone impilati a 48px, consenso sotto (stessi id e funzione della home). */
+.signup-row{display:flex;flex-direction:column;gap:8px}
+.email{width:100%;height:48px;padding:0 20px;border:1.5px solid var(--va-field);border-radius:999px;background:var(--va-white);color:var(--va-ink);font-size:16px}
+.email::placeholder{color:var(--va-muted);opacity:1}
+.submit{width:100%;height:48px;padding:0 22px;border:1px solid var(--va-blue);border-radius:999px;background:var(--va-blue);color:var(--va-cream);font-family:var(--va-font-mono);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background-color .15s}
+.submit:hover{background:var(--va-navy);border-color:var(--va-navy)}
+.submit[aria-busy="true"]{cursor:progress}
+.success{display:none;margin-bottom:12px;padding:11px 13px;border-left:3px solid #1B4332;border-radius:8px;background:#E4EDE7;color:#1B4332;font-size:15px;line-height:1.45}
+.success.err{background:#F4E2DF;color:var(--va-neg);border-left-color:var(--va-neg)}
+.success.info{background:#F1EAD9;color:var(--va-gold-text-light);border-left-color:var(--va-gold-graphic)}
+.va-consent{display:flex;gap:12px;align-items:center;min-height:44px;margin-top:10px;cursor:pointer;font-size:14px;line-height:1.45;color:var(--va-muted)}
+.va-consent input{width:20px;height:20px;flex:0 0 20px;accent-color:var(--va-blue);cursor:pointer}
+.va-consent a{color:var(--va-ink)}
+.va-err-msg{display:none;align-items:center;gap:8px;margin-top:6px;font-size:14px;font-weight:500;line-height:1.4;color:var(--va-neg)}
+.va-err-msg.on{display:flex}
+.va-err-msg::before{content:'!' / '';flex:0 0 18px;height:18px;border-radius:50%;background:var(--va-neg);color:var(--va-cream);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+input[aria-invalid="true"]{border-color:var(--va-neg);box-shadow:0 0 0 1px var(--va-neg)}
+
+/* Card "In sintesi" con i 3 numeri dell'ultima edizione (scritta dal generatore delle pagine edizione). */
+.card{margin-top:32px;padding:20px 18px 8px;border:1px solid rgba(28,25,20,.14);border-top:3px solid var(--va-gold-graphic);border-radius:12px;background:var(--va-white);box-shadow:0 24px 50px -30px rgba(0,38,110,.45)}
+.hk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:8px}
+.hk-kicker{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--va-gold-text-light)}
+.hk-ed{font-family:var(--va-font-mono);font-size:12px;letter-spacing:.06em;color:var(--va-muted)}
+.hk-t{margin:0 0 4px;font-family:var(--va-font-display);font-size:20px;font-weight:800;line-height:1.2;color:var(--va-ink)}
+.hk-list{list-style:none}
+.hk{display:grid;margin-top:16px;padding-top:16px;border-top:1px solid var(--va-line)}
+.hk-sez{font-family:var(--va-font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--va-gold-text-light)}
+.hk-v{display:block;margin:4px 0 2px;overflow:hidden;white-space:nowrap;font-family:var(--va-font-display);font-size:34px;font-weight:800;line-height:1.1;color:var(--va-blue)}
+.hk-v.neg{color:var(--va-neg)}
+.hk-l{font-size:15px;line-height:1.4;color:var(--va-text)}
+.hk-s{font-size:14px;line-height:1.4;color:var(--va-muted)}
+.hk-link{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;font-family:var(--va-font-mono);font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--va-blue);text-underline-offset:4px}
+
+footer{border-top:1px solid var(--va-line)}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:0 16px;padding-top:8px;padding-bottom:16px;font-size:14px;color:var(--va-muted)}
+footer a{display:inline-flex;align-items:center;min-height:44px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<a class="va-skip" href="#contenuto">Vai al contenuto</a>
+<header class="hdr"><div class="wrap"><a href="/" aria-label="Valore Atteso, home"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="58" height="40"></a></div></header>
+
+<main id="contenuto"><div class="wrap">
+<div class="kicker">Newsletter gratuita · ogni martedì</div>
+<h1>Il calcio dei numeri,<br><span>non dei goal.</span></h1>
+
+<form class="signup" id="signup" novalidate onsubmit="doSignup('form-email','form-btn','form-ok','form-check','iscriviti');return false">
+<div class="success" id="form-ok" role="status" aria-live="polite">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div>
+<div class="signup-row"><input class="email" id="form-email" type="email" aria-label="Email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit" id="form-btn" type="submit">Iscriviti gratis</button></div>
+<label class="va-consent"><input type="checkbox" id="form-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati. Cancellabile in un click.</span></label>
+</form>
+
+<section class="card" aria-labelledby="hk-title"><!-- va:home-kpi:start --><div class="hk-head"><span class="hk-kicker" id="hk-title">In sintesi · 3 numeri</span><span class="hk-ed">#026 · <time datetime="2026-10-27">27 ott 2026</time></span></div><p class="hk-t" id="hk-ed-title">Il Milan spende, il Valencia apre ai soci, il Real incassa</p><ol class="hk-list"><li class="hk"><span class="hk-sez">Il Bilancio</span><span class="hk-v neg">-€24M</span><span class="hk-l">Perdita netta 2025/26</span><span class="hk-s">primo rosso dopo tre utili</span></li><li class="hk"><span class="hk-sez">Il Deal</span><span class="hk-v">42%</span><span class="hk-l">Quota Pitchwise</span><span class="hk-s">Lim resta in maggioranza</span></li><li class="hk"><span class="hk-sez">La Metrica</span><span class="hk-v">€1.221M</span><span class="hk-l">Ricavi Real 2025/26</span><span class="hk-s">record del club</span></li></ol><a class="hk-link" href="/edizione-26" aria-describedby="hk-ed-title">Leggi l&#39;ultima edizione →</a><!-- va:home-kpi:end --></section>
+</div></main>
+
+<footer><div class="wrap"><span>Valore Atteso</span><a href="/privacy">Privacy</a></div></footer>
+
+<script src="/va.js" defer></script>
+</body>
+</html>
