@@ -261,6 +261,7 @@
     .thead,.chead{position:static}
     .steps{grid-template-columns:1fr 1fr}
     .row{grid-template-columns:minmax(0,1fr)!important}
+    .hero-numbers{grid-template-columns:repeat(2,minmax(0,auto))}
   }
   @media(max-width:639.98px){
     .deals,.gauges,.terms,.steps{grid-template-columns:1fr}
@@ -343,7 +344,6 @@
   </main>
 </div>
 
-<script src="/va.js"></script>
 <script>
 /* ════════════════════════════════════════════════════════════
    DATI REALI: snapshot verificato da Supabase (tabelle
@@ -1126,5 +1126,6 @@ async function loadLive(){
 render();    // 1° render istantaneo dallo snapshot verificato
 loadLive();  // poi sovrascrive con i dati live da Supabase
 </script>
+<script src="/va.js"></script>
 </body>
 </html>
