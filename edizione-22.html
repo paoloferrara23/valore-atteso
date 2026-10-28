@@ -19,10 +19,10 @@
 <meta property="og:image" content="https://www.valoreatteso.com/og/edizione-22.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Valore Atteso #022. Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)">
+<meta property="og:image:alt" content="Valore Atteso #022 · Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)">
 <meta property="og:locale" content="it_IT">
 <meta name="twitter:image" content="https://www.valoreatteso.com/og/edizione-22.png">
-<meta name="twitter:image:alt" content="Valore Atteso #022. Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)">
+<meta name="twitter:image:alt" content="Valore Atteso #022 · Utili, sponsor e solvibilità: il calcio che cambia (e quello che non cambia)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
@@ -39,15 +39,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -66,7 +67,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -86,6 +87,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -131,7 +140,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -139,21 +148,12 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #022 · <time datetime="2026-09-29">29 set 2026</time></div>
@@ -167,33 +167,34 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <span class="sk-v">€22,7M</span>
       <span class="sk-l">Utile netto 2025/26</span>
       <span class="sk-s">secondo consecutivo</span>
-      <a class="sk-a" href="#s1">Leggi ↓</a>
+      <a class="sk-a" href="#bilancio">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">IL DEAL</span>
       <span class="sk-v">10 anni</span>
       <span class="sk-l">Durata accordo On</span>
       <span class="sk-s">stampa, non ufficiale</span>
-      <a class="sk-a" href="#s2">Leggi ↓</a>
+      <a class="sk-a" href="#deal">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">LA METRICA</span>
       <span class="sk-v">9 su 20</span>
       <span class="sk-l">Serie A in difficoltà</span>
       <span class="sk-s">5 fragili, 4 in tensione</span>
-      <a class="sk-a" href="#s3">Leggi ↓</a>
+      <a class="sk-a" href="#metrica">Leggi ↓</a>
     </li></ol></section>
-  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">IL BILANCIO</a><a href="#s2">IL DEAL</a><a href="#s3">LA METRICA</a></div></nav>
+  
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#bilancio">IL BILANCIO</a><a href="#deal">IL DEAL</a><a href="#metrica">LA METRICA</a></div><div class="secbar-prog" aria-hidden="true"></div></nav>
   <p class="opener">Il calcio europeo produce numeri sempre più grandi. Ma non tutti i numeri raccontano la stessa storia. L&#39;Inter chiude due esercizi in utile e sembra cambiata, Mbappé genera più valore fuori dal campo che dentro, e quasi metà della Serie A ha un problema di cassa che gli stadi nuovi non risolveranno.</p>
-  <section class="sec" id="s1">
+  <section class="sec" id="bilancio">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Inter, secondo utile di fila con 49 milioni di ricavi in meno: come ci è arrivata</h2>
       <p class="sec-body">L&#39;Inter chiude il bilancio 2025/26 con un utile netto di 22,7 milioni: è il secondo consecutivo, dopo i 35,4 milioni del 2024/25, che erano stati il primo utile in 15 anni. Il progetto di bilancio è stato approvato dal CdA il 24 settembre; l&#39;assemblea dei soci lo voterà entro metà ottobre.</p><p class="sec-body">Il dato più interessante è che l&#39;utile tiene nonostante il calo dei ricavi: 518 milioni, contro il record di 567 della stagione precedente, che aveva beneficiato della finale di Champions League e della partecipazione al Mondiale per Club. Sono 49 milioni in meno.</p><p class="sec-body">Come si compensa un calo del genere? Il comunicato del club indica tre leve: costi della produzione scesi di circa 20 milioni (-4%), ricavi da player trading saliti di 11 milioni e ammortamenti dei cartellini in calo di 8 milioni. Sul fronte commerciale i ricavi crescono del 7%, trainati dal merchandising con il nuovo modello sviluppato insieme a Fanatics.</p><p class="sec-body">Torna quindi la domanda di partenza: quanto di questo utile viene dal mercato? Il player trading pesa più dell&#39;anno scorso, ma il comunicato non riporta ancora il valore assoluto delle plusvalenze, che sarà nel bilancio completo. Un dato però si può già calcolare: togliendo l&#39;incremento di 11 milioni, a parità di altre voci, l&#39;utile resterebbe positivo, intorno agli 11,7 milioni. A tenere i conti in attivo è soprattutto il taglio dei costi.</p><p class="sec-body">Per chi valuta un club, il segnale è la tenuta: in un anno senza i ricavi straordinari della stagione precedente, l&#39;Inter è rimasta in utile agendo sulla struttura dei costi. La domanda aperta è quanto questo risultato sia ripetibile senza una stagione europea di vertice.</p>
       <div class="sec-src">Fonti: FC Internazionale Milano, comunicato sul progetto di bilancio 2025/26, 24/09/2026 · Il Sole 24 Ore, «Inter, secondo utile consecutivo: 22,7 milioni e patrimonio netto di nuovo positivo», 24/09/2026</div>
-    </section><section class="sec" id="s2">
+    </section><section class="sec" id="deal">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Mbappé lascia Nike dopo 20 anni: il nuovo sponsor lo paga anche in azioni</h2>
       <p class="sec-body">A metà settembre Kylian Mbappé ha chiuso un rapporto commerciale durato quasi vent&#39;anni: quello con Nike, iniziato quando aveva otto anni. Il nuovo sponsor tecnico è On, il marchio svizzero di scarpe da running quotato al NYSE, al suo primo ingresso nel calcio.</p><p class="sec-body">L&#39;accordo, di circa dieci anni secondo la stampa sportiva internazionale (dettaglio non confermato ufficialmente), non è un semplice contratto di sponsorizzazione. Mbappé diventa anche azionista di On: oltre a un compenso in denaro, la cui entità non è stata resa nota, riceve una quota di equity nella società. È un modello insolito nel calcio, dove i testimonial vengono di norma pagati solo in contanti o royalty.</p><p class="sec-body">Nike aveva provato a trattenerlo: più fonti concordano su un&#39;offerta di rinnovo da oltre 20 milioni di euro l&#39;anno per dieci anni, rifiutata da Mbappé. A fare la differenza, secondo le ricostruzioni, non è stato il compenso base, che Nike era pronta a pareggiare, ma la quota di equity offerta da On.</p><p class="sec-body">Il mercato ha reagito subito: il titolo On (NYSE: ONON) è salito di oltre il 4% nelle ore successive all&#39;annuncio.</p><p class="sec-body">Mbappé continuerà comunque a giocare con la maglia Adidas del Real Madrid: le sue scarpe saranno On. È una nuova puntata della convivenza tra sponsor individuale del giocatore e sponsor tecnico del club.</p><p class="sec-body">Per un club o un brand che valuta un accordo con un atleta di questo profilo, il caso segna un possibile cambio di paradigma: l&#39;atleta non è più solo un costo di marketing, ma un potenziale socio, con un interesse diretto nella crescita dell&#39;azienda che sponsorizza.</p>
       <div class="sec-src">Fonti: On Holding AG, comunicato stampa sull&#39;accordo con Kylian Mbappé, 18/09/2026 · CNBC, «Nike parts ways with Kylian Mbappé; soccer superstar signs with On», 18/09/2026 · Sportcal, «Deal Focus: On shakes up soccer market with major Mbappé tie-up», settembre 2026 · Evercore ISI e Jefferies, note su On Holding (NYSE: ONON) riportate da TipRanks, settembre 2026</div>
-    </section><section class="sec" id="s3">
+    </section><section class="sec" id="metrica">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">9 club di Serie A su 20 fragili o in tensione: il calcio italiano ha un problema di solvibilità, non solo di stadi</h2>
       <p class="sec-body">La prima relazione annuale della Commissione Atelli, presentata alla Camera il 23 settembre, fotografa una Serie A con un problema strutturale: 9 club su 20, il 45%, sono in condizioni di fragilità o di tensione economica. Nel dettaglio, 5 sono in fragilità con una parziale tenuta operativa e 4 in tensione vera e propria.</p><p class="sec-body">Il numero che preoccupa di più non è quello della Serie A. È quello delle categorie inferiori. In Serie B la tensione riguarda il 57% dei club, in Serie C il 63%. Quasi due club su tre nella terza serie professionale hanno i conti sotto pressione. Non è un problema di singoli club mal gestiti: è un problema di sistema.</p><p class="sec-body">Il dato che spiega il perché riguarda il costo della rosa, cioè stipendi più ammortamenti dei cartellini. Tra i club monitorati dalla Commissione vale in mediana 2,35 volte i ricavi ricorrenti prima del player trading; includendo anche i ricavi da compravendita dei giocatori il rapporto scende a 1,75. In altre parole, per molti club la gestione corrente non basta a sostenere la rosa senza vendere giocatori.</p><p class="sec-body">Per un investitore PE o un advisor M&amp;A, il segnale è preciso. Quando i costi strutturali superano così nettamente i ricavi, il settore non ha bisogno solo di stadi nuovi o di accordi commerciali migliori. Ha bisogno di equity fresca, cioè di capitali che entrino nel patrimonio dei club per riequilibrare i bilanci. Le infrastrutture aiutano nel medio periodo, ma non risolvono una tensione di cassa che è già qui.</p><p class="sec-body">Il rischio sistemico è reale. Se più club simultaneamente faticano a coprire i costi, una crisi di liquidità in un punto della catena può propagarsi rapidamente agli altri, attraverso i crediti incrociati e i contratti di prestito tra club.</p>
@@ -216,6 +217,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti gratis</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
@@ -230,21 +232,15 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
   </div>
 </div>
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 <script src="/va.js"></script>
 <script>
 (function(){
@@ -263,6 +259,28 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
     window.removeEventListener("scroll",onScroll);
   }
   window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
 })();
 </script>
 </body>

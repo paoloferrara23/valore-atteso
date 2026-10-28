@@ -85,6 +85,7 @@ function inlineForm(source, cta) {
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">${esc(cta || 'Iscriviti gratis')}</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>`;
 }
@@ -99,6 +100,31 @@ function scrollBar(source) {
   </div>
 </div>`;
 }
+
+// Pagina edizione: voce attiva della barra delle sezioni (IntersectionObserver), barra di avanzamento della lettura
+// (solo transform) e valori della card "In sintesi" sempre su una riga (il corpo scende fino a 22px).
+const EDITION_JS = `<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
+})();
+</script>`;
 
 // vaSub(form) sta in /va.js, condiviso con /archivio.
 const SUBSCRIBE_JS = `<script src="/va.js"></script>
@@ -146,6 +172,21 @@ function ogImageFor(ed) {
 // Icona busta (SVG inline, monocromatica) per il bottone di condivisione via email.
 const ICON_MAIL = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
 
+// Ancora della sezione dal suo tag (Il Bilancio → bilancio…); i tag diversi delle prime edizioni non ne ricevono.
+const SECTION_ANCHORS = [['bilancio', /bilancio/i], ['deal', /\bdeal\b/i], ['metrica', /metrica/i]];
+function sectionAnchors(sections) {
+  const used = new Set();
+  return sections.map(s => {
+    const hit = SECTION_ANCHORS.find(([id, re]) => re.test(String(s.label || '')) && !used.has(id));
+    if (!hit) return null;
+    used.add(hit[0]);
+    return hit[0];
+  });
+}
+
+// Il sottotitolo sta sul navy se entra in circa 3 righe a 375px (~135 caratteri), altrimenti va sotto su crema.
+const SUB_ON_NAVY_MAX = 135;
+
 // nav = { prev, next }: edizione precedente (più vecchia) e successiva (più recente), se esistono.
 function buildEditionHtml(ed, nav = {}) {
   const url = SITE + '/' + slug(ed.num);
@@ -153,7 +194,10 @@ function buildEditionHtml(ed, nav = {}) {
   const sections = Array.isArray(ed.sections) ? ed.sections : [];
   const og = ogImageFor(ed);
   const ogUrl = og || `${SITE}/og.png`;
-  const ogAlt = og ? `Valore Atteso #${ed.num}. ${ed.title}` : 'Valore Atteso. Il calcio dei numeri, non dei goal.';
+  const ogAlt = og ? `Valore Atteso #${ed.num} · ${ed.title}` : 'Valore Atteso. Il calcio dei numeri, non dei goal.';
+  const anchors = sectionAnchors(sections);
+  const iso = isoDate(ed.date) || undefined;
+  const subShort = ed.subtitle && String(ed.subtitle).length <= SUB_ON_NAVY_MAX;
 
   // Card "In sintesi": il primo KPI di ogni sezione, con il salto alla sezione (sub con nomi di testate omesso).
   const kpiCells = sections.map((s, i) => {
@@ -165,16 +209,18 @@ function buildEditionHtml(ed, nav = {}) {
       <span class="sk-v${neg ? ' neg' : ''}">${esc(k.value || '')}</span>
       <span class="sk-l">${esc(k.label || k.key || '')}</span>
       ${k.sub && !hasBlockedName(k.sub) ? `<span class="sk-s">${esc(k.sub)}</span>` : ''}
-      <a class="sk-a" href="#s${i + 1}">Leggi ↓</a>
+      ${anchors[i] ? `<a class="sk-a" href="#${anchors[i]}">Leggi ↓</a>` : ''}
     </li>`;
   }).filter(Boolean).join('');
 
-  // Barra sticky delle sezioni (Il Bilancio · Il Deal · La Metrica).
-  const secNav = sections.map((s, i) => s.label ? `<a href="#s${i + 1}">${esc(s.label)}</a>` : '').filter(Boolean).join('');
+  // Barra sticky delle sezioni: solo se esistono tutte e tre le ancore.
+  const hasBar = ['bilancio', 'deal', 'metrica'].every(a => anchors.includes(a));
+  const secNav = hasBar ? sections.map((s, i) => anchors[i] ? `<a href="#${anchors[i]}">${esc(s.label)}</a>` : '').join('') : '';
 
   const secFull = (s, n) => {
     const srcs = Array.isArray(s.sources) ? s.sources.filter(Boolean) : [];
-    return `<section class="sec" id="s${n}">
+    const id = anchors[n - 1];
+    return `<section class="sec"${id ? ` id="${id}"` : ''}>
       <div class="sec-head"><span class="sec-num">${n}</span><span class="sec-tag">${esc(s.label || '')}</span></div>
       <h2 class="sec-title">${esc(s.title || '')}</h2>
       ${bodyParas(s.body)}
@@ -215,8 +261,8 @@ function buildEditionHtml(ed, nav = {}) {
     headline: ed.title || '',
     description: desc,
     image: og || undefined,
-    datePublished: ed.date || undefined,
-    dateModified: ed.date || undefined,
+    datePublished: iso,
+    dateModified: iso,
     inLanguage: 'it',
     isAccessibleForFree: true,
     author: { '@type': 'Organization', name: 'Valore Atteso' },
@@ -242,7 +288,7 @@ function buildEditionHtml(ed, nav = {}) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${url}">
 <meta property="og:site_name" content="Valore Atteso">
-<meta property="article:published_time" content="${esc(ed.date)}">
+<meta property="article:published_time" content="${esc(iso || ed.date)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(ed.title)}">
 <meta name="twitter:description" content="${esc(desc)}">
@@ -269,15 +315,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -296,7 +343,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -316,6 +363,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -361,7 +416,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -369,31 +424,23 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #${esc(ed.num)} · ${timeTag(ed.date)}</div>
   <h1>${esc(ed.title)}</h1>
-  ${ed.subtitle ? `<p class="sub">${esc(ed.subtitle)}</p>` : ''}
+  ${subShort ? `<p class="sub">${esc(ed.subtitle)}</p>` : ''}
 </div></div>
 
 <article class="wrap" id="contenuto">
   ${kpiCells ? `<section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list">${kpiCells}</ol></section>` : ''}
-  ${secNav ? `<nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in">${secNav}</div></nav>` : ''}
+  ${ed.subtitle && !subShort ? `<p class="sub-light">${esc(ed.subtitle)}</p>` : ''}
+  ${secNav ? `<nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in">${secNav}</div><div class="secbar-prog" aria-hidden="true"></div></nav>` : ''}
   ${ed.opener ? `<p class="opener">${esc(teaser(ed.opener, 420))}</p>` : ''}
   ${secHtml}
   ${share}
@@ -403,16 +450,10 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 ${ciCta}
 ${scrollBar('edizione-' + ed.num + '__scroll')}
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 ${SUBSCRIBE_JS}
+${EDITION_JS}
 </body>
 </html>
 `;
@@ -424,7 +465,7 @@ function buildSitemap(editions) {
     `  <url>\n    <loc>${SITE}${p.loc}</loc>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`
   );
   const edUrls = editions.map(ed =>
-    `  <url>\n    <loc>${SITE}/${slug(ed.num)}</loc>\n    <lastmod>${ed.date || today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`
+    `  <url>\n    <loc>${SITE}/${slug(ed.num)}</loc>\n    <lastmod>${isoDate(ed.date) || today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`
   );
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticUrls.concat(edUrls).join('\n')}\n</urlset>\n`;
 }

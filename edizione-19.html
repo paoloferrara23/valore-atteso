@@ -39,15 +39,16 @@ html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
 body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 
-.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.ehdr .va-logo img{height:28px}
-@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-.nav-a:hover{color:var(--ink)}
-.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-@media(max-width:639px){.nav-links .nav-a{display:none}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:11px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 
 /* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
 .mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
@@ -66,7 +67,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
 .sk:first-child{border-top:0;margin-top:4px}
 .sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
-.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v{display:block;font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden}
 .sk-v.neg{color:#9A3A2F}
 .sk-l{font-size:14px;line-height:1.4;color:#2B2824}
 .sk-s{font-size:14px;line-height:1.4;color:#4F545F}
@@ -86,6 +87,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 .secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
 .secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
 
+.sub-light{margin:28px 0 0;font-size:clamp(16px,calc(.45vw + 14.3px),19px);line-height:1.55;color:var(--ink2)}
+.secbar a[aria-current="true"]{color:var(--ink);border-bottom-color:#D67F0D}
+.secbar-prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:#D67F0D;transform:scaleX(0);transform-origin:0 50%}
+@media(prefers-reduced-motion:reduce){.secbar-prog{transition:none}}
+.vaform .va-consent.va-consent{max-width:480px;margin:8px auto 0;text-align:left;font-size:14px}
+.gate .va-consent.va-consent input,#va-scroll-cta .va-consent.va-consent input{accent-color:#E5962E}
+.gate .va-consent a,#va-scroll-cta .va-consent a{color:#F3EFE6}
+#va-scroll-cta .va-consent.va-consent{margin:4px 0 0;font-size:13px;min-height:44px}
 .opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
 .sec{margin-top:48px}
 .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -131,7 +140,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
 
 .secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
-.secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
+.secondary-cta a{display:inline-flex;align-items:center;min-height:44px;color:var(--deepgold);font-weight:600;text-decoration:underline;text-decoration-color:var(--va-gold-graphic);text-underline-offset:4px}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
@@ -139,21 +148,12 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 #va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
 #va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
 #va-scroll-cta .vaform-status{color:#86C29A}
-.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
-.foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
-.foot a:hover{color:var(--ink)}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<header class="ehdr"><div class="nav">
-  <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-  <div class="nav-links">
-    <a href="/archivio" class="nav-a">Archivio</a>
-    <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
-  </div>
-</div></header>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="#iscriviti">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="#iscriviti" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #019 · <time datetime="2026-09-08">8 set 2026</time></div>
@@ -167,33 +167,34 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <span class="sk-v">€137M</span>
       <span class="sk-l">Posizione finanziaria netta</span>
       <span class="sk-s">al 30/06/2025</span>
-      <a class="sk-a" href="#s1">Leggi ↓</a>
+      <a class="sk-a" href="#bilancio">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">IL DEAL</span>
       <span class="sk-v">70%</span>
       <span class="sk-l">Quota ceduta</span>
       <span class="sk-s">a KHC, PIF resta al 30%</span>
-      <a class="sk-a" href="#s2">Leggi ↓</a>
+      <a class="sk-a" href="#deal">Leggi ↓</a>
     </li><li class="sk">
       <span class="sk-sez">LA METRICA</span>
       <span class="sk-v">£3,55 mld</span>
       <span class="sk-l">Spesa Premier estate 2026</span>
       <span class="sk-s">record, prec. £3,19 mld</span>
-      <a class="sk-a" href="#s3">Leggi ↓</a>
+      <a class="sk-a" href="#metrica">Leggi ↓</a>
     </li></ol></section>
-  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">IL BILANCIO</a><a href="#s2">IL DEAL</a><a href="#s3">LA METRICA</a></div></nav>
+  
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#bilancio">IL BILANCIO</a><a href="#deal">IL DEAL</a><a href="#metrica">LA METRICA</a></div><div class="secbar-prog" aria-hidden="true"></div></nav>
   <p class="opener">Tre storie diverse, una logica comune: chi ha liquidità decide, chi non ce l&#39;ha segue. Il Napoli ha 137 milioni in cassa ma vale la pena capire da dove vengono. L&#39;Arabia Saudita vende invece di comprare, e cambia le regole del gioco. La Premier League ha speso £3,46 miliardi in un&#39;estate: il divario con le altre leghe non è più un tema di dibattito, è un dato strutturale.</p>
-  <section class="sec" id="s1">
+  <section class="sec" id="bilancio">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Il Napoli ha 137 milioni di cassa netta. Ma quanti vengono dal campo?</h2>
       <p class="sec-body">Il Napoli chiude il bilancio al 30 giugno 2025 con una posizione finanziaria netta positiva di 137 milioni: 174,4 milioni di liquidità a fronte di soli 37 milioni di debiti bancari, senza bond. Un dato solido, che a prima vista segnala un club in salute.</p><p class="sec-body">Il problema è capire da dove vengono quei soldi. Ben 102,6 milioni del risultato derivano dalle plusvalenze, cioè dai guadagni sulle cessioni di calciatori. Tolto quel contributo, i ricavi operativi strutturali, quelli da diritti TV, stadio e sponsor, non bastano a coprire i costi da soli. Il modello regge solo se ogni anno il mercato porta vendite significative.</p><p class="sec-body">Questo è il punto debole. Un club che dipende dalle cessioni per chiudere i conti in pareggio non controlla davvero il proprio equilibrio economico. Dipende da fattori esterni: la disponibilità degli acquirenti, i prezzi di mercato, le offerte che arrivano.</p><p class="sec-body">Il ritorno in Champions League nel 2025/26 cambia qualcosa. Il solo ingresso nella league phase vale circa 18,6 milioni di bonus di partecipazione UEFA, che salgono con i risultati fino a diverse decine di milioni. È un&#39;iniezione reale, che riduce la pressione sul mercato dei trasferimenti. Ma dipende dai risultati e dura una stagione: se il Napoli non si riqualifica l&#39;anno dopo, il problema torna.</p><p class="sec-body">La cassa è positiva. Il modello di ricavo, però, resta fragile e dipendente da variabili che il club non controlla direttamente.</p>
       <div class="sec-src">Fonti: SSC Napoli, bilancio d&#39;esercizio ufficiale al 30/06/2025 · UEFA, prize money Champions League 2025/26 (bonus di partecipazione 18,62 milioni)</div>
-    </section><section class="sec" id="s2">
+    </section><section class="sec" id="deal">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Al-Hilal è solo il primo: così il PIF smonta il portafoglio calcio</h2>
       <p class="sec-body">Il fondo sovrano saudita (PIF) ha venduto il 70% di Al-Hilal a Kingdom Holding Company per 224 milioni di dollari. È il prezzo del 70% del capitale, che valuta l&#39;intero club (il 100% dell&#39;equity) circa 320 milioni.</p><p class="sec-body">Il meccanismo scelto è preciso: si crea un veicolo societario separato, si cede la maggioranza a un acquirente privato, ma il controllo sostanziale resta vicino allo Stato, perché il PIF mantiene il 30%. È governance privata in apparenza, pubblica nella sostanza.</p><p class="sec-body">Perché farlo ora? La strategia PIF 2026-2030 ha ridefinito le priorità: lo sport non è più tra i settori core del fondo. Il portafoglio calcio, quattro club della Saudi Pro League, deve alleggerirsi. Al-Hilal è il primo test.</p><p class="sec-body">Se il modello funziona, i tre club restanti possono seguire la stessa strada. Al-Nassr, Al-Ittihad e Al-Ahli hanno strutture simili e lo stesso azionista di partenza. Il template è già pronto: valutazione benchmark, veicolo dedicato, cessione della maggioranza formale.</p><p class="sec-body">Per chi guarda dall&#39;esterno con occhi da M&amp;A, questa non è una privatizzazione piena. È una ristrutturazione della partecipazione statale in forma societaria: il PIF incassa liquidità, riduce l&#39;esposizione diretta allo sport e mantiene influenza attraverso strutture di controllo indirette.</p>
       <div class="sec-src">Fonti: Inside World Football, 02/09/2026 · PIF, comunicato ufficiale (accordo aprile 2026, closing settembre 2026)</div>
-    </section><section class="sec" id="s3">
+    </section><section class="sec" id="metrica">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Premier League: 3,55 miliardi in un&#39;estate, più delle altre quattro leghe insieme</h2>
       <p class="sec-body">In questa estate la Premier League ha speso 3,55 miliardi di sterline sul mercato: un record, che batte il precedente primato di 3,19 miliardi dell&#39;estate prima. Le altre quattro grandi leghe europee, tutte insieme, si fermano a circa 2,46 miliardi (Serie A 846 milioni, Liga 616, Bundesliga 508, Ligue 1 494). La Premier da sola spende più delle altre quattro sommate.</p><p class="sec-body">E non è una stagione anomala: la spesa inglese cresce di anno in anno, mentre le altre leghe non riescono a stare al passo. Il motivo è semplice: i ricavi televisivi, commerciali e da stadio delle rivali non reggono il confronto.</p><p class="sec-body">Questo è il punto centrale. I club inglesi spendono di più perché guadagnano di più. La Premier distribuisce ai propri club quote televisive che in Serie A, Bundesliga o Ligue 1 non esistono nello stesso ordine di grandezza. Con più liquidità puoi pagare ingaggi più alti e prezzi di cartellino, cioè il costo per acquistare un giocatore, che gli altri non si possono permettere.</p><p class="sec-body">Il divario non è casuale: è la conseguenza diretta di un gap strutturale di ricavi che si allarga ogni anno. Le altre leghe spesso possono avvicinarsi solo vendendo, non comprando: quest&#39;estate la Ligue 1, per esempio, ha chiuso il mercato in attivo.</p><p class="sec-body">Per chi lavora in M&amp;A o advisory nel calcio, il messaggio è semplice: fuori dalla Premier, i club competono con risorse diverse. Questo cambia le valutazioni, i multipli e le aspettative di ritorno di qualsiasi deal.</p>
@@ -216,6 +217,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti gratis</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <p class="gate-fine">Una email a settimana. Niente spam, disiscrizione in un clic.</p>
@@ -230,21 +232,15 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <input type="email" name="email" required placeholder="La tua email" autocomplete="email" aria-label="Email">
       <button type="submit" class="va-btn-primary">Iscriviti</button>
     </div>
+    <label class="va-consent"><input type="checkbox"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>
     <div class="vaform-status" aria-live="polite"></div>
   </form>
     <button class="sc-close" aria-label="Chiudi" onclick="var e=document.getElementById('va-scroll-cta');if(e)e.style.display='none';">×</button>
   </div>
 </div>
 
-<footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
-  <a href="/">Home</a>
-  <a href="/archivio">Archivio</a>
-  <a href="/club-intelligence">Club Intelligence</a>
-  <a href="/glossario">Glossario</a>
-  <a href="/privacy">Privacy</a>
-</footer>
-<p style="max-width:760px;margin:0 auto;padding:4px 24px 40px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<p class="ai-note" style="max-width:760px;margin:0 auto;padding:40px 24px 8px;font-family:var(--mn);font-size:12px;color:var(--muted);line-height:1.6;text-align:center">Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Fonti verificabili citate in ogni sezione.</p>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 <script src="/va.js"></script>
 <script>
 (function(){
@@ -263,6 +259,28 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
     window.removeEventListener("scroll",onScroll);
   }
   window.addEventListener("scroll",onScroll,{passive:true});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.querySelector('.secbar');
+  if(bar&&'IntersectionObserver' in window){
+    var links={};bar.querySelectorAll('a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var secs=Object.keys(links).map(function(id){return document.getElementById(id)}).filter(Boolean);
+    var vis={};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target.id]=e.isIntersecting});
+      var cur=secs.filter(function(s){return vis[s.id]})[0];
+      Object.keys(links).forEach(function(id){if(cur&&id===cur.id)links[id].setAttribute('aria-current','true');else links[id].removeAttribute('aria-current')});
+    },{rootMargin:'-30% 0px -60% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+    var prog=bar.querySelector('.secbar-prog'),first=secs[0],last=secs[secs.length-1],tick=false;
+    function upd(){tick=false;if(!prog||!first)return;var top=first.getBoundingClientRect().top+scrollY,end=last.getBoundingClientRect().bottom+scrollY-innerHeight;var p=Math.max(0,Math.min(1,(scrollY-top+innerHeight*0.3)/Math.max(1,end-top+innerHeight*0.3)));prog.style.transform='scaleX('+p.toFixed(3)+')'}
+    addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
+  fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
 })();
 </script>
 </body>
