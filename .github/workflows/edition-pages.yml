@@ -2,7 +2,7 @@ name: Edition Pages (SEO)
 
 # Genera una pagina statica indicizzabile per ogni edizione pubblicata
 # (anteprima + gate iscrizione), aggiorna sitemap.xml e la striscia KPI della home
-# (tra i marcatori va:home-kpi in index.html), poi committa su main.
+# (tra i marcatori va:home-kpi in index.html e iscriviti.html), poi committa su main.
 # Le edizioni escono il martedì: gira ogni mattina (idempotente) + on demand.
 
 on:
@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add edizione-*.html sitemap.xml index.html
+          git add edizione-*.html sitemap.xml index.html iscriviti.html
           if git diff --staged --quiet; then
             echo "Nessun cambiamento: sitemap e pagine gia aggiornate."
           else
