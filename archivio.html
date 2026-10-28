@@ -32,15 +32,6 @@ body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17
 a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.nav{max-width:var(--max);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--va-font-display);font-size:2rem;font-weight:800;letter-spacing:-.8px;color:var(--ink);text-decoration:none;white-space:nowrap;line-height:1;flex-shrink:0}
-.nav-links{display:flex;gap:28px;align-items:center;min-width:0}
-.nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;transition:.15s;white-space:nowrap}
-.nav-a:hover,.nav-a.active{color:var(--ink)}
-.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center;white-space:nowrap;transition:.15s;text-decoration:none}
-.nav-cta:hover{background:transparent;color:var(--ink)}
 
 /* LAYOUT */
 .container{max-width:var(--max);margin:0 auto;padding:72px 24px 88px}
@@ -49,7 +40,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-
 
 /* HERO ARCHIVIO */
 .archive-hero{max-width:760px;margin:0 auto 48px;padding-top:4px}
-.page-label{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;font-weight:600}
+.page-label{font-family:var(--mn);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;font-weight:600}
 .page-label::before{content:'';width:28px;height:1px;background:var(--deepgold)}
 .page-title{font-family:var(--va-font-display);font-size:clamp(2.35rem,5.2vw,3.85rem);font-weight:800;letter-spacing:-1px;line-height:1.02;margin-bottom:18px;color:var(--ink)}
 .page-title span{display:none}
@@ -241,19 +232,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-
 #btn-edit,#btn-cancel{background:rgba(255,253,248,.65)!important;border:1px solid var(--rule)!important;color:var(--ink)!important}
 #btn-save{background:var(--ink)!important;color:var(--cream)!important;border:none!important}
 
-/* FOOTER */
-footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24px;margin-top:0}
-.footer-inner{max-width:var(--max);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.footer-links{display:flex;gap:18px;flex-wrap:wrap}
-.footer-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:.15s}
-.footer-links a:hover{color:var(--ink)}
 
 @media(max-width:920px){
-  .nav{height:64px;padding:0 20px;gap:14px}
-  .nav-logo{font-size:1.55rem;letter-spacing:-.9px;max-width:none;white-space:nowrap}
-  .nav-links{gap:14px}
-  .nav-links .nav-a{display:none}
-  .nav-cta{height:36px;padding:0 14px;font-size:12px;letter-spacing:.1em;background:var(--ink);border-color:var(--ink);color:var(--cream)}
   .container{padding:52px 20px 70px}
   .archive-hero{max-width:760px;margin-bottom:42px}
   .page-title{font-size:clamp(2.35rem,9.5vw,3.35rem);letter-spacing:-1.4px;line-height:1.04;font-family:var(--va-font-display);font-weight:800}
@@ -262,16 +242,11 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 }
 @media(max-width:620px){
   body{font-size:16px}
-  .nav{padding:0 18px}
-  .nav-logo{font-size:1.45rem;letter-spacing:-.8px}
-  .nav-cta{height:34px;padding:0 12px;font-size:12px;letter-spacing:.08em}
   .page-label{font-size:12px;margin-bottom:14px}
   .page-title{font-size:clamp(2.25rem,10vw,3rem);letter-spacing:-1.2px;margin-bottom:14px;font-family:var(--va-font-display);font-weight:800}
   .art-title{letter-spacing:-1.1px;font-size:clamp(2rem,9vw,3rem);font-family:var(--va-font-display);font-weight:800}
   .art-body{font-size:17px}
   .article-top{align-items:flex-start}
-  .footer-inner{display:block}
-  .footer-links{margin-top:14px}
 }
 </style>
 <link rel="canonical" href="https://www.valoreatteso.com/archivio">
@@ -296,6 +271,20 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/va.css">
 <style>
+/* Fase 4: header e footer standard (.va-hdr/.va-ftr), come nelle altre pagine. */
+:root{--hdr-h:60px;--pad:20px}
+@media(min-width:640px){:root{--hdr-h:64px;--pad:24px}}
+@media(min-width:1280px){:root{--hdr-h:72px}}
+.va-hdr .nav{height:var(--hdr-h);max-width:1200px;padding:0 var(--pad);gap:16px}
+.va-menu.mobile-menu{top:var(--hdr-h)}
+.va-hdr .va-logo img{height:28px}
+.va-hdr .nav-links{display:flex;gap:24px}
+.va-hdr .nav-links>:not(.nav-cta){display:none}
+.va-hdr .nav-cta{font-size:12px;padding:0 16px}
+.va-hdr .ham{display:flex;flex:none}
+@media(max-width:359px){.va-hdr .nav{gap:10px}.va-hdr .nav-cta{padding:0 12px;letter-spacing:.06em}}
+@media(min-width:640px){.va-hdr .nav-cta{font-size:12px;padding:0 18px}}
+@media(min-width:1280px){.va-hdr .va-logo img{height:34px}.va-hdr .nav-links{gap:28px}.va-hdr .nav-links>.nav-link,.va-hdr .nav-links>.nav-tool{display:inline-flex}.va-hdr .ham{display:none}}
 /* Fase 2 D: archivio a card (1/2/3 colonne a 375/640/1280), anteprima di 2 righe dal sottotitolo. */
 .ed-list.ed-list{max-width:none;display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .ed-card{display:flex;flex-direction:column;gap:8px;padding:18px;border:1px solid rgba(28,25,20,.14);border-radius:12px;background:#FFFFFF;color:#1C1914;text-decoration:none;transition:border-color .15s,box-shadow .15s}
@@ -321,17 +310,8 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
 
-<nav>
-  <div class="nav">
-    <a class="nav-logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
-    <div class="nav-links">
-      <a class="nav-a active" href="/archivio">Archivio</a>
-      <a class="nav-a" href="/glossario">Glossario</a>
-      <a class="nav-a" href="/#about">About</a>
-      <a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a>
-    </div>
-  </div>
-</nav>
+<div class="nav-wrap va-hdr"><nav class="nav"><a class="logo va-logo" href="/"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a><div class="nav-links"><a class="nav-link" href="/#newsletter">Newsletter</a><a class="nav-link" href="/archivio" aria-current="page">Archivio</a><a class="nav-tool" href="/club-intelligence" title="Strumento interattivo · i bilanci dei club, leggibili"><span class="tdot"></span>Club Intelligence</a><a class="nav-link" href="/glossario">Glossario</a><a class="nav-link" href="/#about">About</a><a class="nav-link" href="/sponsor">Sponsorizza</a><a class="nav-cta va-btn-primary" href="/#signup-top">Iscriviti gratis</a></div><button class="ham" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span><span></span></button></nav></div>
+<div class="mobile-menu va-menu" id="mobile-menu"><a href="/" onclick="closeMenu()">Home</a><a href="/#newsletter" onclick="closeMenu()">Newsletter</a><a href="/archivio" onclick="closeMenu()">Archivio</a><a class="mob-tool" href="/club-intelligence" onclick="closeMenu()"><span class="tdot"></span>Club Intelligence</a><a href="/glossario" onclick="closeMenu()">Glossario</a><a href="/sponsor" onclick="closeMenu()">Sponsorizza</a><a class="mob-cta va-btn-primary" href="/#signup-top" onclick="closeMenu()">Iscriviti gratis</a></div>
 
 <div class="container" id="contenuto">
 
@@ -365,19 +345,7 @@ footer{border-top:1px solid var(--rule);background:var(--cream2);padding:26px 24
 
 </div>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-links">
-      <a href="/">Home</a>
-      <a href="/glossario">Glossario</a>
-      <a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/cookie-policy">Cookie</a>
-      <a href="/disclaimer">Disclaimer</a>
-      <a href="mailto:info@valoreatteso.com">Contatti</a>
-    </div>
-  </div>
-</footer>
+<footer class="va-ftr"><div class="footer"><a class="footer-logo va-mono" href="/"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a><div class="footer-links"><a href="/archivio">Archivio</a><a href="/club-intelligence">Club Intelligence</a><a href="/glossario">Glossario</a><a href="/about">Chi siamo</a><a href="/come-lavoriamo">Come lavoriamo</a><a href="mailto:info@valoreatteso.com">Contatti</a><a href="/privacy">Privacy</a><a href="/cookie-policy">Cookie</a><a href="#" onclick="openCookieSettings()">Gestisci cookie</a><a href="/disclaimer">Disclaimer</a></div></div><div class="legal-note">Valore Atteso è una newsletter editoriale indipendente dedicata al business del calcio e dello sport. Le informazioni pubblicate hanno finalità esclusivamente informative e divulgative e non costituiscono consulenza finanziaria, legale, fiscale o di investimento. Le analisi sono elaborate a partire da fonti pubbliche ritenute affidabili, senza garanzia di completezza o accuratezza. Marchi, denominazioni e stemmi dei club e delle leghe appartengono ai rispettivi titolari, citati a soli fini identificativi ed editoriali; gli stemmi nello strumento Club Intelligence sono rielaborazioni originali stilizzate. Valore Atteso non è affiliata, sponsorizzata né approvata da alcun club o lega. Vedi il <a href="/disclaimer" style="color:inherit;text-decoration:underline">disclaimer completo</a>.</div></footer>
 
 <script src="/va.js"></script>
 <script>
