@@ -514,7 +514,7 @@ async function main() {
   console.log(`[generate-edition-pages] ${written} pagine edizione + sitemap.xml (${valid.length} URL edizioni)` + (home ? ` + KPI home dalla #${home}` : ''));
 }
 
-module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions };
+module.exports = { buildEditionHtml, buildSitemap, teaser, metaDescription, slug, buildHomeKpi, homeKpis, updateHome, fetchEditions, isoDate };
 
 if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });

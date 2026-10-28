@@ -11,11 +11,12 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { chromium } = require('playwright');
-const { fetchEditions, slug } = require('./generate-edition-pages.js');
+const { fetchEditions, slug, isoDate } = require('./generate-edition-pages.js');
+const { blockedNames } = require('../api/_lib/email/config.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'og');
-const LAYOUT = 'og-v1';
+const LAYOUT = 'og-v2';
 const EXCLUDED = ['018', '019'];
 const MAX_BYTES = 300 * 1024;
 
@@ -23,11 +24,12 @@ const MAX_BYTES = 300 * 1024;
 const fontUrl = f => 'data:font/woff2;base64,' + fs.readFileSync(path.join(ROOT, 'fonts', f)).toString('base64');
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// "27 OTT 2026", anche per le prime edizioni con la data scritta per esteso ("5 maggio 2026").
 function dateLabel(v) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(v || ''));
-  if (!m) return String(v || '').toUpperCase();
+  const iso = isoDate(v);
+  if (!iso) return String(v || '').toUpperCase();
   return new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
-    .format(new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00Z`)).replace(/\./g, '').toUpperCase();
+    .format(new Date(iso + 'T00:00:00Z')).replace(/\./g, '').toUpperCase();
 }
 
 function page(ed, logo) {
@@ -50,7 +52,9 @@ html,body{width:1200px;height:630px;background:#0039A4;overflow:hidden}
 }
 
 async function main() {
-  const editions = (await fetchEditions()).filter(e => e && e.num && e.title && !EXCLUDED.includes(String(e.num).padStart(3, '0')));
+  // Niente immagine dedicata (resta la generica) se il titolo contiene il nome di una testata.
+  const press = blockedNames.concat(['Times', 'AFP', 'Sportico', 'Gulf News']).map(n => new RegExp('\\b' + n + '\\b', 'i'));
+  const editions = (await fetchEditions()).filter(e => e && e.num && e.title && !EXCLUDED.includes(String(e.num).padStart(3, '0')) && !press.some(r => r.test(e.title)));
   fs.mkdirSync(OUT, { recursive: true });
   const manFile = path.join(OUT, 'manifest.json');
   const manifest = fs.existsSync(manFile) ? JSON.parse(fs.readFileSync(manFile, 'utf8')) : {};
