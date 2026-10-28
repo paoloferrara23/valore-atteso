@@ -63,4 +63,4 @@ About e home restano con le etichette a 11px già segnalate (fuori perimetro); i
 - `club_deals` letto senza filtro `verified`
 - Risultato netto del Milan 2024/25: 3,0 milioni nell'edizione #021, 2,9 milioni in `club_financials` (Club Intelligence)
 - Capienza dello stadio a 0 nella testata di AS Roma e AC Milan in Club Intelligence (campo `capacity` vuoto nel DB)
-- `/confronto` fuori dalla sitemap fino all'OK di produzione
+- `/confronto` in sitemap dopo l'OK di produzione (29/10/2026)

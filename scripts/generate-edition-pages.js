@@ -20,6 +20,7 @@ const STATIC_PAGES = [
   { loc: '/club-intelligence', changefreq: 'weekly', priority: '0.9' },
   { loc: '/about', changefreq: 'monthly', priority: '0.7' },
   { loc: '/come-lavoriamo', changefreq: 'monthly', priority: '0.6' },
+  { loc: '/confronto', changefreq: 'monthly', priority: '0.6' },
   { loc: '/glossario', changefreq: 'monthly', priority: '0.6' },
   { loc: '/sponsor', changefreq: 'monthly', priority: '0.5' },
   { loc: '/privacy', changefreq: 'yearly', priority: '0.3' },
