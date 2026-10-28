@@ -1,0 +1,1730 @@
+{
+ "label": "prima",
+ "pages": {
+  "home-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Inter"
+   ],
+   "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+   "h1": [
+    "Il calcio dei numeri,non dei goal."
+   ]
+  },
+  "home-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.74,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Inter"
+   ],
+   "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+   "h1": [
+    "Il calcio dei numeri,non dei goal."
+   ]
+  },
+  "home-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Inter"
+   ],
+   "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+   "h1": [
+    "Il calcio dei numeri,non dei goal."
+   ]
+  },
+  "home-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Inter"
+   ],
+   "title": "Valore Atteso | Il calcio dei numeri, non dei goal",
+   "h1": [
+    "Il calcio dei numeri,non dei goal."
+   ]
+  },
+  "archivio-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio."
+   ]
+  },
+  "archivio-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio."
+   ]
+  },
+  "archivio-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio."
+   ]
+  },
+  "archivio-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio."
+   ]
+  },
+  "lettore-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio.",
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "lettore-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio.",
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "lettore-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio.",
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "lettore-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Archivio \u2014 Valore Atteso",
+   "h1": [
+    "Archivio.",
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "about-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Arial",
+    "Playfair Display",
+    "Inter"
+   ],
+   "title": "Chi siamo \u2014 Valore Atteso",
+   "h1": [
+    "Il calcio letto come un business."
+   ]
+  },
+  "about-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Arial",
+    "Playfair Display",
+    "Inter"
+   ],
+   "title": "Chi siamo \u2014 Valore Atteso",
+   "h1": [
+    "Il calcio letto come un business."
+   ]
+  },
+  "about-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Playfair Display",
+    "Inter",
+    "Arial"
+   ],
+   "title": "Chi siamo \u2014 Valore Atteso",
+   "h1": [
+    "Il calcio letto come un business."
+   ]
+  },
+  "about-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Playfair Display",
+    "Inter",
+    "Arial"
+   ],
+   "title": "Chi siamo \u2014 Valore Atteso",
+   "h1": [
+    "Il calcio letto come un business."
+   ]
+  },
+  "sponsor-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Sponsorizza | Valore Atteso",
+   "h1": [
+    "Il tuo brand, nel contesto giusto."
+   ]
+  },
+  "sponsor-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Sponsorizza | Valore Atteso",
+   "h1": [
+    "Il tuo brand, nel contesto giusto."
+   ]
+  },
+  "sponsor-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Sponsorizza | Valore Atteso",
+   "h1": [
+    "Il tuo brand, nel contesto giusto."
+   ]
+  },
+  "sponsor-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 4.7,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Sponsorizza | Valore Atteso",
+   "h1": [
+    "Il tuo brand, nel contesto giusto."
+   ]
+  },
+  "404-375": {
+   "status": 404,
+   "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Arial",
+    "Playfair Display",
+    "Inter"
+   ],
+   "title": "Pagina non trovata \u2014 Valore Atteso",
+   "h1": [
+    "Pagina non trovata"
+   ]
+  },
+  "404-640": {
+   "status": 404,
+   "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Arial",
+    "Playfair Display",
+    "Inter"
+   ],
+   "title": "Pagina non trovata \u2014 Valore Atteso",
+   "h1": [
+    "Pagina non trovata"
+   ]
+  },
+  "404-1280": {
+   "status": 404,
+   "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Playfair Display",
+    "Inter",
+    "Arial"
+   ],
+   "title": "Pagina non trovata \u2014 Valore Atteso",
+   "h1": [
+    "Pagina non trovata"
+   ]
+  },
+  "404-1440": {
+   "status": 404,
+   "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+   ],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 2,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4",
+    "Playfair Display",
+    "Inter",
+    "Arial"
+   ],
+   "title": "Pagina non trovata \u2014 Valore Atteso",
+   "h1": [
+    "Pagina non trovata"
+   ]
+  },
+  "edizione-26-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa \u2014 Valore Atteso #026",
+   "h1": [
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "edizione-26-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa \u2014 Valore Atteso #026",
+   "h1": [
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "edizione-26-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa \u2014 Valore Atteso #026",
+   "h1": [
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "edizione-26-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [],
+   "under12": [],
+   "contrast": [],
+   "minContrast": 5.23,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "JetBrains Mono",
+    "Source Serif 4"
+   ],
+   "title": "Il Milan spende, il Valencia apre ai soci, il Real incassa \u2014 Valore Atteso #026",
+   "h1": [
+    "Il Milan spende, il Valencia apre ai soci, il Real incassa"
+   ]
+  },
+  "glossario-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abIscriviti gratis\u00bb",
+    "10px \u00abGlossario\u00bb",
+    "9px \u00abtermini\u00bb",
+    "9px \u00abcategorie\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "10px \u00abA\u00bb",
+    "10px \u00abB\u00bb",
+    "10px \u00abC\u00bb",
+    "10px \u00abD\u00bb",
+    "10px \u00abE\u00bb",
+    "10px \u00abF\u00bb",
+    "10px \u00abG\u00bb",
+    "10px \u00abH\u00bb",
+    "10px \u00abI\u00bb",
+    "10px \u00abJ\u00bb",
+    "10px \u00abK\u00bb",
+    "10px \u00abL\u00bb",
+    "10px \u00abM\u00bb",
+    "10px \u00abN\u00bb",
+    "10px \u00abO\u00bb",
+    "10px \u00abP\u00bb",
+    "10px \u00abQ\u00bb",
+    "10px \u00abR\u00bb",
+    "10px \u00abS\u00bb",
+    "10px \u00abT\u00bb",
+    "10px \u00abU\u00bb",
+    "10px \u00abV\u00bb",
+    "10px \u00abW\u00bb",
+    "10px \u00abX\u00bb",
+    "10px \u00abY\u00bb",
+    "10px \u00abZ\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "10px \u00abIscriviti \u2192\u00bb",
+    "10px \u00abHome\u00bb",
+    "10px \u00abArchivio\u00bb",
+    "10px \u00abPrivacy\u00bb",
+    "10px \u00abContatti\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abGlossario\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abtermini\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abcategorie\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.12:1 #777066 su #F0EBE1 18px \u00ab\u2315\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abA\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abB\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abC\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abD\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abE\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abF\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abG\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abI\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abL\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abM\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abP\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abR\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abS\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abT\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abU\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abV\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abW\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abX\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abHome\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abArchivio\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abPrivacy\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abContatti\u00bb"
+   ],
+   "minContrast": 1.11,
+   "taps": [
+    "70\u00d717 a \u00abGlossario\u00bb",
+    "24\u00d727 a \u00abA\u00bb",
+    "24\u00d727 a \u00abB\u00bb",
+    "24\u00d727 a \u00abC\u00bb",
+    "24\u00d727 a \u00abD\u00bb",
+    "24\u00d727 a \u00abE\u00bb",
+    "24\u00d727 a \u00abF\u00bb",
+    "24\u00d727 a \u00abG\u00bb",
+    "24\u00d727 a \u00abI\u00bb",
+    "24\u00d727 a \u00abL\u00bb",
+    "24\u00d727 a \u00abM\u00bb",
+    "24\u00d727 a \u00abP\u00bb",
+    "24\u00d727 a \u00abR\u00bb",
+    "24\u00d727 a \u00abS\u00bb",
+    "24\u00d727 a \u00abT\u00bb",
+    "24\u00d727 a \u00abU\u00bb",
+    "24\u00d727 a \u00abV\u00bb",
+    "24\u00d727 a \u00abW\u00bb",
+    "24\u00d727 a \u00abX\u00bb",
+    "293\u00d724 input \u00abEmail\u00bb",
+    "29\u00d715 a \u00abHome\u00bb",
+    "58\u00d715 a \u00abArchivio\u00bb",
+    "50\u00d715 a \u00abPrivacy\u00bb",
+    "58\u00d715 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 0,
+   "overflow": true,
+   "scrollWidth": 380,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono"
+   ],
+   "title": "Glossario \u2014 Valore Atteso",
+   "h1": [
+    "Il vocabolario delbusiness del calcio."
+   ]
+  },
+  "glossario-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abIscriviti gratis\u00bb",
+    "10px \u00abGlossario\u00bb",
+    "9px \u00abtermini\u00bb",
+    "9px \u00abcategorie\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "10px \u00abA\u00bb",
+    "10px \u00abB\u00bb",
+    "10px \u00abC\u00bb",
+    "10px \u00abD\u00bb",
+    "10px \u00abE\u00bb",
+    "10px \u00abF\u00bb",
+    "10px \u00abG\u00bb",
+    "10px \u00abH\u00bb",
+    "10px \u00abI\u00bb",
+    "10px \u00abJ\u00bb",
+    "10px \u00abK\u00bb",
+    "10px \u00abL\u00bb",
+    "10px \u00abM\u00bb",
+    "10px \u00abN\u00bb",
+    "10px \u00abO\u00bb",
+    "10px \u00abP\u00bb",
+    "10px \u00abQ\u00bb",
+    "10px \u00abR\u00bb",
+    "10px \u00abS\u00bb",
+    "10px \u00abT\u00bb",
+    "10px \u00abU\u00bb",
+    "10px \u00abV\u00bb",
+    "10px \u00abW\u00bb",
+    "10px \u00abX\u00bb",
+    "10px \u00abY\u00bb",
+    "10px \u00abZ\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "10px \u00abIscriviti \u2192\u00bb",
+    "10px \u00abHome\u00bb",
+    "10px \u00abArchivio\u00bb",
+    "10px \u00abPrivacy\u00bb",
+    "10px \u00abContatti\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abGlossario\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abtermini\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abcategorie\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.12:1 #777066 su #F0EBE1 18px \u00ab\u2315\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abA\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abB\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abC\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abD\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abE\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abF\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abG\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abI\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abL\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abM\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abP\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abR\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abS\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abT\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abU\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abV\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abW\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abX\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abHome\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abArchivio\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abPrivacy\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abContatti\u00bb"
+   ],
+   "minContrast": 1.11,
+   "taps": [
+    "70\u00d717 a \u00abGlossario\u00bb",
+    "24\u00d727 a \u00abA\u00bb",
+    "24\u00d727 a \u00abB\u00bb",
+    "24\u00d727 a \u00abC\u00bb",
+    "24\u00d727 a \u00abD\u00bb",
+    "24\u00d727 a \u00abE\u00bb",
+    "24\u00d727 a \u00abF\u00bb",
+    "24\u00d727 a \u00abG\u00bb",
+    "24\u00d727 a \u00abI\u00bb",
+    "24\u00d727 a \u00abL\u00bb",
+    "24\u00d727 a \u00abM\u00bb",
+    "24\u00d727 a \u00abP\u00bb",
+    "24\u00d727 a \u00abR\u00bb",
+    "24\u00d727 a \u00abS\u00bb",
+    "24\u00d727 a \u00abT\u00bb",
+    "24\u00d727 a \u00abU\u00bb",
+    "24\u00d727 a \u00abV\u00bb",
+    "24\u00d727 a \u00abW\u00bb",
+    "24\u00d727 a \u00abX\u00bb",
+    "526\u00d724 input \u00abEmail\u00bb",
+    "29\u00d715 a \u00abHome\u00bb",
+    "58\u00d715 a \u00abArchivio\u00bb",
+    "50\u00d715 a \u00abPrivacy\u00bb",
+    "58\u00d715 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono"
+   ],
+   "title": "Glossario \u2014 Valore Atteso",
+   "h1": [
+    "Il vocabolario delbusiness del calcio."
+   ]
+  },
+  "glossario-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abIscriviti gratis\u00bb",
+    "10px \u00abGlossario\u00bb",
+    "9px \u00abtermini\u00bb",
+    "9px \u00abcategorie\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "10px \u00abA\u00bb",
+    "10px \u00abB\u00bb",
+    "10px \u00abC\u00bb",
+    "10px \u00abD\u00bb",
+    "10px \u00abE\u00bb",
+    "10px \u00abF\u00bb",
+    "10px \u00abG\u00bb",
+    "10px \u00abH\u00bb",
+    "10px \u00abI\u00bb",
+    "10px \u00abJ\u00bb",
+    "10px \u00abK\u00bb",
+    "10px \u00abL\u00bb",
+    "10px \u00abM\u00bb",
+    "10px \u00abN\u00bb",
+    "10px \u00abO\u00bb",
+    "10px \u00abP\u00bb",
+    "10px \u00abQ\u00bb",
+    "10px \u00abR\u00bb",
+    "10px \u00abS\u00bb",
+    "10px \u00abT\u00bb",
+    "10px \u00abU\u00bb",
+    "10px \u00abV\u00bb",
+    "10px \u00abW\u00bb",
+    "10px \u00abX\u00bb",
+    "10px \u00abY\u00bb",
+    "10px \u00abZ\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "10px \u00abIscriviti \u2192\u00bb",
+    "10px \u00abHome\u00bb",
+    "10px \u00abArchivio\u00bb",
+    "10px \u00abPrivacy\u00bb",
+    "10px \u00abContatti\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.12:1 #777066 su #F0EBE1 11px \u00abHome\u00bb",
+    "4.12:1 #777066 su #F0EBE1 11px \u00abArchivio\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abGlossario\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abtermini\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abcategorie\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.12:1 #777066 su #F0EBE1 18px \u00ab\u2315\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abA\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abB\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abC\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abD\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abE\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abF\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abG\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abI\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abL\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abM\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abP\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abR\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abS\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abT\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abU\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abV\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abW\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abX\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abHome\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abArchivio\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abPrivacy\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abContatti\u00bb"
+   ],
+   "minContrast": 1.11,
+   "taps": [
+    "31\u00d717 a \u00abHome\u00bb",
+    "62\u00d717 a \u00abArchivio\u00bb",
+    "70\u00d717 a \u00abGlossario\u00bb",
+    "24\u00d727 a \u00abA\u00bb",
+    "24\u00d727 a \u00abB\u00bb",
+    "24\u00d727 a \u00abC\u00bb",
+    "24\u00d727 a \u00abD\u00bb",
+    "24\u00d727 a \u00abE\u00bb",
+    "24\u00d727 a \u00abF\u00bb",
+    "24\u00d727 a \u00abG\u00bb",
+    "24\u00d727 a \u00abI\u00bb",
+    "24\u00d727 a \u00abL\u00bb",
+    "24\u00d727 a \u00abM\u00bb",
+    "24\u00d727 a \u00abP\u00bb",
+    "24\u00d727 a \u00abR\u00bb",
+    "24\u00d727 a \u00abS\u00bb",
+    "24\u00d727 a \u00abT\u00bb",
+    "24\u00d727 a \u00abU\u00bb",
+    "24\u00d727 a \u00abV\u00bb",
+    "24\u00d727 a \u00abW\u00bb",
+    "24\u00d727 a \u00abX\u00bb",
+    "29\u00d715 a \u00abHome\u00bb",
+    "58\u00d715 a \u00abArchivio\u00bb",
+    "50\u00d715 a \u00abPrivacy\u00bb",
+    "58\u00d715 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono"
+   ],
+   "title": "Glossario \u2014 Valore Atteso",
+   "h1": [
+    "Il vocabolario delbusiness del calcio."
+   ]
+  },
+  "glossario-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abIscriviti gratis\u00bb",
+    "10px \u00abGlossario\u00bb",
+    "9px \u00abtermini\u00bb",
+    "9px \u00abcategorie\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "10px \u00abA\u00bb",
+    "10px \u00abB\u00bb",
+    "10px \u00abC\u00bb",
+    "10px \u00abD\u00bb",
+    "10px \u00abE\u00bb",
+    "10px \u00abF\u00bb",
+    "10px \u00abG\u00bb",
+    "10px \u00abH\u00bb",
+    "10px \u00abI\u00bb",
+    "10px \u00abJ\u00bb",
+    "10px \u00abK\u00bb",
+    "10px \u00abL\u00bb",
+    "10px \u00abM\u00bb",
+    "10px \u00abN\u00bb",
+    "10px \u00abO\u00bb",
+    "10px \u00abP\u00bb",
+    "10px \u00abQ\u00bb",
+    "10px \u00abR\u00bb",
+    "10px \u00abS\u00bb",
+    "10px \u00abT\u00bb",
+    "10px \u00abU\u00bb",
+    "10px \u00abV\u00bb",
+    "10px \u00abW\u00bb",
+    "10px \u00abX\u00bb",
+    "10px \u00abY\u00bb",
+    "10px \u00abZ\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abfinanza\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abdeal\u00bb",
+    "8px \u00abmetriche\u00bb",
+    "8px \u00abcalcio\u00bb",
+    "9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "10px \u00abIscriviti \u2192\u00bb",
+    "10px \u00abHome\u00bb",
+    "10px \u00abArchivio\u00bb",
+    "10px \u00abPrivacy\u00bb",
+    "10px \u00abContatti\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.12:1 #777066 su #F0EBE1 11px \u00abHome\u00bb",
+    "4.12:1 #777066 su #F0EBE1 11px \u00abArchivio\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abGlossario\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abtermini\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abcategorie\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.12:1 #777066 su #F0EBE1 18px \u00ab\u2315\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abA\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abB\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abC\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abD\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abE\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abF\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abG\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abI\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abL\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abfinanza\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abM\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abP\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abR\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abS\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abT\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abU\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abV\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "4.11:1 #8E6B33 su #F0EBE1 8px \u00abdeal\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abW\u00bb",
+    "1.11:1 #E7DFD2 su #F0EBE1 41.6px \u00abX\u00bb",
+    "4.12:1 #777066 su #F0EBE1 9px \u00abLe definizioni contenute in questo gloss\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abHome\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abArchivio\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abPrivacy\u00bb",
+    "3.70:1 #777066 su #E7DFD2 10px \u00abContatti\u00bb"
+   ],
+   "minContrast": 1.11,
+   "taps": [
+    "31\u00d717 a \u00abHome\u00bb",
+    "62\u00d717 a \u00abArchivio\u00bb",
+    "70\u00d717 a \u00abGlossario\u00bb",
+    "24\u00d727 a \u00abA\u00bb",
+    "24\u00d727 a \u00abB\u00bb",
+    "24\u00d727 a \u00abC\u00bb",
+    "24\u00d727 a \u00abD\u00bb",
+    "24\u00d727 a \u00abE\u00bb",
+    "24\u00d727 a \u00abF\u00bb",
+    "24\u00d727 a \u00abG\u00bb",
+    "24\u00d727 a \u00abI\u00bb",
+    "24\u00d727 a \u00abL\u00bb",
+    "24\u00d727 a \u00abM\u00bb",
+    "24\u00d727 a \u00abP\u00bb",
+    "24\u00d727 a \u00abR\u00bb",
+    "24\u00d727 a \u00abS\u00bb",
+    "24\u00d727 a \u00abT\u00bb",
+    "24\u00d727 a \u00abU\u00bb",
+    "24\u00d727 a \u00abV\u00bb",
+    "24\u00d727 a \u00abW\u00bb",
+    "24\u00d727 a \u00abX\u00bb",
+    "29\u00d715 a \u00abHome\u00bb",
+    "58\u00d715 a \u00abArchivio\u00bb",
+    "50\u00d715 a \u00abPrivacy\u00bb",
+    "58\u00d715 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 0,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono"
+   ],
+   "title": "Glossario \u2014 Valore Atteso",
+   "h1": [
+    "Il vocabolario delbusiness del calcio."
+   ]
+  },
+  "privacy-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00ab\u2190 Torna alla home\u00bb",
+    "10px \u00abInformativa legale\u00bb",
+    "10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "9px \u00abIn sintesi\u00bb",
+    "9px \u00abContatti\u00bb",
+    "9px \u00abHome\u00bb",
+    "9px \u00abPrivacy\u00bb",
+    "9px \u00abContatti\u00bb"
+   ],
+   "under12": [
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abBase giuridica\u00bb",
+    "11px \u00abFornitore\u00bb",
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abSede dei dati\u00bb",
+    "11px \u00abTipo di dato\u00bb",
+    "11px \u00abPeriodo di conservazione\u00bb"
+   ],
+   "contrast": [
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00ab\u2190 Torna alla home\u00bb",
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abHome\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abPrivacy\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abContatti\u00bb"
+   ],
+   "minContrast": 2.43,
+   "taps": [
+    "119\u00d716 a \u00ab\u2190 Torna alla home\u00bb",
+    "160\u00d723 a \u00abinfo@valoreatteso.com\u00bb",
+    "25\u00d714 a \u00abHome\u00bb",
+    "44\u00d714 a \u00abPrivacy\u00bb",
+    "50\u00d714 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 5,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "Source Serif 4",
+    "Playfair Display",
+    "JetBrains Mono"
+   ],
+   "title": "Privacy Policy \u2014 Valore Atteso",
+   "h1": [
+    "Privacy Policy"
+   ]
+  },
+  "privacy-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00ab\u2190 Torna alla home\u00bb",
+    "10px \u00abInformativa legale\u00bb",
+    "10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "9px \u00abIn sintesi\u00bb",
+    "9px \u00abContatti\u00bb",
+    "9px \u00abHome\u00bb",
+    "9px \u00abPrivacy\u00bb",
+    "9px \u00abContatti\u00bb"
+   ],
+   "under12": [
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abBase giuridica\u00bb",
+    "11px \u00abFornitore\u00bb",
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abSede dei dati\u00bb",
+    "11px \u00abTipo di dato\u00bb",
+    "11px \u00abPeriodo di conservazione\u00bb"
+   ],
+   "contrast": [
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00ab\u2190 Torna alla home\u00bb",
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abHome\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abPrivacy\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abContatti\u00bb"
+   ],
+   "minContrast": 2.43,
+   "taps": [
+    "119\u00d716 a \u00ab\u2190 Torna alla home\u00bb",
+    "160\u00d723 a \u00abinfo@valoreatteso.com\u00bb",
+    "25\u00d714 a \u00abHome\u00bb",
+    "44\u00d714 a \u00abPrivacy\u00bb",
+    "50\u00d714 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 5,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "Source Serif 4",
+    "Playfair Display",
+    "JetBrains Mono"
+   ],
+   "title": "Privacy Policy \u2014 Valore Atteso",
+   "h1": [
+    "Privacy Policy"
+   ]
+  },
+  "privacy-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00ab\u2190 Torna alla home\u00bb",
+    "10px \u00abInformativa legale\u00bb",
+    "10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "9px \u00abIn sintesi\u00bb",
+    "9px \u00abContatti\u00bb",
+    "9px \u00abHome\u00bb",
+    "9px \u00abPrivacy\u00bb",
+    "9px \u00abContatti\u00bb"
+   ],
+   "under12": [
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abBase giuridica\u00bb",
+    "11px \u00abFornitore\u00bb",
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abSede dei dati\u00bb",
+    "11px \u00abTipo di dato\u00bb",
+    "11px \u00abPeriodo di conservazione\u00bb"
+   ],
+   "contrast": [
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00ab\u2190 Torna alla home\u00bb",
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abHome\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abPrivacy\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abContatti\u00bb"
+   ],
+   "minContrast": 2.43,
+   "taps": [
+    "119\u00d716 a \u00ab\u2190 Torna alla home\u00bb",
+    "160\u00d723 a \u00abinfo@valoreatteso.com\u00bb",
+    "25\u00d714 a \u00abHome\u00bb",
+    "44\u00d714 a \u00abPrivacy\u00bb",
+    "50\u00d714 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 5,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "Source Serif 4",
+    "Playfair Display",
+    "JetBrains Mono"
+   ],
+   "title": "Privacy Policy \u2014 Valore Atteso",
+   "h1": [
+    "Privacy Policy"
+   ]
+  },
+  "privacy-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00ab\u2190 Torna alla home\u00bb",
+    "10px \u00abInformativa legale\u00bb",
+    "10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "9px \u00abIn sintesi\u00bb",
+    "9px \u00abContatti\u00bb",
+    "9px \u00abHome\u00bb",
+    "9px \u00abPrivacy\u00bb",
+    "9px \u00abContatti\u00bb"
+   ],
+   "under12": [
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abBase giuridica\u00bb",
+    "11px \u00abFornitore\u00bb",
+    "11px \u00abFinalit\u00e0\u00bb",
+    "11px \u00abSede dei dati\u00bb",
+    "11px \u00abTipo di dato\u00bb",
+    "11px \u00abPeriodo di conservazione\u00bb"
+   ],
+   "contrast": [
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00ab\u2190 Torna alla home\u00bb",
+    "2.63:1 #9A9690 su #F5F2EB 10px \u00abUltimo aggiornamento: giugno 2026\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abHome\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abPrivacy\u00bb",
+    "2.43:1 #9A9690 su #EDE9E0 9px \u00abContatti\u00bb"
+   ],
+   "minContrast": 2.43,
+   "taps": [
+    "119\u00d716 a \u00ab\u2190 Torna alla home\u00bb",
+    "160\u00d723 a \u00abinfo@valoreatteso.com\u00bb",
+    "25\u00d714 a \u00abHome\u00bb",
+    "44\u00d714 a \u00abPrivacy\u00bb",
+    "50\u00d714 a \u00abContatti\u00bb"
+   ],
+   "inlineLinks": 5,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "Source Serif 4",
+    "Playfair Display",
+    "JetBrains Mono"
+   ],
+   "title": "Privacy Policy \u2014 Valore Atteso",
+   "h1": [
+    "Privacy Policy"
+   ]
+  },
+  "cookie-policy-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb"
+   ],
+   "under12": [
+    "11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb",
+    "2.48:1 #9A9690 su #F0EBE1 11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "minContrast": 2.48,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Cookie Policy \u2014 Valore Atteso",
+   "h1": [
+    "Cookie Policy"
+   ]
+  },
+  "cookie-policy-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb"
+   ],
+   "under12": [
+    "11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb",
+    "2.48:1 #9A9690 su #F0EBE1 11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "minContrast": 2.48,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Cookie Policy \u2014 Valore Atteso",
+   "h1": [
+    "Cookie Policy"
+   ]
+  },
+  "cookie-policy-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb"
+   ],
+   "under12": [
+    "11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb",
+    "2.48:1 #9A9690 su #F0EBE1 11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "minContrast": 2.48,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Cookie Policy \u2014 Valore Atteso",
+   "h1": [
+    "Cookie Policy"
+   ]
+  },
+  "cookie-policy-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb"
+   ],
+   "under12": [
+    "11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Cookie Policy\u00bb",
+    "2.48:1 #9A9690 su #F0EBE1 11px \u00abUltimo aggiornamento: giugno 2026\u00bb"
+   ],
+   "minContrast": 2.48,
+   "taps": [],
+   "inlineLinks": 3,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Cookie Policy \u2014 Valore Atteso",
+   "h1": [
+    "Cookie Policy"
+   ]
+  },
+  "disclaimer-375": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "minContrast": 4.11,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 375,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Disclaimer \u2014 Valore Atteso",
+   "h1": [
+    "Disclaimer"
+   ]
+  },
+  "disclaimer-640": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "minContrast": 4.11,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 640,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Disclaimer \u2014 Valore Atteso",
+   "h1": [
+    "Disclaimer"
+   ]
+  },
+  "disclaimer-1280": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "minContrast": 4.11,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1280,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Disclaimer \u2014 Valore Atteso",
+   "h1": [
+    "Disclaimer"
+   ]
+  },
+  "disclaimer-1440": {
+   "status": 200,
+   "consoleErrors": [],
+   "small": [
+    "10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "under12": [],
+   "contrast": [
+    "4.11:1 #8E6B33 su #F0EBE1 10px \u00abValore Atteso \u00b7 Disclaimer\u00bb"
+   ],
+   "minContrast": 4.11,
+   "taps": [],
+   "inlineLinks": 1,
+   "overflow": false,
+   "scrollWidth": 1440,
+   "fonts": [
+    "Source Serif 4",
+    "JetBrains Mono",
+    "Playfair Display"
+   ],
+   "title": "Disclaimer \u2014 Valore Atteso",
+   "h1": [
+    "Disclaimer"
+   ]
+  }
+ },
+ "network": {
+  "subscribeRequests": 0,
+  "subscribePayloads": [],
+  "supabaseQueries": [
+   "editions?select=num,title,subtitle,opener,sections&published=eq.true&order=num.desc&limit=1",
+   "editions?select=num,title,date,tags,subtitle&order=num.desc&published=eq.true",
+   "editions?num=eq.026&published=eq.true&select=id,num,title,subtitle,date,opener,sections,tags"
+  ],
+  "blockedExternal": []
+ },
+ "extra": {}
+}

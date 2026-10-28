@@ -2,10 +2,11 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Selezione temi · Valore Atteso</title>
   <style>
-    :root{--cream:#F4EFE6;--ink:#1C1914;--gold:#C8A97A;--rule:#D8D0C4;--ink2:#5A534B;--green:#1B4332;--blue:#1B3A6B;--red2:#6B1B1B;--mn:'JetBrains Mono','Courier New',monospace;--sf:'Source Serif 4',Georgia,serif}
+    :root{--cream:#F4EFE6;--ink:#1C1914;--gold:#E5962E;--rule:#D8D0C4;--ink2:#5A534B;--green:#1B4332;--blue:#1B3A6B;--red2:#6B1B1B;--mn:var(--va-font-mono);--sf:var(--va-font-text)}
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:var(--cream);color:var(--ink);font-family:var(--sf);min-height:100vh}
     header{background:var(--ink);padding:14px 24px;display:flex;align-items:center;gap:12px}
@@ -14,7 +15,7 @@
     main{max-width:760px;margin:0 auto;padding:32px 20px 80px}
     .page-title{font-size:1.35rem;font-weight:700;margin-bottom:4px}
     .page-sub{font-family:var(--mn);font-size:10px;color:var(--ink2);margin-bottom:8px}
-    .page-hint{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:32px;border-left:3px solid var(--gold);padding-left:12px}
+    .page-hint{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:32px;border-left:3px solid var(--va-gold-graphic);padding-left:12px}
     .section-block{margin-bottom:28px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
     .section-head{background:var(--ink);padding:10px 16px}
     .section-label{font-family:var(--mn);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
@@ -24,25 +25,25 @@
     .option-num{font-family:var(--mn);font-size:8px;color:#9A9690;margin-bottom:4px}
     .option-title{font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.3}
     .option-summary{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:4px}
-    .option-angolo{font-family:var(--mn);font-size:9px;color:#8E6B33}
-    .option-card.rec{border-left-color:var(--gold);background:#FBF6EA}
+    .option-angolo{font-family:var(--mn);font-size:9px;color:#7A5C1E}
+    .option-card.rec{border-left-color:var(--va-gold-graphic);background:#FBF6EA}
     .option-card.rec.selected{background:#E8F0E4;border-left-color:var(--green)}
     .option-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}
     .tag{font-family:var(--mn);font-size:8px;letter-spacing:.06em;padding:2px 7px;border-radius:2px;background:#ECE6DC;color:var(--ink2)}
-    .tag.star{background:var(--gold);color:var(--ink);font-weight:700}
+    .tag.star{background:var(--va-gold-graphic);color:var(--ink);font-weight:700}
     .tag.score{background:var(--ink);color:var(--gold)}
     .tag.ok{background:#E4EDE7;color:var(--green)}
     .tag.warn{background:#F7EFD9;color:#8A6D1B}
     .option-why{font-size:12px;color:var(--green);font-style:italic;line-height:1.5;margin-bottom:4px}
     .option-src{font-family:var(--mn);font-size:8px;color:#9A9690;margin-top:4px;word-break:break-word}
-    .rec-box{background:#FBF6EA;border:1px solid var(--gold);border-radius:3px;padding:14px 16px;margin-bottom:20px;font-size:13px;line-height:1.6}
+    .rec-box{background:#FBF6EA;border:1px solid var(--va-gold-graphic);border-radius:3px;padding:14px 16px;margin-bottom:20px;font-size:13px;line-height:1.6}
     .quick{background:none;border:1px solid var(--rule);color:var(--ink2);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:10px 16px;cursor:pointer;text-transform:uppercase;margin-bottom:24px}
     .quick:hover{background:#ECE6DC}
     .empty-note{padding:14px 16px;font-family:var(--mn);font-size:10px;color:#8A6D1B;background:#F7EFD9}
     .custom-row{padding:14px 16px;background:#F7F4EF;display:flex;flex-direction:column;gap:6px}
     .custom-label{font-family:var(--mn);font-size:9px;color:var(--ink2);letter-spacing:.08em}
     .custom-input{width:100%;border:1px solid var(--rule);border-radius:2px;padding:9px 11px;font-family:var(--sf);font-size:13px;background:white;color:var(--ink);transition:border .12s}
-    .custom-input:focus{outline:none;border-color:#8E6B33}
+    .custom-input:focus{outline:none;border-color:#7A5C1E}
     .custom-input.active{border-color:var(--green);background:#F0F7EE}
     .actions{margin-top:24px}
     .btn-submit{background:var(--ink);color:var(--gold);font-family:var(--mn);font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:none;padding:16px 40px;cursor:pointer;width:100%}
@@ -52,13 +53,14 @@
     .status.ok{background:#E4EDE7;color:var(--green);display:block}
     .status.err{background:#F7E4E4;color:#6B1B1B;display:block}
     .loading{text-align:center;padding:60px;font-family:var(--mn);font-size:11px;color:var(--ink2)}
-    .brief-box{background:#F0EBE1;border:1px solid var(--rule);border-radius:3px;padding:14px 16px;margin-bottom:28px;font-size:13px;line-height:1.65;color:var(--ink2)}
+    .brief-box{background:#F3EFE6;border:1px solid var(--rule);border-radius:3px;padding:14px 16px;margin-bottom:28px;font-size:13px;line-height:1.65;color:var(--ink2)}
     .brief-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
   </style>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 </head>
 <body>
 <header>
@@ -92,9 +94,9 @@
 </main>
 <script>
 const SEZIONI=[
-  {key:'bilancio',label:'Il Bilancio',color:'#C8A97A'},
-  {key:'deal',label:'Il Deal',color:'#C8A97A'},
-  {key:'metrica',label:'La Metrica',color:'#C8A97A'}
+  {key:'bilancio',label:'Il Bilancio',color:'#E5962E'},
+  {key:'deal',label:'Il Deal',color:'#E5962E'},
+  {key:'metrica',label:'La Metrica',color:'#E5962E'}
 ];
 let pending=null;
 

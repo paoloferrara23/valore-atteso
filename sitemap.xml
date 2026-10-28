@@ -26,6 +26,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.valoreatteso.com/sponsor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.valoreatteso.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

@@ -11,8 +11,9 @@ const { chromium } = require('playwright');
 
 const siteRoot = path.resolve(process.argv[2] || '.');
 const label = process.argv[3] || 'dopo';
-const repo = path.join(__dirname, '..');
-const out = path.join(repo, 'qa', 'fase-1', label);
+const repo = process.env.QA_REPO || path.join(__dirname, '..');
+// QA_DIR (es. qa/fase-2-a) e QA_VIEWS (es. 375,640,1280,1440) permettono di riusare lo script nelle fasi successive.
+const out = path.join(repo, process.env.QA_DIR || path.join('qa', 'fase-1'), label);
 fs.mkdirSync(out, { recursive: true });
 const data = f => JSON.parse(fs.readFileSync(path.join(repo, 'qa', 'fase-1', 'data', f), 'utf8'));
 const LIST = data('editions-list.json');
@@ -42,8 +43,9 @@ function serve(port) {
 const PAGES = [
   ['home', '/'], ['archivio', '/archivio'], ['lettore', '/archivio', 'reader'], ['about', '/about'],
   ['sponsor', '/sponsor'], ['404', '/pagina-che-non-esiste'], ['edizione-26', '/edizione-26'],
-];
-const VIEWS = [['1440', 1440, 900], ['375', 375, 812]];
+  ['glossario', '/glossario'], ['privacy', '/privacy'], ['cookie-policy', '/cookie-policy'], ['disclaimer', '/disclaimer'],
+].filter(p => !process.env.QA_ONLY || process.env.QA_ONLY.split(',').includes(p[0]));
+const VIEWS = (process.env.QA_VIEWS || '1440,375').split(',').map(w => [w, +w, +w < 640 ? 812 : 900]);
 
 // Misure nel browser: testo piccolo, target, overflow, contrasti, focus.
 function measure() {
@@ -78,7 +80,8 @@ function measure() {
     let box = el.getBoundingClientRect();
     if (el.type === 'checkbox' && el.closest('label')) box = el.closest('label').getBoundingClientRect();
     // Link dentro un paragrafo di testo: eccezione "inline" di WCAG, contati a parte.
-    const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline' && !!el.closest('p, li, .legal-note, .va-ci, .secondary-cta, label') && !el.closest('nav, .nav, .footer-links');
+    const host = el.closest('p, li, .legal-note, .va-ci, .secondary-cta, label');
+    const inline = el.tagName === 'A' && !!host && !el.closest('nav, .nav, .footer-links') && (getComputedStyle(el).display === 'inline' || host.textContent.trim().length > el.textContent.trim().length + 10);
     if (inline) { o.inlineLinks++; return; }
     if (box.height < 43.5 || box.width < 43.5) o.taps.push(`${Math.round(box.width)}×${Math.round(box.height)} ${el.tagName.toLowerCase()} «${(el.textContent || el.getAttribute('aria-label') || el.name || el.type || '').trim().slice(0, 30)}»`);
   });

@@ -56,7 +56,7 @@ Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **marted
 - **Supabase**, project ID: `xxnmkiwnjpppfzrftvuv`. RLS attiva su tutte le tabelle.
 - **Resend**, sender: info@valoreatteso.com.
 - **Anthropic API** via env var. Opus per Writer/Editor.
-- Frontend: vanilla HTML/CSS/JS. Font: Source Serif 4 + JetBrains Mono (Inter per consenso ed errori dei form, Playfair Display per alcuni titoli). Palette: crema, ink, blu `#0039A4` per le CTA, oro testo `#7A5C1E`.
+- Frontend: vanilla HTML/CSS/JS. Font self-hosted in `/fonts/` (Playfair Display 800 per titoli e numeri, Inter per il testo, IBM Plex Mono per etichette e bottoni), dichiarati in `va.css` con i token `--va-*` (colori e font). Niente Google Fonts.
 
 **Sito: file condivisi (restyling fase 1, ottobre 2026).**
 - `va.css` (logo, form, header/footer standard, focus) e `va.js` (form di iscrizione, date in italiano, menu) sono caricati dalle pagine pubbliche e dalle pagine edizione.

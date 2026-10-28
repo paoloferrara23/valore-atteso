@@ -2,7 +2,11 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /rest/
+Disallow: /cancella
 Disallow: /cancella.html
+Disallow: /conferma
 Disallow: /conferma.html
+Disallow: /sponsor-area
+Disallow: /scout-select
 
 Sitemap: https://www.valoreatteso.com/sitemap.xml

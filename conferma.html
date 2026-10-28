@@ -3,11 +3,11 @@
 <head>
 
 <meta charset="UTF-8">
+<link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Valore Atteso — Conferma iscrizione</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 
@@ -26,9 +26,9 @@
   --green:#1B4332;
   --red:#C8251D;
 
-  --dp:'Playfair Display',Georgia,serif;
-  --sf:'Source Serif 4',Georgia,serif;
-  --mn:'JetBrains Mono',monospace;
+  --dp:var(--va-font-display);
+  --sf:var(--va-font-text);
+  --mn:var(--va-font-mono);
 }
 
 body{
@@ -52,7 +52,7 @@ body{
 .logo{
   font-family:var(--dp);
   font-size:2.4rem;
-  font-weight:900;
+  font-weight:800;
   letter-spacing:-1px;
   margin-bottom:10px;
 }
@@ -84,7 +84,7 @@ body{
 .title{
   font-family:var(--dp);
   font-size:2rem;
-  font-weight:700;
+  font-weight:800;
   letter-spacing:-.6px;
   line-height:1.1;
   margin-bottom:16px;
@@ -93,7 +93,7 @@ body{
 .desc{
   font-size:18px;
   color:var(--ink2);
-  font-weight:300;
+  font-weight:400;
   line-height:1.8;
   margin-bottom:26px;
 }
@@ -137,6 +137,7 @@ body{
 </style>
 
 <meta name="description" content="Conferma la tua iscrizione a Valore Atteso, la newsletter sul business del calcio.">
+<meta name="robots" content="noindex">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Valore Atteso">
 <meta property="og:title" content="Valore Atteso — Conferma iscrizione">
@@ -156,6 +157,7 @@ body{
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/va.css">
 </head>
 
 <body>
