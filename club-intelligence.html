@@ -287,16 +287,20 @@
   .ci-signup input[type="email"]{flex:1;min-width:0;box-sizing:border-box;height:48px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(243,239,230,.6);background:rgba(243,239,230,.06);color:#F3EFE6;font-size:16px;outline:none;transition:border-color .15s}
   .ci-signup input::placeholder{color:#A9B1CC}
   .ci-signup input[type="email"]:focus{border-color:#E5962E}
-  .ci-signup button{flex:none;box-sizing:border-box;height:48px;padding:0 22px;border:none;border-radius:999px;background:#E5962E;color:#1C1914;font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .15s}
-  .ci-signup button:hover{background:#F3EFE6}
+  .ci-signup button.va-btn-primary{flex:none;box-sizing:border-box;height:48px;padding:0 22px;border:none;border-radius:999px;background:#E5962E;color:#1C1914;font-family:var(--mono);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .15s}
+  .ci-signup button.va-btn-primary:hover{background:#F3EFE6;border-color:#F3EFE6;color:#1C1914}
   .ci-signup button:disabled{opacity:.7;cursor:default}
   .ci-signup .note{margin-top:12px;font-size:13px;color:var(--txt2)}
   .ci-signup .note a{display:inline-flex;align-items:center;min-height:44px;color:#F3EFE6;text-decoration:underline}
+  .ci-signup .va-consent.va-consent{max-width:440px;margin:10px auto 0;text-align:left;font-size:14px;color:var(--txt2)}
+  .ci-signup .va-consent.va-consent input{accent-color:#E5962E}
+  .ci-signup .va-consent a{color:#F3EFE6}
+  .ci-signup .va-err-msg{max-width:440px;margin-left:auto;margin-right:auto;text-align:left}
   .ci-signup .ok{display:none;color:var(--green);font-size:15px;font-weight:600;margin-top:10px}
   .ci-signup .ok.show{display:block}
   .ci-legal{max-width:1080px;margin:40px auto 0;padding:18px 22px 34px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;line-height:1.7;letter-spacing:.02em;color:var(--txt3)}
   .ci-legal a{display:inline-flex;align-items:center;min-height:44px;color:var(--txt2);text-decoration:underline}
-  @media(max-width:639.98px){.ci-signup{padding:22px 16px}.ci-signup .row{flex-direction:column;gap:11px;max-width:none}.ci-signup input[type="email"],.ci-signup button{width:100%;height:52px}}
+  @media(max-width:639.98px){.ci-signup{padding:22px 16px}.ci-signup .row{flex-direction:column;gap:11px;max-width:none}.ci-signup input[type="email"],.ci-signup button{flex:none;width:100%;height:52px}}
 </style>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Valore Atteso">
@@ -341,6 +345,7 @@
   </main>
 </div>
 
+<script src="/va.js"></script>
 <script>
 /* ════════════════════════════════════════════════════════════
    DATI REALI: snapshot verificato da Supabase (tabelle
@@ -618,13 +623,14 @@ function clubHead(c){
 
 /* ════════ HOME: intro esplicativo + classifica interattiva ════════ */
 function signupHTML(){
-  return '<div class="ci-signup">'+
+  return '<div class="ci-signup va-on-dark">'+
     '<h3>Ricevi l\'analisi nella tua inbox</h3>'+
     '<p>Ogni martedì un bilancio, un deal e una metrica del calcio europeo, letti come un analista. Gratis, in 8 minuti.</p>'+
     '<div class="row">'+
-      '<input id="ci-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email">'+
-      '<button id="ci-sub-btn" onclick="ciSubscribe()">Iscriviti gratis &rarr;</button>'+
+      '<input id="ci-email" type="email" placeholder="la tua email" autocomplete="email" inputmode="email" aria-label="Email">'+
+      '<button id="ci-sub-btn" class="va-btn-primary" onclick="ciSubscribe()">Iscriviti gratis &rarr;</button>'+
     '</div>'+
+    '<label class="va-consent"><input type="checkbox" id="ci-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label>'+
     '<div class="ok" id="ci-ok">&#10003; Controlla la tua inbox per confermare l\'iscrizione.</div>'+
     '<div class="note">Niente spam. Cancellabile in un click. <a href="/privacy" target="_blank" style="color:inherit;text-decoration:underline">Privacy</a></div>'+
   '</div>';
@@ -632,14 +638,15 @@ function signupHTML(){
 async function ciSubscribe(){
   var el=document.getElementById('ci-email'), btn=document.getElementById('ci-sub-btn'), ok=document.getElementById('ci-ok');
   var email=(el.value||'').trim();
-  if(!email||email.indexOf('@')<1){ el.style.borderColor='#B93A2F'; el.focus(); return; }
+  if(typeof vaCheckSignup==='function'){ if(!vaCheckSignup(el, document.getElementById('ci-check'))) return; }
+  else if(!email||email.indexOf('@')<1){ el.style.borderColor='#E9A08A'; el.focus(); return; }
   el.style.borderColor=''; btn.disabled=true; var old=btn.textContent; btn.textContent='Iscrizione…';
   try{
     var r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,source:'club-intelligence'})});
     var d=await r.json().catch(function(){return {};});
     if(!r.ok||!d.ok) throw new Error((d&&d.error)||'Errore');
     ok.classList.add('show'); el.value=''; btn.textContent='Fatto ✓'; btn.disabled=true;
-  }catch(e){ btn.disabled=false; btn.textContent=old; el.style.borderColor='#B93A2F'; }
+  }catch(e){ btn.disabled=false; btn.textContent=old; el.style.borderColor='#E9A08A'; }
 }
 function renderHome(ks){
   return heroHTML(ks) + '<h2 class="sec-label">Come funziona</h2>' + stepsHTML() + peersShellHTML(ks) + signupHTML();
