@@ -1,7 +1,7 @@
 // scripts/qa-fase-2-b.js — QA del blocco B (hero, modulo, striscia KPI della home). Nessuna richiesta reale.
 // Uso: node scripts/qa-fase-2-b.js [cartella-del-sito]   → qa/fase-2-b/b/ (screenshot e misure.json)
 // Richiede Pillow (QA_PYTHONPATH se non è nel Python di sistema).
-// Per ogni variante (navy, crema) e larghezza (320, 375, 640, 1280, 1440): screenshot della prima schermata e
+// Per la hero navy, a ogni larghezza (320, 375, 640, 1280, 1440): screenshot della prima schermata e
 // della pagina intera, posizione di campo, bottone e consenso a 375×812, contrasti campionati sui pixel reali
 // (la hero ha un gradiente: il colore di fondo si legge dallo screenshot, non dal CSS), header dopo lo scroll,
 // stati del modulo su scuro (/api/subscribe simulata) e reduced-motion.
@@ -76,7 +76,7 @@ print(json.dumps(out))
   const pyFile = path.join(out, '_contrast.py');
   fs.writeFileSync(pyFile, PY);
   try {
-    for (const variant of ['navy', 'crema']) {
+    for (const variant of ['navy']) {
       report.variants[variant] = {};
       for (const w of [320, 375, 640, 1280, 1440]) {
         const h = w < 640 ? 812 : 900;
@@ -86,7 +86,7 @@ print(json.dumps(out))
         page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
         page.on('pageerror', e => errors.push(String(e)));
         await page.route('**/*', r => { const u = r.request().url(); if (u.startsWith(`http://localhost:${port}`)) return r.continue(); report.network.push(u); return r.abort(); });
-        await page.goto(`http://localhost:${port}/${variant === 'crema' ? '?hero=crema' : ''}`, { waitUntil: 'networkidle' });
+        await page.goto(`http://localhost:${port}/`, { waitUntil: 'networkidle' });
         await page.evaluate(() => document.fonts.ready);
         await page.waitForTimeout(300);
         const tag = `${variant}-${w}`;

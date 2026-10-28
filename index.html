@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<script>document.documentElement.classList.add('js');if(/[?&]hero=crema(&|$)/.test(location.search))document.documentElement.classList.add('hero-crema');</script>
+<script>document.documentElement.classList.add('js');</script>
 <link rel="canonical" href="https://www.valoreatteso.com/">
 <link rel="preload" href="/fonts/playfair-display-800-latin.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,7 +97,7 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
 <link rel="stylesheet" href="/va.css">
 <style>
 /* Fase 2 B: header, hero, iscrizione e striscia KPI della home. Dopo va.css, così vince a parità di specificità.
-   Mobile first, breakpoint 640 e 1280. Hero navy (proposta) di base; variante crema con ?hero=crema. */
+   Mobile first, breakpoint 640 e 1280. Hero navy (scelta di Paolo, 28/10/2026). */
 :root{--hdr-h:60px;--pad:20px}
 @media(min-width:640px){:root{--hdr-h:64px;--pad:32px}}
 @media(min-width:1280px){:root{--hdr-h:72px;--pad:40px}}
@@ -121,18 +121,18 @@ footer{background:var(--cream2);border-top:1px solid var(--rule)}
   .va-hdr .ham{display:none}
 }
 /* Sopra la hero navy l'header è trasparente con logo crema; torna crema quando la hero esce (script in fondo). */
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)){background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom-color:rgba(243,239,230,.16)}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .logo-ink{display:none}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .logo-crema{display:block}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-link{color:#CCD2E3}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-link:hover{color:#F3EFE6}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-tool{color:#F3EFE6}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-tool::before{background:rgba(243,239,230,.08);border-color:rgba(243,239,230,.5)}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .tdot{background:#D67F0D}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-cta.va-btn-primary.va-btn-primary{background:#F3EFE6;border-color:#F3EFE6;color:#00266E}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-cta.va-btn-primary.va-btn-primary:hover{background:#FFFFFF;border-color:#FFFFFF}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .ham span{background:#F3EFE6}
-html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) :focus-visible{outline-color:#E5962E}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)){background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom-color:rgba(243,239,230,.16)}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .logo-ink{display:none}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .logo-crema{display:block}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-link{color:#CCD2E3}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-link:hover{color:#F3EFE6}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-tool{color:#F3EFE6}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-tool::before{background:rgba(243,239,230,.08);border-color:rgba(243,239,230,.5)}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .tdot{background:#D67F0D}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-cta.va-btn-primary.va-btn-primary{background:#F3EFE6;border-color:#F3EFE6;color:#00266E}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .nav-cta.va-btn-primary.va-btn-primary:hover{background:#FFFFFF;border-color:#FFFFFF}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) .ham span{background:#F3EFE6}
+html.js .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) :focus-visible{outline-color:#E5962E}
 
 /* Hero navy: gradiente e filigrana del monogramma al 6%; sale sotto l'header trasparente. */
 .hero{position:relative;overflow:hidden;margin-top:calc(-1 * var(--hdr-h));padding:calc(var(--hdr-h) + 28px) 0 48px;background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6}
@@ -223,48 +223,6 @@ html.js:not(.hero-crema) .hdr-over:not(.solid):not(:has(~ .mobile-menu.open)) :f
 .final-cta .va-consent.va-consent input{accent-color:#E5962E}
 .final-cta .va-consent a{color:#F3EFE6}
 .final-cta :focus-visible{outline-color:#E5962E}
-
-/* Variante crema (proposta alternativa, ?hero=crema): stessi contenuti su fondo chiaro, KPI nella card "In sintesi". */
-.hero-crema .hero{background:var(--va-cream);border-bottom:1px solid var(--va-line);color:#1C1914}
-.hero-crema .hero-wm{display:none}
-.hero-crema .hero :focus-visible{outline-color:#0039A4}
-.hero-crema .hero-kicker{color:#7A5C1E}
-.hero-crema .hero h1{color:#1C1914}
-.hero-crema .hero h1 span{color:#7A5C1E}
-.hero-crema .hero-sub,.hero-crema .audience-note{color:#2B2824}
-.hero-crema .hero .email{background:#FFFFFF;border-color:#6B6358;color:#1C1914}
-.hero-crema .hero .email::placeholder{color:#4F545F}
-.hero-crema .hero .submit.va-btn-primary.va-btn-primary{background:#0039A4;border-color:#0039A4;color:#F3EFE6}
-.hero-crema .hero .submit.va-btn-primary.va-btn-primary:hover{background:#00266E;border-color:#00266E;color:#F3EFE6}
-.hero-crema .hero .va-consent.va-consent{color:#4F545F}
-.hero-crema .hero .va-consent.va-consent input{accent-color:#0039A4}
-.hero-crema .hero .va-consent a{color:#1C1914}
-.hero-crema .hero .va-err-msg{color:#9A3A2F}
-.hero-crema .hero .va-err-msg::before{background:#9A3A2F;color:#F3EFE6}
-.hero-crema .hero input[aria-invalid="true"]{border-color:#9A3A2F!important;box-shadow:0 0 0 1px #9A3A2F}
-.hero-crema .h-kpi{padding:20px 18px 8px;border:1px solid rgba(28,25,20,.14);border-top:3px solid #D67F0D;border-radius:12px;background:#FFFFFF;box-shadow:0 24px 50px -30px rgba(0,38,110,.45)}
-.hero-crema .hk-kicker,.hero-crema .hk-sez{color:#7A5C1E}
-.hero-crema .hk-ed,.hero-crema .hk-s{color:#4F545F}
-.hero-crema .hk-t{color:#1C1914}
-.hero-crema .hk{padding:16px 0 0;border-left:0;border-top:1px solid var(--va-line)}
-.hero-crema .hk-v{color:#0039A4}
-.hero-crema .hk-v.neg{color:#9A3A2F}
-.hero-crema .hk-l{font-size:14px;color:#2B2824}
-.hero-crema .hk-link{color:#0039A4;text-decoration-color:#0039A4}
-.hero-crema .hero-microcopy div{color:#4F545F}
-.hero-crema .hero-microcopy strong{color:#1C1914}
-.hero-crema .credibility{color:#7A5C1E}
-@media(min-width:640px){
-  .hero-crema .signup-row{border-color:#6B6358;background:#FFFFFF}
-  .hero-crema .hero .email{background:transparent}
-  .hero-crema .signup-row:has(.email[aria-invalid="true"]){border-color:#9A3A2F;box-shadow:0 0 0 1px #9A3A2F}
-  .hero-crema .hk{border-top:0;border-left:1px solid var(--va-line);padding:4px 0 4px 16px}
-  .hero-crema .hk:first-child{border-left:0;padding-left:0}
-}
-@media(min-width:1280px){
-  .hero-crema .h-kpi{padding:28px 32px 20px;background:#FFFFFF}
-  .hero-crema .hk,.hero-crema .hk:first-child{padding:16px 0 0;border-left:0;border-top:1px solid var(--va-line)}
-}
 </style>
 </head>
 <body>
