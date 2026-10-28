@@ -30,118 +30,184 @@
 <link rel="stylesheet" href="/va.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"L'Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero","description":"Villa vende talenti per l'Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.","datePublished":"2026-09-01","dateModified":"2026-09-01","inLanguage":"it","isAccessibleForFree":true,"author":{"@type":"Organization","name":"Valore Atteso"},"publisher":{"@type":"Organization","name":"Valore Atteso","url":"https://www.valoreatteso.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.valoreatteso.com/edizione-18"},"articleSection":"Il Bilancio, Il Deal, La Metrica"}</script>
 <style>
+/* Pagina edizione (fase 2 D): testata navy, card "In sintesi" sovrapposta, barra delle sezioni, colonna 760. */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--cream:#F3EFE6;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#2B2824;--muted:#4F545F;--rule:#CEC3B2;--gold:#E5962E;--deepgold:#7A5C1E;--sf:var(--va-font-text);--mn:var(--va-font-mono);--max:760px}
-body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+:root{--cream:#F3EFE6;--cream2:#E7DFD2;--ink:#1C1914;--ink2:#2B2824;--muted:#4F545F;--rule:#DDD3C2;--gold:#E5962E;--deepgold:#7A5C1E;--sf:var(--va-font-text);--mn:var(--va-font-mono);--max:760px;--hdr-h:60px;--bar-h:48px;--pad:20px}
+@media(min-width:640px){:root{--hdr-h:64px;--pad:24px}}
+@media(min-width:1280px){:root{--hdr-h:72px}}
+html{scroll-padding-top:calc(var(--hdr-h) + var(--bar-h) + 16px)}
+body{background:var(--cream);color:var(--ink);font-family:var(--sf);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-nav{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
-.nav{max-width:1120px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.nav-logo{font-family:var(--va-font-display);font-size:1.9rem;font-weight:800;letter-spacing:-.8px}
+
+.ehdr{position:sticky;top:0;z-index:100;background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+.ehdr .nav{max-width:1200px;margin:0 auto;padding:0 var(--pad);height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ehdr .va-logo img{height:28px}
+@media(min-width:1280px){.ehdr .va-logo img{height:34px}}
 .nav-links{display:flex;gap:24px;align-items:center}
 .nav-a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-family:var(--mn);font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 .nav-a:hover{color:var(--ink)}
-.nav-cta{height:38px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:var(--cream);font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
-.wrap{max-width:var(--max);margin:0 auto;padding:56px 24px 88px}
-.kicker{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:16px}
-h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.8px;line-height:1.06;margin-bottom:18px;font-family:var(--va-font-display);font-weight:800}
-.sub{font-size:19px;color:var(--ink2);font-weight:400;line-height:1.7;padding:20px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-.opener{font-size:18px;color:var(--ink2);margin:28px 0 8px;line-height:1.7}
-.kpi-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin:32px 0}
-.kpi-cell{background:var(--cream);padding:16px 14px}
-.kpi-sez{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);margin-bottom:8px;font-weight:600}
-.kpi-lbl{font-family:var(--mn);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.kpi-val{font-size:20px;font-weight:600;letter-spacing:-.4px}
-.kpi-sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
-.sec{margin-top:44px}
-.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sec-num{width:26px;height:26px;border:1px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:12px;font-weight:600;flex-shrink:0}
-.sec-tag{font-family:var(--mn);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600}
-.sec-title{font-size:clamp(1.4rem,3.5vw,1.9rem);letter-spacing:-.4px;line-height:1.14;margin-bottom:14px;font-family:var(--va-font-display);font-weight:800}
-.sec-body{color:var(--ink2);line-height:1.72}
+.nav-cta{min-height:44px;padding:0 18px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;display:flex;align-items:center}
+@media(max-width:639px){.nav-links .nav-a{display:none}}
+
+/* Testata navy con gradiente: kicker, H1 50/32, sottotitolo (testi invariati). */
+.mast{background-color:#00266E;background-image:radial-gradient(90% 90% at 88% 0%,#0039A4 0%,#002C80 32%,#00266E 58%,#001D57 100%);color:#F3EFE6;padding:40px 0 70px}
+.mast-in{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.kicker{font-family:var(--mn);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#E5962E;font-weight:600;margin-bottom:16px}
+h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(2vw + 24.5px),50px);line-height:1.06;letter-spacing:-.01em;color:#F3EFE6;margin-bottom:16px}
+.sub{font-size:clamp(16px,calc(.45vw + 14.3px),19px);color:#D7D3CB;line-height:1.55;max-width:40em}
+@media(min-width:1280px){.mast{padding:64px 0 86px}}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad) 64px}
+
+/* Card "In sintesi": sovrapposta di 30px alla testata, 3 righe su mobile, 3 colonne da 640. */
+.sintesi{position:relative;margin-top:-30px;padding:20px 18px 8px;background:#FFFFFF;border:1px solid rgba(28,25,20,.14);border-top:3px solid #D67F0D;border-radius:12px;box-shadow:0 24px 50px -30px rgba(0,38,110,.45)}
+.sintesi-k{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
+.sk-list{list-style:none;display:grid;grid-template-columns:minmax(0,1fr)}
+.sk{display:flex;flex-direction:column;padding:14px 0 6px;border-top:1px solid var(--rule);margin-top:12px}
+.sk:first-child{border-top:0;margin-top:4px}
+.sk-sez{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E}
+.sk-v{font-family:var(--va-font-display);font-weight:800;font-size:34px;line-height:1.1;font-variant-numeric:lining-nums;color:#0039A4;margin:4px 0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sk-v.neg{color:#9A3A2F}
+.sk-l{font-size:14px;line-height:1.4;color:#2B2824}
+.sk-s{font-size:14px;line-height:1.4;color:#4F545F}
+.sk-a{align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.06em;color:#0039A4}
+@media(min-width:640px){
+  .sintesi{padding:24px 24px 8px}
+  .sk-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px}
+  .sk,.sk:first-child{border-top:0;margin-top:8px;padding-top:4px}
+  .sk+.sk{border-left:1px solid var(--rule);padding-left:20px}
+  .sk-v{font-size:clamp(28px,3.4vw,40px)}
+}
+
+/* Barra sticky delle sezioni: link alti 44px, etichette 12px. */
+.secbar{position:sticky;top:var(--hdr-h);z-index:90;margin:24px calc(-1 * var(--pad)) 0;padding:0 var(--pad);background:rgba(243,239,230,.96);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+.secbar-in{display:flex;gap:4px 20px;overflow-x:auto;scrollbar-width:none;min-height:var(--bar-h);align-items:center}
+.secbar-in::-webkit-scrollbar{display:none}
+.secbar a{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid transparent}
+.secbar a:hover{color:#0039A4;border-bottom-color:#D67F0D}
+
+.opener{font-size:17px;color:var(--ink2);margin:28px 0 8px;line-height:1.6}
+.sec{margin-top:48px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--rule)}
+.sec-num{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:13px;font-weight:600;flex-shrink:0}
+.sec-tag{font-family:var(--mn);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#7A5C1E;font-weight:600}
+.sec-title{font-family:var(--va-font-display);font-weight:800;font-size:clamp(25px,calc(.8vw + 22px),32px);line-height:1.15;margin-bottom:16px}
+.sec-body{color:var(--ink2);font-size:17px;line-height:1.6;margin-bottom:14px;max-width:70ch}
+@media(max-width:639px){.sec-body{font-size:16px}}
 .sec-src{font-family:var(--mn);font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
-.gate{position:relative;margin-top:48px;padding:40px 28px;text-align:center;background:var(--ink);color:var(--cream);border-radius:8px}
-.gate::before{content:'';position:absolute;left:0;right:0;top:-64px;height:64px;background:linear-gradient(to bottom,transparent,var(--cream))}
-.gate-k{font-family:var(--mn);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
-.gate h3{font-size:1.5rem;margin-bottom:10px;letter-spacing:-.4px;font-family:var(--va-font-display);font-weight:800}
-.gate p{color:#D8CCB9;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
-.gate-cta{display:inline-flex;align-items:center;height:46px;padding:0 28px;background:var(--va-gold-graphic);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
-.gate-fine{font-family:var(--mn);font-size:12px;letter-spacing:.02em;color:#B8AC98;margin-top:14px;line-height:1.5}
-.vaform-h{font-size:1.35rem;font-weight:600;margin-bottom:6px;letter-spacing:-.3px}
-.vaform-p{color:var(--ink2);font-size:14px;line-height:1.55;margin:0 auto 14px;max-width:460px}
+
+/* Condivisione: bottone ghost su chiaro, solo mailto. */
+.share{margin-top:40px;display:flex;gap:12px}
+.share-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:1.5px solid #0039A4;border-radius:999px;color:#0039A4;font-family:var(--mn);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.share-btn:hover{background:#0039A4;color:#F3EFE6}
+
+/* Edizione precedente e successiva. */
+.ednav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--rule)}
+.ednav-a{display:flex;flex-direction:column;gap:4px;min-height:44px;padding:4px 0}
+.ednav-next{text-align:right;align-items:flex-end}
+.ednav-n{font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.08em;color:#0039A4}
+.ednav-t{font-family:var(--va-font-display);font-weight:800;font-size:17px;line-height:1.25;color:var(--ink)}
+.ednav-a:hover .ednav-t{color:#0039A4}
+
+/* Blocco iscrizione finale su navy, CTA oro. */
+.gate{margin-top:48px;padding:40px 24px;text-align:center;background-color:#00266E;background-image:radial-gradient(90% 120% at 50% 0%,#002C80 0%,#00266E 55%,#001D57 100%);color:var(--cream);border-radius:12px;scroll-margin-top:calc(var(--hdr-h) + 16px)}
+.gate-k{font-family:var(--mn);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:12px}
+.gate h3{font-size:clamp(24px,3vw,28px);margin-bottom:10px;letter-spacing:-.01em;font-family:var(--va-font-display);font-weight:800}
+.gate p{color:#D7D3CB;font-size:15px;line-height:1.6;max-width:440px;margin:0 auto 22px}
+.gate-fine{font-family:var(--mn);font-size:12px;letter-spacing:.02em;color:#A9B1CC;margin-top:14px;line-height:1.5}
+.gate :focus-visible{outline-color:#E5962E}
 .vaform-row{display:flex;gap:8px;flex-wrap:wrap;max-width:480px;margin:0 auto}
-.vaform input{flex:1;min-width:190px;height:46px;padding:0 16px;border:1px solid var(--rule);border-radius:999px;font-family:var(--sf);font-size:15px;background:#fff;color:var(--ink)}
-.vaform button{height:46px;padding:0 22px;border:0;background:var(--va-gold-graphic);color:var(--ink);font-family:var(--mn);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;cursor:pointer}
-.vaform button:disabled{opacity:.6;cursor:default}
+.vaform input{flex:1;min-width:190px;height:48px;padding:0 18px;border:1.5px solid var(--va-field);border-radius:999px;font-family:var(--sf);font-size:16px;background:#fff;color:var(--ink)}
+.vaform button{height:48px;padding:0 22px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;cursor:pointer}
 .vaform-status{font-family:var(--mn);font-size:12px;margin-top:10px;min-height:14px}
-.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#B3402F}
-.midcta{margin:40px 0;padding:24px 26px;border:1px solid var(--rule);border-radius:14px;background:var(--cream2);text-align:center}
-.midcta .vaform-h{font-size:1.1rem}
-.gate .vaform-status.ok{color:#9BE3B0}.gate .vaform-status.err{color:#F0A79A}
+.vaform-status.ok{color:#2F6B3F}.vaform-status.err{color:#9A3A2F}
+.gate .vaform input{background:rgba(243,239,230,.06);border-color:rgba(243,239,230,.6);color:#F3EFE6}
+.gate .vaform input::placeholder{color:#A9B1CC}
+.gate .vaform button.va-btn-primary.va-btn-primary{background:#E5962E;border-color:#E5962E;color:#1C1914}
+.gate .vaform button.va-btn-primary.va-btn-primary:hover{background:#F3EFE6;border-color:#F3EFE6;color:#1C1914}
+.gate .vaform-status.ok{color:#86C29A}.gate .vaform-status.err{color:#E9A08A}
 .gate .vaform-row{margin-top:6px}
-.secondary-cta{max-width:var(--max);margin:26px auto 0;text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
+@media(max-width:639px){.vaform-row{flex-direction:column}.vaform input,.vaform button{flex:none;width:100%}}
+
+.secondary-cta{max-width:var(--max);margin:26px auto 0;padding:0 var(--pad);text-align:center;font-family:var(--mn);font-size:12px;color:var(--muted)}
 .secondary-cta a{color:var(--deepgold);font-weight:600;border-bottom:1px solid var(--va-gold-graphic)}
 #va-scroll-cta{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--ink);color:var(--cream);padding:12px 20px;box-shadow:0 -6px 24px rgba(0,0,0,.22)}
 #va-scroll-cta .sc-in{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 #va-scroll-cta .sc-t{font-family:var(--sf);font-size:15px;font-weight:600;flex:1;min-width:170px}
-#va-scroll-cta .vaform-row{margin:0}
-#va-scroll-cta input{height:40px}#va-scroll-cta button{height:40px}
-#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;padding:4px 8px}
-#va-scroll-cta .vaform-status{color:#9BE3B0}
-.foot{max-width:var(--max);margin:0 auto;padding:32px 24px 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
+#va-scroll-cta .vaform-row{margin:0;flex-direction:row}
+#va-scroll-cta input{height:44px;width:auto}#va-scroll-cta button{height:44px;width:auto}
+#va-scroll-cta .sc-close{cursor:pointer;color:var(--gold);font-family:var(--mn);font-size:20px;line-height:1;background:none;border:0;min-width:44px;min-height:44px}
+#va-scroll-cta .vaform-status{color:#86C29A}
+.foot{max-width:var(--max);margin:0 auto;padding:32px var(--pad) 60px;border-top:1px solid var(--rule);margin-top:56px;font-family:var(--mn);font-size:12px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:center}
 .foot a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
 .foot a:hover{color:var(--ink)}
-@media(max-width:560px){.kpi-bar{grid-template-columns:1fr}.nav-links .nav-a{display:none}}
 </style>
 </head>
 <body>
 <a class="va-skip" href="#contenuto">Vai al contenuto</a>
-<nav><div class="nav">
+<header class="ehdr"><div class="nav">
   <a href="/" class="nav-logo va-logo"><img src="/brand/svg/orizzontale-ink.svg" alt="Valore Atteso" width="96" height="32"></a>
   <div class="nav-links">
     <a href="/archivio" class="nav-a">Archivio</a>
     <a href="/club-intelligence" class="nav-a">Club Intelligence</a>
-    <a href="/" class="nav-cta va-btn-primary">Iscriviti</a>
+    <a href="#iscriviti" class="nav-cta va-btn-primary">Iscriviti</a>
   </div>
-</div></nav>
+</div></header>
 
-<article class="wrap" id="contenuto">
+<div class="mast va-on-dark"><div class="mast-in">
   <div class="kicker">Edizione #018 · <time datetime="2026-09-01">1 set 2026</time></div>
   <h1>L&#39;Aston Villa vende i gioielli, il Chelsea e i contratti lunghi e il prezzo che leggi non è quello vero</h1>
-  <div class="sub">Villa vende talenti per l&#39;Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.</div>
+  <p class="sub">Villa vende talenti per l&#39;Europa, Chelsea punta sui contratti lunghi, i milioni annunciati sono solo apparenza.</p>
+</div></div>
+
+<article class="wrap" id="contenuto">
+  <section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list"><li class="sk">
+      <span class="sk-sez">IL BILANCIO</span>
+      <span class="sk-v">£117m</span>
+      <span class="sk-l">Cessione Rogers</span>
+      <span class="sk-s">record britannico</span>
+      <a class="sk-a" href="#s1">Leggi ↓</a>
+    </li><li class="sk">
+      <span class="sk-sez">IL DEAL</span>
+      <span class="sk-v">£117m</span>
+      <span class="sk-l">Rogers al Chelsea</span>
+      <span class="sk-s">record britannico</span>
+      <a class="sk-a" href="#s2">Leggi ↓</a>
+    </li><li class="sk">
+      <span class="sk-sez">LA METRICA</span>
+      <span class="sk-v">20%</span>
+      <span class="sk-l">Clausola Middlesbrough</span>
+      <span class="sk-s">£20,3m su Rogers</span>
+      <a class="sk-a" href="#s3">Leggi ↓</a>
+    </li></ol></section>
+  <nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in"><a href="#s1">IL BILANCIO</a><a href="#s2">IL DEAL</a><a href="#s3">LA METRICA</a></div></nav>
   <p class="opener">Un&#39;estate di record sul mercato inglese, raccontata dai numeri. Chi vende, chi compra, e perché la cifra che fa titolo non è mai quella che finisce davvero in banca.</p>
-  <div class="kpi-bar"><div class="kpi-cell">
-      <div class="kpi-sez">IL BILANCIO</div>
-      <div class="kpi-lbl">Cessione Rogers</div>
-      <div class="kpi-val">£117m</div>
-      <div class="kpi-sub">record britannico</div>
-    </div><div class="kpi-cell">
-      <div class="kpi-sez">IL DEAL</div>
-      <div class="kpi-lbl">Rogers al Chelsea</div>
-      <div class="kpi-val">£117m</div>
-      <div class="kpi-sub">record britannico</div>
-    </div><div class="kpi-cell">
-      <div class="kpi-sez">LA METRICA</div>
-      <div class="kpi-lbl">Clausola Middlesbrough</div>
-      <div class="kpi-val">20%</div>
-      <div class="kpi-sub">£20,3m su Rogers</div>
-    </div></div>
-  <section class="sec">
+  <section class="sec" id="s1">
       <div class="sec-head"><span class="sec-num">1</span><span class="sec-tag">IL BILANCIO</span></div>
       <h2 class="sec-title">Aston Villa: come si compra l&#39;Europa vendendo i migliori</h2>
       <p class="sec-body">L&#39;Aston Villa ha venduto Morgan Rogers al Chelsea per 117 milioni di sterline: mai nessun giocatore britannico era costato così tanto. Poco più di due anni prima il Villa lo aveva preso dal Middlesbrough per una cifra tra gli 8 e i 15 milioni, bonus inclusi. Un valore che, in due anni e mezzo, si è moltiplicato di oltre sette volte.</p><p class="sec-body">Ma attenzione: quei 117 milioni non finiscono tutti nelle casse del Villa. Quando lo comprò, il Middlesbrough si tenne il diritto al 20% sulla plusvalenza della rivendita, cioè sul guadagno, non sull&#39;intera cifra. Risultato: 20,3 milioni di sterline spettano al Middlesbrough e non restano al Villa. Il prezzo che leggi non è mai quello che il club incassa davvero.</p><p class="sec-body">E Rogers non è l&#39;unico partito. Nella stessa estate il Villa ha lasciato partire anche Youri Tielemans, uscito per una clausola rescissoria, e ha incassato da altre cessioni. Pur avendo fatto qualche acquisto, ha finanziato buona parte del mercato vendendo i suoi pezzi migliori.</p><p class="sec-body">Il paradosso è che il Villa è forte: si è qualificato in Champions League. Ma per un club come il Villa una rosa da Champions costa più di quanto la partecipazione porti, e allora vendere bene diventa il modo per far quadrare i conti.</p><p class="sec-body">Per chi guarda i numeri, il Villa è il ritratto di un modello sempre più comune: comprare giovani, farli crescere, rivenderli a peso d&#39;oro. Funziona finché c&#39;è chi compra. Il giorno che il mercato si raffredda, resti con una squadra più debole e senza quel tesoretto.</p>
       <div class="sec-src">Fonti: Sky Sports: Chelsea complete record £117m deal for Morgan Rogers (luglio 2026) · Sky Sports: Villa signed Rogers from Middlesbrough in Jan 2024, deal rising to ~£16m · Teesside Live / Yahoo Sport: Middlesbrough £20,3m dalla clausola del 20% sulla plusvalenza</div>
-    </section><section class="sec">
+    </section><section class="sec" id="s2">
       <div class="sec-head"><span class="sec-num">2</span><span class="sec-tag">IL DEAL</span></div>
       <h2 class="sec-title">Chelsea: i contratti lunghi che hanno cambiato le regole</h2>
       <p class="sec-body">Il Chelsea ha comprato Morgan Rogers per 117 milioni di sterline, il giocatore britannico più costoso di sempre, in un&#39;estate in cui ha speso circa 350 milioni di sterline: più di ogni altro club in Premier League.</p><p class="sec-body">La domanda vera non è dove trovi i soldi: quelli si pagano davvero, di solito in più anni. È un&#39;altra: come fa a spendere così tanto senza essere punito dalle regole che vietano perdite troppo grandi?</p><p class="sec-body">La risposta è nella contabilità. Il costo di un cartellino non pesa tutto nell&#39;anno dell&#39;acquisto: si spalma sulla durata del contratto. Più lungo è il contratto, più sottile è la fetta che finisce ogni anno nei conti. Il Chelsea ha usato molto questa possibilità: ha iniziato a far firmare contratti lunghissimi, a Enzo Fernández addirittura otto anni e mezzo, così da diluire al massimo la spesa e restare dentro i limiti pur comprando a valanga.</p><p class="sec-body">Il punto di svolta: questa pratica si è diffusa al punto che le autorità hanno cambiato la regola. Dal 2023 non si può più spalmare il costo oltre cinque anni. Così quei 117 milioni di Rogers, sui conti, valgono circa 23 milioni l&#39;anno.</p><p class="sec-body">Per chi legge i conti, la lezione è che i soldi si spendono per davvero: il punto non sta nel pagare meno, ma nel modo in cui la spesa appare a bilancio. E quell&#39;apparenza conta, perché è ciò che decide se un club può continuare a comprare o no. Il Chelsea ha usato questa leva fino in fondo, poi il tetto è stato spostato.</p>
       <div class="sec-src">Fonti: Sky Sports: Chelsea record £117m per Morgan Rogers (luglio 2026) · Sports Illustrated / LiveScore: spesa Premier League estate 2026, Chelsea primo (circa £350m, ~$476m) · Inside World Football / The Guardian: UEFA e Premier League, tetto di 5 anni all&#39;ammortamento (2023) e contratti lunghi del Chelsea (Enzo Fernández 8 anni e mezzo)</div>
-    </section><section class="sec">
+    </section><section class="sec" id="s3">
       <div class="sec-head"><span class="sec-num">3</span><span class="sec-tag">LA METRICA</span></div>
       <h2 class="sec-title">Quando leggi &quot;100 milioni&quot;, il club ne incassa molti meno</h2>
       <p class="sec-body">Quando la notizia dice &quot;venduto per 100 milioni&quot; (prendiamo una cifra tonda come esempio), immagini che tutta quella somma arrivi nelle casse del club. Quasi mai è così. Dal prezzo che fa titolo vanno tolte diverse voci.</p><p class="sec-body">La prima è la clausola di rivendita: spesso il club che aveva ceduto prima il giocatore si è tenuto una percentuale sul guadagno della vendita successiva. Sul Rogers, per esempio, il 20% della plusvalenza (20,3 milioni di sterline) spetta al Middlesbrough e non resta all&#39;Aston Villa.</p><p class="sec-body">La seconda è il contributo di solidarietà: nei trasferimenti internazionali fino al 5% della cifra viene messo da parte e distribuito a tutte le squadre che hanno cresciuto il giocatore da ragazzo, tra i 12 e i 23 anni.</p><p class="sec-body">La terza sono le commissioni degli agenti: chi costruisce l&#39;operazione può pesare parecchio, spesso una fetta a due cifre del valore.</p><p class="sec-body">Metti tutto insieme e una vendita che fa titolo per una certa cifra si traduce, per il club che vende, in parecchi milioni in meno davvero incassati.</p><p class="sec-body">Per chi guarda i numeri, la lezione è semplice: la cifra che fa notizia è marketing, quello che conta è il netto. La prossima volta che leggi una cifra record, chiediti quanto resta davvero al club.</p>
       <div class="sec-src">Fonti: FIFA / LawInSport: meccanismo di solidarietà (fino al 5%) e training compensation · Teesside Live: clausola di rivendita 20% del Middlesbrough sulla plusvalenza di Rogers · FIFA Football Agent Regulations / EA Sports Law: commissioni agenti e relativi tetti</div>
     </section>
-  <div class="gate va-on-dark">
+  <div class="share"><a class="share-btn" href="mailto:?subject=Valore%20Atteso%20%23018%3A%20L&#39;Aston%20Villa%20vende%20i%20gioielli%2C%20il%20Chelsea%20e%20i%20contratti%20lunghi%20e%20il%20prezzo%20che%20leggi%20non%20%C3%A8%20quello%20vero&amp;body=https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-18" aria-label="Condividi via email"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Email</span></a></div>
+  <nav class="ednav" aria-label="Altre edizioni"><a class="ednav-a ednav-prev" href="/edizione-17" rel="prev">
+      <span class="ednav-n">← #017</span>
+      <span class="ednav-t">La Lazio senza tifosi, l&#39;RB Lipsia che gioca a fare il fondo, il mito della maglia</span>
+    </a><a class="ednav-a ednav-next" href="/edizione-19" rel="next">
+      <span class="ednav-n">#019 →</span>
+      <span class="ednav-t">Il tesoretto del Napoli, il primo addio del PIF, il muro dei 3,5 miliardi della Premier</span>
+    </a></nav>
+  <div class="gate va-on-dark" id="iscriviti">
     <div class="gate-k">Newsletter</div>
     <h3>Ricevila ogni martedì</h3>
     <p>Analisi, non rumore. Iscriviti gratis e ricevi anche il prossimo numero, prima di una riunione.</p>
@@ -171,7 +237,7 @@ h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.8px;line-height:1.06;margin-b
 </div>
 
 <footer class="foot">
-  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44"></a>
+  <a href="/" class="va-mono"><img src="/brand/svg/monogramma-ink.svg" alt="Valore Atteso" width="64" height="44" loading="lazy"></a>
   <a href="/">Home</a>
   <a href="/archivio">Archivio</a>
   <a href="/club-intelligence">Club Intelligence</a>
