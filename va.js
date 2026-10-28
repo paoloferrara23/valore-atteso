@@ -122,6 +122,13 @@ function vaSub(form) {
   var cls = st.classList.contains('va-cap-status') ? 'va-cap-status' : 'vaform-status';
   if (btn.getAttribute('aria-busy') === 'true') return false;
   var email = (input.value || '').trim();
+  // Consenso (se il form ha la casella, come in home): stesso messaggio e stesso controllo, payload invariato.
+  var check = form.querySelector('input[type=checkbox]');
+  if (check) {
+    var label = check.closest('label') || check;
+    if (!check.checked) { vaFieldMsg(check, label, VA_MSG.consent); check.focus(); return false; }
+    vaFieldMsg(check, label, '');
+  }
   if (!st.id) st.id = 'va-st' + Math.random().toString(36).slice(2, 8);
   input.setAttribute('aria-describedby', st.id);
   if (!vaValidEmail(email)) {
