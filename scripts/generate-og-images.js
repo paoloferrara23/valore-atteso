@@ -13,11 +13,11 @@ const crypto = require('crypto');
 const { chromium } = require('playwright');
 const { fetchEditions, slug, isoDate } = require('./generate-edition-pages.js');
 const { blockedNames } = require('../api/_lib/email/config.js');
+const { isExcluded } = require('./edizioni-escluse.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'og');
 const LAYOUT = 'og-v2';
-const EXCLUDED = ['018', '019'];
 const MAX_BYTES = 300 * 1024;
 
 // Font incorporati come data URI: la pagina è caricata con setContent e non può leggere file:// dal disco.
@@ -54,7 +54,7 @@ html,body{width:1200px;height:630px;background:#0039A4;overflow:hidden}
 async function main() {
   // Niente immagine dedicata (resta la generica) se il titolo contiene il nome di una testata.
   const press = blockedNames.concat(['Times', 'AFP', 'Sportico', 'Gulf News']).map(n => new RegExp('\\b' + n + '\\b', 'i'));
-  const editions = (await fetchEditions()).filter(e => e && e.num && e.title && !EXCLUDED.includes(String(e.num).padStart(3, '0')) && !press.some(r => r.test(e.title)));
+  const editions = (await fetchEditions()).filter(e => e && e.num && e.title && !isExcluded(e.num) && !press.some(r => r.test(e.title)));
   fs.mkdirSync(OUT, { recursive: true });
   const manFile = path.join(OUT, 'manifest.json');
   const manifest = fs.existsSync(manFile) ? JSON.parse(fs.readFileSync(manFile, 'utf8')) : {};

@@ -135,12 +135,11 @@ function slug(num) {
 
 // ---------- template pagina ----------
 
-// Edizioni escluse dall'immagine di condivisione dedicata (usano la generica /og.png).
-const OG_EXCLUDED = ['018', '019'];
+// Edizioni escluse dalle vetrine (immagine dedicata, numero della settimana, Terminale): scripts/edizioni-escluse.js.
+const { isExcluded } = require('./edizioni-escluse.js');
 const ogFile = num => path.join(ROOT, 'og', slug(num) + '.png');
 function ogImageFor(ed) {
-  const n = String(ed.num).padStart(3, '0');
-  if (OG_EXCLUDED.includes(n) || !fs.existsSync(ogFile(ed.num))) return null;
+  if (isExcluded(ed.num) || !fs.existsSync(ogFile(ed.num))) return null;
   return `${SITE}/og/${slug(ed.num)}.png`;
 }
 
@@ -435,7 +434,6 @@ function buildSitemap(editions) {
 // iscriviti.html tra i marcatori: si aggiorna insieme alle pagine edizione, quindi il link punta sempre a una
 // pagina esistente.
 
-const HOME_KPI_EXCLUDED = ['018', '019'];
 const HOME_START = '<!-- va:home-kpi:start -->';
 const HOME_END = '<!-- va:home-kpi:end -->';
 const HOME_TARGETS = [
@@ -472,7 +470,7 @@ function updateHome(editions, file = path.join(ROOT, 'index.html'), linkText = '
   const html = fs.readFileSync(file, 'utf8');
   const a = html.indexOf(HOME_START), b = html.indexOf(HOME_END);
   if (a < 0 || b < a) { console.warn(`[generate-edition-pages] marcatori KPI assenti in ${path.basename(file)}: non aggiornato`); return false; }
-  const ed = editions.find(e => !HOME_KPI_EXCLUDED.includes(String(e.num).padStart(3, '0')) && homeKpis(e));
+  const ed = editions.find(e => !isExcluded(e.num) && homeKpis(e));
   if (!ed) { console.warn('[generate-edition-pages] nessuna edizione adatta per la striscia KPI della home'); return false; }
   const next = html.slice(0, a) + buildHomeKpi(ed, homeKpis(ed), linkText) + html.slice(b + HOME_END.length);
   if (next !== html) fs.writeFileSync(file, next);
