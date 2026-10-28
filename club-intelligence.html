@@ -556,7 +556,7 @@ function render(){
       return '<button type="button" class="nav-item'+(on?' active':'')+'" data-club="'+k+'"'+(on?' aria-current="true"':'')+'>'+crest(cl,22)+'<span>'+cl.name+'</span></button>';
     }).join('');
 
-  el('foot').innerHTML='<div class="foot-line"><span class="live-dot"></span>'+(LIVE?'LIVE · SUPABASE':'SNAPSHOT VERIFICATO')+'</div>'+
+  el('foot').innerHTML='<div class="foot-line"><span class="live-dot"></span>'+(LIVE?'Dati verificati · Serie A 2024/25':'SNAPSHOT VERIFICATO')+'</div>'+
     '<div class="foot-sub">'+ks.length+' club · Serie A · 2024/25</div>';
 
   if(mode==='home'){
@@ -608,7 +608,7 @@ function refocus(sel){ var t=document.querySelector(sel); if(t) t.focus({prevent
 function termHead(){
   return '<div class="thead"><div class="thead-l"><span class="live-dot"></span> Valore Atteso · Club Intelligence</div>'+
     '<div class="thead-c">Classifica · Serie A 2024/25</div>'+
-    '<div class="thead-r">'+(LIVE?'● Live':'● Verificato')+'</div></div>';
+    '<div class="thead-r">● Verificato</div></div>';
 }
 function clubHead(c){
   return '<div class="chead">'+
