@@ -20,7 +20,7 @@ const port = 8793;
 const host = `http://localhost:${port}`;
 
 const PAGES = [['home', '/'], ['archivio', '/archivio'], ['edizione-26', '/edizione-26'], ['edizione-25', '/edizione-25'],
-  ['edizione-17', '/edizione-17'], ['edizione-1', '/edizione-1'], ['edizione-18', '/edizione-18'], ['edizione-27', '/edizione-27']]
+  ['edizione-17', '/edizione-17'], ['edizione-1', '/edizione-1'], ['edizione-18', '/edizione-18'], ['edizione-27', '/edizione-27'], ['come-lavoriamo', '/come-lavoriamo']]
   .filter(p => !process.env.QA_ONLY || process.env.QA_ONLY.split(',').includes(p[0]));
 const VIEWS = [375, 640, 1280, 1440];
 
