@@ -543,6 +543,8 @@ function terminalRows(editions) {
 function buildTerminal(editions) {
   const rows = terminalRows(editions);
   const neg = v => /^\s*[-−]/.test(v);
+  // Didascalia visibile fuori dalla tabella (che da mobile scorre in orizzontale); la <caption> resta per i lettori di schermo.
+  const caption = `I primi numeri di Il Bilancio, Il Deal e La Metrica nelle ultime ${rows.length} edizioni, come pubblicati nella sintesi di ogni edizione.`;
   const items = rows.flatMap(r => r.cells.filter(c => c.value).map(c =>
     `<span class="tk-i"><span class="tk-n">#${esc(String(r.ed.num).padStart(3, '0'))}</span> <span class="tk-s">${esc(TERM_COLS.find(x => x[0] === c.id)[1])}</span> <span class="tk-v${neg(c.value) ? ' neg' : ''}">${esc(c.value)}</span></span>`)).join('');
   const body = rows.map(r => `<tr><th scope="row"><a href="/${slug(r.ed.num)}"><span class="tm-n">#${esc(String(r.ed.num).padStart(3, '0'))}</span><span class="tm-d">${timeTag(r.ed.date)}</span></a></th>`
@@ -550,7 +552,7 @@ function buildTerminal(editions) {
   return `${TERM_START}<div class="tm-head"><span class="tm-k"><span class="tm-dot" aria-hidden="true"></span>Terminale VA · ultime ${rows.length} edizioni</span><!-- [[DA_APPROVARE]] -->`
     + `<button class="tm-pause" type="button" aria-pressed="false">Pausa</button><!-- [[DA_APPROVARE]] --></div>`
     + `<div class="tk" role="marquee" aria-label="Ultimi numeri"><div class="tk-track"><div class="tk-run">${items}</div><div class="tk-run" aria-hidden="true">${items}</div></div></div>`
-    + `<div class="tm-scroll"><table class="tm"><caption>I primi numeri di Il Bilancio, Il Deal e La Metrica nelle ultime ${rows.length} edizioni, come pubblicati nella sintesi di ogni edizione.</caption><!-- [[DA_APPROVARE]] -->`
+    + `<p class="tm-cap" aria-hidden="true">${esc(caption)}</p><!-- [[DA_APPROVARE]] --><div class="tm-scroll"><table class="tm"><caption class="va-sr">${esc(caption)}</caption>`
     + `<thead><tr><th scope="col">Edizione</th>${TERM_COLS.map(([, l]) => `<th scope="col">${l}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>${TERM_END}`;
 }
 
