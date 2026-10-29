@@ -106,10 +106,13 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(max-width:639px){.sec-body{font-size:16px}}
 .sec-src{font-family:var(--mn);font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
 
-/* Condivisione: bottoni ghost su chiaro, WhatsApp (wa.me) ed email (mailto). */
+/* Condivisione: bottoni ghost su chiaro, WhatsApp (wa.me), LinkedIn, email (mailto) e "Copia link" (solo con JS). */
 .share{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px}
 .share-btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;border:1.5px solid #0039A4;border-radius:999px;color:#0039A4;font-family:var(--mn);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .share-btn:hover{background:#0039A4;color:#F3EFE6}
+button.share-btn{background:transparent;cursor:pointer}
+.share-btn[hidden]{display:none}
+.share-msg{flex:1 0 100%;margin:0;min-height:20px;font-family:var(--mn);font-size:12px;line-height:20px;letter-spacing:.04em;color:var(--ink2)}
 
 /* Edizione precedente e successiva. */
 .ednav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--rule)}
@@ -200,7 +203,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
       <p class="sec-body">Nel calcio il prezzo che finisce nei titoli è quasi sempre un enterprise value: il valore dell&#39;intero club, debiti compresi. Quello che interessa a chi compra le quote è un altro numero, l&#39;equity value, cioè il valore che resta agli azionisti dopo aver tolto il debito netto.</p><p class="sec-body">Il caso Siviglia lo mostra bene. A maggio Sergio Ramos e il fondo Five Eleven Capital hanno trovato un accordo con le famiglie azioniste per rilevare la maggioranza del club, in un&#39;operazione valutata intorno ai 450 milioni di euro debiti inclusi. L&#39;accordo è subordinato all&#39;autorizzazione del Consejo Superior de Deportes.</p><p class="sec-body">Il problema è il debito. Secondo l&#39;agenzia EFE, la due diligence condotta da KPMG lo ha quantificato in circa 85 milioni. Altre ricostruzioni arrivano a circa 180.</p><p class="sec-body">Su una valutazione di 450 milioni la differenza non è marginale. Con 85 milioni di debito l&#39;equity vale circa 365 milioni, con 180 ne vale circa 270. Quasi cento milioni di distanza sullo stesso club, con lo stesso prezzo in copertina.</p><p class="sec-body">A questo si aggiunge l&#39;aumento di capitale da 80-100 milioni che, secondo la stampa spagnola, i nuovi soci dovrebbero sottoscrivere per stabilizzare i conti: un esborso che non compare nel prezzo ma pesa sul ritorno dell&#39;investimento.</p>
       <div class="sec-src">Fonti: Agenzia EFE, 12/05/2026 · SGI Europe, 2026</div>
     </section>
-  <div class="share"><a class="share-btn" href="https://wa.me/?text=Valore%20Atteso%20%23021%3A%20Milan%2C%20West%20Ham%2C%20Siviglia%3A%20chi%20decide%20quanto%20vale%20un%20club%20https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-21%3Futm_source%3Dwhatsapp%26utm_medium%3Dcondivisione" target="_blank" rel="noopener" aria-label="Condividi su WhatsApp"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-5A8 8 0 1 1 21 12Z"/></svg><span>WhatsApp</span></a><a class="share-btn" href="mailto:?subject=Valore%20Atteso%20%23021%3A%20Milan%2C%20West%20Ham%2C%20Siviglia%3A%20chi%20decide%20quanto%20vale%20un%20club&amp;body=https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-21%3Futm_source%3Demail%26utm_medium%3Dcondivisione" aria-label="Condividi via email"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Email</span></a></div>
+  <div class="share"><a class="share-btn" href="https://wa.me/?text=Valore%20Atteso%20%23021%3A%20Milan%2C%20West%20Ham%2C%20Siviglia%3A%20chi%20decide%20quanto%20vale%20un%20club%20https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-21%3Futm_source%3Dwhatsapp%26utm_medium%3Dcondivisione" target="_blank" rel="noopener" aria-label="Condividi su WhatsApp"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-5A8 8 0 1 1 21 12Z"/></svg><span>WhatsApp</span></a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-21%3Futm_source%3Dlinkedin%26utm_medium%3Dshare" target="_blank" rel="noopener" aria-label="Condividi su LinkedIn"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>LinkedIn</span></a><a class="share-btn" href="mailto:?subject=Valore%20Atteso%20%23021%3A%20Milan%2C%20West%20Ham%2C%20Siviglia%3A%20chi%20decide%20quanto%20vale%20un%20club&amp;body=https%3A%2F%2Fwww.valoreatteso.com%2Fedizione-21%3Futm_source%3Demail%26utm_medium%3Dcondivisione" aria-label="Condividi via email"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Email</span></a><button type="button" class="share-btn" id="share-copy" data-url="https://www.valoreatteso.com/edizione-21?utm_source=copy&amp;utm_medium=share" aria-label="Copia il link dell'edizione" hidden><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg><span>Copia link</span></button><p class="share-msg" id="share-msg" role="status" aria-live="polite"></p></div>
   <nav class="ednav" aria-label="Altre edizioni"><a class="ednav-a ednav-prev" href="/edizione-20" rel="prev">
       <span class="ednav-n">← #020</span>
       <span class="ednav-t">Dollari, Squad Cost e il miracolo di Como</span>
@@ -281,6 +284,14 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
   function fit(){document.querySelectorAll('.sk-v').forEach(function(el){el.style.fontSize='';var s=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&s>22){s-=2;el.style.fontSize=s+'px'}})}
   fit();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
   var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,150)});
+  var cb=document.getElementById('share-copy'),msg=document.getElementById('share-msg'),mt;
+  if(cb&&msg&&navigator.clipboard&&navigator.clipboard.writeText){
+    cb.hidden=false;
+    var say=function(txt){msg.textContent='';clearTimeout(mt);setTimeout(function(){msg.textContent=txt;mt=setTimeout(function(){msg.textContent=''},4000)},60)};
+    cb.addEventListener('click',function(){
+      navigator.clipboard.writeText(cb.getAttribute('data-url')).then(function(){say('Link copiato')},function(){say('Copia non riuscita. Copia l’indirizzo dalla barra del browser.')});
+    });
+  }
 })();
 </script>
 </body>
