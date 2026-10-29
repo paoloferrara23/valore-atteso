@@ -58,6 +58,19 @@ button,input,textarea,select{font:inherit}
 .who-card li:last-child{border-bottom:none;padding-bottom:0}
 .who-card.yes li::before{content:'✓';color:var(--green);margin-right:9px;font-weight:700}
 .who-card.no li::before{content:'×';color:var(--muted);margin-right:9px;font-weight:700}
+/* Chi scrive (home): card come le .who-card, filetto oro grafico #D67F0D in alto (decorativo), foto 112px, tap 44px. */
+.chi-scrive{padding-top:10px}
+.chi-card{display:flex;align-items:center;gap:20px;max-width:760px;margin:0 auto;padding:24px 20px;border:1px solid var(--rule);border-top:3px solid #D67F0D;border-radius:24px;background:rgba(255,253,248,.42)}
+.chi-photo{flex:none;width:96px;height:96px;border-radius:50%;object-fit:cover;background:#00266E;color:#F3EFE6;display:flex;align-items:center;justify-content:center;font-family:var(--va-font-display);font-weight:800;font-size:34px;letter-spacing:-.01em}
+.chi-eyebrow{font-family:var(--mn);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--deepgold);font-weight:600;margin-bottom:8px}
+.chi-card h2{font-family:var(--va-font-display);font-weight:800;font-size:clamp(22px,calc(.8vw + 19px),28px);line-height:1.15;letter-spacing:-.01em;margin-bottom:10px;color:var(--ink)}
+.chi-card h2 span{display:block;font-family:var(--va-font-text);font-weight:600;font-size:16px;letter-spacing:0;color:var(--ink2);margin-top:4px}
+.chi-card p{color:var(--ink2);font-size:16px;line-height:1.55;max-width:56ch}
+.chi-links{display:flex;flex-wrap:wrap;gap:0 24px;margin-top:6px}
+.chi-links a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--mn);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#0039A4}
+.chi-links a:hover{color:#00266E}
+@media(max-width:639.98px){.chi-card{flex-direction:column;align-items:flex-start;gap:16px}}
+@media(min-width:640px){.chi-card{padding:28px;gap:28px}.chi-photo{width:112px;height:112px;font-size:40px}}
 .final-cta{background:var(--ink);color:var(--cream)}
 .final-inner{max-width:820px;margin:0 auto;padding:72px 24px;text-align:center}
 .final-inner h2{font-family:var(--va-font-display);font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.02;letter-spacing:-.6px;font-weight:800;margin-bottom:18px;max-width:720px;margin-inline:auto}
@@ -286,6 +299,7 @@ html.js .tm tbody tr.in{opacity:1;transform:none}
 <section class="section compact-section"><div class="featured-head clean-head"><div class="eyebrow">Perché leggerla</div><p class="lead why-lead">I club non competono più solo sul campo. Competono su struttura dei ricavi, accesso al capitale, gestione del costo rosa, infrastrutture e capacità di attrarre investitori. Valore Atteso traduce questi temi in analisi leggibili, sintetiche e basate su dati verificabili.</p></div></section>
 
 <section class="section" style="padding-top:10px"><div class="featured-head" style="margin-bottom:20px"></div><div class="featured-head" style="margin-bottom:36px"><div><div class="eyebrow">Fa per te</div></div></div><div class="who-grid"><div class="who-card yes"><h3>È per te se…</h3><ul><li>Lavori in finanza, consulenza, M&A, sport business o investimenti</li><li>Vuoi capire il calcio come settore economico</li><li>Ti interessano bilanci, deal, governance e sostenibilità</li><li>Preferisci analisi concise a rumore quotidiano</li></ul></div><div class="who-card no"><h3>Non è per te se…</h3><ul><li>Cerchi formazioni, pagelle e commenti post-partita</li><li>Vuoi indiscrezioni di mercato non verificabili</li><li>Ti interessa solo il risultato del weekend</li><li>Preferisci hype a numeri e fonti</li></ul></div></div></section>
+<section class="section chi-scrive" id="chi-scrive" aria-labelledby="chi-title"><div class="chi-card"><!-- [[DA_FORNIRE]] foto: sostituire .chi-photo con <img class="chi-photo" src="/img/paolo-ferrara.webp" srcset="/img/paolo-ferrara.webp 1x, /img/paolo-ferrara@2x.webp 2x" width="112" height="112" alt="Paolo Ferrara" loading="lazy"> (WebP, max 60 KB) --><div class="chi-photo" aria-hidden="true">PF</div><div class="chi-body"><div class="chi-eyebrow">Chi scrive</div><h2 id="chi-title">Paolo Ferrara, <span>responsabile editoriale</span></h2><!-- [[DA_APPROVARE]] riga sul ruolo, senza datore di lavoro --><p>Lavoro in finanza d'impresa e M&amp;A, con un passato nello sport advisory. Su Valore Atteso approvo ogni edizione e ne verifico dati e fonti.</p><p class="chi-links"><a href="/come-lavoriamo">Come lavoriamo →</a><!-- [[DA_FORNIRE]] link LinkedIn (URL esatto del profilo), da inserire qui: <a href="URL-DEL-PROFILO" target="_blank" rel="noopener">Profilo LinkedIn ↗</a> --></p></div></div></section>
 
 <section class="final-cta va-on-dark"><div class="final-inner"><h2>Ogni martedì, una nuova <em>analisi.</em></h2><p>Una email a settimana per leggere lo sport con una lente finanziaria.</p><form class="final-signup signup" novalidate onsubmit="doSignup('cta-email','cta-btn','cta-ok','cta-check');return false"><div class="success" id="cta-ok" role="status" aria-live="polite">✓ Controlla la tua inbox: ti abbiamo inviato un link di conferma.</div><div class="signup-row"><input class="email" id="cta-email" type="email" aria-label="Email" placeholder="la tua email" autocomplete="email" inputmode="email"><button class="submit va-btn-primary" id="cta-btn" type="submit">Iscriviti gratis</button></div><label class="check va-consent"><input type="checkbox" id="cta-check"><span>Accetto la <a href="/privacy" target="_blank">Privacy Policy</a> e il trattamento dati.</span></label></form></div></section>
 
