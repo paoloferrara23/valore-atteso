@@ -40,7 +40,7 @@ Nota: Calcio e Finanza è modello di riferimento e competitor di categoria. Si p
 
 ## Il progetto
 
-Newsletter italiana gratuita sul business del calcio europeo. Esce ogni **martedì**. Formato fisso: **Il Bilancio · Il Deal · La Metrica**.
+Newsletter italiana gratuita sul business del calcio. Esce ogni **martedì**. Formato fisso: **Il Bilancio · Il Deal · La Metrica**.
 
 - Target: professionisti M&A, PE, consulenza, finanza; più appassionati esperti.
 - Sito: valoreatteso.com
