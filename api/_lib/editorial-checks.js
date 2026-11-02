@@ -205,7 +205,9 @@ function editorialChecks(edition, opts = {}) {
   const title = head[0].text.trim();
   if (title.length > 70) push('error', 'ed_titolo_lungo', `Titolo di ${title.length} caratteri: il massimo è 70`);
   const titleNums = amountsIn(title).filter(a => !isYear(a));
-  if (!titleNums.length) push('error', 'ed_titolo_numero', 'Il titolo deve contenere un numero verificato');
+  // Al massimo UN numero (verificato): il titolo deve invogliare, non elencare cifre. Zero numeri è ammesso (avviso).
+  if (titleNums.length > 1) push('error', 'ed_titolo_numero', `Il titolo contiene ${titleNums.length} numeri (${titleNums.map(a => a.raw).join(', ')}): al massimo uno`);
+  else if (!titleNums.length) push('warning', 'ed_titolo_senza_numero', 'Il titolo non contiene numeri: ammesso se invoglia a leggere e copre le tre sezioni');
   const sub = head[1].text.trim();
   if (sub.length > 140) push('error', 'ed_sottotitolo_lungo', `Sottotitolo/preheader di ${sub.length} caratteri: il massimo è 140`);
 

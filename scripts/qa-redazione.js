@@ -29,7 +29,7 @@ function good() {
   const claim = (claim, valore, classe, extra = {}) => ({ claim, valore, status: 'VERIFIED', classe, source: 'fonte interna', note: '', ...extra });
   return {
     num: '027', date: '2026-11-03', published: false, tags: ['Il Bilancio', 'Il Deal', 'La Metrica'],
-    title: 'Valdorra, €500 milioni di ricavi e un utile di €12 milioni',
+    title: 'Valdorra incassa €500 milioni: quanto resta davvero?',
     subtitle: 'Valdorra chiude il 2025/26 in utile. Un nuovo stadio da €300 milioni. Un canale a pagamento da 2 milioni di abbonati.',
     opener: 'Valdorra incassa €500 milioni e chiude in utile di €12 milioni. Lo stadio nuovo costa €300 milioni. Il canale della lega ha 2 milioni di abbonati.',
     sections: [
@@ -232,7 +232,11 @@ t('edizioni precedenti alla #027 non toccate', editorialChecks({ ...clone(base),
     t(`sensazionalismo («${f.slice(0, 28)}…») è BLOCCATO`, has(s, 'ed_sensazionalismo'));
   });
   const ti = clone(base); ti.title = 'Valdorra, ricavi record e utile in crescita nonostante un anno difficile per tutti';
-  t('titolo senza numero e oltre 70 caratteri è BLOCCATO', has(ti, 'ed_titolo_lungo') && has(ti, 'ed_titolo_numero'));
+  t('titolo oltre 70 caratteri è BLOCCATO', has(ti, 'ed_titolo_lungo'));
+  const tn = clone(base); tn.title = 'Ricavi record, ma quanto resta davvero? Valdorra, lo stadio e il canale';
+  t('titolo senza numeri NON è bloccato (solo avviso)', !has(tn, 'ed_titolo_numero') && editorialChecks(tn).some(c => c.code === 'ed_titolo_senza_numero' && c.type === 'warning'));
+  const t2 = clone(base); t2.title = 'Valdorra: €500 milioni di ricavi, €12 milioni di utile e €90 milioni di debito';
+  t('titolo con più di un numero è BLOCCATO', has(t2, 'ed_titolo_numero'));
   const pr = clone(base); pr.subtitle = 'x'.repeat(141);
   t('preheader oltre 140 caratteri è BLOCCATO', has(pr, 'ed_sottotitolo_lungo'));
   const k = clone(base); k.sections[2].kpis.pop();
