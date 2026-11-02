@@ -1,7 +1,12 @@
 // api/genera-edizione.js — Pipeline 3 fasi: Opus Writer → Opus Editor → salva
 const { createClient } = require('@supabase/supabase-js');
-const { requireAdminOrAgent, serviceKey } = require('./_lib/admin-auth');
-const supabase = createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY);
+const { requireAdminOrAgent, isAgent, serviceKey } = require('./_lib/admin-auth');
+const { editorialChecks, appliesTo } = require('./_lib/editorial-checks');
+const { guardedClient, AgentPermissionError } = require('./_lib/redazione-guard');
+// Permessi dell'agente redazione: solo bozze. Nessun accesso a iscritti, a sent_*, a draft_token;
+// nessun published, nessun insert/delete (api/_lib/redazione-guard.js).
+const supabase = guardedClient(createClient(process.env.SUPABASE_URL, serviceKey() || process.env.SUPABASE_KEY));
+const EDITION_COLS = 'id,num,title,subtitle,date,opener,sections,tags,published,factcheck,created_at';
 const ANTHROPIC_KEY = process.env.ANTHROPIC_KEY;
 const { logUsage } = require('./_lib/ai-usage');
 
@@ -99,8 +104,74 @@ Rispondi SOLO JSON (nessun testo prima o dopo):
   return parseJSON(raw);
 }
 
+
+// ── Controlli editoriali bloccanti (dalla #027) ───────────────────────────────
+// Dopo la generazione la bozza passa dai controlli deterministici (api/_lib/editorial-checks.js).
+// Se uno fallisce, torna al modello con l'elenco degli errori (sezione per sezione, in parallelo, per
+// restare nei 60 secondi); al massimo 2 giri. Il fact-check gira dopo (barriera 3) e la copertura dei
+// numeri è verificata dalla barriera pre-invio: qui non si valuta (factcheck:false).
+const MAX_ROUNDS = 2;
+const ROUND_BUDGET_MS = 24000; // un giro parte solo se ne restano almeno ~30 dei 60 secondi
+
+function candidateOf(draft, meta, sections, date) {
+  return { num: draft.num, title: meta.title || '', subtitle: meta.subtitle || '', opener: meta.opener || '', date, tags: ['Il Bilancio', 'Il Deal', 'La Metrica'], sections, factcheck: null };
+}
+
+async function fixSezione(sec, errors, genSystem) {
+  const prompt = `Correggi la sezione "${sec.label}" di Valore Atteso. I controlli automatici hanno trovato questi errori:
+${errors.map(e => '- ' + e.message).join('\n')}
+
+Regole: correggi SOLO questi punti, senza inventare dati; se una cifra non torna usa il valore corretto oppure toglila. Se un'espressione è ripetuta, riscrivila in modo diverso. Mantieni 3 KPI, le fonti e il formato. Niente testate nel testo.
+
+SEZIONE ATTUALE:
+${JSON.stringify(sec)}
+
+Rispondi SOLO JSON con la stessa struttura: {"label":"${sec.label}","title":"...","body":"...","kpis":[{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."},{"label":"...","value":"...","sub":"..."}],"verdict":"...","sources":["..."]}`;
+  const raw = await callClaude([{ role: 'user', content: prompt }], genSystem, 'claude-sonnet-4-6', 1800);
+  return parseJSON(raw);
+}
+
+async function fixTesta(meta, sections, errors, genSystem) {
+  const prompt = `Correggi titolo, sottotitolo e apertura dell'edizione di Valore Atteso. I controlli automatici hanno trovato questi errori:
+${errors.map(e => '- ' + e.message).join('\n')}
+
+Regole: usa solo numeri presenti nelle sezioni, scritti con lo stesso valore; titolo al massimo 70 caratteri con un numero; sottotitolo al massimo 140; niente testate, anglicismi o toni sensazionalistici.
+
+ATTUALE: ${JSON.stringify({ title: meta.title, subtitle: meta.subtitle, opener: meta.opener })}
+SEZIONI: ${sections.map(s => `${s.label}: ${s.title} | KPI ${(s.kpis || []).map(k => k.value).join(', ')}`).join('\n')}
+
+Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"..."}`;
+  const raw = await callClaude([{ role: 'user', content: prompt }], genSystem, 'claude-sonnet-4-6', 800);
+  return parseJSON(raw);
+}
+
+async function controlliConCorrezione(draft, meta, sections, date, genSystem, t0) {
+  let rounds = 0;
+  let errors = [];
+  for (;;) {
+    const checks = editorialChecks(candidateOf(draft, meta, sections, date), { factcheck: false });
+    errors = checks.filter(c => c.type === 'error');
+    if (!errors.length || rounds >= MAX_ROUNDS || Date.now() - t0 > ROUND_BUDGET_MS) {
+      return { sections, meta, rounds, errors, warnings: checks.filter(c => c.type === 'warning') };
+    }
+    rounds++;
+    const bySec = [0, 1, 2].map(i => errors.filter(e => e.section === i));
+    const head = errors.filter(e => e.section === undefined);
+    const jobs = [0, 1, 2].map(i => (bySec[i].length && sections[i]
+      ? fixSezione(sections[i], bySec[i], genSystem).catch(e => { console.warn('Correzione sezione fallita:', e.message); return sections[i]; })
+      : Promise.resolve(sections[i])));
+    const fixedSections = await Promise.all(jobs);
+    sections = fixedSections.map((x, i) => ({ ...sections[i], ...x, label: sections[i].label }));
+    if (head.length) {
+      try { meta = { ...meta, ...(await fixTesta(meta, sections, head, genSystem)) }; }
+      catch (e) { console.warn('Correzione testata fallita:', e.message); }
+    }
+  }
+}
+
 // ── HANDLER ───────────────────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
+  const t0 = Date.now();
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -109,8 +180,10 @@ module.exports = async function handler(req, res) {
   try {
     const { editionId, bilancio, deal, metrica, date, hint, regenSezione } = req.body;
     if (!editionId) return res.status(400).json({ error: 'editionId obbligatorio' });
+    // L'agente (x-agent-key) produce la bozza ma non rigenera sezioni già scritte: lo decide Paolo dalla Control Room.
+    if (regenSezione && isAgent(req)) return res.status(403).json({ error: 'Rigenerazione non consentita all\'agente: usa la Control Room' });
 
-    const { data: editions } = await supabase.from('editions').select('*').eq('id', editionId).limit(1);
+    const { data: editions } = await supabase.from('editions').select(EDITION_COLS).eq('id', editionId).limit(1);
     if (!editions?.length) return res.status(404).json({ error: 'Bozza non trovata' });
     const draft = editions[0];
 
@@ -194,12 +267,13 @@ REGOLE ASSOLUTE:
 5. Scrivi analitico ma LEGGIBILE (vedi "Make it simple"): frasi corte, nessun gergo non spiegato, mai tono da report o da comunicato
 6. I dati finanziari devono avere contesto — ogni numero deve spiegare perché conta
 7. Le tre sezioni non devono contraddirsi né ripetere gli stessi dati
-8. FONTI: SOLO PRIMARIE. Ammessi: bilanci ufficiali e documenti depositati dei club, filings di borsa, organi di governo (UEFA, FIFA, FIGC, leghe, ECA), comunicati ufficiali, report pubblici di consulenze e fondi di private equity (es. Deloitte Football Money League, KPMG Football Benchmark, PwC). MAI stampa, testate, agenzie, siti di news, TV, blog, aggregatori, Transfermarkt, Calcio e Finanza o social, né come fonte né come attribuzione nel testo (niente "secondo X"). STIME: se un dato esiste solo come stima della stampa (es. il prezzo di un trasferimento non comunicato), resta generico: scrivi che la cifra non è stata resa nota, senza riportare la stima e senza nominare chi l'ha fatta. FORMATO FONTI: nome del documento + emittente + data, pulito e breve, NIENTE URL. Es: "AC Milan, Bilancio 2025/26, 28/09/2026"; "Deloitte, Football Money League 2026"; "Arsenal, comunicato ufficiale, 06/08/2026".
+8. FONTI PER CLASSE (regola dalla #027). Classi ammesse, in ordine di forza: UFFICIALE (comunicati e bilanci dei club, UEFA, FIFA, leghe, federazioni, società quotate: basta da solo); REPORT AUTOREVOLE (Deloitte, KPMG, PwC, EY e report pubblici di consulenze e fondi, con report e anno: basta da solo); STAMPA AUTOREVOLE (agenzie e grandi testate: va confermata da almeno un'altra fonte autorevole, altrimenti scrivi con cautela, ad esempio "secondo quanto riportato", SENZA nominare la testata); NON VERIFICATO (blog, social, aggregatori, siti di scommesse, newsletter di terzi, tutto il resto: NON può uscire). Mai nominare testate, agenzie o social nel testo, nemmeno come attribuzione: la fonte va solo nel campo "sources". Nessun blocco "Fonti" e nessun link nel testo. STIME: se un dato esiste solo come stima, resta generico (la cifra non è stata resa nota) senza riportarla. Se due fonti autorevoli si contraddicono dichiaralo nel testo oppure togli il dato. FORMATO "sources": documento + emittente + data, pulito, niente URL. Es: "AC Milan, Bilancio 2025/26, 28/09/2026"; "Deloitte, Football Money League 2026".
 9. Ogni sezione: 180-250 parole, 3 KPI dai dati Scout, verdict incisivo, fonti reali
 10. FORMATO KPI — i "key financials" devono essere CORTI. Il campo "value" è SOLO una cifra compatta con unità (es. "€13 mld", "70%", "£100M", "3,3 mld $", "104"), MAI una frase, max ~12 caratteri. Il contesto va nel "sub" (max ~30 caratteri). Il "label" è breve (max ~24 caratteri). Se un dato non è esprimibile in cifra breve, non usarlo come KPI.
 11. COMPETIZIONI EUROPEE E REGOLE APPLICABILI — verifica prima di affermare: NON dare per scontato che un club giochi in Champions/Europa/Conference League. Le regole finanziarie UEFA (Fair Play Finanziario, Squad Cost Ratio 70%) valgono SOLO per i club iscritti alle competizioni UEFA di quella stagione. Per i club fuori dall'Europa valgono le regole domestiche (es. Premier League: Squad Cost Ratio 85%, PSR). Se lo status europeo di un club per la stagione in corso non è tra i DATI VERIFICATI SCOUT, NON affermarlo e non dedurne conseguenze regolamentari: scrivi [da verificare] oppure ometti.
 12. PUNTEGGIATURA: VIETATO usare trattini lunghi (i caratteri long dash e en dash). Vale per corpo, titoli, KPI e verdict. Al loro posto usa virgole, due punti, punti o parentesi. Sono ammessi solo i trattini brevi dentro le parole o negli intervalli (es. post-Mondiale, 10-15M).
-13. IMPAGINAZIONE DEL BODY: dividi ogni body in paragrafi brevi (2-4 frasi ciascuno), separati da una riga vuota (doppio a-capo tra un paragrafo e l'altro). Mai un unico blocco compatto: la spaziatura tra paragrafi rende la lettura più leggera e scorrevole.
+13. CONTROLLI AUTOMATICI (bloccanti, dalla #027): il testo viene ricontrollato da regole deterministiche. Rispettale subito. (a) Aritmetica: ogni differenza, rapporto, percentuale o divisione (per anni, per club) deve tornare e lo stesso valore deve comparire uguale in titolo, sottotitolo, apertura, testo, KPI e verdetto. Se tra due cifre c'è un salto (es. utile ordinario e risultato netto), scrivi il salto corretto, non un'altra cifra. (b) Date e stagioni coerenti: la stagione dei conti approvati è una sola in tutta la sezione; gli altri anni solo come confronto esplicito ("rispetto al 2024/25"). (c) Niente link, niente nomi di testate o social, niente blocco "Fonti". (d) Italiano senza anglicismi: niente deal, co-owned, mandate, exit, D2C, break-even, split, naming rights, asset, benchmark (usa accordo, contratto, in comproprietà, uscita, pareggio dei costi, diviso, diritti sul nome, patrimonio, confronto); zero nei titoli, al massimo 2 termini tecnici spiegati nel corpo. (e) Tono sobrio da analisi: vietati "basta un infortunio", "crollo", "disastro", "bruciato", "record d'Europa" e simili senza un dato verificato. (f) Il titolo dell'edizione è lungo al massimo 70 caratteri e contiene un numero verificato; il sottotitolo al massimo 140. (g) La Metrica ruota attorno a UN numero; il Deal attorno a un accordo; il Bilancio attorno a un conto economico; Deal e Metrica trattano temi diversi. (h) I tre verdetti hanno attacco e struttura diversi (mai "Per un advisor..." e "Per chi siede al tavolo..." insieme) e nessuna espressione è ripetuta tra testo e verdetto o tra sezioni. (i) Esattamente 3 KPI per sezione, con lo stesso valore scritto nel testo.
+14. IMPAGINAZIONE DEL BODY: dividi ogni body in paragrafi brevi (2-4 frasi ciascuno), separati da una riga vuota (doppio a-capo tra un paragrafo e l'altro). Mai un unico blocco compatto: la spaziatura tra paragrafi rende la lettura più leggera e scorrevole.
 
 ${wikiContext}`;
 
@@ -211,7 +285,7 @@ ${wikiContext}`;
       generaSezione('Il Deal',     deal,     sysConHint),
       generaSezione('La Metrica',  metrica,  sysConHint),
     ]);
-    const sections = [secBilancio, secDeal, secMetrica];
+    let sections = [secBilancio, secDeal, secMetrica];
     console.log('3 sezioni generate.');
 
     // Meta (titolo/sottotitolo/opener): chiamata breve a valle delle sezioni
@@ -240,13 +314,24 @@ Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"...","preheader":"
       meta = parseJSON(metaRaw);
     } catch (e) { console.warn('Meta non generata:', e.message); }
 
-    // ── Salva bozza ──────────────────────────────────────────────────────────
+    // ── Controlli editoriali bloccanti (dalla #027) ──────────────────────────
+    const editionDate = date || draft.date;
+    let controlli = null;
+    if (appliesTo(draft.num)) {
+      const r = await controlliConCorrezione(draft, meta, sections, editionDate, genSystem, t0);
+      sections = r.sections;
+      meta = r.meta;
+      controlli = { passed: r.errors.length === 0, rounds: r.rounds, errors: r.errors.map(e => e.message), warnings: r.warnings.map(e => e.message) };
+      console.log(`Controlli editoriali: ${controlli.passed ? 'superati' : r.errors.length + ' errori residui'} (giri: ${r.rounds}).`);
+    }
+
+    // ── Salva bozza (sempre in bozza: published non si tocca) ───────────────
     await supabase.from('editions').update({
       title:    meta.title || `Edizione #${draft.num}`,
       subtitle: meta.subtitle || '',
       opener:   meta.opener || '',
       sections,
-      date:     date || draft.date,
+      date:     editionDate,
     }).eq('id', editionId);
 
     // Campi del template email (colonna `email`): in un update separato, così un errore
@@ -270,11 +355,13 @@ Rispondi SOLO JSON: {"title":"...","subtitle":"...","opener":"...","preheader":"
     return res.status(200).json({
       ok: true,
       id: editionId,
-      title: meta.title
+      title: meta.title,
+      ...(controlli ? { controlli } : {})
     });
 
   } catch (e) {
     console.error('[genera-edizione]', e);
+    if (e instanceof AgentPermissionError) return res.status(403).json({ error: e.message });
     return res.status(500).json({ error: e.message });
   }
 };

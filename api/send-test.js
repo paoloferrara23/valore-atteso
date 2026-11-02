@@ -54,7 +54,7 @@ module.exports = async function handler(req, res) {
 
     // Controlli pre-invio: nel test NON bloccano (serve a Paolo per vedere la bozza),
     // ma vengono riportati in risposta così si sistemano prima dell'invio reale.
-    const preflight = contentPreflight(edition);
+    // (calcolato dopo il build dell'email, così include i controlli sull'anteprima)
 
     edition.sponsors = await loadEditionSponsors(supabase, edition.id);
 
@@ -66,6 +66,7 @@ module.exports = async function handler(req, res) {
     if (!built.html) {
       return res.status(422).json({ error: 'Template email: struttura dell\'edizione non valida', template: templateReport(built.report) });
     }
+    const preflight = contentPreflight(edition, { html: built.html, text: built.text });
     const html = personalize(built.html, toEmail);
     const text = personalize(built.text, toEmail);
 

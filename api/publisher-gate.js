@@ -5,6 +5,7 @@
 const { createClient } = require('@supabase/supabase-js');
 const { requireAdmin } = require('./_lib/admin-auth');
 const { contentPreflight } = require('./_lib/preflight');
+const { buildEditionEmail, usesNewTemplate } = require('./_lib/email');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -43,9 +44,23 @@ module.exports = async function handler(req, res) {
 
     // ── 1-3. CONTENUTO (placeholder, trattini, KPI, fonti, verdetto, corpo) ──
     // Delegato al validatore condiviso: stessa logica usata al momento dell'invio.
-    const preflight = contentPreflight(edition);
+    // Dalla #027 si controlla anche l'anteprima email (footer, titolare, link): niente anteprima valida, niente via libera.
+    let built = null;
+    let buildError = null;
+    if (usesNewTemplate(edition.num)) {
+      try { built = await buildEditionEmail(edition, 'test'); } catch (e) { buildError = e.message; }
+    }
+    const preflight = contentPreflight(edition, built && built.html ? { html: built.html, text: built.text } : {});
     const checks = [...preflight.checks];
     let blockers = preflight.blockers;
+    if (usesNewTemplate(edition.num)) {
+      if (buildError || !built || !built.html) {
+        checks.push({ type: 'error', code: 'ed_mail_assente', message: `Anteprima email non costruita${buildError ? ' (' + buildError + ')' : ''}: impossibile verificare footer e titolare` });
+        blockers++;
+      } else if (built.report && built.report.errors && built.report.errors.length) {
+        built.report.errors.forEach(i => checks.push({ type: 'warning', code: 'template_email', message: `Template email: ${i.field}: ${i.rule}` }));
+      }
+    }
 
     const sectionLabels = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 
