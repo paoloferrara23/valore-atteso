@@ -56,7 +56,20 @@ async function handler(req, res) {
     // Controlli deterministici sul contenuto. Un blocker (placeholder, trattino
     // lungo, sezione senza corpo/KPI/fonti) impedisce l'invio massivo.
     // Override d'emergenza consapevole: { force: true } nel body.
-    const preflight = contentPreflight(edition);
+    // Dalla #027 i controlli includono anche l'anteprima email (footer, titolare, link): per questo l'email
+    // si costruisce prima, in modalità test, e la modalità send resta più sotto con i suoi blocchi.
+    let previewBuilt = null;
+    if (usesNewTemplate(edition.num)) {
+      try { previewBuilt = await buildEditionEmail(edition, 'test'); } catch (_) { previewBuilt = null; }
+    }
+    const preflight = previewBuilt && previewBuilt.html
+      ? contentPreflight(edition, { html: previewBuilt.html, text: previewBuilt.text })
+      : contentPreflight(edition);
+    if (usesNewTemplate(edition.num) && !(previewBuilt && previewBuilt.html)) {
+      preflight.checks.push({ type: 'error', code: 'ed_mail_assente', message: 'Anteprima email non costruita: impossibile verificare footer e titolare' });
+      preflight.blockers++;
+      preflight.can_send = false;
+    }
     if (!preflight.can_send && req.body.force !== true) {
       await supabase.from('agent_runs').insert({
         agent: 'send-newsletter',

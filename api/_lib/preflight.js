@@ -10,6 +10,8 @@
 // Filosofia: bloccare solo cose inequivocabili (placeholder, trattino lungo, sezione
 // senza corpo/KPI/fonti, titolo mancante). Tutto ciò che è "di gusto" resta warning.
 
+const { editorialChecks, emailRenderChecks, appliesTo } = require('./editorial-checks');
+
 const SECTION_LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 
 // Placeholder tipici lasciati dagli agenti: "[dato da verificare]", "[da verificare 2026]",
@@ -61,9 +63,11 @@ function kpiValueAppearsInBody(kpiValue, body) {
 /**
  * Esegue i controlli di contenuto deterministici su una edizione.
  * @param {object} edition - riga della tabella editions (con .title, .sections, ...)
+ * @param {{html?: string, text?: string}} [opts] - HTML/testo dell'anteprima email: se presente, dalla #027
+ *        si controllano anche footer, titolare e link (api/_lib/editorial-checks.js)
  * @returns {{ checks: Array, blockers: number, warnings: number, oks: number, can_send: boolean }}
  */
-function contentPreflight(edition) {
+function contentPreflight(edition, opts = {}) {
   const checks = [];
   const push = (type, code, message, section) => checks.push({ type, code, message, section });
 
@@ -161,8 +165,20 @@ function contentPreflight(edition) {
   // blocchi: vanno lette e valutate a mano, ma NON impediscono l'invio da sole.
   // I blocchi restano appannaggio dei soli controlli deterministici e affidabili
   // qui sopra (trattini, segnaposto, campi mancanti, titolo).
+  // Dalla #027 il fact-check è valutato dai controlli editoriali (classi delle fonti, copertura dei numeri,
+  // cautela): qui sotto restano le regole storiche per le edizioni precedenti.
+  const editorial = !!(edition && appliesTo(edition.num));
   const fc = edition && edition.factcheck;
-  if (!fc || !fc.checked_at) {
+  if (editorial) {
+    // ── 8. CONTROLLI EDITORIALI BLOCCANTI (agente redazione, dalla #027) ─────
+    const ed = editorialChecks(edition);
+    ed.forEach(c => checks.push(c));
+    if (opts.html) emailRenderChecks(opts.html, opts.text).forEach(c => checks.push(c));
+    const fcErrors = ed.filter(c => c.type === 'error' && /^ed_(factcheck|calcolo)/.test(c.code)).length;
+    if (fc && fc.checked_at && !fcErrors) {
+      push('ok', 'factcheck_ok', `Fact-check superato (${(fc.totals && fc.totals.verified) || 0} affermazioni verificate)`);
+    }
+  } else if (!fc || !fc.checked_at) {
     push('warning', 'not_factchecked', 'Edizione non ancora passata dal Fact-Check agent');
   } else {
     const contradictions = Array.isArray(fc.contradictions) ? fc.contradictions : [];

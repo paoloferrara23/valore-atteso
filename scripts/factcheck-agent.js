@@ -1,8 +1,9 @@
 // scripts/factcheck-agent.js — Fact-Check Agent (barriera 3)
 // Prende una bozza (edizione published=false), estrae ogni affermazione fattuale
 // verificabile e la controlla con web search contro fonti reali. Scrive l'esito su
-// editions.factcheck. Le contraddizioni diventano un blocker in lib/preflight, quindi
-// impediscono l'invio finché non sono risolte.
+// editions.factcheck. Dalla #027 classi di fonte (Ufficiale / Report autorevole / Stampa autorevole / Calcolo /
+// Non verificato), una voce per ogni numero e formule ricalcolabili: le valutano i controlli bloccanti di
+// api/_lib/editorial-checks.js (richiamati da api/_lib/preflight.js).
 //
 // Selezione bozza (in ordine): env EDITION_ID > env EDITION_NUM > ultima bozza non pubblicata.
 // Uso locale/manuale:  EDITION_NUM=016 node scripts/factcheck-agent.js
@@ -20,7 +21,7 @@ const SECTION_LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 
 // ── Chiamata Anthropic con web search ────────────────────────────────────────
 async function callClaude(messages, system, useSearch = true, model = MODEL) {
-  const body = { model, max_tokens: 5000, system, messages };
+  const body = { model, max_tokens: 8000, system, messages };
   if (useSearch) {
     body.tools = [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }];
     body.tool_choice = { type: 'auto' };
@@ -78,24 +79,28 @@ Ti do UNA sezione di una bozza. Il tuo compito: estrarre OGNI affermazione fattu
 COSA ESTRARRE come claim distinti:
 - ogni numero con il suo significato (ricavi, valutazioni, multipli, percentuali, prezzi, date, quote)
 - ogni affermazione su COMPETIZIONE/STAGIONE di un club (es. "il club X gioca la Champions 2026/27"): è la classe di errore più frequente, verificala sempre
-- ogni attribuzione di fonte (es. "secondo Sportico...")
+- ogni attribuzione di fonte (le testate NON devono comparire nel testo: se compaiono, segnalalo come claim di tipo attribution con status CONTRADICTED e correct "togliere la testata")
 - ogni nome proprio associato a un ruolo/fatto (persone, fondi, società)
 
-GERARCHIA FONTI per la verifica:
-- Tier 1 (primarie): bilanci e comunicati ufficiali dei club, filing di borsa, UEFA/FIFA/FIGC/leghe, report Deloitte/KPMG/PwC.
-- Tier 2 (autorevoli): Reuters, FT, Bloomberg, The Athletic, BBC, Sportico, SportsPro.
-- Calcio e Finanza e Transfermarkt sono ammesse come RISCONTRO, ma per le cifre di mercato non devono essere l'unica prova: cerca conferma altrove.
-- Blog di tifosi, forum, aggregatori di rumor: non valgono come prova.
+CLASSI DI FONTE (regola dalla #027) — assegna a ogni claim UNA classe:
+- "Ufficiale": comunicati e bilanci di club, UEFA, FIFA, leghe (Lega Serie A, LFP...), federazioni, società quotate. Basta da sola.
+- "Report autorevole": Deloitte, KPMG, PwC, EY, report pubblici e verificabili di consulenze o fondi (indica report e anno). Basta da solo.
+- "Stampa autorevole": Bloomberg, Financial Times, Reuters, AP, Il Sole 24 Ore, The Athletic, ESPN, Sky Sports, SportBusiness e analoghi. Va confermata da almeno UN'ALTRA fonte autorevole indipendente: se la trovi metti "confermata": true e indica le conferme in "conferme" (array); se non la trovi "confermata": false.
+- "Calcolo": numero derivato da altri numeri del testo. Indica "formula" (solo cifre e + - * / ( ), es. "900/(19.99*12)") e "risultato" (numero). Tolleranza di arrotondamento: indicala in "tolleranza" se serve.
+- "Non verificato": tutto il resto (blog, social, aggregatori, siti di scommesse, newsletter di terzi, testate di settore da sole, Transfermarkt, fonte non trovata). Un claim "Non verificato" NON può uscire.
+Una testata di settore da sola (SportsPro, SVG Europe, Inside World Football, Adnkronos) non conta come conferma.
 
 REGOLE DI GIUDIZIO (sii conservativo):
-- "VERIFIED": trovi riscontro chiaro su fonte affidabile.
-- "CONTRADICTED": una fonte affidabile dà un valore diverso. Indica il valore corretto in "correct" e la fonte in "source".
-- "UNVERIFIABLE": non trovi riscontro affidabile. NON marcare VERIFIED per fiducia nel testo.
+- "VERIFIED": trovi riscontro chiaro su fonte della classe indicata.
+- "CONTRADICTED": una fonte affidabile dà un valore diverso. Indica il valore corretto in "correct" e la fonte in "source". Se due fonti autorevoli si contraddicono tra loro, segnalalo comunque come CONTRADICTED.
+- "UNVERIFIABLE": non trovi riscontro affidabile (classe "Non verificato"). NON marcare VERIFIED per fiducia nel testo.
 - "severity": "high" se il claim è centrale (cifra chiave, competizione/stagione, nome dell'operazione) o se sbagliato comprometterebbe il pezzo; "low" se marginale.
-- Le stime dichiarate tali nel testo (es. "IRR implicito ~18%") non sono errori se il calcolo è coerente: valutane la ragionevolezza, non pretendere una fonte puntuale.
+- Le stime dichiarate tali nel testo non sono errori se il calcolo è coerente: valutane la ragionevolezza.
+- UNA VOCE PER OGNI NUMERO: ogni numero del testo e dei KPI (importi, percentuali, quantità, prezzi) deve avere almeno un claim, con il numero scritto come nel testo (campo "valore"). Ricalcola ogni differenza, rapporto e divisione come claim "Calcolo".
+- Stagione e data coerenti: verifica che la stagione dei conti sia quella giusta (es. 2025/26) e che le date siano corrette.
 
-Concludi SEMPRE con SOLO un array JSON valido (niente altro testo dopo), max 12 claim, i più importanti:
-[{"claim":"...","type":"number|competition|attribution|date|entity","status":"VERIFIED|CONTRADICTED|UNVERIFIABLE","found":"cosa dicono le fonti","correct":"valore corretto se CONTRADICTED, altrimenti null","source":"testata + url","severity":"high|low"}]`;
+Concludi SEMPRE con SOLO un array JSON valido (niente altro testo dopo), al massimo 25 claim:
+[{"claim":"...","valore":"numeri come scritti nel testo","type":"number|competition|attribution|date|entity","status":"VERIFIED|CONTRADICTED|UNVERIFIABLE","classe":"Ufficiale|Report autorevole|Stampa autorevole|Calcolo|Non verificato","found":"cosa dicono le fonti","correct":"valore corretto se CONTRADICTED, altrimenti null","source":"fonte interna (mai pubblicata) + data","confermata":true,"conferme":["seconda fonte"],"formula":"solo per Calcolo","risultato":0,"note":"","severity":"high|low"}]`;
 
   const user = `SEZIONE "${label}" — titolo: ${sec.title || ''}
 
@@ -173,8 +178,8 @@ async function main() {
 
   const allClaims = perSection.flatMap(s => s.claims.map(c => ({ ...c, section: s.label })));
   const contradicted = allClaims.filter(c => c.status === 'CONTRADICTED');
-  const unverifiable = allClaims.filter(c => c.status === 'UNVERIFIABLE');
-  const verified = allClaims.filter(c => c.status === 'VERIFIED');
+  const unverifiable = allClaims.filter(c => c.status === 'UNVERIFIABLE' || /non verificat/i.test(c.classe || ''));
+  const verified = allClaims.filter(c => c.status === 'VERIFIED' && !/non verificat/i.test(c.classe || ''));
 
   const factcheck = {
     checked_at: new Date().toISOString(),
