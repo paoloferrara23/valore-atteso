@@ -13,7 +13,8 @@
 // non approva. I permessi dell'agente stanno in api/_lib/redazione-guard.js.
 
 const LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
-const FOOTER_TEXT = 'Dati tratti da documenti ufficiali di club e organismi competenti.';
+// Il testo del footer è unico: sta in api/_lib/email/config.js (copy.legalData) e qui si controlla che l'HTML lo riporti uguale.
+const FOOTER_TEXT = require('./email/config').copy.legalData;
 const FIRST_EDITION = 27;
 
 const appliesTo = num => parseInt(num, 10) >= FIRST_EDITION;

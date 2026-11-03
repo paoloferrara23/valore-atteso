@@ -200,7 +200,7 @@ t('edizioni precedenti alla #027 non toccate', editorialChecks({ ...clone(base),
   const okChecks = emailRenderChecks(out.html, out.text);
   t('anteprima email di fantasia: footer e titolare corretti, nessun errore', okChecks.length === 0, okChecks.map(c => c.message).join(' | '));
   const swap = (html, a, b) => html.split(a).join(b);
-  const footer = 'Dati tratti da documenti ufficiali di club e organismi competenti.';
+  const footer = require('../api/_lib/email/config').copy.legalData;
   const bad1 = swap(out.html, footer, 'Dati tratti da documenti ufficiali e da fonti autorevoli.');
   t('anteprima: footer diverso è BLOCCATO', emailRenderChecks(bad1, out.text).some(c => c.code === 'ed_mail_footer'));
   const bad2 = swap(out.html, 'Titolare del trattamento:', 'Titolare del trattamento: Mario Rossi, via Roma 1,');
