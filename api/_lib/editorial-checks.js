@@ -293,7 +293,13 @@ function editorialChecks(edition, opts = {}) {
     const total = Math.max(0, ...amts.map(a => a.value));
     if (!total) return;
     sentences(t).forEach(sent => {
-      if (!/a club|per club|ciascun|ogni club|all['’]anno|l['’]anno|a stagione|annu|ogni anno/i.test(sent)) return;
+      // La quota si controlla solo dove il testo la lega davvero al totale: frasi «a club / per club / ciascuno», oppure
+      // frasi annue che nominano anche il totale. Confronti con altri contratti o bilanci («Puma tra €12 e €14 milioni a
+      // stagione») non sono quote del totale e non si verificano.
+      const perClub = /a club|per club|ciascun|ogni club/i.test(sent);
+      const annual = /all['’]anno|l['’]anno|a stagione|annu|ogni anno/i.test(sent);
+      const hasTotal = amountsIn(sent).some(a => a.unit === 'M' && Math.abs(a.value - total) <= tolFor(total));
+      if (!(perClub || (annual && hasTotal))) return;
       amountsIn(sent).filter(a => a.unit === 'M' && a.value < total).forEach(a => {
         const ok = [total / years, total / years / 2, total / 2].some(x => Math.abs(a.value - x) <= Math.max(0.6, x * 0.03));
         if (!ok) push('error', 'ed_aritmetica_quota', `${s.label}: «${a.raw}» non torna: ${String(total).replace('.', ',')} / ${years} anni = ${(Math.round(total / years * 100) / 100).toString().replace('.', ',')} all'anno, ${(Math.round(total / years / 2 * 100) / 100).toString().replace('.', ',')} a club`, s.i);

@@ -98,6 +98,11 @@ t('edizioni precedenti alla #027 non toccate', editorialChecks({ ...clone(base),
   e.subtitle = e.subtitle.replace('€300 milioni', '€650 milioni');
   t('aritmetica: con la quota giusta (13) NON è bloccata', !has(e, 'ed_aritmetica_quota'), codes(e).join(','));
 }
+{ // confronti con altri contratti (Puma 12-14 a stagione) non sono quote del totale: nessun falso allarme
+  const e = clone(base);
+  e.sections[1].body = 'Il nuovo stadio costerà €300 milioni, da pagare in 20 anni. Sono €15 milioni all\'anno (300 / 20), su €300 milioni in tutto. Un altro club paga €12 milioni a stagione.\n\nPer un club italiano un impianto di proprietà cambia i ricavi del giorno partita.';
+  t('aritmetica: confronto con un altro contratto annuo NON è scambiato per quota del totale', !has(e, 'ed_aritmetica_quota'), codes(e).join(','));
+}
 { // durate diverse nello stesso testo
   const e = clone(base);
   e.sections[1].body = 'Il contratto dura 20 anni. In altre ricostruzioni dura 25 anni e vale €300 milioni.\n\nPer un club italiano conta il confronto.';
