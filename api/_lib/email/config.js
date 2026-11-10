@@ -63,7 +63,7 @@ module.exports = {
     linkArchive: 'Archivio →',
     linkPreferences: 'Preferenze →',
     contact: 'Un dato da correggere? Scrivi a',
-    legalData: 'Dati tratti da documenti ufficiali di club e organismi competenti.',
+    legalData: 'Dati tratti da documenti ufficiali di club e organismi competenti e da fonti autorevoli.',
     legalAi: "Contenuti prodotti con l'assistenza di sistemi di intelligenza artificiale, sotto supervisione e responsabilità editoriale umana. Analisi a scopo informativo: non costituisce consulenza finanziaria né sollecitazione all'investimento.",
     legalOwner: 'Titolare del trattamento:',
     privacy: 'Informativa privacy:',
