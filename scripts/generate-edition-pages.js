@@ -379,6 +379,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(min-width:640px){
   .sintesi{padding:24px 24px 8px}
   .sk-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px}
+  .sk-2 .sk-v{min-height:2.2em}
   .sk,.sk:first-child{border-top:0;margin-top:8px;padding-top:4px}
   .sk+.sk{border-left:1px solid var(--rule);padding-left:20px}
   .sk-v{font-size:clamp(28px,3.4vw,40px)}
@@ -469,7 +470,7 @@ button.share-btn{background:transparent;cursor:pointer}
 </div></div>
 
 <article class="wrap" id="contenuto">
-  ${kpiCells ? `<section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list">${kpiCells}</ol></section>` : ''}
+  ${kpiCells ? `<section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list${sections.some(s => /\/(?:anno|stagione)$/.test(((s.kpis || [])[0] || {}).value || '')) ? ' sk-2' : ''}">${kpiCells}</ol></section>` : ''}
   ${ed.subtitle && !subShort ? `<p class="sub-light">${esc(ed.subtitle)}</p>` : ''}
   ${secNav ? `<nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in">${secNav}</div><div class="secbar-prog" aria-hidden="true"></div></nav>` : ''}
   ${ed.opener ? `<p class="opener">${esc(teaser(ed.opener, 420))}</p>` : ''}
@@ -529,7 +530,7 @@ function buildHomeKpi(ed, kpis, linkText = 'Leggi →') {
   const items = kpis.map(({ section, k }) => {
     const neg = /^\s*[-−]/.test(k.value);
     const sub = k.sub && !hasBlockedName(k.sub) ? `<span class="hk-s">${esc(k.sub)}</span>` : '';
-    return `<li class="hk"><span class="hk-sez">${esc(section)}</span><span class="hk-v${neg ? ' neg' : ''}">${escNum(k.value)}</span><span class="hk-l">${esc(k.label)}</span>${sub}</li>`;
+    return `<li class="hk"><span class="hk-sez">${esc(section)}</span><span class="hk-v${neg ? ' neg' : ''}">${esc(k.value)}</span><span class="hk-l">${esc(k.label)}</span>${sub}</li>`;
   }).join('');
   const n = String(ed.num).padStart(3, '0');
   return `${HOME_START}<div class="hk-head"><span class="hk-kicker" id="hk-title">In sintesi · 3 numeri</span><span class="hk-ed">#${esc(n)} · ${timeTag(ed.date)}</span></div>`
