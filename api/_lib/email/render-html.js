@@ -23,6 +23,8 @@ const DAYS = ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Vene
 const MONTHS = 'gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre';
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// «/anno» (o «/stagione») va a capo: il valore resta lo stesso, cambia solo la riga.
+const numHtml = v => esc(v).replace(/(\S)(\/(?:anno|stagione))$/, '$1<br>$2');
 const pad2 = n => String(n).padStart(2, '0');
 const nowrap = v => (isPh(v) ? '' : 'white-space:nowrap;');
 const label = (size, color, extra = '') =>
@@ -58,7 +60,7 @@ function hero(c, img) {
     return `${mso}<div class="sum-col${i ? '' : ' sum-c1'}" style="display:inline-block;width:100%;max-width:196px;vertical-align:top;">
 <table ${T} width="100%"><tr><td class="sum-in${i ? ' sum-in2' : ''}" valign="top" style="padding:0 16px 16px 0;">
 <div class="sum-row">
-<p class="sum-n ff-n num lk" style="margin:0 0 10px;font-family:${FN};font-size:34px;line-height:38px;font-weight:700;color:${C.blue700};${nowrap(r.number)}word-break:break-word;${NUM}">${esc(r.number)}</p>
+<p class="sum-n ff-n num lk" style="margin:0 0 10px;font-family:${FN};font-size:34px;line-height:38px;font-weight:700;color:${C.blue700};${nowrap(r.number)}word-break:break-word;${NUM}">${numHtml(r.number)}</p>
 <div class="sum-t">
 <p class="ff-m gl" style="margin:0 0 8px;${label(11, C.goldLight)}line-height:16px;font-weight:600;">${pad2(r.section_n)} &middot; ${esc(r.label)}</p>
 <p class="ff-t t" style="margin:0;font-family:${FT};font-size:14.5px;line-height:1.5;color:${C.text};">${t(r.thesis)} <a href="#s${r.section_n}" class="lk" style="display:inline-block;padding:12px 0;margin:-12px 0;color:${C.blue};font-weight:600;text-decoration:none;white-space:nowrap;">${arrow(cfg.copy.readMore)}</a></p>
@@ -111,7 +113,7 @@ function kpiBlock(kpi) {
     const mso = i ? `<!--[if mso]></td><td width="${w}" valign="top" style="border-left:1px solid ${C.line2};"><![endif]-->` : '';
     return `${mso}<div class="kpi${i ? '' : ' kpi-first'}" style="display:inline-block;width:100%;min-width:180px;max-width:196px;vertical-align:top;">
 <table ${T} width="100%"><tr><td class="kpi-c ln" style="padding:14px 16px;">
-<p class="ff-n kpi-v lk num" style="margin:0;font-family:${FN};font-size:24px;line-height:1.15;font-weight:700;color:${C.blue};${nowrap(k.value)}${NUM}">${esc(k.value)}</p>
+<p class="ff-n kpi-v lk num" style="margin:0;font-family:${FN};font-size:24px;line-height:1.15;font-weight:700;color:${C.blue};${nowrap(k.value)}${NUM}">${numHtml(k.value)}</p>
 <p class="ff-t kpi-l mu" style="margin:4px 0 0;font-family:${FT};font-size:12.5px;line-height:1.4;color:${C.muted};">${esc(k.label)}</p>
 </td></tr></table></div>`;
   }).join('');

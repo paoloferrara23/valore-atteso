@@ -30,6 +30,8 @@ const STATIC_PAGES = [
 
 // ---------- helpers ----------
 
+// «/anno» (o «/stagione») va a capo: il valore resta lo stesso, cambia solo la riga.
+function escNum(s) { return esc(s).replace(/(\S)(\/(?:anno|stagione))$/, '$1<br>$2'); }
 function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -221,7 +223,7 @@ function buildEditionHtml(ed, nav = {}) {
     const neg = /^\s*[-−]/.test(k.value || '');
     return `<li class="sk">
       ${s.label ? `<span class="sk-sez">${esc(s.label)}</span>` : ''}
-      <span class="sk-v${neg ? ' neg' : ''}">${esc(k.value || '')}</span>
+      <span class="sk-v${neg ? ' neg' : ''}">${escNum(k.value || '')}</span>
       <span class="sk-l">${esc(k.label || k.key || '')}</span>
       ${k.sub && !hasBlockedName(k.sub) ? `<span class="sk-s">${esc(k.sub)}</span>` : ''}
       ${anchors[i] ? `<a class="sk-a" href="#${anchors[i]}">Leggi ↓</a>` : ''}
@@ -527,7 +529,7 @@ function buildHomeKpi(ed, kpis, linkText = 'Leggi →') {
   const items = kpis.map(({ section, k }) => {
     const neg = /^\s*[-−]/.test(k.value);
     const sub = k.sub && !hasBlockedName(k.sub) ? `<span class="hk-s">${esc(k.sub)}</span>` : '';
-    return `<li class="hk"><span class="hk-sez">${esc(section)}</span><span class="hk-v${neg ? ' neg' : ''}">${esc(k.value)}</span><span class="hk-l">${esc(k.label)}</span>${sub}</li>`;
+    return `<li class="hk"><span class="hk-sez">${esc(section)}</span><span class="hk-v${neg ? ' neg' : ''}">${escNum(k.value)}</span><span class="hk-l">${esc(k.label)}</span>${sub}</li>`;
   }).join('');
   const n = String(ed.num).padStart(3, '0');
   return `${HOME_START}<div class="hk-head"><span class="hk-kicker" id="hk-title">In sintesi · 3 numeri</span><span class="hk-ed">#${esc(n)} · ${timeTag(ed.date)}</span></div>`
