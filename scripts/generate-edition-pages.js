@@ -30,6 +30,8 @@ const STATIC_PAGES = [
 
 // ---------- helpers ----------
 
+// «/anno» (o «/stagione») va a capo: il valore resta lo stesso, cambia solo la riga.
+function escNum(s) { return esc(s).replace(/(\S)(\/(?:anno|stagione))$/, '$1<br>$2'); }
 function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -221,7 +223,7 @@ function buildEditionHtml(ed, nav = {}) {
     const neg = /^\s*[-−]/.test(k.value || '');
     return `<li class="sk">
       ${s.label ? `<span class="sk-sez">${esc(s.label)}</span>` : ''}
-      <span class="sk-v${neg ? ' neg' : ''}">${esc(k.value || '')}</span>
+      <span class="sk-v${neg ? ' neg' : ''}">${escNum(k.value || '')}</span>
       <span class="sk-l">${esc(k.label || k.key || '')}</span>
       ${k.sub && !hasBlockedName(k.sub) ? `<span class="sk-s">${esc(k.sub)}</span>` : ''}
       ${anchors[i] ? `<a class="sk-a" href="#${anchors[i]}">Leggi ↓</a>` : ''}
@@ -377,6 +379,7 @@ h1{font-family:var(--va-font-display);font-weight:800;font-size:clamp(32px,calc(
 @media(min-width:640px){
   .sintesi{padding:24px 24px 8px}
   .sk-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:20px}
+  .sk-2 .sk-v{min-height:2.2em}
   .sk,.sk:first-child{border-top:0;margin-top:8px;padding-top:4px}
   .sk+.sk{border-left:1px solid var(--rule);padding-left:20px}
   .sk-v{font-size:clamp(28px,3.4vw,40px)}
@@ -467,7 +470,7 @@ button.share-btn{background:transparent;cursor:pointer}
 </div></div>
 
 <article class="wrap" id="contenuto">
-  ${kpiCells ? `<section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list">${kpiCells}</ol></section>` : ''}
+  ${kpiCells ? `<section class="sintesi" aria-labelledby="sintesi-k"><h2 class="sintesi-k" id="sintesi-k">In sintesi · 3 numeri</h2><ol class="sk-list${sections.some(s => /\/(?:anno|stagione)$/.test(((s.kpis || [])[0] || {}).value || '')) ? ' sk-2' : ''}">${kpiCells}</ol></section>` : ''}
   ${ed.subtitle && !subShort ? `<p class="sub-light">${esc(ed.subtitle)}</p>` : ''}
   ${secNav ? `<nav class="secbar" aria-label="Sezioni dell'edizione"><div class="secbar-in">${secNav}</div><div class="secbar-prog" aria-hidden="true"></div></nav>` : ''}
   ${ed.opener ? `<p class="opener">${esc(teaser(ed.opener, 420))}</p>` : ''}
