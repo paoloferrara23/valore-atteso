@@ -848,8 +848,9 @@ async function crBuildPages(){
     return d.error||('HTTP '+r.status);
   }catch(e){return e.message||'rete';}
 }
-// Fact-check UNA volta, quando si preme «Invia»: se il testo è lo stesso dell'ultimo controllo non parte nulla,
-// altrimenti parte e si attende l'esito (1-3 minuti). Restituisce true se si può proseguire con la verifica pre-invio.
+// Fact-check UNA volta: se il testo è lo stesso dell'ultimo controllo non parte nulla, altrimenti parte e si attende
+// l'esito (1-3 minuti). Si usa all'approvazione (crPrePubblicazione); all'invio resta solo come rete di sicurezza,
+// per le edizioni approvate prima di questa regola o con testo modificato dopo il controllo.
 async function crFactcheckOnce(num,st){
   async function stato(){
     var r=await fetch('/api/run-agent?action=factcheckStatus&num='+encodeURIComponent(num));
@@ -874,6 +875,23 @@ async function crFactcheckOnce(num,st){
     }
   }
   st.className='cr-status err';st.textContent='Il fact-check non è ancora finito: attendi un minuto e premi di nuovo «Invia».';
+  return false;
+}
+// Prima di pubblicare: fact-check UNA volta (non parte se il testo è già stato controllato) e verifica dei blocchi.
+// Alla pubblicazione e all'invio non si rifà: all'invio basta che l'esito salvato sia quello del testo attuale.
+async function crPrePubblicazione(num,st){
+  if(!(await crFactcheckOnce(num,st)))return false;
+  st.className='cr-status';st.style.display='block';
+  st.innerHTML='<span style="color:#8E6B33">&#9654; Verifica pre-pubblicazione in corso...</span>';
+  var gr=await fetch('/api/publisher-gate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edition_num:num})});
+  var gd={};try{gd=await gr.json();}catch(_){}
+  if(!gr.ok)throw new Error('Gate error: '+(gd.error||gr.status));
+  // «Edizione non marcata come pubblicata» è ovvio prima di pubblicare: non è un blocco.
+  var errs=(gd.checks||[]).filter(function(c){return c.type==='error'&&c.code!=='not_published';});
+  if(!errs.length)return true;
+  st.className='cr-status err';
+  st.innerHTML='<strong>&#10060; Non pubblicata</strong> &mdash; '+errs.length+' errore/i critico/i (il testo è salvato, il fact-check non verrà rifatto se non lo modifichi)<br>'+
+    errs.map(function(c){return '<div style="color:#B5221A;font-size:11px;margin:2px 0">&#10007; '+esc(c.message)+'</div>';}).join('');
   return false;
 }
 async function crApproveSponsor(id,button){
@@ -1163,7 +1181,12 @@ async function crApproveBozza(id,num){
     const ed=await crFetchEdition(id);
     const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
-    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
+    const hdr={'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY};
+    // 1) salva il testo; 2) fact-check (una volta) e verifica; 3) solo se non ci sono blocchi, pubblica.
+    const r0=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr,body:JSON.stringify({title,sections})});
+    if(!r0.ok)throw new Error('HTTP '+r0.status);
+    if(!(await crPrePubblicazione(String(num).padStart(3,'0'),st)))return;
+    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr,body:JSON.stringify({published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const pgErr=await crBuildPages();
     st.className=pgErr?'cr-status err':'cr-status ok';
@@ -1499,9 +1522,16 @@ async function crApprovaBozzaConData(id,num){
       subtitle=(subData.text||'').trim().replace(/^["']|["']$/g,'');
     }
     st.innerHTML='<span style="color:#8E6B33">⏳ Pubblicazione in corso...</span>';
-    var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',
-      headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},
-      body:JSON.stringify({title:title,sections:sections,subtitle:subtitle,date:date,published:true})});
+    var hdr2={'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY};
+    // 1) salva il testo; 2) fact-check (una volta) e verifica; 3) solo se non ci sono blocchi, pubblica.
+    var r0=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr2,
+      body:JSON.stringify({title:title,sections:sections,subtitle:subtitle,date:date})});
+    if(!r0.ok)throw new Error('HTTP '+r0.status);
+    if(!(await crPrePubblicazione(String(num).padStart(3,'0'),st))){
+      if(btn){btn.disabled=false;btn.textContent=origTxt;btn.style.background='';btn.style.color='';}
+      return;
+    }
+    var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr2,body:JSON.stringify({published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
     st.className='cr-status ok';
     st.innerHTML='✓ Edizione #'+num+' approvata e pubblicata.<br><span style="font-size:11px;opacity:.8">Sottotitolo: '+esc(subtitle)+'</span>';
@@ -1646,7 +1676,12 @@ async function crApproveBozza(id,num){
     const ed=await crFetchEdition(id);
     const sections=(ed.sections||[]).map((s,i)=>({...s,title:(document.getElementById(`bs-${id}-${i}-title`)?.innerText||s.title).trim(),body:(crBodyVal(`bs-${id}-${i}-body`)||s.body).trim()}));
     const title=(document.getElementById('bt-'+id)?.innerText||ed.title).trim();
-    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY},body:JSON.stringify({title,sections,published:true})});
+    const hdr={'Content-Type':'application/json',apikey:SKEY,Authorization:'Bearer '+SKEY};
+    // 1) salva il testo; 2) fact-check (una volta) e verifica; 3) solo se non ci sono blocchi, pubblica.
+    const r0=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr,body:JSON.stringify({title,sections})});
+    if(!r0.ok)throw new Error('HTTP '+r0.status);
+    if(!(await crPrePubblicazione(String(num).padStart(3,'0'),st)))return;
+    const r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr,body:JSON.stringify({published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
     const pgErr=await crBuildPages();
     st.className=pgErr?'cr-status err':'cr-status ok';
