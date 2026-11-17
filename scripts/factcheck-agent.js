@@ -10,6 +10,7 @@
 
 const { supaFetch, logRun } = require('./memory');
 const { logUsage } = require('../api/_lib/ai-usage');
+const { contentHash } = require('../api/_lib/content-hash');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -62,7 +63,7 @@ async function loadDraft() {
   else if (process.env.EDITION_NUM) filter = `num=eq.${String(process.env.EDITION_NUM).padStart(3, '0')}`;
   else filter = `published=eq.false`;
   const rows = await supaFetch(
-    `/rest/v1/editions?${filter}&select=id,num,title,sections&order=created_at.desc&limit=1`
+    `/rest/v1/editions?${filter}&select=id,num,title,subtitle,opener,sections&order=created_at.desc&limit=1`
   );
   return Array.isArray(rows) ? rows[0] : null;
 }
@@ -86,7 +87,7 @@ CLASSI DI FONTE (regola dalla #027) — assegna a ogni claim UNA classe:
 - "Ufficiale": comunicati e bilanci di club, UEFA, FIFA, leghe (Lega Serie A, LFP...), federazioni, società quotate. Basta da sola.
 - "Report autorevole": Deloitte, KPMG, PwC, EY, report pubblici e verificabili di consulenze o fondi (indica report e anno). Basta da solo.
 - "Stampa autorevole": Bloomberg, Financial Times, Reuters, AP, Il Sole 24 Ore, The Athletic, ESPN, Sky Sports, SportBusiness e analoghi. Va confermata da almeno UN'ALTRA fonte autorevole indipendente: se la trovi metti "confermata": true e indica le conferme in "conferme" (array); se non la trovi "confermata": false.
-- "Calcolo": numero derivato da altri numeri del testo. Indica "formula" (solo cifre e + - * / ( ), es. "900/(19.99*12)") e "risultato" (numero). Tolleranza di arrotondamento: indicala in "tolleranza" se serve.
+- "Calcolo": numero derivato da altri numeri del testo. Indica "formula" (solo cifre e + - * / ( ), es. "900/(19.99*12)") e "risultato" (numero). La formula deve dare ESATTAMENTE il risultato indicato, nella stessa unità: per una percentuale la formula include "*100" (es. "(131-94.7)/94.7*100" con risultato 38.3). Tolleranza di arrotondamento: indicala in "tolleranza" se serve.
 - "Non verificato": tutto il resto (blog, social, aggregatori, siti di scommesse, newsletter di terzi, testate di settore da sole, Transfermarkt, fonte non trovata). Un claim "Non verificato" NON può uscire.
 Una testata di settore da sola (SportsPro, SVG Europe, Inside World Football, Adnkronos) non conta come conferma.
 
@@ -183,6 +184,8 @@ async function main() {
 
   const factcheck = {
     checked_at: new Date().toISOString(),
+    // Impronta del testo controllato: la Control Room e la barriera pre-invio la confrontano con il testo attuale.
+    content_hash: contentHash(edition),
     model: MODEL,
     status: contradicted.length ? 'contradictions' : (unverifiable.length ? 'unverifiable_present' : 'clean'),
     totals: { claims: allClaims.length, verified: verified.length, contradicted: contradicted.length, unverifiable: unverifiable.length },

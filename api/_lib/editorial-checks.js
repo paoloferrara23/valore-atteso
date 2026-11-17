@@ -315,7 +315,9 @@ function editorialChecks(edition, opts = {}) {
     const r = parseFloat(String(c.risultato).replace(',', '.'));
     if (!isFinite(v) || !isFinite(r)) { push('error', 'ed_calcolo_formula', `Fact-check: formula non valida «${c.formula}»`); return; }
     const tol = c.tolleranza != null ? +c.tolleranza : Math.max(0.05, Math.abs(r) * 0.005);
-    if (Math.abs(v - r) > tol) push('error', 'ed_calcolo_errato', `Fact-check: ${c.formula} = ${Math.round(v * 1000) / 1000}, non ${c.risultato} (tolleranza ±${tol})`);
+    // Una percentuale scritta come rapporto (formula senza «*100», risultato in %) è lo stesso numero: non è un errore.
+    const pctOk = r !== 0 && Math.abs(v * 100 - r) <= Math.max(tol, Math.abs(r) * 0.005);
+    if (Math.abs(v - r) > tol && !pctOk) push('error', 'ed_calcolo_errato', `Fact-check: ${c.formula} = ${Math.round(v * 1000) / 1000}, non ${c.risultato} (tolleranza ±${tol})`);
   });
 
   // 5. FACT-CHECK: copertura, classi, cautela

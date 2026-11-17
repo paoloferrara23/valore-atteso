@@ -34,6 +34,7 @@ module.exports = async function handler(req, res) {
       return;
     }
   }
+  if (action === 'factcheckStatus') return require('./_lib/factcheck-status')(req, res);
   if (req.query?.action === 'scoutSelect') {
     try {
       return await require('./_lib/scout-select')(req, res, createClient);
@@ -45,7 +46,7 @@ module.exports = async function handler(req, res) {
   }
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { agent, scout_token } = req.body || {};
+  const { agent, scout_token, edition_num } = req.body || {};
 
   if (!(agent === 'scout' && scout_token)) {
     if (!requireAdmin(req, res)) return;
@@ -69,6 +70,19 @@ module.exports = async function handler(req, res) {
 
   const { workflow, label } = AGENT_MAP[agent];
 
+  // Fact-check: parte per UNA edizione, quando si preme «Invia» (la Control Room lo chiede solo se il testo
+  // è cambiato dall'ultimo controllo). Un secondo avvio per la stessa edizione entro 4 minuti non fa nulla.
+  let inputs;
+  if (agent === 'factcheck' && edition_num != null) {
+    const n = String(edition_num).padStart(3, '0');
+    if (!/^\d{3}$/.test(n)) return res.status(400).json({ error: 'edition_num non valido' });
+    inputs = { edition_num: n };
+    const since = new Date(Date.now() - 4 * 60 * 1000).toISOString();
+    const { data: recent } = await supabase.from('agent_runs').select('id')
+      .eq('agent', 'factcheck').eq('status', 'triggered').gte('created_at', since).contains('data', { edition_num: n }).limit(1);
+    if (recent && recent.length) return res.status(200).json({ ok: true, already: true, message: 'Fact-check già in corso per questa edizione.' });
+  }
+
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${workflow}/dispatches`, {
       method: 'POST',
@@ -77,14 +91,14 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json',
         'User-Agent': 'valore-atteso'
       },
-      body: JSON.stringify({ ref: 'main' })
+      body: JSON.stringify(inputs ? { ref: 'main', inputs } : { ref: 'main' })
     });
 
     if (r.status === 204) {
       await supabase.from('agent_runs').insert({
         agent, status: 'triggered',
         summary: `${label} avviato manualmente dalla Control Room`,
-        data: { triggered_by: 'control_room', workflow }
+        data: { triggered_by: 'control_room', workflow, ...(inputs || {}) }
       });
       return res.status(200).json({ ok: true, message: `${label} avviato. Risultati tra 1-3 minuti.` });
     }
