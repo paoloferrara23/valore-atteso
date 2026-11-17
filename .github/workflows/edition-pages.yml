@@ -6,14 +6,23 @@ name: Edition Pages (SEO)
 # e le immagini di condivisione in og/,
 # poi committa sul branch da cui è lanciato (main per il cron).
 # Le edizioni escono il martedì: gira ogni mattina (idempotente) + on demand.
+# Rete di sicurezza: ogni 30 minuti controlla (pochi secondi) se un'edizione pubblicata non ha ancora
+# la sua pagina o non è in /archivio e, solo in quel caso, rigenera. Serve quando l'avvio dalla Control Room
+# non parte (es. token GitHub scaduto su Vercel).
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # ogni giorno 08:00 IT (6 UTC)
+    - cron: '0 6 * * *'  # ogni giorno 08:00 IT (6 UTC): rigenerazione completa
+    - cron: '*/30 * * * *'  # controllo leggero: rigenera solo se manca una pagina o l'archivio
   workflow_dispatch:
 
 permissions:
   contents: write
+
+# Un solo run alla volta: evita push in conflitto tra cron e avvio manuale.
+concurrency:
+  group: edition-pages
+  cancel-in-progress: false
 
 jobs:
   build-pages:
@@ -23,9 +32,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      # On demand e cron delle 06:00: rigenera sempre. Cron ogni 30 minuti: solo se serve.
+      - name: Serve rigenerare?
+        id: check
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ] || [ "${{ github.event.schedule }}" = "0 6 * * *" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            node scripts/edition-pages-needed.js
+          fi
       # Immagini di condivisione per edizione (og/edizione-N.png): se questo passo fallisce le pagine
       # usano l'immagine generica /og.png, quindi non blocca la generazione delle pagine.
       - name: Genera immagini di condivisione
+        if: steps.check.outputs.run == 'true'
         continue-on-error: true
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -36,12 +59,14 @@ jobs:
           npx playwright install --with-deps chromium
           node scripts/generate-og-images.js
       - name: Genera pagine edizioni + sitemap
+        if: steps.check.outputs.run == 'true'
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: node scripts/generate-edition-pages.js
       - name: Commit se ci sono cambiamenti
+        if: steps.check.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

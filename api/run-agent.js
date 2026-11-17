@@ -89,11 +89,22 @@ module.exports = async function handler(req, res) {
       return res.status(200).json({ ok: true, message: `${label} avviato. Risultati tra 1-3 minuti.` });
     }
 
-    const err = await r.json();
-    throw new Error(`GitHub ${r.status}: ${err.message || JSON.stringify(err)}`);
+    const err = await r.json().catch(() => ({}));
+    const hint = (r.status === 401 || r.status === 403)
+      ? ' — il token GitHub (GITHUB_TOKEN su Vercel) è scaduto o senza permessi Actions: va rinnovato'
+      : '';
+    throw new Error(`GitHub ${r.status}: ${err.message || JSON.stringify(err)}${hint}`);
 
   } catch (e) {
     console.error('[run-agent]', e);
+    // Lasciare traccia: prima i fallimenti restavano solo nei log di Vercel (1 ora di retention).
+    try {
+      await supabase.from('agent_runs').insert({
+        agent, status: 'error',
+        summary: `${label}: avvio non riuscito. ${String(e.message || e).slice(0, 300)}`,
+        data: { triggered_by: 'control_room', workflow }
+      });
+    } catch (_) {}
     return res.status(500).json({ error: e.message });
   }
 };
