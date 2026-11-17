@@ -86,7 +86,7 @@ CLASSI DI FONTE (regola dalla #027) — assegna a ogni claim UNA classe:
 - "Ufficiale": comunicati e bilanci di club, UEFA, FIFA, leghe (Lega Serie A, LFP...), federazioni, società quotate. Basta da sola.
 - "Report autorevole": Deloitte, KPMG, PwC, EY, report pubblici e verificabili di consulenze o fondi (indica report e anno). Basta da solo.
 - "Stampa autorevole": Bloomberg, Financial Times, Reuters, AP, Il Sole 24 Ore, The Athletic, ESPN, Sky Sports, SportBusiness e analoghi. Va confermata da almeno UN'ALTRA fonte autorevole indipendente: se la trovi metti "confermata": true e indica le conferme in "conferme" (array); se non la trovi "confermata": false.
-- "Calcolo": numero derivato da altri numeri del testo. Indica "formula" (solo cifre e + - * / ( ), es. "900/(19.99*12)") e "risultato" (numero). Tolleranza di arrotondamento: indicala in "tolleranza" se serve.
+- "Calcolo": numero derivato da altri numeri del testo. Indica "formula" (solo cifre e + - * / ( ), es. "900/(19.99*12)") e "risultato" (numero). La formula deve dare ESATTAMENTE il risultato indicato, nella stessa unità: per una percentuale la formula include "*100" (es. "(131-94.7)/94.7*100" con risultato 38.3). Tolleranza di arrotondamento: indicala in "tolleranza" se serve.
 - "Non verificato": tutto il resto (blog, social, aggregatori, siti di scommesse, newsletter di terzi, testate di settore da sole, Transfermarkt, fonte non trovata). Un claim "Non verificato" NON può uscire.
 Una testata di settore da sola (SportsPro, SVG Europe, Inside World Football, Adnkronos) non conta come conferma.
 
