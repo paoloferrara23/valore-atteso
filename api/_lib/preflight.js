@@ -11,6 +11,7 @@
 // senza corpo/KPI/fonti, titolo mancante). Tutto ciò che è "di gusto" resta warning.
 
 const { editorialChecks, emailRenderChecks, appliesTo } = require('./editorial-checks');
+const { contentHash } = require('./content-hash');
 
 const SECTION_LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 
@@ -174,6 +175,10 @@ function contentPreflight(edition, opts = {}) {
     const ed = editorialChecks(edition);
     ed.forEach(c => checks.push(c));
     if (opts.html) emailRenderChecks(opts.html, opts.text).forEach(c => checks.push(c));
+    // Dalla #029 il fact-check parte da solo quando si preme «Invia» e vale solo per il testo che ha controllato.
+    if (parseInt(edition.num, 10) >= 29 && fc && fc.checked_at && fc.content_hash !== contentHash(edition)) {
+      checks.push({ type: 'error', code: 'ed_factcheck_non_aggiornato', message: 'Il fact-check è su una versione precedente del testo: parte da solo quando premi «Invia»' });
+    }
     const fcErrors = ed.filter(c => c.type === 'error' && /^ed_(factcheck|calcolo)/.test(c.code)).length;
     if (fc && fc.checked_at && !fcErrors) {
       push('ok', 'factcheck_ok', `Fact-check superato (${(fc.totals && fc.totals.verified) || 0} affermazioni verificate)`);

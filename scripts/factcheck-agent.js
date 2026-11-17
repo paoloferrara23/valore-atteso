@@ -10,6 +10,7 @@
 
 const { supaFetch, logRun } = require('./memory');
 const { logUsage } = require('../api/_lib/ai-usage');
+const { contentHash } = require('../api/_lib/content-hash');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
@@ -62,7 +63,7 @@ async function loadDraft() {
   else if (process.env.EDITION_NUM) filter = `num=eq.${String(process.env.EDITION_NUM).padStart(3, '0')}`;
   else filter = `published=eq.false`;
   const rows = await supaFetch(
-    `/rest/v1/editions?${filter}&select=id,num,title,sections&order=created_at.desc&limit=1`
+    `/rest/v1/editions?${filter}&select=id,num,title,subtitle,opener,sections&order=created_at.desc&limit=1`
   );
   return Array.isArray(rows) ? rows[0] : null;
 }
@@ -183,6 +184,8 @@ async function main() {
 
   const factcheck = {
     checked_at: new Date().toISOString(),
+    // Impronta del testo controllato: la Control Room e la barriera pre-invio la confrontano con il testo attuale.
+    content_hash: contentHash(edition),
     model: MODEL,
     status: contradicted.length ? 'contradictions' : (unverifiable.length ? 'unverifiable_present' : 'clean'),
     totals: { claims: allClaims.length, verified: verified.length, contradicted: contradicted.length, unverifiable: unverifiable.length },

@@ -337,6 +337,20 @@ process.argv.slice(2).forEach(file => {
   if (w.length) rows.push(`        (${w.length} avvisi) ${w.map(x => x.code).join(', ')}`);
 });
 
+{ // fact-check legato al testo: dalla #029 un testo cambiato dopo il controllo non esce (il fact-check riparte da «Invia»)
+  const { contentHash } = require('../api/_lib/content-hash');
+  const e = clone(base); e.num = '029'; e.date = '2026-11-17';
+  e.factcheck.content_hash = contentHash(e);
+  t('fact-check: impronta uguale al testo attuale, nessun blocco «non aggiornato»', !contentHash(e) || !contentPreflight(e, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
+  const f = clone(e); f.opener = f.opener + ' Una frase aggiunta dopo il controllo.';
+  t('fact-check: testo modificato dopo il controllo è BLOCCATO (ed_factcheck_non_aggiornato)', contentPreflight(f, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato' && c.type === 'error'));
+  const g = clone(e); delete g.factcheck.content_hash;
+  t('fact-check: senza impronta (controllo vecchio) è BLOCCATO dalla #029', contentPreflight(g, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
+  const h = clone(base); h.num = '028';
+  t('fact-check: le edizioni fino alla #028 non sono toccate', !contentPreflight(h, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
+  t('fact-check: l\'impronta ignora spazi ai bordi, non il contenuto', contentHash({ title: ' a ' }) === contentHash({ title: 'a' }) && contentHash({ title: 'a' }) !== contentHash({ title: 'b' }));
+}
+
 console.log(rows.join('\n'));
 console.log(`\n${pass} ok, ${fail} falliti`);
 process.exit(fail ? 1 : 0);
