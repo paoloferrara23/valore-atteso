@@ -177,9 +177,9 @@ function contentPreflight(edition, opts = {}) {
     if (opts.html) emailRenderChecks(opts.html, opts.text).forEach(c => checks.push(c));
     // Dalla #029 il fact-check parte da solo quando si preme «Invia» e vale solo per il testo che ha controllato.
     if (parseInt(edition.num, 10) >= 29 && fc && fc.checked_at && fc.content_hash !== contentHash(edition)) {
-      checks.push({ type: 'error', code: 'ed_factcheck_non_aggiornato', message: 'Il fact-check è su una versione precedente del testo: parte da solo quando premi «Invia»' });
+      checks.push({ type: 'warning', code: 'ed_factcheck_non_aggiornato', message: 'Il testo è cambiato dopo il fact-check: se hai toccato numeri o fatti, riapprova l\'edizione per rifarlo' });
     }
-    const fcErrors = ed.filter(c => c.type === 'error' && /^ed_(factcheck|calcolo)/.test(c.code)).length;
+    const fcErrors = ed.filter(c => /^ed_(factcheck|calcolo)/.test(c.code)).length;
     if (fc && fc.checked_at && !fcErrors) {
       push('ok', 'factcheck_ok', `Fact-check superato (${(fc.totals && fc.totals.verified) || 0} affermazioni verificate)`);
     }

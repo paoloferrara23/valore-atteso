@@ -10,13 +10,14 @@
 
 const { supaFetch, logRun } = require('./memory');
 const { logUsage } = require('../api/_lib/ai-usage');
-const { contentHash } = require('../api/_lib/content-hash');
+const { contentHash, sectionHash } = require('../api/_lib/content-hash');
 
 const ANTHROPIC_KEY  = process.env.ANTHROPIC_KEY;
 const RESEND_KEY     = process.env.RESEND_KEY;
 const { sendEmail }  = require('../api/_lib/mailer');
 const APPROVAL_EMAIL = process.env.APPROVAL_EMAIL;
-const MODEL          = 'claude-opus-4-8';
+// Sonnet, non Opus: stesso lavoro (estrarre voci e cercare conferme) a circa il 40% in meno. Costo reale in ai_usage.
+const MODEL          = 'claude-sonnet-4-6';
 const FROM           = 'Valore Atteso <info@valoreatteso.com>';
 const SECTION_LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 
@@ -24,7 +25,7 @@ const SECTION_LABELS = ['Il Bilancio', 'Il Deal', 'La Metrica'];
 async function callClaude(messages, system, useSearch = true, model = MODEL) {
   const body = { model, max_tokens: 8000, system, messages };
   if (useSearch) {
-    body.tools = [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }];
+    body.tools = [{ type: 'web_search_20250305', name: 'web_search', max_uses: 5 }];
     body.tool_choice = { type: 'auto' };
   }
   const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -63,7 +64,7 @@ async function loadDraft() {
   else if (process.env.EDITION_NUM) filter = `num=eq.${String(process.env.EDITION_NUM).padStart(3, '0')}`;
   else filter = `published=eq.false`;
   const rows = await supaFetch(
-    `/rest/v1/editions?${filter}&select=id,num,title,subtitle,opener,sections&order=created_at.desc&limit=1`
+    `/rest/v1/editions?${filter}&select=id,num,title,subtitle,opener,sections,factcheck&order=created_at.desc&limit=1`
   );
   return Array.isArray(rows) ? rows[0] : null;
 }
@@ -172,10 +173,17 @@ async function main() {
 
   console.log(`Fact-Check #${edition.num} — ${sections.length} sezioni`);
 
-  const perSection = await Promise.all(
-    sections.map((sec, i) => checkSection(sec, sec.label || SECTION_LABELS[i] || `Sezione ${i + 1}`)
-      .then(claims => ({ label: sec.label || SECTION_LABELS[i] || `Sezione ${i + 1}`, claims })))
-  );
+  // Le sezioni invariate dall'ultimo controllo non si rifanno: costano meno e il loro esito non cambia da una volta all'altra.
+  const prev = edition.factcheck && Array.isArray(edition.factcheck.sections) ? edition.factcheck.sections : [];
+  const perSection = await Promise.all(sections.map(async (sec, i) => {
+    const label = sec.label || SECTION_LABELS[i] || `Sezione ${i + 1}`;
+    const hash = sectionHash(sec);
+    const old = prev.find(p => p && p.label === label && p.hash === hash && Array.isArray(p.claims) && p.claims.length
+      && !p.claims.some(c => /non riuscita/i.test(String(c.claim || ''))));
+    if (old) { console.log(`[${label}] invariata dall'ultimo controllo: nessuna nuova chiamata`); return { label, hash, reused: true, claims: old.claims }; }
+    return { label, hash, claims: await checkSection(sec, label) };
+  }));
+  const riusate = perSection.filter(s => s.reused).length;
 
   const allClaims = perSection.flatMap(s => s.claims.map(c => ({ ...c, section: s.label })));
   const contradicted = allClaims.filter(c => c.status === 'CONTRADICTED');
@@ -201,7 +209,7 @@ async function main() {
 
   await sendAlert(edition, factcheck);
 
-  const summary = `#${edition.num}: ${factcheck.totals.claims} claim — ${verified.length} ok, ${contradicted.length} smentiti, ${unverifiable.length} non verificabili. Stato: ${factcheck.status}.`;
+  const summary = `#${edition.num}: ${factcheck.totals.claims} claim — ${verified.length} ok, ${contradicted.length} smentiti, ${unverifiable.length} non verificabili. Stato: ${factcheck.status}.${riusate ? ` ${riusate} sezione/i invariata/e, non rifatta/e.` : ''}`;
   await logRun('factcheck', contradicted.length ? 'contradictions' : 'success', summary, factcheck, Date.now() - start);
   console.log(summary);
 }

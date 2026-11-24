@@ -22,4 +22,9 @@ function contentHash(edition) {
   return crypto.createHash('sha256').update(payload).digest('hex').slice(0, 16);
 }
 
-module.exports = { contentHash };
+// Impronta di una sola sezione: il fact-check non rifà le sezioni invariate dall'ultimo controllo.
+function sectionHash(section) {
+  return crypto.createHash('sha256').update(JSON.stringify(sectionText(section || {}))).digest('hex').slice(0, 16);
+}
+
+module.exports = { contentHash, sectionHash };

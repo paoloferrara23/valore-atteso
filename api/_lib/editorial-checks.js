@@ -313,22 +313,24 @@ function editorialChecks(edition, opts = {}) {
     if (!c.formula) { push('warning', 'ed_calcolo_senza_formula', `Fact-check: calcolo «${String(c.claim).slice(0, 60)}» senza formula, non ricalcolabile`); return; }
     const v = evalFormula(c.formula);
     const r = parseFloat(String(c.risultato).replace(',', '.'));
-    if (!isFinite(v) || !isFinite(r)) { push('error', 'ed_calcolo_formula', `Fact-check: formula non valida «${c.formula}»`); return; }
+    if (!isFinite(v) || !isFinite(r)) { push('warning', 'ed_calcolo_formula', `Fact-check: formula non valida «${c.formula}»`); return; }
     const tol = c.tolleranza != null ? +c.tolleranza : Math.max(0.05, Math.abs(r) * 0.005);
     // Una percentuale scritta come rapporto (formula senza «*100», risultato in %) è lo stesso numero: non è un errore.
     const pctOk = r !== 0 && Math.abs(v * 100 - r) <= Math.max(tol, Math.abs(r) * 0.005);
-    if (Math.abs(v - r) > tol && !pctOk) push('error', 'ed_calcolo_errato', `Fact-check: ${c.formula} = ${Math.round(v * 1000) / 1000}, non ${c.risultato} (tolleranza ±${tol})`);
+    if (Math.abs(v - r) > tol && !pctOk) push('warning', 'ed_calcolo_errato', `Fact-check: ${c.formula} = ${Math.round(v * 1000) / 1000}, non ${c.risultato} (tolleranza ±${tol})`);
   });
 
-  // 5. FACT-CHECK: copertura, classi, cautela
+  // 5. FACT-CHECK: copertura, classi, cautela.
+  // Il fact-check è un agente con ricerca web e varianza: a ogni giro può segnalare cose diverse. Le sue segnalazioni
+  // sono AVVISI da leggere e valutare (la barriera chiede conferma), non blocchi. Blocca solo l'assenza del controllo.
   if (opts.factcheck !== false) {
     if (!fc || !fc.checked_at || !claims.length) {
       push('error', 'ed_factcheck_assente', 'Fact-check assente o senza affermazioni: ogni numero deve avere una voce');
     } else {
       claims.forEach(c => {
-        if (!c.classe) push('error', 'ed_factcheck_classe', `Fact-check: «${String(c.claim).slice(0, 60)}» senza classe (Ufficiale, Report autorevole, Stampa autorevole, Calcolo)`);
-        else if (/non verificat/i.test(c.classe) || c.status === 'UNVERIFIABLE') push('error', 'ed_factcheck_non_verificato', `Fact-check: «${String(c.claim).slice(0, 70)}» non verificato: non può uscire`);
-        if (c.status === 'CONTRADICTED') push('error', 'ed_factcheck_contraddetto', `Fact-check: «${String(c.claim).slice(0, 70)}» contraddetto da fonti autorevoli`);
+        if (!c.classe) push('warning', 'ed_factcheck_classe', `Fact-check: «${String(c.claim).slice(0, 60)}» senza classe (Ufficiale, Report autorevole, Stampa autorevole, Calcolo)`);
+        else if (/non verificat/i.test(c.classe) || c.status === 'UNVERIFIABLE') push('warning', 'ed_factcheck_non_verificato', `Fact-check: «${String(c.claim).slice(0, 70)}» non verificato: da valutare`);
+        if (c.status === 'CONTRADICTED') push('warning', 'ed_factcheck_contraddetto', `Fact-check: «${String(c.claim).slice(0, 70)}» contraddetto da fonti autorevoli`);
       });
       // Stampa autorevole senza seconda conferma: ammessa solo con formula di cautela nella sezione.
       claims.filter(c => c.classe === 'Stampa autorevole').forEach(c => {
@@ -336,7 +338,7 @@ function editorialChecks(edition, opts = {}) {
         if (confirmed) return;
         const sec = perSection.find(s => s.label === c.section);
         const text = sec ? [sec.body, sec.verdict].join('\n') : allText;
-        if (!CAUTION.test(text)) push('error', 'ed_factcheck_cautela', `Fact-check: «${String(c.claim).slice(0, 60)}» è solo Stampa autorevole senza conferma: servono una seconda fonte o una formula di cautela nel testo ("secondo quanto riportato")`, sec ? sec.i : undefined);
+        if (!CAUTION.test(text)) push('warning', 'ed_factcheck_cautela', `Fact-check: «${String(c.claim).slice(0, 60)}» è solo Stampa autorevole senza conferma: servono una seconda fonte o una formula di cautela nel testo ("secondo quanto riportato")`, sec ? sec.i : undefined);
       });
       // Copertura: ogni numero significativo di titolo, sottotitolo, KPI e testo ha una voce.
       const covered = claims.flatMap(c => amountsIn([c.claim, c.valore, c.found, c.note].filter(Boolean).join(' ')));
@@ -348,7 +350,7 @@ function editorialChecks(edition, opts = {}) {
       needed.forEach(a => {
         if (!covered.some(b => sameLoose(a, b)) && !missing.some(x => sameLoose(x, a))) missing.push(a);
       });
-      if (missing.length) push('error', 'ed_factcheck_copertura', `Fact-check: ${missing.length} numero/i senza voce (${missing.slice(0, 8).map(a => a.raw).join(', ')}${missing.length > 8 ? '…' : ''})`);
+      if (missing.length) push('warning', 'ed_factcheck_copertura', `Fact-check: ${missing.length} numero/i senza voce (${missing.slice(0, 8).map(a => a.raw).join(', ')}${missing.length > 8 ? '…' : ''})`);
     }
   }
 

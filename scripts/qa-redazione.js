@@ -23,6 +23,9 @@ const errs = (ed, o) => editorialChecks(ed, o).filter(c => c.type === 'error');
 const codes = (ed, o) => [...new Set(errs(ed, o).map(c => c.code))];
 const clone = x => JSON.parse(JSON.stringify(x));
 const has = (ed, code, o) => codes(ed, o).includes(code);
+// Segnalazioni del fact-check: avvisi da leggere, non blocchi.
+const warns = (ed, o) => [...new Set(editorialChecks(ed, o).filter(c => c.type === 'warning').map(c => c.code))];
+const hasW = (ed, code, o) => warns(ed, o).includes(code);
 
 // ── Edizione di fantasia che deve passare tutti i controlli ──────────────────
 function good() {
@@ -111,10 +114,10 @@ t('edizioni precedenti alla #027 non toccate', editorialChecks({ ...clone(base),
 { // formula del fact-check sbagliata: 650/2300 = 28%, non 54%
   const e = clone(base);
   e.factcheck.sections[1].claims.push({ claim: 'Il naming copre il 54% del costo', valore: '54%', status: 'VERIFIED', classe: 'Calcolo', formula: '650/2300*100', risultato: 54 });
-  t('aritmetica: calcolo del fact-check sbagliato (650/2300 = 28, non 54) è BLOCCATO', has(e, 'ed_calcolo_errato'), codes(e).join(','));
+  t('aritmetica: calcolo del fact-check sbagliato (650/2300 = 28, non 54) è un AVVISO, non un blocco', hasW(e, 'ed_calcolo_errato') && !has(e, 'ed_calcolo_errato'), warns(e).join(','));
   const ok = clone(base);
   ok.factcheck.sections[1].claims.push({ claim: 'Variazione del costo del personale', valore: '+38,3%', status: 'VERIFIED', classe: 'Calcolo', formula: '(131.0-94.7)/94.7', risultato: 38.3 });
-  t('aritmetica: percentuale scritta come rapporto (formula senza *100) NON è un errore', !has(ok, 'ed_calcolo_errato'), codes(ok).join(','));
+  t('aritmetica: percentuale scritta come rapporto (formula senza *100) NON è un errore né un avviso', !has(ok, 'ed_calcolo_errato') && !hasW(ok, 'ed_calcolo_errato'), warns(ok).join(','));
   t('aritmetica: valutatore sicuro respinge codice', Number.isNaN(evalFormula('process.exit(1)')) && Number.isNaN(evalFormula('1+constructor')));
 }
 { // stesso valore in campi diversi
@@ -147,31 +150,31 @@ t('edizioni precedenti alla #027 non toccate', editorialChecks({ ...clone(base),
 {
   const nv = clone(base);
   nv.factcheck.sections[0].claims[0].classe = 'Non verificato';
-  t('fact-check: classe «Non verificato» è BLOCCATA', has(nv, 'ed_factcheck_non_verificato'));
+  t('fact-check: classe «Non verificato» è un AVVISO, non un blocco', hasW(nv, 'ed_factcheck_non_verificato') && !has(nv, 'ed_factcheck_non_verificato'));
   const uv = clone(base);
   uv.factcheck.sections[0].claims[1].status = 'UNVERIFIABLE';
-  t('fact-check: stato UNVERIFIABLE è BLOCCATO', has(uv, 'ed_factcheck_non_verificato'));
+  t('fact-check: stato UNVERIFIABLE è un AVVISO, non un blocco', hasW(uv, 'ed_factcheck_non_verificato') && !has(uv, 'ed_factcheck_non_verificato'));
   const co = clone(base);
   co.factcheck.sections[0].claims[1].status = 'CONTRADICTED';
-  t('fact-check: dato contraddetto è BLOCCATO', has(co, 'ed_factcheck_contraddetto'));
+  t('fact-check: dato contraddetto è un AVVISO, non un blocco', hasW(co, 'ed_factcheck_contraddetto') && !has(co, 'ed_factcheck_contraddetto'));
   const miss = clone(base);
   miss.factcheck.sections[2].claims = miss.factcheck.sections[2].claims.filter(c => c.valore !== '€240 milioni');
-  t('fact-check: numero senza voce (€240 milioni) è BLOCCATO', has(miss, 'ed_factcheck_copertura'), codes(miss).join(','));
+  t('fact-check: numero senza voce (€240 milioni) è un AVVISO, non un blocco', hasW(miss, 'ed_factcheck_copertura') && !has(miss, 'ed_factcheck_copertura'), warns(miss).join(','));
   const none = clone(base); delete none.factcheck;
   t('fact-check: assente è BLOCCATO', has(none, 'ed_factcheck_assente'));
   t('fact-check: fuori dal giro di generazione (factcheck:false) la copertura non si valuta', !has(none, 'ed_factcheck_assente', { factcheck: false }));
   const nocls = clone(base); delete nocls.factcheck.sections[0].claims[0].classe;
-  t('fact-check: voce senza classe è BLOCCATA', has(nocls, 'ed_factcheck_classe'));
+  t('fact-check: voce senza classe è un AVVISO, non un blocco', hasW(nocls, 'ed_factcheck_classe') && !has(nocls, 'ed_factcheck_classe'));
   const st = clone(base);
   st.factcheck.sections[0].claims[0].classe = 'Stampa autorevole';
   st.sections[0].body = st.sections[0].body.replace(', secondo quanto riportato dal club', '');
-  t('fact-check: Stampa autorevole senza conferma né cautela è BLOCCATA', has(st, 'ed_factcheck_cautela'), codes(st).join(','));
+  t('fact-check: Stampa autorevole senza conferma né cautela è un AVVISO, non un blocco', hasW(st, 'ed_factcheck_cautela') && !has(st, 'ed_factcheck_cautela'), warns(st).join(','));
   st.sections[0].body = st.sections[0].body.replace('con ricavi per', 'con ricavi, secondo quanto riportato, per');
-  t('fact-check: Stampa autorevole con formula di cautela NON è bloccata', !has(st, 'ed_factcheck_cautela'), codes(st).join(','));
+  t('fact-check: Stampa autorevole con formula di cautela non dà nemmeno un avviso', !hasW(st, 'ed_factcheck_cautela') && !has(st, 'ed_factcheck_cautela'), warns(st).join(','));
   const st2 = clone(base);
   st2.factcheck.sections[0].claims[0].classe = 'Stampa autorevole';
   st2.factcheck.sections[0].claims[0].confermata = true;
-  t('fact-check: Stampa autorevole confermata da un\'altra fonte NON è bloccata', !has(st2, 'ed_factcheck_cautela'));
+  t('fact-check: Stampa autorevole confermata da un\'altra fonte non dà nemmeno un avviso', !hasW(st2, 'ed_factcheck_cautela') && !has(st2, 'ed_factcheck_cautela'));
 }
 
 // ── 5. Link, testate, blocco Fonti ───────────────────────────────────────────
@@ -343,12 +346,28 @@ process.argv.slice(2).forEach(file => {
   e.factcheck.content_hash = contentHash(e);
   t('fact-check: impronta uguale al testo attuale, nessun blocco «non aggiornato»', !contentHash(e) || !contentPreflight(e, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
   const f = clone(e); f.opener = f.opener + ' Una frase aggiunta dopo il controllo.';
-  t('fact-check: testo modificato dopo il controllo è BLOCCATO (ed_factcheck_non_aggiornato)', contentPreflight(f, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato' && c.type === 'error'));
+  t('fact-check: testo modificato dopo il controllo è un AVVISO (ed_factcheck_non_aggiornato), non un blocco', contentPreflight(f, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato' && c.type === 'warning'));
   const g = clone(e); delete g.factcheck.content_hash;
-  t('fact-check: senza impronta (controllo vecchio) è BLOCCATO dalla #029', contentPreflight(g, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
+  t('fact-check: senza impronta (controllo vecchio) dà un avviso dalla #029', contentPreflight(g, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato' && c.type === 'warning'));
   const h = clone(base); h.num = '028';
   t('fact-check: le edizioni fino alla #028 non sono toccate', !contentPreflight(h, {}).checks.some(c => c.code === 'ed_factcheck_non_aggiornato'));
   t('fact-check: l\'impronta ignora spazi ai bordi, non il contenuto', contentHash({ title: ' a ' }) === contentHash({ title: 'a' }) && contentHash({ title: 'a' }) !== contentHash({ title: 'b' }));
+}
+
+{ // un fact-check con contraddizioni, non verificati e calcoli sbagliati NON blocca; il fact-check assente sì
+  const e = clone(base); e.num = '029'; e.date = '2026-11-17';
+  const { contentHash, sectionHash } = require('../api/_lib/content-hash');
+  e.factcheck.content_hash = contentHash(e);
+  e.factcheck.sections[0].claims.push(
+    { claim: 'Dato dubbio', valore: '€1 milioni', status: 'CONTRADICTED', classe: 'Ufficiale' },
+    { claim: 'Dato non trovato', valore: '€2 milioni', status: 'UNVERIFIABLE', classe: 'Non verificato' },
+    { claim: 'Calcolo sbagliato', valore: '9%', status: 'VERIFIED', classe: 'Calcolo', formula: '1/2', risultato: 9 });
+  const r = contentPreflight(e, {});
+  t('fact-check con segnalazioni: nessun blocco dal fact-check (solo avvisi)', !r.checks.some(c => c.type === 'error' && /^ed_(factcheck|calcolo)/.test(c.code)), r.checks.filter(c => c.type === 'error').map(c => c.code).join(','));
+  const n = clone(e); delete n.factcheck;
+  t('fact-check mai eseguito: resta un blocco (ed_factcheck_assente)', contentPreflight(n, {}).checks.some(c => c.code === 'ed_factcheck_assente' && c.type === 'error'));
+  const s1 = base.sections[0], s2 = clone(base.sections[0]); s2.body += ' Una frase in più.';
+  t('fact-check: impronta di sezione stabile e sensibile al testo', sectionHash(s1) === sectionHash(clone(s1)) && sectionHash(s1) !== sectionHash(s2));
 }
 
 console.log(rows.join('\n'));
