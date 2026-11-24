@@ -851,7 +851,7 @@ async function crBuildPages(){
 // Fact-check UNA volta: se il testo è lo stesso dell'ultimo controllo non parte nulla, altrimenti parte e si attende
 // l'esito (1-3 minuti). Si usa all'approvazione (crPrePubblicazione); all'invio resta solo come rete di sicurezza,
 // per le edizioni approvate prima di questa regola o con testo modificato dopo il controllo.
-async function crFactcheckOnce(num,st){
+async function crFactcheckOnce(num,st,soloSeManca){
   async function stato(){
     var r=await fetch('/api/run-agent?action=factcheckStatus&num='+encodeURIComponent(num));
     var d={};try{d=await r.json();}catch(_){}
@@ -860,6 +860,7 @@ async function crFactcheckOnce(num,st){
   }
   var s=await stato();
   if(s.fresh)return true;
+  if(soloSeManca&&s.checked_at)return true;
   st.className='cr-status';st.style.display='block';
   st.innerHTML='<span style="color:#8E6B33">&#9654; Fact-check in corso (1-3 minuti): non chiudere la pagina.</span>';
   var t0=Date.now();
@@ -879,6 +880,7 @@ async function crFactcheckOnce(num,st){
 }
 // Prima di pubblicare: fact-check UNA volta (non parte se il testo è già stato controllato) e verifica dei blocchi.
 // Alla pubblicazione e all'invio non si rifà: all'invio basta che l'esito salvato sia quello del testo attuale.
+function crAvvisiTxt(){var n=(window.crAvvisiFC||[]).length;return n?' Fact-check: '+n+' segnalazione/i da rileggere (non bloccano la pubblicazione).':'';}
 async function crPrePubblicazione(num,st){
   if(!(await crFactcheckOnce(num,st)))return false;
   st.className='cr-status';st.style.display='block';
@@ -887,6 +889,7 @@ async function crPrePubblicazione(num,st){
   var gd={};try{gd=await gr.json();}catch(_){}
   if(!gr.ok)throw new Error('Gate error: '+(gd.error||gr.status));
   // «Edizione non marcata come pubblicata» è ovvio prima di pubblicare: non è un blocco.
+  window.crAvvisiFC=(gd.checks||[]).filter(function(c){return c.type==='warning'&&/^ed_(factcheck|calcolo)/.test(c.code||'');});
   var errs=(gd.checks||[]).filter(function(c){return c.type==='error'&&c.code!=='not_published';});
   if(!errs.length)return true;
   st.className='cr-status err';
@@ -1137,7 +1140,7 @@ async function crSendExisting(){
   if(!num){document.getElementById('cr-send-num').focus();return}
   st.style.display='block';
   try{
-    if(!(await crFactcheckOnce(num,st)))return;
+    if(!(await crFactcheckOnce(num,st,true)))return;
     const ok=await crRunGate(num,st);
     if(!ok)return;
     st.textContent='Invio in corso...';
@@ -1190,7 +1193,7 @@ async function crApproveBozza(id,num){
     if(!r.ok)throw new Error('HTTP '+r.status);
     const pgErr=await crBuildPages();
     st.className=pgErr?'cr-status err':'cr-status ok';
-    st.textContent='✓ Edizione #'+num+' approvata e pubblicata.'+(pgErr?' ⚠ La pagina in archivio non è partita da sola ('+pgErr+'): comparirà entro 30 minuti.':'');
+    st.textContent='✓ Edizione #'+num+' approvata e pubblicata.'+crAvvisiTxt()+(pgErr?' ⚠ La pagina in archivio non è partita da sola ('+pgErr+'): comparirà entro 30 minuti.':'');
     crLoadCtx();
     loadLatestPreview();
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -1206,7 +1209,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   const padded=String(num).padStart(3,'0');
   try{
-    if(!(await crFactcheckOnce(padded,st)))return;
+    if(!(await crFactcheckOnce(padded,st,true)))return;
     const ok=await crRunGate(padded,st);
     if(!ok)return;
     st.textContent='Invio...';
@@ -1534,7 +1537,7 @@ async function crApprovaBozzaConData(id,num){
     var r=await fetch(SURL+'/rest/v1/editions?id=eq.'+id,{method:'PATCH',headers:hdr2,body:JSON.stringify({published:true})});
     if(!r.ok)throw new Error('HTTP '+r.status);
     st.className='cr-status ok';
-    st.innerHTML='✓ Edizione #'+num+' approvata e pubblicata.<br><span style="font-size:11px;opacity:.8">Sottotitolo: '+esc(subtitle)+'</span>';
+    st.innerHTML='✓ Edizione #'+num+' approvata e pubblicata.'+esc(crAvvisiTxt())+'<br><span style="font-size:11px;opacity:.8">Sottotitolo: '+esc(subtitle)+'</span>';
     if(btn){btn.textContent='✓ Approvata';btn.style.background='#4a7c4e';btn.style.color='#fff';}
     // Genera la pagina /edizione-N (workflow GitHub): serve ai link "Leggi online" dell'email.
     crBuildPages().then(function(pgErr){
@@ -1685,7 +1688,7 @@ async function crApproveBozza(id,num){
     if(!r.ok)throw new Error('HTTP '+r.status);
     const pgErr=await crBuildPages();
     st.className=pgErr?'cr-status err':'cr-status ok';
-    st.textContent='✓ Edizione #'+num+' approvata e pubblicata.'+(pgErr?' ⚠ La pagina in archivio non è partita da sola ('+pgErr+'): comparirà entro 30 minuti.':'');
+    st.textContent='✓ Edizione #'+num+' approvata e pubblicata.'+crAvvisiTxt()+(pgErr?' ⚠ La pagina in archivio non è partita da sola ('+pgErr+'): comparirà entro 30 minuti.':'');
     crLoadCtx();
     loadLatestPreview();
   }catch(e){st.className='cr-status err';st.textContent='Errore: '+e.message}
@@ -1701,7 +1704,7 @@ async function crInviaBozza(num,id){
   st.style.display='block';
   const padded=String(num).padStart(3,'0');
   try{
-    if(!(await crFactcheckOnce(padded,st)))return;
+    if(!(await crFactcheckOnce(padded,st,true)))return;
     const ok=await crRunGate(padded,st);
     if(!ok)return;
     st.textContent='Invio...';
